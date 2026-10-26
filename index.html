@@ -49,6 +49,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   box-shadow:0 0 40px -18px var(--pc)}
 .who{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .who h2{font-family:var(--display);font-weight:400;font-size:1.3rem;margin:0;min-width:0;overflow-wrap:anywhere}
+.sndbtn{margin-left:8px;white-space:nowrap}
 .edit-btn{font:inherit;font-size:.82rem;font-weight:800;background:rgba(255,255,255,.08);border:1.5px solid var(--line);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer;flex:none}
 .mission{border-radius:14px;padding:10px 12px;background:linear-gradient(135deg,color-mix(in srgb,var(--pc) 30%,transparent),rgba(255,255,255,.04));border:1px solid color-mix(in srgb,var(--pc) 60%,transparent)}
 .mission .lbl{font-size:.7rem;letter-spacing:.16em;color:var(--pc);display:block;font-weight:800}
@@ -532,6 +533,9 @@ function renderMe(){
   if(me){ b.innerHTML=stampSVG(people[me].stamp); const s=document.createElement("span"); s.textContent="わたし："+people[me].name+"（切りかえ）"; b.append(s); }
   else b.innerHTML="<span>わたしは誰？ をえらぶ</span>";
   b.onclick=openPicker; el.append(b);
+  const sb=document.createElement("button"); sb.className="edit-btn sndbtn"; sb.id="snd-btn";
+  sb.textContent=SFX.on?"🔊 音あり":"🔇 音なし"; sb.setAttribute("aria-pressed",SFX.on);
+  sb.onclick=()=>{ SFX.toggle(); renderMe(); if(SFX.on) SFX.ping(); }; el.append(sb);
 }
 function openPicker(){
   const o=document.createElement("div"); o.className="sheet"; o.id="picker";
@@ -787,6 +791,7 @@ function monthResult(p, round, after, mid){
     cnt.textContent = String(Math.round(got*ease));
     if(e>REVEAL && !revealed){ revealed=true; o.classList.add("go");
       try{ navigator.vibrate && navigator.vibrate(win?[40,40,40,40,160]:[120]); }catch(err){}
+      try{ SFX.result(mid); }catch(err){}
       if(win && !still){ boom(W/2,H*.4,140,9); for(let i=0;i<3;i++) launch(); } }
     if(!still){
       x.setTransform(r,0,0,r,0,0); x.clearRect(0,0,W,H);
@@ -877,6 +882,91 @@ function prerenderWheels(){
 function copyCanvas(src,cls){ const c=document.createElement("canvas"); c.width=src.width; c.height=src.height; c.getContext("2d").drawImage(src,0,0); c.className=cls; return c; }
 
 let partyOpen=false;
+/* ---------- pachinko-style sound (Web Audio, synthesized) ---------- */
+const SFX = (()=>{
+  let ctx=null, out=null, on=true;
+  try{ on = localStorage.getItem("snd")!=="0"; }catch(e){}
+  const N = n => 440*Math.pow(2,(n-69)/12);           // midi -> Hz
+  function init(){
+    if(!ctx){ const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null;
+      try{ if(navigator.audioSession) navigator.audioSession.type="playback"; }catch(e){}
+      ctx=new AC();
+      const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-14; comp.ratio.value=6; comp.connect(ctx.destination);
+      out=ctx.createGain(); out.gain.value=.55; out.connect(comp);
+      // little shimmer echo
+      const dl=ctx.createDelay(); dl.delayTime.value=.11; const fb=ctx.createGain(); fb.gain.value=.28; const wet=ctx.createGain(); wet.gain.value=.22;
+      out.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(comp);
+    }
+    if(ctx.state!=="running") ctx.resume();
+    return ctx;
+  }
+  function tone(f,t,d,type="square",v=.2,f2=null,att=.004){
+    const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.setValueAtTime(f,t);
+    if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+d);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+att); g.gain.exponentialRampToValueAtTime(.0008,t+d);
+    o.connect(g); g.connect(out); o.start(t); o.stop(t+d+.05); return o;
+  }
+  let nbuf=null;
+  function noise(t,d,v=.3,from=6000,to=300){
+    if(!nbuf){ nbuf=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate); const a=nbuf.getChannelData(0); for(let i=0;i<a.length;i++) a[i]=Math.random()*2-1; }
+    const s=ctx.createBufferSource(); s.buffer=nbuf; const fl=ctx.createBiquadFilter(); fl.type="lowpass";
+    fl.frequency.setValueAtTime(from,t); fl.frequency.exponentialRampToValueAtTime(to,t+d);
+    const g=ctx.createGain(); g.gain.setValueAtTime(v,t); g.gain.exponentialRampToValueAtTime(.001,t+d);
+    s.connect(fl); fl.connect(g); g.connect(out); s.start(t); s.stop(t+d+.05);
+  }
+  // キュイーン：detuned squares sweeping up with fast vibrato
+  function kyuin(t,d=.62){
+    const lfo=ctx.createOscillator(), lg=ctx.createGain(); lfo.frequency.value=22; lg.gain.value=60; lfo.connect(lg);
+    [0,7].forEach(det=>{ const o=tone(260,t,d,"square",.07,2600,.08); o.detune.value=det*3; lg.connect(o.frequency); });
+    lfo.start(t); lfo.stop(t+d+.05);
+    // rising arpeggio sparkles
+    const sc=[72,74,76,79,81,84,86,88,91,93,96,98];
+    sc.forEach((n,i)=>tone(N(n),t+i*d/sc.length,.09,"triangle",.09));
+  }
+  // バーン！：impact + bright chord stab
+  function bang(t,big){
+    noise(t,big?.9:.6,.3,9000,200);
+    tone(160,t,.45,"sine",.45,38,.002);
+    [72,76,79,84,88].forEach(n=>{ tone(N(n),t,big?1.3:.9,"sawtooth",.05); tone(N(n)*1.005,t,big?1.3:.9,"square",.03); });
+  }
+  // ジャラジャラ：pachinko-ball / coin payout cascade
+  function payout(t,len,dense){
+    const bells=[96,98,100,103,105,108];
+    const n=Math.round(len*(dense?34:24));
+    for(let i=0;i<n;i++){ const tt=t+i*len/n+Math.random()*.02, f=N(bells[Math.floor(Math.random()*bells.length)])*(1+Math.random()*.012);
+      tone(f,tt,.07+Math.random()*.06,"triangle",.1+Math.random()*.06);
+      if(i%3===0) tone(f*1.5,tt+.01,.05,"sine",.04); }
+  }
+  // パラララッパー：fanfare
+  function fanfare(t,big){
+    const seq= big
+      ? [[67,.09],[72,.09],[76,.09],[79,.18],[76,.09],[79,.5],[0,.06],[81,.09],[84,.09],[88,.7]]
+      : [[72,.08],[76,.08],[79,.08],[84,.42]];
+    let tt=t; seq.forEach(([n,d])=>{ if(n){ tone(N(n),tt,d+.18,"square",.13); tone(N(n+12),tt,d+.12,"triangle",.07); } tt+=d; });
+    // sustaining chord under the last note
+    const last=big?[72,76,79,84]:[60,67,72,76]; last.forEach(n=>tone(N(n),tt-(big?.7:.42),big?1.4:.9,"sawtooth",.035,null,.03));
+    return tt;
+  }
+  return {
+    get on(){ return on; },
+    toggle(){ on=!on; try{ localStorage.setItem("snd",on?"1":"0"); }catch(e){} if(on) init(); },
+    unlock(){ if(on) init(); },
+    ping(){ if(!init()) return; const t=ctx.currentTime+.02; tone(N(96),t,.12,"triangle",.12); tone(N(100),t+.07,.18,"triangle",.12); },
+    stamp(goalHit, midHit){
+      if(!on || !init()) return; const t=ctx.currentTime+.03;
+      kyuin(t);
+      bang(t+.65, goalHit||midHit);
+      payout(t+.72, goalHit?2.6:(midHit?2.0:1.4), goalHit||midHit);
+      fanfare(t+.9, goalHit||midHit);
+      if(goalHit){ kyuin(t+1.6,.4); bang(t+2.0,true); payout(t+2.1,1.8,true); fanfare(t+2.3,true); }
+    },
+    result(mid){
+      if(!on || !init()) return; const t=ctx.currentTime+.03;
+      bang(t+.1,true); fanfare(t+.25,true); payout(t+.3, mid?1.6:2.4, true);
+    }
+  };
+})();
+
 function party(p, after){
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const _ri=roundInfo(p), mgoal=_ri.goal, goalHit=_ri.inRound===0&&_ri.done>0, count=goalHit?mgoal:_ri.inRound;
@@ -905,6 +995,7 @@ function party(p, after){
   // hide the page underneath so its animations stop painting while the show runs
   setTimeout(()=>{ if(partyOpen) document.querySelector(".wrap").style.visibility="hidden"; },650);
   try{ navigator.vibrate && navigator.vibrate([30,60,30,60,120]); }catch(e){}
+  try{ SFX.stamp(goalHit, !goalHit && !!_ri.mid && count===_ri.mid); }catch(e){}
 
   let raf=0;
   const dur = goalHit?5200:3800;
