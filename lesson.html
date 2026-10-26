@@ -318,6 +318,17 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .picks.six{grid-template-columns:repeat(6,1fr)}
 .notice.big{font-size:1rem;padding:14px 14px}
 
+.srow .no{font-size:.72rem;font-weight:800;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,.1);color:var(--p2);flex:none;font-variant-numeric:tabular-nums;min-width:3.6em;text-align:center}
+.srow .no.none{color:#ff8a9a;font-weight:500}
+.who h2 .no.big{color:var(--p2);font-size:.9em}
+.row2.r12{grid-template-columns:1fr 2fr}
+.login{align-items:center;text-align:center;padding:26px 18px}
+.login .login-ico{width:96px;height:96px}.login .login-ico img{width:100%;height:100%}
+.login h2{font-family:var(--display);font-weight:400;margin:0;font-size:1.5rem}
+.login form{width:100%;max-width:300px;gap:12px}
+.login input{text-align:center;font-family:var(--display);font-size:1.8rem;letter-spacing:.1em;padding:12px}
+.login .press{width:100%}
+
 </style>
 </head>
 <body>
@@ -391,9 +402,11 @@ const okKey = k => k && /^[A-Za-z0-9_-]{20,}$/.test(k);
 let TK = okKey(H.get("t")) ? H.get("t") : null, SK = okKey(H.get("s")) ? H.get("s") : null;
 if(TK){ lsSet("mc_tk",TK); lsSet("mc_mode","t"); } else if(SK){ lsSet("mc_sk",SK); lsSet("mc_mode","s"); }
 else { const m=lsGet("mc_mode"); if(m==="t" && okKey(lsGet("mc_tk"))) TK=lsGet("mc_tk"); else if(okKey(lsGet("mc_sk"))) SK=lsGet("mc_sk"); else if(okKey(lsGet("mc_tk"))) TK=lsGet("mc_tk"); }
-const MODE = TK ? "t" : SK ? "s" : null;
+const MODE = TK ? "t" : "s";   // no key = student login screen
 const BASE = location.origin + location.pathname;
-const studentURL = sk => BASE + "#s=" + sk;
+const SHARED_URL = BASE;          // the one link for the class LINE group
+const numSort = (a,b) => { const x=a.num, y=b.num; if(x==null&&y==null) return a.name.localeCompare(b.name,"ja"); if(x==null) return 1; if(y==null) return -1;
+  const nx=/^\d+$/.test(x), ny=/^\d+$/.test(y); if(nx&&ny) return (+x)-(+y); return String(x).localeCompare(String(y),"ja",{numeric:true}); };
 
 /* ---------- stamp art: realistic bodies with cute faces, seen through a porthole; small SMIL motions inside ---------- */
 const INK="#2b1433";
@@ -1039,8 +1052,30 @@ async function stuRefresh(){
     document.title=st.name+"さんのスタンプカード"; setNote("先生がスタンプを押すと、ここに届きます。");
     if(lsGet(seenKey())===null){ const ids=Stu.stamps.map(s=>s.id); lsSet(seenKey(), String(ids.length>1? ids[ids.length-2] : 0)); }
     if(!Stu.styling && !window.__party && !Stu.playing) stuRender();
-  }catch(e){ setNote(e.message==="bad_key" ? "このリンクは使えなくなっています。先生に新しいリンクをもらってね。" : "つながりません。電波のいいところで開き直してください。");
-    if(e.message==="bad_key"){ Stu.info=null; document.getElementById("app").innerHTML='<div class="card"><div class="nokey"><b>リンクが使えません</b><span>先生に新しいリンクをもらってね。</span></div></div>'; } }
+  }catch(e){ if(e.message==="bad_key"){ stuLogout("番号が見つからなくなりました。もう一度入れてね。"); return; }
+    setNote("つながりません。電波のいいところで開き直してください。"); }
+}
+function stuLogout(msg){ SK=null; lsSet("mc_sk",""); Stu.info=null; Stu.stamps=[]; stuLogin(msg); }
+function stuLogin(msg){
+  document.getElementById("h1").textContent="おんがくスタンプ"; document.title="おんがくスタンプ"; setNote("");
+  const app=document.getElementById("app"); app.innerHTML="";
+  const box=el("section","card login"); box.style.setProperty("--pc","var(--p0)");
+  box.innerHTML=`<div class="login-ico">${stampSVG("note")}</div><h2>ようこそ！</h2><p class="rw-note">カードに書いてある<b>番号</b>を入れてね</p>
+    <form id="login-form"><input id="login-num" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="例：12"><button type="submit" class="press" id="login-btn">はじめる</button></form><p class="rw-note" id="login-msg"></p>`;
+  if(msg) box.querySelector("#login-msg").textContent=msg;
+  const f=box.querySelector("form"), inp=box.querySelector("input"), btn=box.querySelector("#login-btn");
+  f.onsubmit=async e=>{ e.preventDefault(); const n=inp.value.trim(); if(!n){ inp.focus(); return; }
+    btn.disabled=true; box.querySelector("#login-msg").textContent="さがしています…";
+    try{ const r=await rpc("mc_s_login",{p_num:n});
+      if(!r||!r.ok){ box.querySelector("#login-msg").textContent="その番号は見つかりませんでした。先生に確認してね。"; btn.disabled=false; return; }
+      SK=r.sk; lsSet("mc_sk",SK); lsSet("mc_mode","s"); SFX.unlock(); stuStart(); }
+    catch(err){ box.querySelector("#login-msg").textContent="つながりません。電波のいいところでもう一度ためしてね。"; btn.disabled=false; } };
+  app.append(box); setTimeout(()=>{ try{ inp.focus(); }catch(e){} },100);
+}
+let stuTimer=null;
+function stuStart(){
+  try{ const c=JSON.parse(lsGet("mc_cache_"+SK)||"null"); if(c){ Stu.info=c; Stu.stamps=c.stamps||[]; stuRender(); } }catch(e){}
+  stuRefresh(); if(!stuTimer) stuTimer=setInterval(()=>{ if(SK && document.visibilityState==="visible" && !window.__party) stuRefresh(); }, 20000);
 }
 function stuNew(){ const seen=+(lsGet(seenKey())||0); return Stu.stamps.filter(s=>s.id>seen); }
 function stuPlayNew(){
@@ -1084,6 +1119,7 @@ function stuRender(){
     notes.forEach(s=>{ const li=el("li"); li.innerHTML=stampSVG(card.stamp); const d=el("div"); d.append(el("b",null,s.note), el("small",null,md(s.day))); li.append(d); ul.append(li); });
     sec.append(ul); box.append(sec); }
   app.append(box);
+  const lo=el("button","link","べつの番号で入りなおす"); lo.id="logout"; lo.style.alignSelf="center"; lo.onclick=()=>{ if(lo.dataset.ok){ stuLogout(); } else { lo.dataset.ok="1"; lo.textContent="もう一度押すと入りなおせます"; } }; app.append(lo);
 }
 function stuStyle(box){
   const dr=Stu.draft, kd=Stu.kind, key="stamp_"+kd;
@@ -1103,7 +1139,7 @@ function stuStyle(box){
 }
 
 /* ================= TEACHER ================= */
-const T = { students:[], recent:[], q:"", sort:lsGet("mc_sort")||"name", sel:null, detail:null, show:lsGet("mc_show")!=="0", busy:false, confirmDel:null, confirmStu:false, qr:false, adding:false, ym:nowYM(), kind:"p", today:todayKey() };
+const T = { students:[], recent:[], q:"", sort:lsGet("mc_sort")||"num", sel:null, detail:null, show:lsGet("mc_show")!=="0", busy:false, confirmDel:null, confirmStu:false, qr:false, adding:false, ym:nowYM(), kind:"p", today:todayKey() };
 async function tRefresh(){
   try{ const st=await rpc("mc_t_state",{tk:TK}); T.students=st.students||[]; T.recent=st.recent||[]; if(st.today) T.today=st.today;
     setNote("先生用ページ ・ このリンクは生徒に渡さないでね"); if(!T.sel && !T.adding && !window.__party && !busyTyping()) tRender(); }
@@ -1121,24 +1157,27 @@ function tRender(){
   document.getElementById("h1").textContent="音楽教室スタンプ"; { const d=new Date(); document.getElementById("today").textContent=`先生用 ・ ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`; }
   if(T.sel) return tStudent(app);
   const tools=el("div","tools");
-  const q=el("input"); q.id="q"; q.type="search"; q.placeholder="名前でさがす"; q.value=T.q; q.oninput=()=>{ T.q=q.value; drawList(); };
+  const q=el("input"); q.id="q"; q.type="search"; q.placeholder="名前・番号でさがす"; q.value=T.q; q.oninput=()=>{ T.q=q.value; drawList(); };
   const add=el("button","btn primary","＋ 生徒を追加"); add.id="add-btn"; add.onclick=openAdd;
   tools.append(q,add); app.append(tools);
   const stats=el("div","stats"); const todayN=T.recent.filter(r=>r.day===T.today).length;
   stats.innerHTML=`<span>生徒 ${T.students.length}人 ・ 今日のスタンプ ${todayN}こ</span>`;
-  const so=el("select"); so.id="sort"; so.innerHTML=`<option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
+  const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
   const list=el("div","list"); list.id="list"; app.append(list);
   function drawList(){
     list.innerHTML="";
-    let arr=T.students.filter(s=>!T.q || s.name.toLowerCase().includes(T.q.trim().toLowerCase()));
-    if(T.sort==="name") arr.sort((a,b)=>a.name.localeCompare(b.name,"ja"));
+    const qq=T.q.trim().toLowerCase().replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248));
+    let arr=T.students.filter(s=>!qq || s.name.toLowerCase().includes(qq) || String(s.num||"")===qq.replace(/^0+(?=\d)/,""));
+    if(T.sort==="num") arr.sort(numSort);
+    else if(T.sort==="name") arr.sort((a,b)=>a.name.localeCompare(b.name,"ja"));
     else if(T.sort==="recent") arr.sort((a,b)=>String(b.last||"").localeCompare(String(a.last||"")));
     else arr.sort((a,b)=>(a.np+a.ne)-(b.np+b.ne));
     if(!T.students.length){ list.append(el("div","empty","まだ生徒がいません。「＋ 生徒を追加」から登録してね。")); return; }
     if(!arr.length){ list.append(el("div","empty","見つかりません")); return; }
     const todaySet=new Set(T.recent.filter(r=>r.day===T.today).map(r=>r.sid));
     arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; r.innerHTML=stampSVG(okStamp(s.stamp_p));
+      const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
       r.append(el("span","nm",s.name)); if(todaySet.has(s.id)) r.append(el("span","td","今日"));
       const c=el("span","ct"); c.innerHTML=stuCounts(s); r.append(c);
       r.onclick=()=>{ T.sel=s.id; T.detail=null; T.confirmDel=null; T.confirmStu=false; T.qr=false; T.ym=nowYM(); tRender(); tLoadDetail(); scrollTo(0,0); };
@@ -1150,22 +1189,41 @@ function tRender(){
       li.innerHTML=stampSVG(okStamp(s?s["stamp_"+r.kind]:"star")); const n=el("span","hn",(r.name||"")+"　"+KINDS[r.kind].icon+" "+KINDS[r.kind].label);
       if(r.note) n.append(el("small",null,r.note)); li.append(n, el("time",null,md(r.day))); ul.append(li); });
     d.append(ul); app.append(d); }
-  if(T.students.length){ const b=el("button","btn small","全員の生徒用リンクをコピー"); b.id="copy-all";
-    b.onclick=async()=>{ const txt=[...T.students].sort((a,b)=>a.name.localeCompare(b.name,"ja")).map(s=>s.name+"\n"+studentURL(s.skey)).join("\n\n");
-      toast(await copyText(txt)?"コピーしました（名前とリンクの一覧）":"コピーできませんでした"); };
-    app.append(b); }
+  // one shared link for the class LINE group
+  const gl=el("details","sec"); gl.id="groupsec"; gl.innerHTML="<summary>グループLINE用のリンク</summary>"; if(T.qr) gl.open=true;
+  const msg=`🎵おんがくスタンプ🎵\n下のリンクを開いて、カードに書いてある番号を入れてね！\n${SHARED_URL}`;
+  gl.append(el("p","rw-note","このリンクを生徒みんなに送ってOK。開くと番号を聞かれて、入れた番号の子のカードが開きます。"), el("div","linkbox",msg));
+  const gb=el("div","btns");
+  const gc=el("button","btn small","文章ごとコピー"); gc.id="copy-group"; gc.onclick=async()=>toast(await copyText(msg)?"コピーしました。LINEに貼ってね":"コピーできませんでした"); gb.append(gc);
+  if(navigator.share){ const gs=el("button","btn small","LINEなどで送る"); gs.onclick=()=>navigator.share({text:msg}).catch(()=>{}); gb.append(gs); }
+  const gq=el("button","btn small",T.qr?"QRをとじる":"QRコード"); gq.id="qr-btn"; gq.onclick=()=>{ T.qr=!T.qr; tRender(); }; gb.append(gq);
+  gl.append(gb);
+  if(T.qr){ const q=el("div","qr"); try{ const qr=qrcode(0,"M"); qr.addData(SHARED_URL); qr.make(); q.innerHTML=qr.createSvgTag({cellSize:4, margin:2, scalable:true}); }catch(e){ q.textContent="QRコードを作れませんでした"; q.style.color="#000"; } gl.append(q); }
+  app.append(gl);
 }
 function openAdd(){
   T.adding=true; const o=el("div","sheet"); o.id="add-sheet";
-  o.innerHTML=`<div class="panel" role="dialog" aria-label="生徒を追加"><b>生徒を追加</b><p>1行に1人ずつ名前を書いてね。まとめて何人でも入れられます（20文字まで）。</p>
-    <textarea id="add-names" placeholder="やまだ はなこ&#10;すずき たろう"></textarea><div class="actions"><button type="button" id="add-cancel">やめる</button><button type="button" class="save" id="add-ok">追加する</button></div></div>`;
+  o.innerHTML=`<div class="panel" role="dialog" aria-label="生徒を追加"><b>生徒を追加</b><p>1行に1人ずつ「番号 名前」の順で書いてね。まとめて何人でも入れられます。</p>
+    <textarea id="add-names" placeholder="1 やまだ はなこ&#10;2 すずき たろう&#10;15 さとう みく"></textarea><p class="rw-note" id="add-msg"></p><div class="actions"><button type="button" id="add-cancel">やめる</button><button type="button" class="save" id="add-ok">追加する</button></div></div>`;
   const close=()=>{ o.remove(); T.adding=false; tRender(); };
   o.querySelector("#add-cancel").onclick=close; o.onclick=e=>{ if(e.target===o) close(); };
-  o.querySelector("#add-ok").onclick=async()=>{ const names=o.querySelector("#add-names").value.split(/\n/).map(s=>s.trim()).filter(Boolean);
-    if(!names.length){ toast("名前を入れてね"); return; }
-    if(names.length>200){ toast("一度に200人までです"); return; }
-    try{ const r=await rpc("mc_t_add",{tk:TK, p_names:names}); toast(`${r.added}人 追加しました`); close(); tRefresh(); }
-    catch(e){ toast("追加できませんでした（"+e.message+"）"); } };
+  o.querySelector("#add-ok").onclick=async()=>{ const am=o.querySelector("#add-msg"); am.style.color="#ff8a9a";
+    const lines=o.querySelector("#add-names").value.split(/\n/).map(s=>s.trim()).filter(Boolean);
+    if(!lines.length){ am.textContent="「番号 名前」を入れてね"; return; }
+    if(lines.length>300){ am.textContent="一度に300人までです"; return; }
+    const nums=[], names=[], bad=[];
+    const norm=x=>{ x=x.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248)).replace(/[ー－]/g,"-").toUpperCase(); return /^\d+$/.test(x)?String(+x):x; };
+    lines.forEach((l,i)=>{ const m=l.replace(/^No\.?/i,"").match(/^([0-9０-９A-Za-zＡ-Ｚａ-ｚ\-ー－]{1,12})[\s　,、.．:：]+(.+)$/);
+      if(!m || !/[0-9０-９]/.test(m[1])){ bad.push(i+1); return; } nums.push(norm(m[1])); names.push(m[2].trim().slice(0,20)); });
+    if(bad.length){ am.textContent=`${bad.join("・")}行目に番号がありません。「12 やまだ はなこ」のように書いてね。`; return; }
+    const seen={}, dupIn=[...new Set(nums.filter(n=>seen[n]=(seen[n]||0)+1, 0).filter(n=>seen[n]>1))];
+    if(dupIn.length){ am.textContent=`番号がかぶっています：${dupIn.join("、")}`; return; }
+    const exist=nums.filter(n=>T.students.some(s=>s.num===n));
+    if(exist.length){ am.textContent=`もう使われている番号です：${exist.join("、")}`; return; }
+    try{ const r=await rpc("mc_t_add_n",{tk:TK, p_nums:nums, p_names:names});
+      if(r.dups && r.dups.length){ am.textContent=`もう使われている番号です：${r.dups.join("、")}`; return; }
+      toast(`${r.added}人 追加しました`); close(); tRefresh(); }
+    catch(e){ am.textContent="追加できませんでした（"+e.message+"）"; } };
   document.body.append(o); setTimeout(()=>{ try{ o.querySelector("textarea").focus(); }catch(e){} },50);
 }
 function tStudent(app){
@@ -1174,7 +1232,9 @@ function tStudent(app){
   if(!s){ app.append(el("div","empty","読み込み中…")); return; }
   const stamps=(T.detail&&T.detail.stamps)||[];
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
-  const who=el("div","who"); who.append(el("h2",null,s.name)); box.append(who);
+  const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
+  who.append(hh); box.append(who);
+  if(s.num==null) box.append(el("p","rw-note","⚠ 番号が未登録なので、この生徒はログインできません。下の「設定」で番号を入れてね。"));
   // stamp buttons
   const sec=el("div","sec"); sec.append(el("h3",null,"ひとこと（なくてもOK）"));
   const inp=el("input"); inp.id="note-in"; inp.maxLength=60; inp.placeholder="例：ブルグミュラー25番 合格！"; sec.append(inp);
@@ -1206,8 +1266,8 @@ function tStudent(app){
     hs.append(ul); box.append(hs); }
   app.append(box);
   // settings
-  const st=el("details","sec"); st.id="settings"; st.innerHTML="<summary>設定（名前・ゴール・ごほうび）</summary>";
-  const f=el("form"); f.innerHTML=`<label>名前<input id="s-name" maxlength="20"></label>
+  const st=el("details","sec"); st.id="settings"; st.innerHTML="<summary>設定（番号・名前・ゴール・ごほうび）</summary>";
+  const f=el("form"); f.innerHTML=`<div class="row2 r12"><label>番号<input id="s-num" maxlength="12" inputmode="numeric"></label><label>名前<input id="s-name" maxlength="20"></label></div>
     <div class="row2"><label>れんしゅうのゴール<select id="s-gp"></select></label><label>ごうかくのゴール<select id="s-ge"></select></label></div>
     <label>れんしゅうカードのごほうび<input id="s-rp" maxlength="40" placeholder="例：シールを1まい"></label>
     <label>ごうかくカードのごほうび<input id="s-re" maxlength="40" placeholder="例：好きな曲をひけるよ"></label>
@@ -1215,26 +1275,14 @@ function tStudent(app){
   const opts=[3,5,8,10,12,15,20,25,30,40,50,100];
   ["s-gp","s-ge"].forEach((id,i)=>{ const sel=f.querySelector("#"+id); const cur=i?s.goal_e:s.goal_p; const vals=[...new Set([...opts,cur])].sort((a,b)=>a-b);
     sel.innerHTML=vals.map(v=>`<option value="${v}">${v}こ</option>`).join(""); sel.value=String(cur); });
-  f.querySelector("#s-name").value=s.name; f.querySelector("#s-rp").value=s.reward_p||""; f.querySelector("#s-re").value=s.reward_e||"";
+  f.querySelector("#s-num").value=s.num??""; f.querySelector("#s-name").value=s.name; f.querySelector("#s-rp").value=s.reward_p||""; f.querySelector("#s-re").value=s.reward_e||"";
   f.onsubmit=async e=>{ e.preventDefault();
-    try{ await rpc("mc_t_update",{tk:TK, sid:s.id, p_name:f.querySelector("#s-name").value, p_goal_p:+f.querySelector("#s-gp").value, p_goal_e:+f.querySelector("#s-ge").value,
-      p_reward_p:f.querySelector("#s-rp").value, p_reward_e:f.querySelector("#s-re").value}); toast("保存しました"); await tLoadDetail(); tRender(); }
+    try{ const r=await rpc("mc_t_update2",{tk:TK, sid:s.id, p_num:f.querySelector("#s-num").value, p_name:f.querySelector("#s-name").value, p_goal_p:+f.querySelector("#s-gp").value, p_goal_e:+f.querySelector("#s-ge").value,
+      p_reward_p:f.querySelector("#s-rp").value, p_reward_e:f.querySelector("#s-re").value});
+      if(r==="dup_num"){ toast("その番号はほかの生徒が使っています"); return; }
+      toast("保存しました"); await tLoadDetail(); tRender(); tRefresh(); }
     catch(err){ toast("保存できませんでした（"+err.message+"）"); } };
   st.append(f); app.append(st);
-  // student link
-  const lk=el("details","sec"); lk.id="linksec"; lk.innerHTML="<summary>この生徒のリンク・QRコード</summary>"; if(T.qr) lk.open=true;
-  const url=studentURL(s.skey);
-  lk.append(el("p","rw-note","このリンクを生徒（保護者）に渡すと、その子のカードだけが見られます。"), el("div","linkbox",url));
-  const bs=el("div","btns");
-  const cp=el("button","btn small","コピー"); cp.id="copy-link"; cp.onclick=async()=>toast(await copyText(url)?"コピーしました":"コピーできませんでした"); bs.append(cp);
-  if(navigator.share){ const sh2=el("button","btn small","送る（LINEなど）"); sh2.onclick=()=>navigator.share({title:s.name+"さんのスタンプカード", text:s.name+"さんのスタンプカードです", url}).catch(()=>{}); bs.append(sh2); }
-  const qb=el("button","btn small",T.qr?"QRをとじる":"QRコード"); qb.id="qr-btn"; qb.onclick=()=>{ T.qr=!T.qr; tRender(); }; bs.append(qb);
-  lk.append(bs);
-  if(T.qr){ const q=el("div","qr"); try{ const qr=qrcode(0,"M"); qr.addData(url); qr.make(); q.innerHTML=qr.createSvgTag({cellSize:4, margin:2, scalable:true}); }catch(e){ q.textContent="QRコードを作れませんでした"; q.style.color="#000"; } lk.append(q); }
-  const nk=el("button","btn small warn","リンクを作り直す（前のリンクは使えなくなる）"); nk.id="newkey";
-  nk.onclick=async()=>{ if(!nk.dataset.ok){ nk.dataset.ok="1"; nk.textContent="本当に作り直す？もう一度押してね"; return; }
-    try{ await rpc("mc_t_newkey",{tk:TK, sid:s.id}); toast("新しいリンクにしました"); T.qr=true; await tLoadDetail(); }catch(e){ toast("できませんでした（"+e.message+"）"); } };
-  lk.append(nk); app.append(lk);
   // delete
   const dz=el("div","sec");
   if(!T.confirmStu){ const d=el("button","danger","この生徒を削除する"); d.id="del-stu"; d.onclick=()=>{ T.confirmStu=true; tRender(); }; dz.append(d); }
@@ -1268,14 +1316,11 @@ document.getElementById("today").textContent = (()=>{const d=new Date();return `
 setTimeout(()=>{ try{ prerenderStamps(); prerenderWheels(); }catch(e){} },400);
 if(MODE==="s"){
   soundButtons(document.getElementById("bar"));
-  try{ const c=JSON.parse(lsGet("mc_cache_"+SK)||"null"); if(c){ Stu.info=c; Stu.stamps=c.stamps||[]; stuRender(); } }catch(e){}
-  stuRefresh(); setInterval(()=>{ if(document.visibilityState==="visible" && !window.__party) stuRefresh(); }, 20000);
-  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") stuRefresh(); });
+  if(SK) stuStart(); else stuLogin();
+  document.addEventListener("visibilitychange",()=>{ if(SK && document.visibilityState==="visible") stuRefresh(); });
 } else if(MODE==="t"){
   soundButtons(document.getElementById("bar"));
   tRender(); tRefresh(); setInterval(()=>{ if(document.visibilityState==="visible" && !window.__party){ if(T.sel) tLoadDetail(); else if(!T.adding) tRefresh(); } }, 20000);
-} else {
-  setNote(""); document.getElementById("app").innerHTML='<div class="card"><div class="nokey"><b>リンクから開いてね</b><span>先生からもらったリンクを開き直してください。</span></div></div>';
 }
 
 </script>
