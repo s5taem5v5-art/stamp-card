@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0a24">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="スタンプカード">
+<meta name="robots" content="noindex">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>3人のスタンプカード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@500;800&display=swap">
+<style>
+/* Layout: one person's card at a time on a twinkling deep-space backdrop; tabs on top, stamp grid, big glowing button. Single dark look by choice. */
+:root{
+  color-scheme:dark;
+  --space:#0b0a24; --space2:#1a1048; --panel:rgba(24,18,66,.88); --ink:#f4f1ff; --muted:#b9b2e6; --line:rgba(185,178,230,.28);
+  --p0:#ff4fb0; --p1:#38d6ff; --p2:#ffc93c; --p3:#8b6bff;
+  --display:"Dela Gothic One","Hiragino Sans","Noto Sans JP",sans-serif;
+  --body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:radial-gradient(120% 80% at 80% -10%,#3a1d7a 0,transparent 55%),radial-gradient(90% 60% at -10% 110%,#0f3a6b 0,transparent 60%),var(--space);
+  color:var(--ink);font-family:var(--body);font-weight:500;font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 40px;overflow-x:hidden}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;align-items:center;gap:12px}
+header .logo{width:52px;height:52px;flex:none;border-radius:50%;filter:drop-shadow(0 0 10px #ffbf7a)}
+@keyframes spin{to{transform:rotate(360deg)}}
+header h1{font-family:var(--display);font-weight:400;font-size:1.45rem;margin:0;line-height:1.2;
+  background:linear-gradient(90deg,var(--p0),var(--p2),var(--p1));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:0;color:var(--muted);font-size:.82rem}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tab{font:inherit;font-weight:800;border:2px solid var(--line);background:var(--panel);color:var(--ink);
+  border-radius:16px;padding:8px 4px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0;min-width:0;transition:transform .15s}
+.tab img{width:34px;height:34px}
+.tab span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;font-size:.9rem}
+.tab small{font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;font-size:.75rem}
+.tab[aria-selected="true"]{border-color:transparent;background:linear-gradient(var(--space2),var(--space2)) padding-box,linear-gradient(120deg,#ff5fa2,#ffb84d,#fff36b,#6bffb0,#5fd8ff,#8b7bff,#ff6ff2) border-box;box-shadow:0 0 0 1px var(--pc),0 0 18px -2px var(--pc);transform:translateY(-2px)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--p2);outline-offset:2px}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:14px;
+  box-shadow:0 0 40px -18px var(--pc)}
+.who{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.who h2{font-family:var(--display);font-weight:400;font-size:1.3rem;margin:0;min-width:0;overflow-wrap:anywhere}
+.edit-btn{font:inherit;font-size:.82rem;font-weight:800;background:rgba(255,255,255,.08);border:1.5px solid var(--line);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer;flex:none}
+.mission{border-radius:14px;padding:10px 12px;background:linear-gradient(135deg,color-mix(in srgb,var(--pc) 30%,transparent),rgba(255,255,255,.04));border:1px solid color-mix(in srgb,var(--pc) 60%,transparent)}
+.mission .lbl{font-size:.7rem;letter-spacing:.16em;color:var(--pc);display:block;font-weight:800}
+.mission b{font-size:1.08rem;overflow-wrap:anywhere}
+.progress{display:flex;flex-direction:column;gap:6px}
+.progress .nums{display:flex;justify-content:space-between;align-items:baseline;font-variant-numeric:tabular-nums}
+.progress strong{font-family:var(--display);font-weight:400;font-size:2rem;color:var(--pc);text-shadow:0 0 14px var(--pc)}
+.progress .goal{color:var(--muted);font-size:.9rem}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ff5fa2,#ffb84d,#fff36b,#6bffb0,#5fd8ff,#8b7bff,#ff6ff2);background-size:200% 100%;animation:slide 3s linear infinite;box-shadow:0 0 10px var(--pc);transition:width .6s cubic-bezier(.2,1.2,.4,1)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.slot{aspect-ratio:1;max-width:100%;border-radius:50%;border:2px dashed var(--line);background:rgba(255,255,255,.03);
+  display:grid;place-items:center;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;position:relative}
+.slot.on{border:none;background:none;box-shadow:0 0 14px -1px var(--glow)}
+.slot.on img{width:100%;height:100%;transform:rotate(var(--r,0deg))}
+.slot .d{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);background:var(--space);color:var(--ink);font-size:.6rem;padding:0 5px;border-radius:6px;white-space:nowrap;border:1px solid var(--line)}
+.slot.new img{animation:land .6s cubic-bezier(.2,1.5,.4,1)}
+@keyframes land{0%{transform:scale(2.6) rotate(-90deg);opacity:0}100%{transform:scale(1) rotate(var(--r));opacity:1}}
+.tw{transform-box:fill-box;transform-origin:center;animation:tw 1.8s ease-in-out infinite}
+.slot:nth-child(3n) .tw{animation-delay:-.6s}.slot:nth-child(3n+1) .tw{animation-delay:-1.2s}
+@keyframes tw{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.4)}}
+.slot .sh{position:absolute;inset:7%;border-radius:50%;overflow:hidden;pointer-events:none}
+.slot .sh::before{content:"";position:absolute;top:-10%;bottom:-10%;left:0;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:translateX(-120%) skewX(-18deg);animation:shine 3.4s ease-in-out infinite;will-change:transform}
+.slot:nth-child(2n) .sh::before{animation-delay:-1.7s}
+@keyframes shine{0%{transform:translateX(-120%) skewX(-18deg)}55%,100%{transform:translateX(300%) skewX(-18deg)}}
+/* celebration overlay */
+#party{position:fixed;inset:0;z-index:50;display:grid;place-items:center;cursor:pointer;
+  background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--pc) 55%,transparent) 0,rgba(5,3,20,.88) 60%);
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);animation:fadein .2s}
+#party canvas.fx{position:absolute;inset:0;width:100%;height:100%}
+#party{overflow:hidden}
+#party .flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,#fff 0,#fff 30%,color-mix(in srgb,var(--glow) 70%,#fff) 60%,transparent 100%);opacity:0;animation:flash .6s .6s ease-out both;pointer-events:none}
+#party .galaxy{position:absolute;left:50%;top:42%;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;pointer-events:none;will-change:transform;animation:spin 16s linear infinite,fadein 1s .5s both}
+#party .rocket{position:absolute;left:0;top:0;width:56px;z-index:4;pointer-events:none;opacity:0;animation:fly 2.1s .9s cubic-bezier(.45,.05,.55,.95) both;will-change:transform}
+#party .rocket svg{width:100%;display:block}
+#party .rocket .flame{transform-origin:30px 92px;animation:flick .12s ease-in-out infinite alternate}
+@keyframes flick{to{transform:scaleY(1.35) scaleX(.85)}}
+@keyframes fly{0%{transform:translate(-80px,92vh) rotate(38deg);opacity:1}100%{transform:translate(105vw,-30vh) rotate(52deg);opacity:1}}
+#party .hero{position:relative;z-index:2;width:100%;height:100%}
+#party .orb{position:absolute;left:50%;top:50%;width:26%;aspect-ratio:1;opacity:0;pointer-events:none;will-change:transform}
+#party .orb>*{display:block;width:120%;height:120%;margin:-10%}
+#party .orbitline{position:absolute;left:50%;top:50%;width:200%;transform:translate(-50%,-50%);z-index:1;overflow:visible;opacity:0;animation:fadein .6s .8s both}
+#party .center{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:0 16px}
+#party .big{width:min(62vw,300px);aspect-ratio:1;position:relative}
+#party .hero>*{display:block;width:120%;height:120%;margin:-10%;will-change:transform;animation:slam .9s .55s cubic-bezier(.2,1.6,.35,1) both}
+#party .rays{position:absolute;left:-45%;top:-45%;width:190%;height:190%;pointer-events:none;will-change:transform;animation:spin 6s linear infinite,fadein .6s .6s both}
+#party .ring{position:absolute;left:50%;top:50%;width:100%;aspect-ratio:1;border-radius:50%;border:5px solid var(--glow);transform:translate(-50%,-50%) scale(.3);opacity:0;animation:wave 1.1s .6s ease-out forwards}
+#party .ring:nth-of-type(2){animation-delay:.78s;border-color:#fff}
+#party .ring:nth-of-type(3){animation-delay:.96s}
+#party .t1{font-family:var(--display);font-size:clamp(1.8rem,9vw,2.8rem);line-height:1.1;color:#fff;text-shadow:0 0 12px var(--glow),0 0 30px var(--pc),0 4px 0 var(--p3);animation:pop .7s .85s cubic-bezier(.2,1.8,.4,1) both}
+#party .t2{font-family:var(--display);font-size:1.25rem;background:linear-gradient(90deg,var(--p2),var(--p0),var(--p1),var(--p2));background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .7s 1.05s cubic-bezier(.2,1.8,.4,1) both,slide 1.5s linear infinite}
+#party .t3{font-size:.8rem;color:var(--muted);animation:fadein .4s 1.4s both}
+@keyframes flash{from{opacity:.95}to{opacity:0}}
+@keyframes fadein{from{opacity:0}}
+@keyframes slam{0%{transform:scale(4) rotate(-200deg);opacity:0}55%{transform:scale(.85) rotate(10deg);opacity:1}75%{transform:scale(1.12) rotate(-4deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes wave{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0}}
+@keyframes pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes slide{to{background-position:-200% 0}}
+.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translate(-6px,3px)}40%{transform:translate(5px,-4px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(3px,3px)}}
+
+.month{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mbtn{font:inherit;font-family:var(--display);font-size:1.6rem;line-height:1;width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);cursor:pointer;flex:none}
+.mbtn:disabled{opacity:.25;cursor:default}
+.mtitle{display:flex;align-items:baseline;gap:8px;justify-content:center;min-width:0}
+.mtitle small{color:var(--muted);font-variant-numeric:tabular-nums}
+.mtitle b{font-family:var(--display);font-weight:400;font-size:2rem;line-height:1;background:linear-gradient(90deg,#ff5fa2,#fff36b,#5fd8ff,#b98bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mtitle b span{font-size:1.1rem}
+.mtitle em{font-style:normal;font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:99px;background:var(--pc);color:#1a0b2e}
+.notice{font:inherit;display:flex;align-items:center;gap:10px;width:100%;text-align:left;cursor:pointer;color:var(--ink);font-weight:800;font-size:.9rem;
+  padding:10px 12px;border-radius:14px;border:2px solid transparent;
+  background:linear-gradient(var(--space2),var(--space2)) padding-box,linear-gradient(120deg,#ff5fa2,#ffb84d,#fff36b,#6bffb0,#5fd8ff,#8b7bff) border-box}
+.notice span:nth-child(2){flex:1;min-width:0}
+.notice b{font-size:.8rem;padding:3px 12px;border-radius:99px;background:var(--p2);color:#2b1433}
+.notice .dot{width:10px;height:10px;border-radius:50%;background:#ff5fa2;box-shadow:0 0 0 0 #ff5fa2;animation:ping 1.6s infinite;flex:none}
+@keyframes ping{70%{box-shadow:0 0 0 10px rgba(255,95,162,0)}100%{box-shadow:0 0 0 0 rgba(255,95,162,0)}}
+.progress .of{font-size:.95rem;color:var(--muted)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal .wd{text-align:center;font-size:.7rem;font-weight:800;color:var(--muted)}
+.cal .wd.sun{color:#ff8ab8}.cal .wd.sat{color:#7fd0ff}
+.cal .slot{font-size:.74rem;border-width:1.5px}
+.cal .slot.future{opacity:.38}
+.cal .slot.today{border:2px solid var(--p2);color:var(--ink);font-weight:800;box-shadow:0 0 12px -2px var(--p2)}
+.cal .slot.on.today{border:none}
+.cal .slot .d{font-size:.56rem;bottom:-5px;padding:0 4px}
+.result{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px}
+.result .ico{width:64px;height:64px;flex:none}
+.result .ico svg,.result .ico img{width:100%;height:100%}
+.result b{display:block;font-family:var(--display);font-weight:400;font-size:1.25rem}
+.result span{color:var(--muted);font-size:.85rem}
+.result.win{background:linear-gradient(135deg,rgba(255,210,74,.22),rgba(255,95,162,.14));border:1px solid rgba(255,210,74,.6)}
+.result.win b{color:#ffd24a}
+.result.lose{background:rgba(188,180,255,.10);border:1px solid rgba(188,180,255,.4)}
+.press.replay{font-size:1rem;padding:14px}
+/* month result overlay */
+#party.res.win{background:radial-gradient(circle at 50% 42%,rgba(255,200,60,.45) 0,rgba(5,3,20,.9) 62%)}
+#party.res.lose{background:radial-gradient(circle at 50% 42%,rgba(140,120,255,.35) 0,rgba(5,3,20,.9) 62%)}
+#party.res .flash{animation:none;opacity:0}
+#party.res.go.win .flash{animation:flash .7s ease-out both}
+#party.res .r-head{display:flex;flex-direction:column;align-items:center;animation:pop .6s cubic-bezier(.2,1.6,.4,1) both}
+#party.res .r-head small{color:var(--muted);font-weight:800}
+#party.res .r-head b{font-family:var(--display);font-weight:400;font-size:1.5rem;color:#fff}
+#party.res .meter{position:relative;width:min(64vw,270px);aspect-ratio:1}
+#party.res .meter svg{width:100%;height:100%;display:block;overflow:visible}
+#party.res .meter .arc{filter:drop-shadow(0 0 6px rgba(255,255,255,.5))}
+#party.res .count{position:absolute;inset:0;display:flex;align-items:baseline;justify-content:center;padding-top:36%;gap:4px;transition:transform .5s cubic-bezier(.2,1.4,.4,1),opacity .4s}
+#party.res .count b{font-family:var(--display);font-weight:400;font-size:clamp(3rem,16vw,4.4rem);line-height:1;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 18px var(--glow)}
+#party.res .count span{color:var(--muted);font-size:1.2rem;font-weight:800}
+#party.res .trophy,#party.res .moonie{position:absolute;left:18%;top:14%;width:64%;height:72%;opacity:0;pointer-events:none}
+#party.res .trophy svg{width:100%;height:100%;filter:drop-shadow(0 0 22px #ffd24a)}
+#party.res .moonie>*{width:100%;height:auto;display:block}
+#party.res.go.win .count{transform:translateY(-62%) scale(.55);opacity:.0}
+#party.res.go.win .trophy{opacity:1;animation:slam .9s cubic-bezier(.2,1.6,.35,1) both}
+#party.res.go.lose .meter{animation:wobble .6s ease-in-out}
+#party.res.go.lose .count{transform:translateY(-58%) scale(.6);opacity:.0}
+#party.res.go.lose .moonie{animation:moonIn 1s cubic-bezier(.3,1.4,.5,1) both,bob 2.6s 1s ease-in-out infinite}
+@keyframes wobble{20%{transform:rotate(-6deg)}40%{transform:rotate(5deg)}60%{transform:rotate(-3deg)}80%{transform:rotate(2deg)}}
+@keyframes moonIn{0%{opacity:0;transform:translateY(60%) scale(.4) rotate(-30deg)}100%{opacity:1;transform:none}}
+@keyframes bob{50%{transform:translateY(-7%) rotate(4deg)}}
+#party.res .t1,#party.res .t2{animation:none;opacity:0}
+#party.res.go .t1{animation:pop .7s .25s cubic-bezier(.2,1.8,.4,1) both}
+#party.res.go .t2{animation:pop .7s .45s cubic-bezier(.2,1.8,.4,1) both,slide 1.5s linear infinite}
+#party.res.lose .t2{background:none;color:#d8d2ff;-webkit-background-clip:border-box;background-clip:border-box}
+#party.res .t3{animation:fadein .4s 2.4s both}
+
+.mebar{display:flex;justify-content:flex-end;margin-top:-6px}
+.mechip{font:inherit;font-weight:800;font-size:.82rem;display:flex;align-items:center;gap:6px;padding:4px 12px 4px 4px;border-radius:99px;cursor:pointer;color:var(--ink);
+  border:1.5px solid var(--line);background:rgba(255,255,255,.06)}
+.mechip img{width:26px;height:26px}
+.mechip.ask{padding:7px 14px;border:2px solid transparent;background:linear-gradient(var(--space2),var(--space2)) padding-box,linear-gradient(120deg,#ff5fa2,#fff36b,#5fd8ff,#b98bff) border-box;animation:pulse2 1.8s ease-in-out infinite}
+@keyframes pulse2{50%{box-shadow:0 0 16px -2px #ff5fa2}}
+.reward{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;border:2px solid transparent;
+  background:linear-gradient(rgba(30,18,70,.96),rgba(30,18,70,.96)) padding-box,linear-gradient(120deg,#ff5fa2,#ffb84d,#fff36b,#6bffb0,#5fd8ff,#8b7bff,#ff6ff2) border-box}
+.rw-head{display:flex;align-items:center;gap:8px}
+.rw-head .gift{width:28px;height:28px;flex:none;animation:gift 2.4s ease-in-out infinite}
+.rw-head .gift svg{width:100%;height:100%}
+@keyframes gift{0%,70%,100%{transform:rotate(0)}76%{transform:rotate(-12deg) scale(1.1)}82%{transform:rotate(10deg) scale(1.1)}88%{transform:rotate(-6deg)}}
+.rw-head .lbl{font-size:.72rem;letter-spacing:.14em;font-weight:800;color:#ffb8e2;flex:1}
+.rw-head em{font-style:normal;font-size:.75rem;font-weight:800;padding:2px 10px;border-radius:99px}
+.rw-head em.got{background:#ffd24a;color:#2b1433}.rw-head em.miss{background:rgba(255,255,255,.12);color:var(--muted)}
+.rw-body b{display:block;font-size:1.1rem;overflow-wrap:anywhere}
+.rw-body b.none{color:var(--muted);font-weight:500;font-size:.95rem}
+.rw-body small{color:var(--muted);font-size:.75rem}
+.rw-btn{font:inherit;font-weight:800;font-size:.9rem;padding:10px;border-radius:12px;cursor:pointer;border:none;color:#2b1433;background:linear-gradient(110deg,#ffd24a,#ff8ad0)}
+.rw-note{margin:0;font-size:.78rem;color:var(--muted)}
+.rw-form{display:flex;flex-direction:column;gap:10px}
+.sheet{position:fixed;inset:0;z-index:60;background:rgba(5,3,20,.7);display:flex;align-items:flex-end;justify-content:center;
+  padding:0 max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));animation:fadein .2s}
+.sheet .panel{width:100%;max-width:520px;background:var(--space2);border:2px solid var(--line);border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;animation:up .3s cubic-bezier(.2,1.2,.4,1)}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet .panel>b{font-family:var(--display);font-weight:400;font-size:1.2rem}
+.sheet .panel p{margin:0;color:var(--muted);font-size:.85rem}
+.who3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.whob{font:inherit;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:16px;cursor:pointer;color:var(--ink);border:2px solid var(--line);background:rgba(255,255,255,.05);min-width:0}
+.whob img{width:52px;height:52px}
+.whob span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.whob small{font-size:.62rem;color:var(--muted);font-weight:500;text-align:center}
+.whob[aria-pressed="true"]{border-color:var(--pc);box-shadow:0 0 14px -2px var(--pc)}
+.whob:disabled{opacity:.45;cursor:default}
+.sheet .close{font:inherit;font-weight:800;padding:12px;border-radius:12px;border:2px solid var(--line);background:none;color:var(--ink);cursor:pointer}
+#party.res .t4{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1rem;color:#fff;padding:8px 14px;border-radius:99px;background:rgba(255,255,255,.1);max-width:100%;opacity:0}
+#party.res .t4 svg{width:28px;height:28px;flex:none}
+#party.res .t4 span{overflow-wrap:anywhere}
+#party.res.go .t4{animation:pop .7s .7s cubic-bezier(.2,1.8,.4,1) both}
+.nokey{display:flex;flex-direction:column;gap:6px;text-align:center;padding:30px 10px}.nokey b{font-family:var(--display);font-weight:400;font-size:1.2rem}.nokey span{color:var(--muted)}
+.spark{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:var(--c);pointer-events:none;animation:fly .7s ease-out forwards}
+@keyframes fly{from{transform:translate(-50%,-50%);opacity:1}to{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(.3);opacity:0}}
+.press{font:inherit;font-family:var(--display);font-size:1.15rem;border:none;border-radius:18px;padding:17px 12px;cursor:pointer;color:#fff;
+  background:linear-gradient(110deg,#ff5fa2,#ffb84d,#f5e15a,#5fe8a8,#5fd8ff,#8b7bff,#ff6ff2,#ff5fa2);background-size:300% 100%;
+  text-shadow:0 1px 0 rgba(60,0,80,.55),0 0 10px rgba(80,0,120,.45);
+  box-shadow:0 5px 0 color-mix(in srgb,var(--p3) 55%,#000),0 0 26px -4px var(--pc);
+  animation:pulse 2.4s ease-in-out infinite,slide 4s linear infinite}
+@keyframes pulse{50%{box-shadow:0 5px 0 color-mix(in srgb,var(--p3) 55%,#000),0 0 36px 2px var(--pc)}}
+.press:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--p3) 55%,#000)}
+.press:disabled{background:rgba(255,255,255,.08);color:var(--muted);box-shadow:none;cursor:default;transform:none;animation:none}
+.sub{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.link{font:inherit;background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+.done-msg{text-align:center;font-family:var(--display);font-size:1.2rem;background:linear-gradient(90deg,var(--p2),var(--p0),var(--p1));-webkit-background-clip:text;background-clip:text;color:transparent}
+form{display:flex;flex-direction:column;gap:14px}
+label,.fl{display:flex;flex-direction:column;gap:5px;font-size:.85rem;font-weight:800}
+input,select{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:rgba(0,0,0,.3);color:var(--ink);width:100%}
+.picks{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pick{font:inherit;font-size:.72rem;font-weight:800;border:2px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);border-radius:14px;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.pick img{width:100%;max-width:44px;aspect-ratio:1}
+.pick[aria-pressed="true"]{border-color:var(--p2);box-shadow:0 0 14px -2px var(--p2);background:rgba(255,201,60,.12)}
+.swatches{display:flex;gap:10px}
+.sw{width:40px;height:40px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:var(--c)}
+.sw[aria-pressed="true"]{border-color:#fff;box-shadow:0 0 12px var(--c)}
+.actions{display:flex;gap:10px}
+.actions button{flex:1;font:inherit;font-weight:800;padding:12px;border-radius:12px;cursor:pointer;border:2px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink)}
+.actions .save{background:linear-gradient(135deg,var(--pc),var(--p3));border-color:transparent;color:#fff}
+.danger{font:inherit;font-size:.82rem;background:none;border:none;color:#ff8a9a;text-decoration:underline;cursor:pointer;align-self:flex-start;padding:0}
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.85rem}
+.confirm button{font:inherit;font-size:.85rem;padding:6px 12px;border-radius:10px;border:1.5px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);cursor:pointer}
+.confirm .yes{border-color:#ff8a9a;color:#ff8a9a}
+.note{font-size:.76rem;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div class="wrap">
+  <header>
+    <svg class="logo" viewBox="0 0 100 100" aria-hidden="true" id="logo"></svg>
+    <div><h1>3人のスタンプカード</h1><p id="today"></p></div>
+  </header>
+  <div id="me" class="mebar"></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <section class="card" id="card"></section>
+  <p class="note" id="note">読み込み中…</p>
+</div>
+
+<script>
+/* ---------- stamp art: realistic bodies with cute faces, seen through a porthole; small SMIL motions inside ---------- */
+const INK="#2b1433";
+const SHADOW = `<radialGradient id="sh" cx=".3" cy=".28" r=".8"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".58" stop-color="#000" stop-opacity="0"/><stop offset=".86" stop-color="#05031a" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient>`;
+function eyes(cx,cy,gap,r,begin){ const ry=(r*1.18).toFixed(2);
+  const one=x=>`<g><ellipse cx="${x}" cy="${cy}" rx="${r}" ry="${ry}" fill="${INK}"><animate attributeName="ry" values="${ry};${ry};.3;${ry}" keyTimes="0;.9;.95;1" dur="4.2s" begin="${begin}" repeatCount="indefinite"/></ellipse>
+    <g fill="#fff"><animate attributeName="opacity" values="1;1;0;1" keyTimes="0;.9;.95;1" dur="4.2s" begin="${begin}" repeatCount="indefinite"/>
+    <circle cx="${(x-r*.32).toFixed(2)}" cy="${(cy-r*.42).toFixed(2)}" r="${(r*.42).toFixed(2)}"/><circle cx="${(x+r*.35).toFixed(2)}" cy="${(cy+r*.35).toFixed(2)}" r="${(r*.18).toFixed(2)}"/></g></g>`;
+  return one(cx-gap/2)+one(cx+gap/2); }
+const blush=(cx,cy,gap,c="#ff6f9f")=>`<g fill="${c}" opacity=".62" filter="url(#bl)"><ellipse cx="${cx-gap/2}" cy="${cy}" rx="3.4" ry="2"/><ellipse cx="${cx+gap/2}" cy="${cy}" rx="3.4" ry="2"/></g>`;
+const smile=(cx,cy,w)=>`<path d="M${cx-w} ${cy} Q${cx} ${cy+w*1.1} ${cx+w} ${cy}" fill="none" stroke="${INK}" stroke-width="1.7" stroke-linecap="round"/>`;
+const openSmile=(cx,cy,w)=>`<path d="M${cx-w} ${cy} Q${cx} ${cy+w*1.6} ${cx+w} ${cy} Z" fill="${INK}"/><path d="M${cx-w*.5} ${cy+w*.75} Q${cx} ${cy+w*.4} ${cx+w*.5} ${cy+w*.75} Q${cx} ${cy+w*1.15} ${cx-w*.5} ${cy+w*.75}Z" fill="#ff6f8f"/>`;
+const tw=(x,y,s,dur,begin,c="#fff")=>`<path d="M${x} ${y-s} Q${x} ${y} ${x+s} ${y} Q${x} ${y} ${x} ${y+s} Q${x} ${y} ${x-s} ${y} Q${x} ${y} ${x} ${y-s}Z" fill="${c}"><animate attributeName="opacity" values="0;1;0" dur="${dur}s" begin="${begin}s" repeatCount="indefinite"/></path>`;
+
+const STAMPS = {
+  earth:{label:"地球", glow:"#5fd0ff", rim:["#9ff0ff","#2a7bd6"], neb:["#123a6e","#06122e"], art:`
+    <defs>
+      <radialGradient id="oc" cx=".36" cy=".32" r=".78"><stop offset="0" stop-color="#7fe3ff"/><stop offset=".42" stop-color="#1f8be0"/><stop offset=".8" stop-color="#0d3c9e"/><stop offset="1" stop-color="#081f5c"/></radialGradient>
+      <filter id="land" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="5" seed="11"/>
+        <feColorMatrix values="0 0 0 0 .3  0 0 0 0 .78  0 0 0 0 .42  9 0 0 0 -4.4"/></filter>
+      <filter id="desert" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="5" seed="11"/>
+        <feColorMatrix values="0 0 0 0 .95  0 0 0 0 .8  0 0 0 0 .5  14 0 0 0 -8.1"/></filter>
+      <filter id="b2"><feGaussianBlur stdDeviation="1.8"/></filter><filter id="b1"><feGaussianBlur stdDeviation="1"/></filter>
+      <clipPath id="ball"><circle cx="50" cy="50" r="30"/></clipPath>
+      ${SHADOW}
+    </defs>
+    <circle cx="50" cy="50" r="34" fill="#5fd0ff" opacity=".5" filter="url(#b2)"><animate attributeName="opacity" values=".35;.7;.35" dur="3s" repeatCount="indefinite"/></circle>
+    <circle cx="50" cy="50" r="30" fill="url(#oc)"/>
+    <g clip-path="url(#ball)"><rect x="18" y="18" width="64" height="64" filter="url(#land)"/><rect x="18" y="18" width="64" height="64" filter="url(#desert)"/>
+      <g fill="#fff" opacity=".9" filter="url(#b1)"><g><animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="16s" repeatCount="indefinite"/>
+        ${[0,64].map(o=>`<ellipse cx="${o+28}" cy="30" rx="9" ry="2.6"/><ellipse cx="${o+52}" cy="40" rx="7" ry="2"/><ellipse cx="${o+38}" cy="70" rx="10" ry="2.4"/><ellipse cx="${o+66}" cy="62" rx="6" ry="2"/><ellipse cx="${o+18}" cy="56" rx="5" ry="1.6"/>`).join("")}</g></g></g>
+    <circle cx="50" cy="50" r="30" fill="url(#sh)"/>
+    ${eyes(50,49,13,2.6,"0s")}${blush(50,55,21)}${smile(50,56,3.6)}
+    <circle cx="50" cy="50" r="30" fill="none" stroke="#bff4ff" stroke-width="1.3" opacity=".85"/>
+    <ellipse cx="39" cy="36" rx="9" ry="4.5" fill="#fff" opacity=".25" transform="rotate(-32 39 36)" filter="url(#b2)"/>
+    <path id="orbE" d="M8 58 A42 13 -12 1 1 92 40 A42 13 -12 1 1 8 58" fill="none"/>
+    <g><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#orbE"/></animateMotion>
+      <rect x="-1.6" y="-1.2" width="3.2" height="2.4" rx=".5" fill="#ffe36b"/><rect x="-6" y="-.8" width="3.6" height="1.6" fill="#6fb8ff"/><rect x="2.4" y="-.8" width="3.6" height="1.6" fill="#6fb8ff"/>
+      <circle r="1" cx="0" cy="-2" fill="#ff6f9f"><animate attributeName="opacity" values="1;.1;1" dur=".8s" repeatCount="indefinite"/></circle></g>`},
+  moon:{label:"月", glow:"#e2dcff", rim:["#f4f2ff","#8a84c8"], neb:["#2a2366","#0a0823"], art:`
+    <defs>
+      <radialGradient id="mb" cx=".4" cy=".36" r=".7"><stop offset="0" stop-color="#fffaf0"/><stop offset=".65" stop-color="#d6d0c8"/><stop offset="1" stop-color="#8e88a0"/></radialGradient>
+      <filter id="mtex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".14" numOctaves="4" seed="3" result="n"/>
+        <feDiffuseLighting in="n" surfaceScale="2.2" lighting-color="#fff" result="l"><feDistantLight azimuth="225" elevation="55"/></feDiffuseLighting>
+        <feComposite in="l" in2="SourceGraphic" operator="arithmetic" k1="1.12" k2="0" k3="0" k4="0" result="m"/><feComposite in="m" in2="SourceGraphic" operator="in"/></filter>
+      <filter id="b3"><feGaussianBlur stdDeviation="2.4"/></filter>
+      <radialGradient id="cr" cx=".42" cy=".42" r=".6"><stop offset="0" stop-color="#8a8496"/><stop offset=".75" stop-color="#b3adb8"/><stop offset="1" stop-color="#f2eee6"/></radialGradient>
+      ${SHADOW}
+    </defs>
+    <circle cx="50" cy="52" r="34" fill="#e2dcff" opacity=".35" filter="url(#b3)"/>
+    <circle cx="50" cy="52" r="29" fill="url(#mb)" filter="url(#mtex)"/>
+    <g opacity=".3" filter="url(#b3)" fill="#5a5470"><ellipse cx="38" cy="40" rx="8" ry="6"/><ellipse cx="64" cy="44" rx="6" ry="7"/></g>
+    <circle cx="66" cy="66" r="4" fill="url(#cr)"/><circle cx="32" cy="62" r="2.8" fill="url(#cr)"/><circle cx="56" cy="31" r="2.2" fill="url(#cr)"/>
+    <circle cx="50" cy="52" r="29" fill="url(#sh)"/>
+    <g fill="none" stroke="${INK}" stroke-width="1.8" stroke-linecap="round"><path d="M40 50 Q43.5 53 47 50"/><path d="M53 50 Q56.5 53 60 50"/>
+      <path d="M40.5 50.6 L39.6 52.2 M43.5 51.6 L43.5 53.4 M46.5 50.6 L47.4 52.2" stroke-width="1"/><path d="M53.5 50.6 L52.6 52.2 M56.5 51.6 L56.5 53.4 M59.5 50.6 L60.4 52.2" stroke-width="1"/></g>
+    ${blush(50,57,24,"#ff8fb8")}
+    <ellipse cx="50" cy="60" rx="2" ry="1.6" fill="${INK}"><animate attributeName="ry" values="1.2;2.1;1.2" dur="3s" repeatCount="indefinite"/></ellipse>
+    <g fill="#bcb4ff" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-weight="700">
+      ${[0,1,2].map(i=>`<text x="70" y="34" font-size="${6+i*1.5}" opacity="0">Z<animate attributeName="opacity" values="0;1;0" dur="3s" begin="${i}s" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="translate" values="0 0;8 -16" dur="3s" begin="${i}s" repeatCount="indefinite"/></text>`).join("")}</g>
+    ${tw(22,26,3,2.2,0,"#fff7c2")}${tw(80,78,2.4,2.8,1)}`},
+  sun:{label:"太陽", glow:"#ff9a2e", rim:["#ffe27a","#e8561e"], neb:["#5a1238","#1a0618"], art:`
+    <defs>
+      <radialGradient id="co" cx=".5" cy=".5" r=".5"><stop offset=".48" stop-color="#ffd86a"/><stop offset=".64" stop-color="#ff8a2a" stop-opacity=".6"/><stop offset="1" stop-color="#ff2d55" stop-opacity="0"/></radialGradient>
+      <radialGradient id="sb" cx=".42" cy=".38" r=".62"><stop offset="0" stop-color="#fffef2"/><stop offset=".3" stop-color="#ffe878"/><stop offset=".7" stop-color="#ffa124"/><stop offset="1" stop-color="#e2470e"/></radialGradient>
+      <linearGradient id="ry" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd25a" stop-opacity="0"/><stop offset="1" stop-color="#ffd25a" stop-opacity=".85"/></linearGradient>
+      <filter id="gran" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".3" numOctaves="3" seed="8"/>
+        <feColorMatrix values="0 0 0 0 .95  0 0 0 0 .38  0 0 0 0 .05  2.2 0 0 0 -.95"/></filter>
+      <filter id="b4"><feGaussianBlur stdDeviation="3"/></filter>
+      <clipPath id="sun"><circle cx="50" cy="50" r="25"/></clipPath>
+    </defs>
+    <circle cx="50" cy="50" r="45" fill="url(#co)"><animate attributeName="r" values="42;47;42" dur="2.4s" repeatCount="indefinite"/></circle>
+    <g><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="24s" repeatCount="indefinite"/>
+      ${Array.from({length:12},(_,i)=>`<path d="M47.6 8 L52.4 8 L51.4 22 L48.6 22Z" fill="url(#ry)" transform="rotate(${i*30} 50 50)"/>`).join("")}</g>
+    <circle cx="50" cy="50" r="27" fill="none" stroke="#ffb836" stroke-width="3" opacity=".8"><animate attributeName="stroke-width" values="2;4.5;2" dur="1.6s" repeatCount="indefinite"/></circle>
+    <circle cx="50" cy="50" r="25" fill="url(#sb)"/>
+    <rect x="25" y="25" width="50" height="50" filter="url(#gran)" clip-path="url(#sun)" opacity=".5"/>
+    <circle cx="43" cy="41" r="9" fill="#fff" opacity=".45" filter="url(#b4)"/>
+    ${eyes(50,47,12,2.6,"1.3s")}${blush(50,54,20,"#ff4f7a")}${openSmile(50,54,4.2)}
+    ${tw(80,22,3,1.6,0,"#fff2b0")}${tw(20,80,2.4,2,.8,"#fff2b0")}`},
+  planet:{label:"惑星", glow:"#ffbf7a", rim:["#ffe3a8","#b26a3c"], neb:["#3d1a5e","#120720"], art:`
+    <defs>
+      <linearGradient id="bd" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f6dfb0"/><stop offset=".14" stop-color="#e0a872"/><stop offset=".25" stop-color="#fbeccc"/><stop offset=".37" stop-color="#d0905a"/>
+        <stop offset=".48" stop-color="#f3d9a6"/><stop offset=".58" stop-color="#e8b884"/><stop offset=".68" stop-color="#fdf0d4"/><stop offset=".8" stop-color="#c27f4c"/><stop offset=".9" stop-color="#ecc58f"/><stop offset="1" stop-color="#a5643a"/></linearGradient>
+      <linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c9a0ff"/><stop offset=".5" stop-color="#ffe9c2"/><stop offset="1" stop-color="#8fd8ff"/></linearGradient>
+      <filter id="swirl" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".02 .3" numOctaves="3" seed="5" result="t"/>
+        <feDisplacementMap in="SourceGraphic" in2="t" scale="4"/></filter>
+      <clipPath id="front"><rect x="0" y="50" width="100" height="50"/></clipPath>
+      <clipPath id="pb"><circle cx="50" cy="50" r="21"/></clipPath>
+      <filter id="b5"><feGaussianBlur stdDeviation="2"/></filter>
+      ${SHADOW}
+    </defs>
+    <g transform="rotate(-20 50 50)">
+      <g fill="none"><ellipse cx="50" cy="50" rx="40" ry="10.5" stroke="url(#rg)" stroke-width="2.6" opacity=".55"/><ellipse cx="50" cy="50" rx="34.5" ry="9" stroke="url(#rg)" stroke-width="4.5" opacity=".7"/><ellipse cx="50" cy="50" rx="28" ry="7.3" stroke="#d6a77a" stroke-width="2.2" opacity=".6"/></g>
+      <circle cx="50" cy="50" r="24" fill="#ffbf7a" opacity=".35" filter="url(#b5)"/>
+      <g clip-path="url(#pb)"><rect x="25" y="27" width="50" height="46" fill="url(#bd)" filter="url(#swirl)"/></g>
+      <circle cx="50" cy="50" r="21" fill="url(#sh)"/>
+    </g>
+    ${eyes(48,46,11,2.3,"2.4s")}${blush(48,51.5,18)}${smile(48,52,3)}
+    <g transform="rotate(-20 50 50)">
+      <g fill="none" clip-path="url(#front)"><ellipse cx="50" cy="50" rx="40" ry="10.5" stroke="url(#rg)" stroke-width="2.6" opacity=".8"/><ellipse cx="50" cy="50" rx="34.5" ry="9" stroke="url(#rg)" stroke-width="4.5"/><ellipse cx="50" cy="50" rx="28" ry="7.3" stroke="#d6a77a" stroke-width="2.2" opacity=".85"/></g>
+      <path id="orbP" d="M10 50 A40 10.5 0 1 0 90 50 A40 10.5 0 1 0 10 50" fill="none"/>
+      <circle r="2.3" fill="#cfe9ff"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#orbP"/></animateMotion></circle>
+      <circle r="1.2" fill="#fff"><animateMotion dur="5s" begin="-2.5s" repeatCount="indefinite"><mpath href="#orbP"/></animateMotion><animate attributeName="opacity" values="1;.2;1" dur="1s" repeatCount="indefinite"/></circle>
+    </g>`},
+  star:{label:"星", glow:"#c8b4ff", rim:["#ffd6f6","#7a5cff"], neb:["#3b1460","#0c0624"], art:`
+    <defs>
+      <radialGradient id="hl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".22" stop-color="#fff3d6"/><stop offset=".38" stop-color="#ffc0ea" stop-opacity=".7"/><stop offset="1" stop-color="#6a4cff" stop-opacity="0"/></radialGradient>
+      <radialGradient id="core" cx=".42" cy=".38" r=".65"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#fff2b8"/><stop offset="1" stop-color="#ffc24a"/></radialGradient>
+      <linearGradient id="sp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <filter id="neb2" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="4" seed="21"/>
+        <feColorMatrix values="0 0 0 0 1  0 0 0 0 .42  0 0 0 0 .78  2.4 0 0 0 -1.05"/></filter>
+      <filter id="neb3" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="4" seed="9"/>
+        <feColorMatrix values="0 0 0 0 .35  0 0 0 0 .7  0 0 0 0 1  2.4 0 0 0 -1.1"/></filter>
+    </defs>
+    <rect x="0" y="0" width="100" height="100" filter="url(#neb2)" opacity=".75"/>
+    <rect x="0" y="0" width="100" height="100" filter="url(#neb3)" opacity=".65"/>
+    <circle cx="50" cy="50" r="32" fill="url(#hl)"><animate attributeName="r" values="29;35;29" dur="2.2s" repeatCount="indefinite"/></circle>
+    <g fill="url(#sp)"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="20s" repeatCount="indefinite"/>
+      ${[0,60,120].map(a=>`<polygon points="3,50 50,48.4 97,50 50,51.6" transform="rotate(${a+90} 50 50)"/>`).join("")}
+      <polygon points="24,50 50,49.2 76,50 50,50.8" opacity=".8"/></g>
+    <path d="M50 37 L53.6 45.4 L62.6 46 L55.6 51.8 L57.9 60.6 L50 55.8 L42.1 60.6 L44.4 51.8 L37.4 46 L46.4 45.4Z" fill="url(#core)" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+    ${eyes(50,49.5,6,1.3,"3s")}${smile(50,52.6,1.7).replace('stroke-width="1.7"','stroke-width="1.1"')}
+    <g fill="#ff6f9f" opacity=".6"><ellipse cx="45.3" cy="52.4" rx="1.4" ry=".8"/><ellipse cx="54.7" cy="52.4" rx="1.4" ry=".8"/></g>
+    ${tw(22,28,3.2,1.8,0)}${tw(76,72,2.6,2.4,.6,"#ffd6f6")}${tw(28,76,2,2,1.2,"#bfe6ff")}${tw(74,24,2.2,2.6,.3)}`}
+};
+const STAMP_KEYS = ["planet","star","earth","moon","sun"];
+const BG_STARS = [[18,30,.6],[28,16,.8],[72,14,.5],[86,38,.7],[80,82,.6],[22,74,.5],[12,52,.7],[60,88,.6],[44,10,.5],[90,62,.5],[34,88,.4],[66,30,.4]];
+const STAMP_URL = {};
+const GEMS = 28, GEM_HUES = [0,30,52,95,150,190,215,255,285,320];
+function stampURL(type){
+  if(STAMP_URL[type]) return STAMP_URL[type];
+  const s=STAMPS[type]||STAMPS.star;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
+    <defs>
+      <radialGradient id="nb" cx=".3" cy=".25" r=".95"><stop offset="0" stop-color="${s.neb[0]}"/><stop offset=".6" stop-color="${s.neb[1]}"/><stop offset="1" stop-color="#020208"/></radialGradient>
+      <linearGradient id="rm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".22" stop-color="${s.rim[0]}"/><stop offset=".5" stop-color="${s.rim[1]}"/><stop offset=".78" stop-color="${s.rim[0]}"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <filter id="bl"><feGaussianBlur stdDeviation=".9"/></filter>
+      ${GEM_HUES.map((h,i)=>`<radialGradient id="gem${i}" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#ffffff"/><stop offset=".28" stop-color="hsl(${h},100%,82%)"/><stop offset=".7" stop-color="hsl(${h},95%,58%)"/><stop offset="1" stop-color="hsl(${(h+40)%360},90%,32%)"/></radialGradient>`).join("")}
+      <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+        ${["#ff5fa2","#ffb84d","#fff36b","#6bffb0","#5fd8ff","#8b7bff","#ff6ff2","#ff5fa2"].map((c,i)=>`<stop offset="${(i/7).toFixed(3)}" stop-color="${c}"/>`).join("")}
+        <animateTransform attributeName="gradientTransform" type="translate" values="-1 -1;1 1" dur="5s" repeatCount="indefinite"/></linearGradient>
+      <linearGradient id="holoW" x1="0" y1="0" x2="1" y2="1" spreadMethod="reflect">
+        ${["#ff5fa2","#ffb84d","#fff36b","#6bffb0","#5fd8ff","#8b7bff","#ff6ff2"].map((c,i)=>`<stop offset="${(i/6).toFixed(3)}" stop-color="${c}"/>`).join("")}
+        <animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="9s" repeatCount="indefinite"/></linearGradient>
+      <clipPath id="win"><circle cx="50" cy="50" r="44"/></clipPath>
+    </defs>
+    <circle cx="50" cy="50" r="49.4" fill="url(#holoW)"/>
+    <circle cx="50" cy="50" r="49.4" fill="#fff" opacity=".18"/>
+    <circle cx="50" cy="50" r="45.5" fill="#0a0a18"/>
+    <circle cx="50" cy="50" r="44" fill="url(#nb)"/>
+    <g clip-path="url(#win)">
+      <g fill="#fff">${BG_STARS.map(([x,y,r],i)=>`<circle cx="${x}" cy="${y}" r="${r}" opacity=".85">${i%3==0?`<animate attributeName="opacity" values=".9;.2;.9" dur="${2+i%4*.7}s" repeatCount="indefinite"/>`:""}</circle>`).join("")}</g>
+      ${s.art.replace(/<mpath href=/g,'<mpath xlink:href=')}
+      <rect x="0" y="0" width="100" height="100" fill="url(#holo)" opacity=".22" style="mix-blend-mode:screen"/>
+      <path d="M14 40 A38 38 0 0 1 56 10 A44 30 0 0 0 14 40Z" fill="url(#gl)"/>
+    </g>
+    <circle cx="50" cy="50" r="44" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width=".8"/>
+    <g><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="14s" repeatCount="indefinite"/>
+      ${Array.from({length:GEMS},(_,i)=>{ const a=i/GEMS*Math.PI*2, x=(50+Math.cos(a)*47).toFixed(2), y=(50+Math.sin(a)*47).toFixed(2), big=i%2==0;
+        return `<g transform="translate(${x} ${y})"><circle r="${big?2.95:2.25}" fill="url(#gem${i%GEM_HUES.length})" stroke="#fff" stroke-opacity=".75" stroke-width=".35"/>
+          <path d="M0 -${big?1.9:1.4} L.5 -.5 L${big?1.9:1.4} 0 L.5 .5 L0 ${big?1.9:1.4} L-.5 .5 L-${big?1.9:1.4} 0 L-.5 -.5Z" fill="#fff" opacity=".35"/>
+          <circle cx="-.8" cy="-.9" r=".6" fill="#fff"/></g>`; }).join("")}
+    </g>
+    ${[[50,1.2,0],[95,46,.7],[14,84,1.4],[86,86,2.1],[8,30,.35],[60,98.4,1.7]].map(([x,y,d])=>`<path d="M${x} ${y-3.4} L${x+.6} ${y-.6} L${x+3.4} ${y} L${x+.6} ${y+.6} L${x} ${y+3.4} L${x-.6} ${y+.6} L${x-3.4} ${y} L${x-.6} ${y-.6}Z" fill="#fff" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0;.15;.3;1" dur="2.6s" begin="${d}s" repeatCount="indefinite"/></path>`).join("")}
+  </svg>`;
+  return STAMP_URL[type]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
+function stampSVG(type){ const s=STAMPS[type]||STAMPS.star; return `<img src="${stampURL(type)}" alt="${s.label}スタンプ" draggable="false">`; }
+document.getElementById("logo").outerHTML = stampSVG("planet").replace("<img ",'<img class="logo" ');
+
+/* ---------- starfield ---------- */
+(()=>{ const c=document.getElementById("sky"), x=c.getContext("2d"); let W,H,stars=[],shoot=null;
+  const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function size(){ const r=Math.min(devicePixelRatio||1,1.5); W=innerWidth; H=innerHeight; c.width=W*r; c.height=H*r; x.setTransform(r,0,0,r,0,0);
+    stars=Array.from({length:Math.min(220,Math.round(W*H/3200))},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,p:Math.random()*6.28,s:Math.random()*.02+.005,h:Math.random()<.15?(Math.random()<.5?"#ffd2f0":"#c8f2ff"):"#ffffff"})); }
+  function frame(){ if(window.__party){ requestAnimationFrame(frame); return; } x.clearRect(0,0,W,H);
+    for(const s of stars){ s.p+=s.s; x.globalAlpha=.35+.65*Math.abs(Math.sin(s.p)); x.fillStyle=s.h; x.beginPath(); x.arc(s.x,s.y,s.r,0,6.28); x.fill(); }
+    if(!shoot && Math.random()<.004) shoot={x:Math.random()*W*.8,y:Math.random()*H*.4,l:0};
+    if(shoot){ shoot.l+=14; const a=1-shoot.l/500; x.globalAlpha=Math.max(a,0); x.strokeStyle="#fff"; x.lineWidth=2;
+      x.beginPath(); x.moveTo(shoot.x+shoot.l,shoot.y+shoot.l*.45); x.lineTo(shoot.x+shoot.l-60,shoot.y+(shoot.l-60)*.45); x.stroke(); if(a<=0) shoot=null; }
+    x.globalAlpha=1; if(!still) requestAnimationFrame(frame); }
+  addEventListener("resize",size); size(); frame(); })();
+
+/* ---------- data ---------- */
+const COLORS = ["--p0","--p1","--p2"];
+const COLOR_NAMES = ["ピンク","水色","黄色"];
+const DEFAULTS = [
+  {name:"ひとりめ", rule:"歯みがきを朝と夜にできた", stamp:"planet", goal:20, color:0},
+  {name:"ふたりめ", rule:"宿題を夕ごはん前に終えた", stamp:"earth", goal:20, color:1},
+  {name:"さんにんめ", rule:"30分さんぽできた", stamp:"sun", goal:20, color:2},
+];
+const ids = ["p1","p2","p3"];
+let people = {}; ids.forEach((id,i)=>people[id]={...DEFAULTS[i], stamps:[]});
+let current = "p1", editing = false, confirmReset = false, justStamped = null, draftStamp = null, draftColor = null;
+
+try{ const h=location.hash.slice(1); if(ids.includes(h)) current=h; }catch(e){}
+
+const fixType = p => { if(!(p.goal>=1)) p.goal=20; if(p.goal>31) p.goal=31; if(!STAMPS[p.stamp]) p.stamp="star"; if(!(p.color>=0&&p.color<3)) p.color=0; return p; };
+function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function md(k){ const [,m,d]=k.split("-"); return (+m)+"/"+(+d); }
+const rot = k => { let h=0; for(const c of k) h=(h*31+c.charCodeAt(0))%31; return (h-15)+"deg"; };
+document.getElementById("today").textContent = (()=>{const d=new Date();return `今日は ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`})();
+
+const SB_URL="https://karlvjvqahtmeovvmffm.supabase.co", SB_KEY="sb_publishable_MstU1tIMnYGUUqQ7BAk9mQ_Z4Ml_95P";
+let ROOM=null, MYKEY=null;
+try{ const h=new URLSearchParams(location.hash.slice(1)); const k=h.get("k"), m=h.get("me");
+  if(k && /^[A-Za-z0-9_-]{16,}$/.test(k)){ ROOM=k; localStorage.setItem("room",k); } else ROOM=localStorage.getItem("room");
+  if(m && /^[A-Za-z0-9_-]{16,}$/.test(m)){ MYKEY=m; localStorage.setItem("mykey",m); } else MYKEY=localStorage.getItem("mykey");
+}catch(e){}
+async function rpc(fn,args){
+  const r=await fetch(SB_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(args)});
+  const t=await r.text(); if(!r.ok){ let m=String(r.status); try{ m=JSON.parse(t).message||m; }catch(e){} throw new Error(m); }
+  return t?JSON.parse(t):null; }
+function loadLocal(){ try{ const c=JSON.parse(localStorage.getItem("cache3")||"null"); if(c){ ids.forEach(id=>{ if(c.people&&c.people[id]) people[id]=fixType({...people[id],...c.people[id]}); }); if(c.rewards) rewards=c.rewards; if(ids.includes(c.me)) me=c.me; } }catch(e){} }
+function persistLocal(){ try{ localStorage.setItem("cache3", JSON.stringify({people, rewards, me})); }catch(e){} }
+let pending=0, online=false;
+async function refresh(){
+  if(!ROOM || pending) return;
+  try{ const st=await rpc("sc_state",{k:ROOM, mk:MYKEY||""}); if(pending) return; applyState(st);
+    if(!online){ online=true; setNote(me?"3人のスマホで同期しています。":"同期しています。ごほうびを決めるには、自分専用のリンクで開いてね。"); } }
+  catch(e){ online=false; setNote(e.message==="bad_key"?"このリンクの合言葉がちがいます。もらったリンクから開き直してください。":"つながりません。電波のいいところで開き直してください。"); }
+}
+function applyState(st){
+  (st.people||[]).forEach(p=>{ if(ids.includes(p.id)) people[p.id]=fixType({...people[p.id], name:p.name, rule:p.rule, stamp:p.stamp, goal:p.goal, color:p.color, stamps:(st.stamps&&st.stamps[p.id])||[]}); });
+  rewards={}; Object.entries(st.rewards||{}).forEach(([k,v])=>{ rewards[k]={text:String(v.text).slice(0,40), by:ids.includes(v.by)?v.by:null}; });
+  me = ids.includes(st.me) ? st.me : null;
+  persistLocal(); renderMe();
+  if(!editing && !rewardEdit && !window.__party) render(); else renderTabs();
+}
+async function mut(fn){ pending++; try{ await fn(); }catch(e){ setNote("保存できませんでした（"+e.message+"）。もう一度ためしてください。"); } finally{ pending--; } refresh(); }
+async function save(id){ const p=people[id]; persistLocal();
+  await mut(()=>rpc("sc_save_person",{k:ROOM,pid:id,p_name:p.name,p_rule:p.rule,p_stamp:p.stamp,p_goal:p.goal,p_color:p.color})); }
+
+function setNote(t){ document.getElementById("note").textContent=t; }
+/* ---------- who am I + rewards ---------- */
+let me = null, rewards = {}, rewardEdit = false;
+const rKey = (pid,ym) => pid+"_"+ymKey(ym.y,ym.m);
+const GIFT = `<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="gfB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8ad0"/><stop offset="1" stop-color="#8b6bff"/></linearGradient>
+  <linearGradient id="gfR" x1="0" x2="1"><stop offset="0" stop-color="#fff36b"/><stop offset="1" stop-color="#ffb84d"/></linearGradient></defs>
+  <rect x="6" y="20" width="36" height="24" rx="4" fill="url(#gfB)"/><rect x="4" y="13" width="40" height="10" rx="3" fill="#ff5fa2"/>
+  <rect x="21" y="13" width="6" height="31" fill="url(#gfR)"/><path d="M24 13 C16 2 6 8 14 13Z M24 13 C32 2 42 8 34 13Z" fill="url(#gfR)"/>
+  <circle cx="13" cy="28" r="1.6" fill="#fff" opacity=".8"/><circle cx="35" cy="36" r="1.2" fill="#fff" opacity=".7"/></svg>`;
+
+function renderMe(){
+  const el=document.getElementById("me"); el.innerHTML="";
+  const b=document.createElement("div"); b.className="mechip"+(me?"":" ask"); b.id="me-btn";
+  if(me){ b.innerHTML=stampSVG(people[me].stamp); const s=document.createElement("span"); s.textContent="わたし："+people[me].name; b.append(s); }
+  else b.innerHTML="<span>みんな用リンクで表示中</span>";
+  el.append(b);
+}
+async function saveReward(pid,ym,text){
+  const k=rKey(pid,ym);
+  if(text){ rewards[k]={text, by:me}; } else delete rewards[k];
+  pending++; try{ const r=await rpc("sc_set_reward",{k:ROOM, mk:MYKEY||"", pid, p_text:text||""});
+    if(r==="self") setNote("自分のごほうびは決められません。"); else if(r==="no_identity") setNote("ごほうびを決めるには、自分専用のリンクで開いてね。"); }
+  catch(e){ setNote("ごほうびを保存できませんでした（"+e.message+"）"); } finally{ pending--; } refresh();
+}
+function rewardBox(p, ym, isNow, hit){
+  const box=document.createElement("div"); box.className="reward"; box.id="reward";
+  const r=rewards[rKey(current,ym)];
+  const head=document.createElement("div"); head.className="rw-head";
+  head.innerHTML=`<span class="gift">${GIFT}</span><span class="lbl">ゴール達成のごほうび</span>`;
+  if(!isNow && r){ const st=document.createElement("em"); st.className=hit?"got":"miss"; st.textContent=hit?"ゲット！":"もらえず"; head.append(st); }
+  box.append(head);
+  const canEdit = isNow && me && me!==current;
+  if(rewardEdit && canEdit){
+    const f=document.createElement("form"); f.className="rw-form";
+    f.innerHTML=`<input id="rw-text" maxlength="40" placeholder="例：好きなおやつを1つ買える"><div class="actions"><button type="button" id="rw-cancel">やめる</button><button type="submit" class="save" id="rw-save">決定</button></div>`;
+    f.querySelector("#rw-text").value=r?r.text:"";
+    f.querySelector("#rw-cancel").onclick=()=>{ rewardEdit=false; render(); };
+    f.onsubmit=e=>{ e.preventDefault(); const v=f.querySelector("#rw-text").value.trim(); rewardEdit=false; saveReward(current,ym,v); render(); };
+    box.append(f); setTimeout(()=>{ try{ f.querySelector("#rw-text").focus(); }catch(e){} },30);
+    return box;
+  }
+  const body=document.createElement("div"); body.className="rw-body";
+  const t=document.createElement("b"); t.textContent = r ? r.text : (isNow ? "まだ決まっていません" : "なし"); if(!r) t.className="none";
+  body.append(t);
+  if(r && r.by && people[r.by]){ const s=document.createElement("small"); s.textContent=people[r.by].name+" が決めました"; body.append(s); }
+  box.append(body);
+  if(isNow){
+    if(canEdit){ const b=document.createElement("button"); b.className="rw-btn"; b.id="rw-edit"; b.textContent=r?"ごほうびを変える":"ごほうびを決める";
+      b.onclick=()=>{ rewardEdit=true; render(); }; box.append(b); }
+    else { const n=document.createElement("p"); n.className="rw-note";
+      n.textContent = me===current ? "自分のごほうびは、ほかの2人が決めます" : "ごほうびを決めるには、自分専用のリンクで開いてね";
+      box.append(n); }
+  }
+  return box;
+}
+
+
+/* ---------- render ---------- */
+/* ---------- months ---------- */
+const pad2 = n => String(n).padStart(2,"0");
+const ymKey = (y,m) => y+"-"+pad2(m);              // m is 1-12
+const nowYM = () => { const d=new Date(); return {y:d.getFullYear(), m:d.getMonth()+1}; };
+const daysIn = (y,m) => new Date(y,m,0).getDate();
+const addMonth = (ym,n) => { const d=new Date(ym.y, ym.m-1+n, 1); return {y:d.getFullYear(), m:d.getMonth()+1}; };
+const sameYM = (a,b) => a.y===b.y && a.m===b.m;
+const monthStamps = (p,ym) => p.stamps.filter(k=>k.startsWith(ymKey(ym.y,ym.m)+"-"));
+const goalFor = (p,ym) => Math.min(p.goal, daysIn(ym.y,ym.m));
+const goalLabel = (p,ym) => p.goal>=31 ? "毎日" : goalFor(p,ym)+"こ";
+function firstYM(p){ const s=[...p.stamps].sort()[0]; if(!s) return nowYM(); const [y,m]=s.split("-"); return {y:+y,m:+m}; }
+let viewYM = nowYM();
+let lastSeenNow = ymKey(viewYM.y, viewYM.m);
+// when the month rolls over while the page is open, jump to the new month
+setInterval(()=>{ const n=nowYM(), k=ymKey(n.y,n.m); if(k!==lastSeenNow){ lastSeenNow=k; viewYM=n; if(!editing && !window.__party) render(); } }, 60000);
+
+function resultSeen(id,ym){ try{ return localStorage.getItem("res-"+id+"-"+ymKey(ym.y,ym.m))==="1"; }catch(e){ return false; } }
+function markSeen(id,ym){ try{ localStorage.setItem("res-"+id+"-"+ymKey(ym.y,ym.m),"1"); }catch(e){} }
+
+const TROPHY = `<svg viewBox="0 0 120 140" aria-hidden="true">
+  <defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c4"/><stop offset=".35" stop-color="#ffd24a"/><stop offset=".7" stop-color="#f29a1a"/><stop offset="1" stop-color="#ffe58a"/></linearGradient>
+  <linearGradient id="tb" x1="0" x2="1"><stop offset="0" stop-color="#8b6bff"/><stop offset=".5" stop-color="#ff5fa2"/><stop offset="1" stop-color="#5fd8ff"/></linearGradient></defs>
+  <path d="M30 18 Q8 18 10 38 Q12 58 36 60" fill="none" stroke="url(#tg)" stroke-width="7" stroke-linecap="round"/>
+  <path d="M90 18 Q112 18 110 38 Q108 58 84 60" fill="none" stroke="url(#tg)" stroke-width="7" stroke-linecap="round"/>
+  <path d="M26 10 L94 10 Q94 64 60 78 Q26 64 26 10Z" fill="url(#tg)" stroke="#fff3b0" stroke-width="2"/>
+  <path d="M34 16 Q36 48 52 62" stroke="#fff" stroke-width="4" fill="none" opacity=".55" stroke-linecap="round"/>
+  <path d="M60 24 L64.6 34.4 L75.8 35.2 L67.2 42.4 L70 53.4 L60 47.4 L50 53.4 L52.8 42.4 L44.2 35.2 L55.4 34.4Z" fill="#fff" opacity=".95"/>
+  <rect x="53" y="76" width="14" height="22" fill="url(#tg)"/>
+  <rect x="34" y="96" width="52" height="14" rx="4" fill="url(#tg)" stroke="#fff3b0" stroke-width="1.5"/>
+  <rect x="26" y="110" width="68" height="20" rx="5" fill="url(#tb)"/>
+  ${[0,1,2,3,4].map(i=>`<circle cx="${36+i*12}" cy="120" r="3.2" fill="hsl(${i*72},100%,75%)" stroke="#fff" stroke-width="1"/>`).join("")}
+</svg>`;
+
+function renderTabs(){
+  const el=document.getElementById("tabs"); el.innerHTML="";
+  const n=nowYM();
+  ids.forEach(id=>{ const p=people[id];
+    const b=document.createElement("button"); b.className="tab"; b.id="tab-"+id; b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", id===current); b.style.setProperty("--pc",`var(${COLORS[p.color]})`);
+    b.innerHTML=stampSVG(p.stamp);
+    const nm=document.createElement("span"); nm.textContent=p.name;
+    const s=document.createElement("small"); s.textContent=`今月 ${monthStamps(p,n).length} / ${goalFor(p,n)}`;
+    b.append(nm,s);
+    b.onclick=()=>{ current=id; editing=false; confirmReset=false; rewardEdit=false; viewYM=nowYM(); render(); };
+    el.append(b); });
+}
+
+function burst(slot,color){
+  for(let i=0;i<14;i++){ const s=document.createElement("i"); s.className="spark";
+    const a=Math.random()*6.28, d=30+Math.random()*28;
+    s.style.setProperty("--x",Math.cos(a)*d+"px"); s.style.setProperty("--y",Math.sin(a)*d+"px"); s.style.setProperty("--c",i%2?color:"#fff");
+    slot.append(s); setTimeout(()=>s.remove(),800); }
+}
+
+function renderCard(){
+  const p=people[current], card=document.getElementById("card");
+  card.style.setProperty("--pc",`var(${COLORS[p.color]})`);
+  card.innerHTML="";
+  if(editing){ renderEdit(card,p); return; }
+  const n=nowYM(), isNow=sameYM(viewYM,n), ym=viewYM;
+  const got=monthStamps(p,ym), goal=goalFor(p,ym), hit=got.length>=goal;
+
+  const who=document.createElement("div"); who.className="who";
+  const h=document.createElement("h2"); h.textContent=p.name+" のカード";
+  const eb=document.createElement("button"); eb.className="edit-btn"; eb.textContent="設定"; eb.onclick=()=>{editing=true;draftStamp=p.stamp;draftColor=p.color;render();};
+  who.append(h,eb);
+
+  // month switcher
+  const mn=document.createElement("div"); mn.className="month";
+  const prev=document.createElement("button"); prev.className="mbtn"; prev.id="m-prev"; prev.setAttribute("aria-label","前の月"); prev.textContent="‹";
+  const first=firstYM(p); prev.disabled = (ym.y*12+ym.m) <= (first.y*12+first.m);
+  prev.onclick=()=>{ rewardEdit=false; viewYM=addMonth(viewYM,-1); render(); };
+  const ttl=document.createElement("div"); ttl.className="mtitle";
+  ttl.innerHTML=`<small>${ym.y}</small><b>${ym.m}<span>月</span></b>${isNow?'<em>今月</em>':''}`;
+  const next=document.createElement("button"); next.className="mbtn"; next.id="m-next"; next.setAttribute("aria-label","次の月"); next.textContent="›";
+  next.disabled=isNow; next.onclick=()=>{ rewardEdit=false; viewYM=addMonth(viewYM,1); render(); };
+  mn.append(prev,ttl,next);
+
+  card.append(who,mn);
+
+  // last month's result is waiting
+  const lm=addMonth(n,-1);
+  if(isNow && !resultSeen(current,lm) && (firstYM(p).y*12+firstYM(p).m) <= (lm.y*12+lm.m) && p.stamps.some(k=>k<ymKey(n.y,n.m))){
+    const nb=document.createElement("button"); nb.className="notice"; nb.id="notice";
+    nb.innerHTML=`<span class="dot"></span><span>${lm.m}月の結果発表がとどいています</span><b>見る</b>`;
+    nb.onclick=()=>{ markSeen(current,lm); monthResult(people[current], lm, ()=>render()); };
+    card.append(nb);
+  }
+
+  const ms=document.createElement("div"); ms.className="mission";
+  ms.innerHTML='<span class="lbl">ミッション ・ 1日1回</span>';
+  const rb=document.createElement("b"); rb.textContent=p.rule; ms.append(rb);
+  card.append(ms);
+  card.append(rewardBox(p, ym, isNow, hit));
+
+  const prog=document.createElement("div"); prog.className="progress";
+  const pct=Math.min(100,Math.round(got.length/goal*100));
+  const rest=Math.max(0,goal-got.length);
+  prog.innerHTML=`<div class="nums"><span><strong>${got.length}</strong> こ <span class="of">/ ${goalLabel(p,ym)}</span></span><span class="goal">${hit?"今月のゴール達成！":(isNow?`ゴールまで あと ${rest}`:`あと ${rest} だった`)}</span></div><div class="bar"><i style="width:${pct}%"></i></div>`;
+  card.append(prog);
+
+  // calendar
+  const cal=document.createElement("div"); cal.className="cal";
+  "日月火水木金土".split("").forEach((w,i)=>{ const d=document.createElement("div"); d.className="wd"+(i===0?" sun":i===6?" sat":""); d.textContent=w; cal.append(d); });
+  const lead=new Date(ym.y,ym.m-1,1).getDay(), dim=daysIn(ym.y,ym.m), t=todayKey();
+  for(let i=0;i<lead;i++) cal.append(document.createElement("div"));
+  let newSlot=null;
+  for(let day=1; day<=dim; day++){
+    const k=ymKey(ym.y,ym.m)+"-"+pad2(day);
+    const s=document.createElement("div"); s.className="slot";
+    if(k===t) s.classList.add("today");
+    else if(k>t) s.classList.add("future");
+    if(got.includes(k)){
+      s.classList.add("on"); s.style.setProperty("--r",rot(k)); s.style.setProperty("--glow",STAMPS[p.stamp].glow);
+      s.innerHTML=stampSVG(p.stamp)+'<span class="sh"></span>';
+      const d=document.createElement("span"); d.className="d"; d.textContent=day; s.append(d);
+      if(k===justStamped){ s.classList.add("new"); newSlot=s; }
+    } else s.textContent=day;
+    cal.append(s);
+  }
+  card.append(cal);
+
+  if(isNow){
+    const done=p.stamps.includes(t);
+    const btn=document.createElement("button"); btn.className="press"; btn.id="press";
+    btn.textContent = done ? "今日のスタンプは押しました" : "今日できた！ スタンプを押す";
+    btn.disabled=done;
+    btn.onclick=()=>{ const q=people[current]; if(q.stamps.includes(t)) return; q.stamps=[...q.stamps.filter(x=>x!==t),t]; const pid=current; mut(()=>rpc("sc_stamp",{k:ROOM,pid,on_:true}));
+      party(q, ()=>{ justStamped=t; render(); setTimeout(()=>{justStamped=null;},700); }); };
+    card.append(btn);
+    if(done){ const sub=document.createElement("div"); sub.className="sub";
+      const u=document.createElement("button"); u.className="link"; u.textContent="今日の分を取り消す";
+      u.onclick=()=>{ const q=people[current]; q.stamps=q.stamps.filter(x=>x!==t); justStamped=null; const pid=current; mut(()=>rpc("sc_stamp",{k:ROOM,pid,on_:false})); render(); };
+      sub.append(document.createElement("span"),u); card.append(sub); }
+  } else {
+    const res=document.createElement("div"); res.className="result "+(hit?"win":"lose");
+    res.innerHTML = hit
+      ? `<div class="ico">${TROPHY}</div><div><b>${ym.m}月は 達成！</b><span>${got.length}こ集めました</span></div>`
+      : `<div class="ico"><img src="${stampURL("moon")}" alt=""></div><div><b>${ym.m}月は おしい！</b><span>あと ${goal-got.length}こ でした</span></div>`;
+    const rbtn=document.createElement("button"); rbtn.className="press replay"; rbtn.id="replay"; rbtn.textContent=`${ym.m}月の結果発表を見る`;
+    rbtn.onclick=()=>{ markSeen(current,ym); monthResult(people[current], ym, ()=>{}); };
+    card.append(res,rbtn);
+  }
+  if(newSlot && !matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(()=>burst(newSlot,STAMPS[p.stamp].glow),250);
+}
+
+/* ---------- month result show ---------- */
+function monthResult(p, ym, after){
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const got=monthStamps(p,ym).length, goal=goalFor(p,ym), win=got>=goal, ratio=Math.min(1,got/goal);
+  prerenderStamps();
+  const o=document.createElement("div"); o.id="party"; o.className="res "+(win?"win":"lose");
+  o.style.setProperty("--pc",`var(${COLORS[p.color]})`); o.style.setProperty("--glow", win?"#ffd24a":"#bcb4ff");
+  const C=2*Math.PI*86;
+  o.innerHTML=`<canvas class="fx"></canvas><div class="flash"></div>
+    <div class="center">
+      <div class="r-head"><small>${p.name}</small><b>${ym.m}月の けっか発表</b></div>
+      <div class="meter">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset=".33" stop-color="#fff36b"/><stop offset=".66" stop-color="#5fd8ff"/><stop offset="1" stop-color="#b98bff"/></linearGradient></defs>
+          <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="14"/>
+          <circle class="arc" cx="100" cy="100" r="86" fill="none" stroke="url(#mg)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" transform="rotate(-90 100 100)"/></svg>
+        <div class="count"><b id="cnt">0</b><span>/ ${goal}</span></div>
+        <div class="trophy">${TROPHY}</div>
+        <div class="moonie"></div>
+      </div>
+      <div class="t1"></div><div class="t2"></div><div class="t4"></div><div class="t3">タップで閉じる</div>
+    </div>`;
+  { const rw=rewards[rKey(Object.keys(people).find(k=>people[k]===p)||current,ym)]; const t4=o.querySelector(".t4");
+    if(rw){ t4.innerHTML=GIFT; const s=document.createElement("span"); s.textContent = win ? "ごほうび「"+rw.text+"」ゲット！" : "ごほうび「"+rw.text+"」は また来月"; t4.append(s); } else t4.remove(); }
+  o.querySelector(".moonie").append(stampPic("moon"));
+  o.querySelector(".t1").textContent = win ? "ミッション達成！！" : "おしい〜！";
+  o.querySelector(".t2").textContent = win ? (got>=daysIn(ym.y,ym.m)?"なんと毎日！ 宇宙チャンピオン":`${got}こ ゲット！ 宇宙級のがんばり`) : `あと ${goal-got}こ だった！ 来月はいけるよ`;
+  document.body.append(o); window.__party=true;
+  setTimeout(()=>{ if(window.__party) document.querySelector(".wrap").style.visibility="hidden"; },300);
+
+  const arc=o.querySelector(".arc"), cnt=o.querySelector("#cnt");
+  const t0=performance.now(), FILL=1700, REVEAL=FILL+300;
+  let raf=0, revealed=false;
+  const c=o.querySelector("canvas.fx"), x=c.getContext("2d"), r=Math.min(devicePixelRatio||1,1.5), W=innerWidth, H=innerHeight;
+  c.width=Math.round(W*r); c.height=Math.round(H*r); x.setTransform(r,0,0,r,0,0); x.lineCap="round";
+  const cols=["#ff5fa2","#ffb84d","#fff36b","#6bffb0","#5fd8ff","#8b7bff","#ff6ff2","#ffffff"];
+  const bits=[], rockets=[];
+  const starPath=new Path2D(); for(let q=0;q<10;q++){ const rr=q%2?.42:1, aa=q/10*Math.PI*2-Math.PI/2; starPath[q?"lineTo":"moveTo"](Math.cos(aa)*rr,Math.sin(aa)*rr); } starPath.closePath();
+  const boom=(bx,by,n,pow)=>{ for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, v=2+Math.random()*pow;
+    bits.push({x:bx,y:by,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:2.5+Math.random()*5,rot:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[i%cols.length],k:i%2,life:0,g:.12}); } };
+  const launch=()=>rockets.push({x:W*(.15+Math.random()*.7),y:H+10,vy:-(11+Math.random()*4),ty:H*(.12+Math.random()*.3),c:cols[Math.floor(Math.random()*7)]});
+  const drizzle=()=>bits.push({x:Math.random()*W,y:-10,vx:(Math.random()-.5)*.6,vy:1+Math.random()*1.2,s:2+Math.random()*3,rot:0,vr:.02,c:"#bcb4ff",k:0,life:0,g:0,slow:1});
+  let lastF=t0, lastLaunch=0, closed=false;
+  (function f(t){ const e=t-t0, dt=Math.min(2.5,(t-lastF)/16.67); lastF=t;
+    const k=Math.min(1,e/FILL), ease=1-Math.pow(1-k,3), shown=ratio*ease;
+    arc.setAttribute("stroke-dashoffset", (C*(1-shown)).toFixed(1));
+    cnt.textContent = String(Math.round(got*ease));
+    if(e>REVEAL && !revealed){ revealed=true; o.classList.add("go");
+      try{ navigator.vibrate && navigator.vibrate(win?[40,40,40,40,160]:[120]); }catch(err){}
+      if(win && !still){ boom(W/2,H*.4,140,9); for(let i=0;i<3;i++) launch(); } }
+    if(!still){
+      x.setTransform(r,0,0,r,0,0); x.clearRect(0,0,W,H);
+      if(revealed && win && e-lastLaunch>420 && e<REVEAL+3600){ lastLaunch=e; launch(); }
+      if(revealed && !win && Math.random()<.25*dt) drizzle();
+      for(let i=rockets.length-1;i>=0;i--){ const m=rockets[i]; m.y+=m.vy*dt; m.vy*=Math.pow(.985,dt);
+        x.globalAlpha=1; x.strokeStyle=m.c; x.lineWidth=3; x.beginPath(); x.moveTo(m.x,m.y); x.lineTo(m.x,m.y+22); x.stroke();
+        if(m.y<=m.ty){ rockets.splice(i,1); boom(m.x,m.y,70,6); } }
+      for(let i=bits.length-1;i>=0;i--){ const b=bits[i]; b.vy+=b.g*dt; if(!b.slow){ b.vx*=Math.pow(.98,dt); b.vy*=Math.pow(.99,dt); }
+        b.x+=b.vx*dt; b.y+=b.vy*dt; b.rot+=b.vr*dt; b.life+=dt;
+        const al=b.slow?Math.min(1,1.4-b.y/H):1-b.life/110; if(al<=0||b.y>H+20){ bits.splice(i,1); continue; }
+        x.globalAlpha=al; x.fillStyle=b.c; const co=Math.cos(b.rot)*b.s, si=Math.sin(b.rot)*b.s; x.setTransform(co*r,si*r,-si*r,co*r,b.x*r,b.y*r);
+        if(b.k===0) x.fill(starPath); else { x.beginPath(); x.arc(0,0,.5,0,6.28); x.fill(); } }
+      x.setTransform(r,0,0,r,0,0); x.globalAlpha=1;
+    }
+    if(e<REVEAL+5000 && !closed) raf=requestAnimationFrame(f); })(t0);
+  const close=()=>{ if(closed) return; closed=true; cancelAnimationFrame(raf); window.__party=false;
+    document.querySelector(".wrap").style.visibility=""; o.style.transition="opacity .3s"; o.style.opacity="0";
+    setTimeout(()=>{ o.remove(); after(); },300); };
+  o.onclick=()=>{ if(performance.now()-t0>600) close(); };
+}
+
+function renderEdit(card,p){
+  card.style.setProperty("--pc",`var(${COLORS[draftColor]})`);
+  const f=document.createElement("form");
+  f.innerHTML=`
+    <label>名前<input id="f-name" maxlength="12"></label>
+    <label>ミッション（1日の中で何ができたら押す？）<input id="f-rule" maxlength="40"></label>
+    <div class="fl">スタンプの種類<div class="picks" id="f-picks"></div></div>
+    <label>1か月のゴール<select id="f-goal">${[5,10,15,20,25,28,30].map(v=>`<option value="${v}">${v}こ</option>`).join("")}<option value="31">毎日</option></select></label>
+    <div class="fl">カードの色<div class="swatches" id="f-sw"></div></div>
+    <div class="actions"><button type="button" id="f-cancel">やめる</button><button type="submit" class="save" id="f-save">保存</button></div>`;
+  f.querySelector("#f-name").value=p.name; f.querySelector("#f-rule").value=p.rule; f.querySelector("#f-goal").value=String(p.goal);
+  const picks=f.querySelector("#f-picks");
+  STAMP_KEYS.forEach(k=>{ const b=document.createElement("button"); b.type="button"; b.className="pick"; b.id="pick-"+k;
+    b.setAttribute("aria-pressed",k===draftStamp); b.innerHTML=stampSVG(k)+`<span>${STAMPS[k].label}</span>`;
+    b.onclick=()=>{ draftStamp=k; picks.querySelectorAll(".pick").forEach(x=>x.setAttribute("aria-pressed",x===b)); }; picks.append(b); });
+  const sw=f.querySelector("#f-sw");
+  COLORS.forEach((c,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="sw"; b.id="sw-"+i;
+    b.style.setProperty("--c",`var(${c})`); b.setAttribute("aria-label",COLOR_NAMES[i]); b.setAttribute("aria-pressed",i===draftColor);
+    b.onclick=()=>{ draftColor=i; sw.querySelectorAll(".sw").forEach(x=>x.setAttribute("aria-pressed",x===b)); card.style.setProperty("--pc",`var(${c})`); }; sw.append(b); });
+  f.querySelector("#f-cancel").onclick=()=>{editing=false;confirmReset=false;render();};
+  f.onsubmit=e=>{ e.preventDefault();
+    p.name=f.querySelector("#f-name").value.trim()||p.name; p.rule=f.querySelector("#f-rule").value.trim()||p.rule;
+    p.stamp=draftStamp; p.color=draftColor; p.goal=+f.querySelector("#f-goal").value;
+    editing=false; confirmReset=false; save(current); render(); };
+  card.append(f);
+  if(!confirmReset){ const r=document.createElement("button"); r.className="danger"; r.textContent=`${viewYM.m}月のスタンプを全部消す`;
+    r.onclick=()=>{confirmReset=true;render();}; card.append(r); }
+  else { const c=document.createElement("div"); c.className="confirm"; c.innerHTML=`<span>${viewYM.m}月の${monthStamps(p,viewYM).length}こを消します。いいですか？</span>`;
+    const y=document.createElement("button"); y.className="yes"; y.textContent="消す"; y.onclick=()=>{const pre=ymKey(viewYM.y,viewYM.m)+"-"; p.stamps=p.stamps.filter(k=>!k.startsWith(pre));confirmReset=false;editing=false;const pid=current;mut(()=>rpc("sc_clear_month",{k:ROOM,pid,ym:pre.slice(0,7)}));render();};
+    const n=document.createElement("button"); n.textContent="やめる"; n.onclick=()=>{confirmReset=false;render();};
+    c.append(y,n); card.append(c); }
+}
+
+const CHEERS = ["ミッションクリア！","やったね！","ナイス！","すごい！","かんぺき！","宇宙級！"];
+const ROCKET = `<svg viewBox="0 0 60 120" aria-hidden="true">
+  <defs><linearGradient id="rkB" x1="0" x2="1"><stop offset="0" stop-color="#cfd6ff"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#9aa4e0"/></linearGradient>
+  <radialGradient id="rkF" cx=".5" cy=".1" r=".9"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#ffe36b"/><stop offset=".7" stop-color="#ff7a2a"/><stop offset="1" stop-color="#ff2d75" stop-opacity="0"/></radialGradient></defs>
+  <path class="flame" d="M20 92 Q30 130 40 92Z" fill="url(#rkF)"/>
+  <path d="M14 78 L4 96 L18 90Z M46 78 L56 96 L42 90Z" fill="#ff4fb0"/>
+  <path d="M30 4 C46 22 48 60 44 92 L16 92 C12 60 14 22 30 4Z" fill="url(#rkB)"/>
+  <path d="M30 4 C38 13 42 22 43 30 L17 30 C18 22 22 13 30 4Z" fill="#ff4f6f"/>
+  <circle cx="30" cy="48" r="8" fill="#38d6ff" stroke="#6b5cff" stroke-width="3"/><circle cx="27.5" cy="45.5" r="2.4" fill="#fff"/>
+  <rect x="27" y="68" width="6" height="22" rx="3" fill="#8b6bff"/></svg>`;
+
+/* Pre-rendered bitmaps: stamps are drawn once into canvases so the celebration moves flat pictures (cheap) instead of re-running SVG filters every frame. */
+const STAMP_BMP = {};
+function prerenderStamps(){
+  STAMP_KEYS.forEach(k=>{ if(STAMP_BMP[k]) return; const im=new Image(); im.decoding="async";
+    im.onload=()=>{ const S=360, c=document.createElement("canvas"); c.width=c.height=S; const x=c.getContext("2d");
+      x.shadowColor=STAMPS[k].glow; x.shadowBlur=26; x.drawImage(im,30,30,S-60,S-60); x.shadowBlur=0; x.drawImage(im,30,30,S-60,S-60); STAMP_BMP[k]=c; };
+    im.src=stampURL(k); });
+}
+function stampPic(k){ const m=STAMP_BMP[k]; if(!m) return Object.assign(document.createElement("div"),{innerHTML:stampSVG(k)}).firstChild;
+  const c=document.createElement("canvas"); c.width=m.width; c.height=m.height; c.getContext("2d").drawImage(m,0,0); return c; }
+let GALAXY=null, RAYS=null;
+function wheel(size, draw){ const c=document.createElement("canvas"); c.width=c.height=size; const x=c.getContext("2d"), h=size/2; draw(x,h);
+  x.globalCompositeOperation="destination-in"; const g=x.createRadialGradient(h,h,0,h,h,h); g.addColorStop(0,"#000"); g.addColorStop(.25,"rgba(0,0,0,.9)"); g.addColorStop(.6,"rgba(0,0,0,.35)"); g.addColorStop(1,"rgba(0,0,0,0)");
+  x.fillStyle=g; x.fillRect(0,0,size,size); return c; }
+function prerenderWheels(){
+  if(!GALAXY) GALAXY=wheel(640,(x,h)=>{ const N=90; for(let i=0;i<N;i++){ const a0=i/N*Math.PI*2, a1=(i+1.08)/N*Math.PI*2;
+      x.fillStyle=`hsla(${(i/N*360+300)%360},95%,68%,${.18+.22*Math.max(0,Math.sin(i/N*Math.PI*6))})`; x.beginPath(); x.moveTo(h,h); x.arc(h,h,h,a0,a1); x.fill(); }
+    for(let i=0;i<12;i++){ const a=i/12*Math.PI*2; x.fillStyle="rgba(255,255,255,.10)"; x.beginPath(); x.moveTo(h,h); x.arc(h,h,h,a,a+.07); x.fill(); } });
+  if(!RAYS) RAYS=wheel(420,(x,h)=>{ for(let i=0;i<16;i++){ const a=i/16*Math.PI*2; x.fillStyle="rgba(255,255,255,.55)"; x.beginPath(); x.moveTo(h,h); x.arc(h,h,h,a,a+Math.PI*2/16*.42); x.fill(); } });
+}
+function copyCanvas(src,cls){ const c=document.createElement("canvas"); c.width=src.width; c.height=src.height; c.getContext("2d").drawImage(src,0,0); c.className=cls; return c; }
+
+let partyOpen=false;
+function party(p, after){
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const _n=nowYM(), count = monthStamps(p,_n).length, mgoal = goalFor(p,_n), goalHit = count===mgoal;
+  const glow = STAMPS[p.stamp].glow;
+  prerenderWheels();
+  const o=document.createElement("div"); o.id="party";
+  o.style.setProperty("--pc",`var(${COLORS[p.color]})`); o.style.setProperty("--glow",glow);
+  o.innerHTML=`<canvas class="fx"></canvas><div class="flash"></div>
+    <div class="rocket">${ROCKET}</div>
+    <div class="center"><div class="big">
+      <svg class="orbitline" viewBox="-100 -40 200 80" aria-hidden="true"><defs><linearGradient id="orbG" x1="0" x2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset=".3" stop-color="#fff36b"/><stop offset=".6" stop-color="#5fd8ff"/><stop offset="1" stop-color="#b98bff"/></linearGradient></defs>
+        <ellipse rx="64" ry="19.2" fill="none" stroke="url(#orbG)" stroke-width="1.6" stroke-dasharray="3 4" opacity=".9"/>
+        <ellipse rx="54" ry="16" fill="none" stroke="url(#orbG)" stroke-width="1" opacity=".55"/></svg>
+      <i class="ring"></i><i class="ring"></i><i class="ring"></i>
+      <div class="hero"></div>
+    </div>
+    <div class="t1"></div><div class="t2"></div><div class="t3">タップで閉じる</div></div>`;
+  o.prepend(copyCanvas(GALAXY,"galaxy"));
+  o.querySelector(".big").prepend(copyCanvas(RAYS,"rays"));
+  o.querySelector(".hero").append(stampPic(p.stamp));
+  const big=o.querySelector(".big");
+  const orbs=STAMP_KEYS.filter(k=>k!==p.stamp).map(k=>{ const d=document.createElement("div"); d.className="orb"; d.append(stampPic(k)); big.append(d); return d; });
+  o.querySelector(".t1").textContent = goalHit ? "ゴール達成！！" : CHEERS[Math.floor(Math.random()*CHEERS.length)];
+  o.querySelector(".t2").textContent = goalHit ? `今月の${mgoal}こ コンプリート！` : `今月${count}こめ GET！`;
+  document.body.append(o); partyOpen=true; window.__party=true;
+  // hide the page underneath so its animations stop painting while the show runs
+  setTimeout(()=>{ if(partyOpen) document.querySelector(".wrap").style.visibility="hidden"; },650);
+  try{ navigator.vibrate && navigator.vibrate([30,60,30,60,120]); }catch(e){}
+
+  let raf=0;
+  const dur = goalHit?5200:3800;
+  if(!still){
+    const c=o.querySelector("canvas.fx"), x=c.getContext("2d"), r=Math.min(devicePixelRatio||1,1.5), W=innerWidth, H=innerHeight, cx=W/2, cy=H*.42;
+    c.width=Math.round(W*r); c.height=Math.round(H*r); x.setTransform(r,0,0,r,0,0); x.lineCap="round";
+    const cols=["#ff5fa2","#ffb84d","#fff36b","#6bffb0","#5fd8ff","#8b7bff","#ff6ff2","#ffffff"];
+    const span=Math.hypot(W,H)*.75;
+    const warp=Array.from({length:120},(_,i)=>({a:Math.random()*Math.PI*2, d:Math.random()*40+4, v:Math.random()*.05+.05, c:i%cols.length}));
+    const bits=[]; const blast=(n,pow)=>{ for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, v=4+Math.random()*pow;
+      bits.push({x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,s:3+Math.random()*6,rot:Math.random()*6,vr:(Math.random()-.5)*.35,c:cols[i%cols.length],k:i%3,life:0}); } };
+    const meteors=[]; const meteor=()=>{ if(meteors.length<9) meteors.push({x:W*(.2+Math.random()*1.1), y:-30-Math.random()*H*.2, v:10+Math.random()*6, l:70+Math.random()*70, c:cols[Math.floor(Math.random()*7)]}); };
+    const starPath=new Path2D(); for(let q=0;q<10;q++){ const rr=q%2?.42:1, aa=q/10*Math.PI*2-Math.PI/2; starPath[q?"lineTo":"moveTo"](Math.cos(aa)*rr,Math.sin(aa)*rr); } starPath.closePath();
+    const t0=performance.now(); let blasted=false, second=false, last=t0;
+    (function f(t){ const e=t-t0, dt=Math.min(2.5,(t-last)/16.67); last=t; x.setTransform(r,0,0,r,0,0); x.clearRect(0,0,W,H);
+      if(e<900){ const k=Math.min(1,e/900); x.globalAlpha=Math.min(1,.35+k);
+        for(let ci=0;ci<cols.length;ci++){ x.strokeStyle=cols[ci]; x.lineWidth=1.6+k*1.4; x.beginPath();
+          for(const s of warp){ if(s.c!==ci) continue; const d0=s.d; s.d+=s.d*s.v*(1+k*3)*dt; if(s.d>span){ s.d=Math.random()*30+4; continue; }
+            const ca=Math.cos(s.a), sa=Math.sin(s.a); x.moveTo(cx+ca*d0,cy+sa*d0); x.lineTo(cx+ca*s.d,cy+sa*s.d); }
+          x.stroke(); } }
+      if(e>650 && !blasted){ blasted=true; blast(goalHit?150:100, goalHit?14:11); for(let i=0;i<4;i++) meteor(); }
+      if(goalHit && e>1500 && !second){ second=true; blast(120,14); for(let i=0;i<4;i++) meteor(); }
+      if(e>900 && Math.random()<.05*dt) meteor();
+      for(let i=meteors.length-1;i>=0;i--){ const m=meteors[i]; m.x-=m.v*.7*dt; m.y+=m.v*dt; if(m.y>H+60){ meteors.splice(i,1); continue; }
+        const tx=m.x+m.l*.7, ty=m.y-m.l;
+        x.globalAlpha=.35; x.strokeStyle=m.c; x.lineWidth=5; x.beginPath(); x.moveTo(m.x,m.y); x.lineTo(tx,ty); x.stroke();
+        x.globalAlpha=1; x.strokeStyle="#fff"; x.lineWidth=2; x.beginPath(); x.moveTo(m.x,m.y); x.lineTo((m.x+tx)/2,(m.y+ty)/2); x.stroke(); }
+      for(const b of bits){ b.vy+=.22*dt; b.vx*=Math.pow(.985,dt); b.x+=b.vx*dt; b.y+=b.vy*dt; b.rot+=b.vr*dt; b.life+=dt;
+        const al=1-b.life/150; if(al<=0||b.y>H+20) continue; x.globalAlpha=al; x.fillStyle=b.c;
+        const co=Math.cos(b.rot)*b.s, si=Math.sin(b.rot)*b.s; x.setTransform(co*r,si*r,-si*r,co*r,b.x*r,b.y*r);
+        if(b.k===0) x.fill(starPath); else if(b.k===1){ x.beginPath(); x.arc(0,0,.45,0,6.28); x.fill(); } else x.fillRect(-.5,-.25,1,.5); }
+      x.setTransform(r,0,0,r,0,0); x.globalAlpha=1;
+      if(e>800){ const R=big.clientWidth*.64, k=Math.min(1,(e-800)/600);
+        orbs.forEach((el,i)=>{ const a=e/900+i*Math.PI*2/orbs.length, z=Math.sin(a), sc=(.62+.28*z)*k;
+          el.style.transform=`translate3d(${(Math.cos(a)*R*k).toFixed(1)}px,${(z*R*.3*k).toFixed(1)}px,0) translate(-50%,-50%) scale(${sc.toFixed(3)})`;
+          const zi = z>0?"3":"0"; if(el.style.zIndex!==zi) el.style.zIndex=zi; if(el.style.opacity!=="1") el.style.opacity=k>=1?"1":String(k); }); }
+      if(e<dur) raf=requestAnimationFrame(f); })(t0);
+  }
+  let closed=false;
+  const close=()=>{ if(closed) return; closed=true; cancelAnimationFrame(raf); partyOpen=false; window.__party=false;
+    document.querySelector(".wrap").style.visibility="";
+    o.style.transition="opacity .3s"; o.style.opacity="0";
+    setTimeout(()=>{ o.remove(); after(); },300); };
+  o.onclick=close; setTimeout(close, dur);
+}
+
+function render(){ renderTabs(); renderCard(); }
+loadLocal(); render(); renderMe();
+setTimeout(()=>{ try{ prerenderStamps(); prerenderWheels(); }catch(e){} },400);
+
+if(!ROOM){ setNote("このページは、もらったリンクから開いてください。"); document.getElementById("card").innerHTML='<div class="nokey"><b>リンクの合言葉がありません</b><span>スタンプカードの共有リンクから開き直してください。</span></div>'; }
+else { refresh(); setInterval(()=>{ if(document.visibilityState==="visible") refresh(); }, 8000);
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") refresh(); }); }
+</script>
+
+</body>
+</html>
