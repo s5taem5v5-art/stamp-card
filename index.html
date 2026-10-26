@@ -481,19 +481,19 @@ async function rpc(fn,args){
   const r=await fetch(SB_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(args)});
   const t=await r.text(); if(!r.ok){ let m=String(r.status); try{ m=JSON.parse(t).message||m; }catch(e){} throw new Error(m); }
   return t?JSON.parse(t):null; }
-function loadLocal(){ try{ const c=JSON.parse(localStorage.getItem("cache3")||"null"); if(c){ ids.forEach(id=>{ if(c.people&&c.people[id]) people[id]=fixType({...people[id],...c.people[id]}); }); if(c.rewards) rewards=c.rewards; if(ids.includes(c.me)) me=c.me; } }catch(e){} }
+function loadLocal(){ try{ const c=JSON.parse(localStorage.getItem("cache3")||"null"); if(c){ ids.forEach(id=>{ if(c.people&&c.people[id]) people[id]=fixType({...people[id],...c.people[id]}); }); if(c.rewards) rewards=c.rewards;  } }catch(e){} }
 function persistLocal(){ try{ localStorage.setItem("cache3", JSON.stringify({people, rewards, me})); }catch(e){} }
 let pending=0, online=false;
 async function refresh(){
   if(!ROOM || pending) return;
   try{ const st=await rpc("sc_state",{k:ROOM, mk:MYKEY||""}); if(pending) return; applyState(st);
-    if(!online){ online=true; setNote(me?"3人のスマホで同期しています。":"同期しています。ごほうびを決めるには、自分専用のリンクで開いてね。"); } }
+    if(!online){ online=true; setNote("3人のスマホで同期しています。"); } }
   catch(e){ online=false; setNote(e.message==="bad_key"?"このリンクの合言葉がちがいます。もらったリンクから開き直してください。":"つながりません。電波のいいところで開き直してください。"); }
 }
 function applyState(st){
   (st.people||[]).forEach(p=>{ if(ids.includes(p.id)) people[p.id]=fixType({...people[p.id], name:p.name, rule:p.rule, stamp:p.stamp, goal:p.goal, color:p.color, stamps:(st.stamps&&st.stamps[p.id])||[]}); });
   rewards={}; Object.entries(st.rewards||{}).forEach(([k,v])=>{ rewards[k]={text:String(v.text).slice(0,40), by:ids.includes(v.by)?v.by:null}; });
-  me = ids.includes(st.me) ? st.me : null;
+  if(!me && ids.includes(st.me)){ me=st.me; try{ localStorage.setItem("me",me); }catch(e){} }
   persistLocal(); renderMe();
   if(!editing && !rewardEdit && !window.__party) render(); else renderTabs();
 }
@@ -504,6 +504,8 @@ async function save(id){ const p=people[id]; persistLocal();
 function setNote(t){ document.getElementById("note").textContent=t; }
 /* ---------- who am I + rewards ---------- */
 let me = null, rewards = {}, rewardEdit = false;
+try{ const v=localStorage.getItem("me"); if(["p1","p2","p3"].includes(v)) me=v; }catch(e){}
+
 const rKey = (pid,ym) => pid+"_"+ymKey(ym.y,ym.m);
 const GIFT = `<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="gfB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8ad0"/><stop offset="1" stop-color="#8b6bff"/></linearGradient>
   <linearGradient id="gfR" x1="0" x2="1"><stop offset="0" stop-color="#fff36b"/><stop offset="1" stop-color="#ffb84d"/></linearGradient></defs>
@@ -513,16 +515,30 @@ const GIFT = `<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient 
 
 function renderMe(){
   const el=document.getElementById("me"); el.innerHTML="";
-  const b=document.createElement("div"); b.className="mechip"+(me?"":" ask"); b.id="me-btn";
-  if(me){ b.innerHTML=stampSVG(people[me].stamp); const s=document.createElement("span"); s.textContent="わたし："+people[me].name; b.append(s); }
-  else b.innerHTML="<span>みんな用リンクで表示中</span>";
-  el.append(b);
+  const b=document.createElement("button"); b.className="mechip"+(me?"":" ask"); b.id="me-btn";
+  if(me){ b.innerHTML=stampSVG(people[me].stamp); const s=document.createElement("span"); s.textContent="わたし："+people[me].name+"（切りかえ）"; b.append(s); }
+  else b.innerHTML="<span>わたしは誰？ をえらぶ</span>";
+  b.onclick=openPicker; el.append(b);
+}
+function openPicker(){
+  const o=document.createElement("div"); o.className="sheet"; o.id="picker";
+  o.innerHTML=`<div class="panel" role="dialog" aria-label="このスマホを使う人"><b>このスマホを使うのは？</b><p>選んだ人のカード以外の、ほかの2人のごほうびを決められます。</p><div class="who3"></div><button class="close" id="pick-close">とじる</button></div>`;
+  const w=o.querySelector(".who3");
+  ids.forEach(id=>{ const q=people[id];
+    const b=document.createElement("button"); b.className="whob"; b.id="me-"+id; b.setAttribute("aria-pressed",me===id);
+    b.style.setProperty("--pc",`var(${COLORS[q.color]})`);
+    b.innerHTML=stampSVG(q.stamp); const n=document.createElement("span"); n.textContent=q.name; b.append(n);
+    b.onclick=()=>{ o.remove(); me=id; try{ localStorage.setItem("me",id); }catch(e){} rewardEdit=false; persistLocal(); renderMe(); render(); }; w.append(b); });
+  o.querySelector("#pick-close").onclick=()=>o.remove();
+  o.onclick=e=>{ if(e.target===o) o.remove(); };
+  document.body.append(o);
+  if(!me) {}
 }
 async function saveReward(pid,ym,text){
   const k=rKey(pid,ym);
   if(text){ rewards[k]={text, by:me}; } else delete rewards[k];
-  pending++; try{ const r=await rpc("sc_set_reward",{k:ROOM, mk:MYKEY||"", pid, p_text:text||""});
-    if(r==="self") setNote("自分のごほうびは決められません。"); else if(r==="no_identity") setNote("ごほうびを決めるには、自分専用のリンクで開いてね。"); }
+  pending++; try{ const r=await rpc("sc_set_reward_by",{k:ROOM, me_id:me||"", pid, p_text:text||""});
+    if(r==="self") setNote("自分のごほうびは決められません。"); else if(r==="no_identity") setNote("先に「わたしは誰？」を選んでね。"); }
   catch(e){ setNote("ごほうびを保存できませんでした（"+e.message+"）"); } finally{ pending--; } refresh();
 }
 function rewardBox(p, ym, isNow, hit){
@@ -551,7 +567,7 @@ function rewardBox(p, ym, isNow, hit){
     if(canEdit){ const b=document.createElement("button"); b.className="rw-btn"; b.id="rw-edit"; b.textContent=r?"ごほうびを変える":"ごほうびを決める";
       b.onclick=()=>{ rewardEdit=true; render(); }; box.append(b); }
     else { const n=document.createElement("p"); n.className="rw-note";
-      n.textContent = me===current ? "自分のごほうびは、ほかの2人が決めます" : "ごほうびを決めるには、自分専用のリンクで開いてね";
+      n.textContent = me===current ? "自分のごほうびは、ほかの2人が決めます" : "上の「わたしは誰？」を選ぶと、ほかの人のごほうびを決められます";
       box.append(n); }
   }
   return box;
@@ -921,7 +937,7 @@ loadLocal(); render(); renderMe();
 setTimeout(()=>{ try{ prerenderStamps(); prerenderWheels(); }catch(e){} },400);
 
 if(!ROOM){ setNote("このページは、もらったリンクから開いてください。"); document.getElementById("card").innerHTML='<div class="nokey"><b>リンクの合言葉がありません</b><span>スタンプカードの共有リンクから開き直してください。</span></div>'; }
-else { refresh(); setInterval(()=>{ if(document.visibilityState==="visible") refresh(); }, 8000);
+else { refresh(); if(!me) setTimeout(()=>{ if(!me && !document.getElementById("picker")) openPicker(); },900); setInterval(()=>{ if(document.visibilityState==="visible") refresh(); }, 8000);
   document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") refresh(); }); }
 </script>
 
