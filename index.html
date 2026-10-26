@@ -465,7 +465,7 @@ let current = "p1", editing = false, confirmReset = false, justStamped = null, d
 
 try{ const h=location.hash.slice(1); if(ids.includes(h)) current=h; }catch(e){}
 
-const fixType = p => { if(!(p.goal>=1)) p.goal=20; if(p.goal>31) p.goal=31; if(!STAMPS[p.stamp]) p.stamp="star"; if(!(p.color>=0&&p.color<3)) p.color=0; return p; };
+const fixType = p => { if(!(p.goal>=1)) p.goal=20; if(p.goal>365) p.goal=365; if(!STAMPS[p.stamp]) p.stamp="star"; if(!(p.color>=0&&p.color<3)) p.color=0; return p; };
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function md(k){ const [,m,d]=k.split("-"); return (+m)+"/"+(+d); }
 const rot = k => { let h=0; for(const c of k) h=(h*31+c.charCodeAt(0))%31; return (h-15)+"deg"; };
@@ -506,7 +506,8 @@ function setNote(t){ document.getElementById("note").textContent=t; }
 let me = null, rewards = {}, rewardEdit = false;
 try{ const v=localStorage.getItem("me"); if(["p1","p2","p3"].includes(v)) me=v; }catch(e){}
 
-const rKey = (pid,ym) => pid+"_"+ymKey(ym.y,ym.m);
+const rKey = (pid,round) => pid+"_r"+round;
+const roundInfo = p => { const g=Math.max(1,p.goal|0), n=p.stamps.length, done=Math.floor(n/g); return {total:n, goal:g, done, inRound:n-done*g, round:done+1}; };
 const GIFT = `<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="gfB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8ad0"/><stop offset="1" stop-color="#8b6bff"/></linearGradient>
   <linearGradient id="gfR" x1="0" x2="1"><stop offset="0" stop-color="#fff36b"/><stop offset="1" stop-color="#ffb84d"/></linearGradient></defs>
   <rect x="6" y="20" width="36" height="24" rx="4" fill="url(#gfB)"/><rect x="4" y="13" width="40" height="10" rx="3" fill="#ff5fa2"/>
@@ -534,42 +535,43 @@ function openPicker(){
   document.body.append(o);
   if(!me) {}
 }
-async function saveReward(pid,ym,text){
-  const k=rKey(pid,ym);
+async function saveReward(pid,round,text){
+  const k=rKey(pid,round);
   if(text){ rewards[k]={text, by:me}; } else delete rewards[k];
-  pending++; try{ const r=await rpc("sc_set_reward_by",{k:ROOM, me_id:me||"", pid, p_text:text||""});
+  pending++; try{ const r=await rpc("sc_set_reward_round",{k:ROOM, me_id:me||"", pid, rnd:round, p_text:text||""});
     if(r==="self") setNote("自分のごほうびは決められません。"); else if(r==="no_identity") setNote("先に「わたしは誰？」を選んでね。"); }
   catch(e){ setNote("ごほうびを保存できませんでした（"+e.message+"）"); } finally{ pending--; } refresh();
 }
-function rewardBox(p, ym, isNow, hit){
+function rewardBox(p){
+  const ri=roundInfo(p);
   const box=document.createElement("div"); box.className="reward"; box.id="reward";
-  const r=rewards[rKey(current,ym)];
+  const r=rewards[rKey(current,ri.round)];
   const head=document.createElement("div"); head.className="rw-head";
-  head.innerHTML=`<span class="gift">${GIFT}</span><span class="lbl">ゴール達成のごほうび</span>`;
-  if(!isNow && r){ const st=document.createElement("em"); st.className=hit?"got":"miss"; st.textContent=hit?"ゲット！":"もらえず"; head.append(st); }
+  head.innerHTML=`<span class="gift">${GIFT}</span><span class="lbl">${ri.goal}こ達成のごほうび</span>`;
+  if(ri.done>0){ const st=document.createElement("em"); st.className="got"; st.textContent=(ri.round)+"まいめ"; head.append(st); }
   box.append(head);
-  const canEdit = isNow && me && me!==current;
+  const canEdit = me && me!==current;
   if(rewardEdit && canEdit){
     const f=document.createElement("form"); f.className="rw-form";
     f.innerHTML=`<input id="rw-text" maxlength="40" placeholder="例：好きなおやつを1つ買える"><div class="actions"><button type="button" id="rw-cancel">やめる</button><button type="submit" class="save" id="rw-save">決定</button></div>`;
     f.querySelector("#rw-text").value=r?r.text:"";
     f.querySelector("#rw-cancel").onclick=()=>{ rewardEdit=false; render(); };
-    f.onsubmit=e=>{ e.preventDefault(); const v=f.querySelector("#rw-text").value.trim(); rewardEdit=false; saveReward(current,ym,v); render(); };
+    f.onsubmit=e=>{ e.preventDefault(); const v=f.querySelector("#rw-text").value.trim(); rewardEdit=false; saveReward(current,ri.round,v); render(); };
     box.append(f); setTimeout(()=>{ try{ f.querySelector("#rw-text").focus(); }catch(e){} },30);
     return box;
   }
   const body=document.createElement("div"); body.className="rw-body";
-  const t=document.createElement("b"); t.textContent = r ? r.text : (isNow ? "まだ決まっていません" : "なし"); if(!r) t.className="none";
+  const t=document.createElement("b"); t.textContent = r ? r.text : "まだ決まっていません"; if(!r) t.className="none";
   body.append(t);
   if(r && r.by && people[r.by]){ const s=document.createElement("small"); s.textContent=people[r.by].name+" が決めました"; body.append(s); }
   box.append(body);
-  if(isNow){
-    if(canEdit){ const b=document.createElement("button"); b.className="rw-btn"; b.id="rw-edit"; b.textContent=r?"ごほうびを変える":"ごほうびを決める";
-      b.onclick=()=>{ rewardEdit=true; render(); }; box.append(b); }
-    else { const n=document.createElement("p"); n.className="rw-note";
-      n.textContent = me===current ? "自分のごほうびは、ほかの2人が決めます" : "上の「わたしは誰？」を選ぶと、ほかの人のごほうびを決められます";
-      box.append(n); }
-  }
+  if(canEdit){ const b=document.createElement("button"); b.className="rw-btn"; b.id="rw-edit"; b.textContent=r?"ごほうびを変える":"ごほうびを決める";
+    b.onclick=()=>{ rewardEdit=true; render(); }; box.append(b); }
+  else { const n=document.createElement("p"); n.className="rw-note";
+    n.textContent = me===current ? "自分のごほうびは、ほかの2人が決めます" : "上の「わたしは誰？」を選ぶと、ほかの人のごほうびを決められます";
+    box.append(n); }
+  if(ri.done>0){ const prevR=rewards[rKey(current,ri.done)]; const pn=document.createElement("p"); pn.className="rw-note";
+    pn.textContent = `これまで ${ri.done}回 コンプリート` + (prevR ? `・前回のごほうび「${prevR.text}」ゲット済み` : ""); box.append(pn); }
   return box;
 }
 
@@ -616,7 +618,7 @@ function renderTabs(){
     b.setAttribute("aria-selected", id===current); b.style.setProperty("--pc",`var(${COLORS[p.color]})`);
     b.innerHTML=stampSVG(p.stamp);
     const nm=document.createElement("span"); nm.textContent=p.name;
-    const s=document.createElement("small"); s.textContent=`今月 ${monthStamps(p,n).length} / ${goalFor(p,n)}`;
+    const ri=roundInfo(p); const s=document.createElement("small"); s.textContent=`${ri.inRound} / ${ri.goal}`+(ri.done?` ・達成${ri.done}回`:"");
     b.append(nm,s);
     b.onclick=()=>{ current=id; editing=false; confirmReset=false; rewardEdit=false; viewYM=nowYM(); render(); };
     el.append(b); });
@@ -635,7 +637,7 @@ function renderCard(){
   card.innerHTML="";
   if(editing){ renderEdit(card,p); return; }
   const n=nowYM(), isNow=sameYM(viewYM,n), ym=viewYM;
-  const got=monthStamps(p,ym), goal=goalFor(p,ym), hit=got.length>=goal;
+  const got=monthStamps(p,ym), ri=roundInfo(p);
 
   const who=document.createElement("div"); who.className="who";
   const h=document.createElement("h2"); h.textContent=p.name+" のカード";
@@ -655,25 +657,17 @@ function renderCard(){
 
   card.append(who,mn);
 
-  // last month's result is waiting
-  const lm=addMonth(n,-1);
-  if(isNow && !resultSeen(current,lm) && (firstYM(p).y*12+firstYM(p).m) <= (lm.y*12+lm.m) && p.stamps.some(k=>k<ymKey(n.y,n.m))){
-    const nb=document.createElement("button"); nb.className="notice"; nb.id="notice";
-    nb.innerHTML=`<span class="dot"></span><span>${lm.m}月の結果発表がとどいています</span><b>見る</b>`;
-    nb.onclick=()=>{ markSeen(current,lm); monthResult(people[current], lm, ()=>render()); };
-    card.append(nb);
-  }
 
   const ms=document.createElement("div"); ms.className="mission";
   ms.innerHTML='<span class="lbl">ミッション ・ 1日1回</span>';
   const rb=document.createElement("b"); rb.textContent=p.rule; ms.append(rb);
   card.append(ms);
-  card.append(rewardBox(p, ym, isNow, hit));
+  card.append(rewardBox(p));
 
   const prog=document.createElement("div"); prog.className="progress";
-  const pct=Math.min(100,Math.round(got.length/goal*100));
-  const rest=Math.max(0,goal-got.length);
-  prog.innerHTML=`<div class="nums"><span><strong>${got.length}</strong> こ <span class="of">/ ${goalLabel(p,ym)}</span></span><span class="goal">${hit?"今月のゴール達成！":(isNow?`ゴールまで あと ${rest}`:`あと ${rest} だった`)}</span></div><div class="bar"><i style="width:${pct}%"></i></div>`;
+  const pct=Math.min(100,Math.round(ri.inRound/ri.goal*100));
+  const rest=ri.goal-ri.inRound;
+  prog.innerHTML=`<div class="nums"><span><strong>${ri.inRound}</strong> こ <span class="of">/ ${ri.goal}こ</span></span><span class="goal">${ri.inRound===0&&ri.done>0?"新しいカードがスタート！":`ゴールまで あと ${rest}`}</span></div><div class="bar"><i style="width:${pct}%"></i></div>`;
   card.append(prog);
 
   // calendar
@@ -703,35 +697,31 @@ function renderCard(){
     btn.textContent = done ? "今日のスタンプは押しました" : "今日できた！ スタンプを押す";
     btn.disabled=done;
     btn.onclick=()=>{ const q=people[current]; if(q.stamps.includes(t)) return; q.stamps=[...q.stamps.filter(x=>x!==t),t]; const pid=current; mut(()=>rpc("sc_stamp",{k:ROOM,pid,on_:true}));
-      party(q, ()=>{ justStamped=t; render(); setTimeout(()=>{justStamped=null;},700); }); };
+      const rq=roundInfo(q); party(q, ()=>{ justStamped=t; render(); setTimeout(()=>{justStamped=null;},700);
+        if(rq.inRound===0 && rq.done>0) setTimeout(()=>monthResult(people[current], rq.done, ()=>render()), 900); }); };
     card.append(btn);
     if(done){ const sub=document.createElement("div"); sub.className="sub";
       const u=document.createElement("button"); u.className="link"; u.textContent="今日の分を取り消す";
       u.onclick=()=>{ const q=people[current]; q.stamps=q.stamps.filter(x=>x!==t); justStamped=null; const pid=current; mut(()=>rpc("sc_stamp",{k:ROOM,pid,on_:false})); render(); };
       sub.append(document.createElement("span"),u); card.append(sub); }
   } else {
-    const res=document.createElement("div"); res.className="result "+(hit?"win":"lose");
-    res.innerHTML = hit
-      ? `<div class="ico">${TROPHY}</div><div><b>${ym.m}月は 達成！</b><span>${got.length}こ集めました</span></div>`
-      : `<div class="ico"><img src="${stampURL("moon")}" alt=""></div><div><b>${ym.m}月は おしい！</b><span>あと ${goal-got.length}こ でした</span></div>`;
-    const rbtn=document.createElement("button"); rbtn.className="press replay"; rbtn.id="replay"; rbtn.textContent=`${ym.m}月の結果発表を見る`;
-    rbtn.onclick=()=>{ markSeen(current,ym); monthResult(people[current], ym, ()=>{}); };
-    card.append(res,rbtn);
+    const info=document.createElement("p"); info.className="rw-note"; info.style.textAlign="center";
+    info.textContent=`${ym.m}月は ${got.length}こ 押しました`; card.append(info);
   }
   if(newSlot && !matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(()=>burst(newSlot,STAMPS[p.stamp].glow),250);
 }
 
 /* ---------- month result show ---------- */
-function monthResult(p, ym, after){
+function monthResult(p, round, after){
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const got=monthStamps(p,ym).length, goal=goalFor(p,ym), win=got>=goal, ratio=Math.min(1,got/goal);
+  const goal=Math.max(1,p.goal|0), got=goal, win=true, ratio=1;
   prerenderStamps();
   const o=document.createElement("div"); o.id="party"; o.className="res "+(win?"win":"lose");
   o.style.setProperty("--pc",`var(${COLORS[p.color]})`); o.style.setProperty("--glow", win?"#ffd24a":"#bcb4ff");
   const C=2*Math.PI*86;
   o.innerHTML=`<canvas class="fx"></canvas><div class="flash"></div>
     <div class="center">
-      <div class="r-head"><small>${p.name}</small><b>${ym.m}月の けっか発表</b></div>
+      <div class="r-head"><small>${p.name}</small><b>${round}まいめの カード</b></div>
       <div class="meter">
         <svg viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset=".33" stop-color="#fff36b"/><stop offset=".66" stop-color="#5fd8ff"/><stop offset="1" stop-color="#b98bff"/></linearGradient></defs>
           <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="14"/>
@@ -742,11 +732,11 @@ function monthResult(p, ym, after){
       </div>
       <div class="t1"></div><div class="t2"></div><div class="t4"></div><div class="t3">タップで閉じる</div>
     </div>`;
-  { const rw=rewards[rKey(Object.keys(people).find(k=>people[k]===p)||current,ym)]; const t4=o.querySelector(".t4");
-    if(rw){ t4.innerHTML=GIFT; const s=document.createElement("span"); s.textContent = win ? "ごほうび「"+rw.text+"」ゲット！" : "ごほうび「"+rw.text+"」は また来月"; t4.append(s); } else t4.remove(); }
+  { const rw=rewards[rKey(Object.keys(people).find(k=>people[k]===p)||current,round)]; const t4=o.querySelector(".t4");
+    if(rw){ t4.innerHTML=GIFT; const s=document.createElement("span"); s.textContent = "ごほうび「"+rw.text+"」ゲット！"; t4.append(s); } else t4.remove(); }
   o.querySelector(".moonie").append(stampPic("moon"));
-  o.querySelector(".t1").textContent = win ? "ミッション達成！！" : "おしい〜！";
-  o.querySelector(".t2").textContent = win ? (got>=daysIn(ym.y,ym.m)?"なんと毎日！ 宇宙チャンピオン":`${got}こ ゲット！ 宇宙級のがんばり`) : `あと ${goal-got}こ だった！ 来月はいけるよ`;
+  o.querySelector(".t1").textContent = "コンプリート！！";
+  o.querySelector(".t2").textContent = `${goal}こ 集めた！`;
   document.body.append(o); window.__party=true;
   setTimeout(()=>{ if(window.__party) document.querySelector(".wrap").style.visibility="hidden"; },300);
 
@@ -798,7 +788,7 @@ function renderEdit(card,p){
     <label>名前<input id="f-name" maxlength="12"></label>
     <label>ミッション（1日の中で何ができたら押す？）<input id="f-rule" maxlength="40"></label>
     <div class="fl">スタンプの種類<div class="picks" id="f-picks"></div></div>
-    <label>1か月のゴール<select id="f-goal">${[5,10,15,20,25,28,30].map(v=>`<option value="${v}">${v}こ</option>`).join("")}<option value="31">毎日</option></select></label>
+    <label>ゴール（何こ集めたら達成？）<select id="f-goal">${[10,15,20,25,30,40,50,60,100].map(v=>`<option value="${v}">${v}こ</option>`).join("")}</select></label>
     <div class="fl">カードの色<div class="swatches" id="f-sw"></div></div>
     <div class="actions"><button type="button" id="f-cancel">やめる</button><button type="submit" class="save" id="f-save">保存</button></div>`;
   f.querySelector("#f-name").value=p.name; f.querySelector("#f-rule").value=p.rule; f.querySelector("#f-goal").value=String(p.goal);
@@ -816,10 +806,10 @@ function renderEdit(card,p){
     p.stamp=draftStamp; p.color=draftColor; p.goal=+f.querySelector("#f-goal").value;
     editing=false; confirmReset=false; save(current); render(); };
   card.append(f);
-  if(!confirmReset){ const r=document.createElement("button"); r.className="danger"; r.textContent=`${viewYM.m}月のスタンプを全部消す`;
+  if(!confirmReset){ const r=document.createElement("button"); r.className="danger"; r.textContent="スタンプを全部消してやり直す";
     r.onclick=()=>{confirmReset=true;render();}; card.append(r); }
-  else { const c=document.createElement("div"); c.className="confirm"; c.innerHTML=`<span>${viewYM.m}月の${monthStamps(p,viewYM).length}こを消します。いいですか？</span>`;
-    const y=document.createElement("button"); y.className="yes"; y.textContent="消す"; y.onclick=()=>{const pre=ymKey(viewYM.y,viewYM.m)+"-"; p.stamps=p.stamps.filter(k=>!k.startsWith(pre));confirmReset=false;editing=false;const pid=current;mut(()=>rpc("sc_clear_month",{k:ROOM,pid,ym:pre.slice(0,7)}));render();};
+  else { const c=document.createElement("div"); c.className="confirm"; c.innerHTML=`<span>${p.stamps.length}こ全部消します。いいですか？</span>`;
+    const y=document.createElement("button"); y.className="yes"; y.textContent="消す"; y.onclick=()=>{p.stamps=[];confirmReset=false;editing=false;const pid=current;mut(()=>rpc("sc_clear_all",{k:ROOM,pid}));render();};
     const n=document.createElement("button"); n.textContent="やめる"; n.onclick=()=>{confirmReset=false;render();};
     c.append(y,n); card.append(c); }
 }
@@ -860,7 +850,7 @@ function copyCanvas(src,cls){ const c=document.createElement("canvas"); c.width=
 let partyOpen=false;
 function party(p, after){
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const _n=nowYM(), count = monthStamps(p,_n).length, mgoal = goalFor(p,_n), goalHit = count===mgoal;
+  const _ri=roundInfo(p), mgoal=_ri.goal, goalHit=_ri.inRound===0&&_ri.done>0, count=goalHit?mgoal:_ri.inRound;
   const glow = STAMPS[p.stamp].glow;
   prerenderWheels();
   const o=document.createElement("div"); o.id="party";
@@ -881,7 +871,7 @@ function party(p, after){
   const big=o.querySelector(".big");
   const orbs=STAMP_KEYS.filter(k=>k!==p.stamp).map(k=>{ const d=document.createElement("div"); d.className="orb"; d.append(stampPic(k)); big.append(d); return d; });
   o.querySelector(".t1").textContent = goalHit ? "ゴール達成！！" : CHEERS[Math.floor(Math.random()*CHEERS.length)];
-  o.querySelector(".t2").textContent = goalHit ? `今月の${mgoal}こ コンプリート！` : `今月${count}こめ GET！`;
+  o.querySelector(".t2").textContent = goalHit ? `${mgoal}こ コンプリート！` : `${count}こめ GET！ あと${mgoal-count}こ`;
   document.body.append(o); partyOpen=true; window.__party=true;
   // hide the page underneath so its animations stop painting while the show runs
   setTimeout(()=>{ if(partyOpen) document.querySelector(".wrap").style.visibility="hidden"; },650);
