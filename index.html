@@ -711,7 +711,14 @@ function renderCard(){
   }
   card.append(cal);
 
-  if(isNow){
+  if(isNow && current!==me){
+    const done=p.stamps.includes(t);
+    const btn=document.createElement("button"); btn.className="press"; btn.id="press"; btn.disabled=true;
+    btn.textContent = done ? "今日のスタンプは押しました" : "スタンプは本人だけが押せます";
+    card.append(btn);
+    if(!done){ const info=document.createElement("p"); info.className="rw-note"; info.style.textAlign="center";
+      info.textContent=`${p.name}が自分のスマホで押すのを待とう`; card.append(info); }
+  } else if(isNow){
     const done=p.stamps.includes(t);
     const btn=document.createElement("button"); btn.className="press"; btn.id="press";
     btn.textContent = done ? "今日のスタンプは押しました" : "今日できた！ スタンプを押す";
@@ -827,7 +834,8 @@ function renderEdit(card,p){
     p.stamp=draftStamp; p.color=draftColor; p.goal=+f.querySelector("#f-goal").value;
     editing=false; confirmReset=false; save(current); render(); };
   card.append(f);
-  if(!confirmReset){ const r=document.createElement("button"); r.className="danger"; r.textContent="スタンプを全部消してやり直す";
+  if(current!==me){}
+  else if(!confirmReset){ const r=document.createElement("button"); r.className="danger"; r.textContent="スタンプを全部消してやり直す";
     r.onclick=()=>{confirmReset=true;render();}; card.append(r); }
   else { const c=document.createElement("div"); c.className="confirm"; c.innerHTML=`<span>${p.stamps.length}こ全部消します。いいですか？</span>`;
     const y=document.createElement("button"); y.className="yes"; y.textContent="消す"; y.onclick=()=>{p.stamps=[];confirmReset=false;editing=false;const pid=current;mut(()=>rpc("sc_clear_all",{k:ROOM,pid}));render();};
