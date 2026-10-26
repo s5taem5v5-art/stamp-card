@@ -216,6 +216,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 #party.res .t4 span{overflow-wrap:anywhere}
 #party.res.go .t4{animation:pop .7s .7s cubic-bezier(.2,1.8,.4,1) both}
 .nokey{display:flex;flex-direction:column;gap:6px;text-align:center;padding:30px 10px}.nokey b{font-family:var(--display);font-weight:400;font-size:1.2rem}.nokey span{color:var(--muted)}
+
+.rewards{display:flex;flex-direction:column;gap:10px}
+.reward.mid{background:linear-gradient(rgba(30,18,70,.96),rgba(30,18,70,.96)) padding-box,linear-gradient(120deg,#c8d2ff,#8fd8ff,#e6c8ff) border-box}
+.reward.mid .lbl{color:#bfe6ff}
+.bar{position:relative;overflow:visible}
+.bar i{position:relative;z-index:1}
+.bar .flag{position:absolute;top:-4px;width:4px;height:18px;margin-left:-2px;border-radius:2px;background:rgba(255,255,255,.35);z-index:2}
+.bar .flag.on{background:#fff;box-shadow:0 0 8px #bfe6ff}
+.flaglbl{font-size:.66rem;color:#bfe6ff;font-weight:800;margin-top:-2px}
+#party.res.mid .trophy svg{filter:grayscale(1) brightness(1.35) drop-shadow(0 0 22px #bfe6ff)}
+#party.res.mid.win{background:radial-gradient(circle at 50% 42%,rgba(150,200,255,.4) 0,rgba(5,3,20,.9) 62%)}
 .spark{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:var(--c);pointer-events:none;animation:fly .7s ease-out forwards}
 @keyframes fly{from{transform:translate(-50%,-50%);opacity:1}to{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(.3);opacity:0}}
 .press{font:inherit;font-family:var(--display);font-size:1.15rem;border:none;border-radius:18px;padding:17px 12px;cursor:pointer;color:#fff;
@@ -503,11 +514,12 @@ async function save(id){ const p=people[id]; persistLocal();
 
 function setNote(t){ document.getElementById("note").textContent=t; }
 /* ---------- who am I + rewards ---------- */
-let me = null, rewards = {}, rewardEdit = false;
+let me = null, rewards = {}, rewardEdit = null;
 try{ const v=localStorage.getItem("me"); if(["p1","p2","p3"].includes(v)) me=v; }catch(e){}
 
-const rKey = (pid,round) => pid+"_r"+round;
-const roundInfo = p => { const g=Math.max(1,p.goal|0), n=p.stamps.length, done=Math.floor(n/g); return {total:n, goal:g, done, inRound:n-done*g, round:done+1}; };
+const rKey = (pid,round,mid) => pid+"_r"+round+(mid?"m":"");
+const midOf = g => (g>=4 ? Math.ceil(g/2) : 0);
+const roundInfo = p => { const g=Math.max(1,p.goal|0), n=p.stamps.length, done=Math.floor(n/g); return {total:n, goal:g, done, inRound:n-done*g, round:done+1, mid:midOf(g)}; };
 const GIFT = `<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="gfB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8ad0"/><stop offset="1" stop-color="#8b6bff"/></linearGradient>
   <linearGradient id="gfR" x1="0" x2="1"><stop offset="0" stop-color="#fff36b"/><stop offset="1" stop-color="#ffb84d"/></linearGradient></defs>
   <rect x="6" y="20" width="36" height="24" rx="4" fill="url(#gfB)"/><rect x="4" y="13" width="40" height="10" rx="3" fill="#ff5fa2"/>
@@ -529,35 +541,37 @@ function openPicker(){
     const b=document.createElement("button"); b.className="whob"; b.id="me-"+id; b.setAttribute("aria-pressed",me===id);
     b.style.setProperty("--pc",`var(${COLORS[q.color]})`);
     b.innerHTML=stampSVG(q.stamp); const n=document.createElement("span"); n.textContent=q.name; b.append(n);
-    b.onclick=()=>{ o.remove(); me=id; try{ localStorage.setItem("me",id); }catch(e){} rewardEdit=false; persistLocal(); renderMe(); render(); }; w.append(b); });
+    b.onclick=()=>{ o.remove(); me=id; try{ localStorage.setItem("me",id); }catch(e){} rewardEdit=null; persistLocal(); renderMe(); render(); }; w.append(b); });
   o.querySelector("#pick-close").onclick=()=>o.remove();
   o.onclick=e=>{ if(e.target===o) o.remove(); };
   document.body.append(o);
   if(!me) {}
 }
-async function saveReward(pid,round,text){
-  const k=rKey(pid,round);
+async function saveReward(pid,round,mid,text){
+  const k=rKey(pid,round,mid);
   if(text){ rewards[k]={text, by:me}; } else delete rewards[k];
-  pending++; try{ const r=await rpc("sc_set_reward_round",{k:ROOM, me_id:me||"", pid, rnd:round, p_text:text||""});
+  pending++; try{ const r=await rpc("sc_set_reward_key",{k:ROOM, me_id:me||"", pid, rnd:round, is_mid:!!mid, p_text:text||""});
     if(r==="self") setNote("自分のごほうびは決められません。"); else if(r==="no_identity") setNote("先に「わたしは誰？」を選んでね。"); }
   catch(e){ setNote("ごほうびを保存できませんでした（"+e.message+"）"); } finally{ pending--; } refresh();
 }
-function rewardBox(p){
-  const ri=roundInfo(p);
-  const box=document.createElement("div"); box.className="reward"; box.id="reward";
-  const r=rewards[rKey(current,ri.round)];
+function rewardItem(p, ri, mid){
+  const tag = mid ? "mid" : "main";
+  const box=document.createElement("div"); box.className="reward"+(mid?" mid":""); box.id="reward-"+tag;
+  const r=rewards[rKey(current,ri.round,mid)];
+  const reached = mid && ri.inRound>=ri.mid;
   const head=document.createElement("div"); head.className="rw-head";
-  head.innerHTML=`<span class="gift">${GIFT}</span><span class="lbl">${ri.goal}こ達成のごほうび</span>`;
-  if(ri.done>0){ const st=document.createElement("em"); st.className="got"; st.textContent=(ri.round)+"まいめ"; head.append(st); }
+  head.innerHTML=`<span class="gift">${GIFT}</span><span class="lbl">${mid?`中間ごほうび（${ri.mid}こ）`:`${ri.goal}こ達成のごほうび`}</span>`;
+  if(reached){ const st=document.createElement("em"); st.className="got"; st.textContent="ゲット！"; head.append(st); }
+  else if(!mid && ri.done>0){ const st=document.createElement("em"); st.className="got"; st.textContent=ri.round+"まいめ"; head.append(st); }
   box.append(head);
   const canEdit = me && me!==current;
-  if(rewardEdit && canEdit){
+  if(rewardEdit===tag && canEdit){
     const f=document.createElement("form"); f.className="rw-form";
-    f.innerHTML=`<input id="rw-text" maxlength="40" placeholder="例：好きなおやつを1つ買える"><div class="actions"><button type="button" id="rw-cancel">やめる</button><button type="submit" class="save" id="rw-save">決定</button></div>`;
-    f.querySelector("#rw-text").value=r?r.text:"";
-    f.querySelector("#rw-cancel").onclick=()=>{ rewardEdit=false; render(); };
-    f.onsubmit=e=>{ e.preventDefault(); const v=f.querySelector("#rw-text").value.trim(); rewardEdit=false; saveReward(current,ri.round,v); render(); };
-    box.append(f); setTimeout(()=>{ try{ f.querySelector("#rw-text").focus(); }catch(e){} },30);
+    f.innerHTML=`<input id="rw-text-${tag}" maxlength="40" placeholder="${mid?"例：好きなジュースを1本":"例：好きなおやつを1つ買える"}"><div class="actions"><button type="button" id="rw-cancel-${tag}">やめる</button><button type="submit" class="save" id="rw-save-${tag}">決定</button></div>`;
+    const inp=f.querySelector("input"); inp.value=r?r.text:"";
+    f.querySelector("#rw-cancel-"+tag).onclick=()=>{ rewardEdit=null; render(); };
+    f.onsubmit=e=>{ e.preventDefault(); const v=inp.value.trim(); rewardEdit=null; saveReward(current,ri.round,mid,v); render(); };
+    box.append(f); setTimeout(()=>{ try{ inp.focus(); }catch(e){} },30);
     return box;
   }
   const body=document.createElement("div"); body.className="rw-body";
@@ -565,14 +579,20 @@ function rewardBox(p){
   body.append(t);
   if(r && r.by && people[r.by]){ const s=document.createElement("small"); s.textContent=people[r.by].name+" が決めました"; body.append(s); }
   box.append(body);
-  if(canEdit){ const b=document.createElement("button"); b.className="rw-btn"; b.id="rw-edit"; b.textContent=r?"ごほうびを変える":"ごほうびを決める";
-    b.onclick=()=>{ rewardEdit=true; render(); }; box.append(b); }
-  else { const n=document.createElement("p"); n.className="rw-note";
+  if(canEdit){ const b=document.createElement("button"); b.className="rw-btn"; b.id="rw-edit-"+tag; b.textContent=r?"ごほうびを変える":"ごほうびを決める";
+    b.onclick=()=>{ rewardEdit=tag; render(); }; box.append(b); }
+  else if(!mid){ const n=document.createElement("p"); n.className="rw-note";
     n.textContent = me===current ? "自分のごほうびは、ほかの2人が決めます" : "上の「わたしは誰？」を選ぶと、ほかの人のごほうびを決められます";
     box.append(n); }
-  if(ri.done>0){ const prevR=rewards[rKey(current,ri.done)]; const pn=document.createElement("p"); pn.className="rw-note";
+  if(!mid && ri.done>0){ const prevR=rewards[rKey(current,ri.done,false)]; const pn=document.createElement("p"); pn.className="rw-note";
     pn.textContent = `これまで ${ri.done}回 コンプリート` + (prevR ? `・前回のごほうび「${prevR.text}」ゲット済み` : ""); box.append(pn); }
   return box;
+}
+function rewardBox(p){
+  const ri=roundInfo(p), wrap=document.createElement("div"); wrap.className="rewards";
+  if(ri.mid) wrap.append(rewardItem(p, ri, true));
+  wrap.append(rewardItem(p, ri, false));
+  return wrap;
 }
 
 
@@ -620,7 +640,7 @@ function renderTabs(){
     const nm=document.createElement("span"); nm.textContent=p.name;
     const ri=roundInfo(p); const s=document.createElement("small"); s.textContent=`${ri.inRound} / ${ri.goal}`+(ri.done?` ・達成${ri.done}回`:"");
     b.append(nm,s);
-    b.onclick=()=>{ current=id; editing=false; confirmReset=false; rewardEdit=false; viewYM=nowYM(); render(); };
+    b.onclick=()=>{ current=id; editing=false; confirmReset=false; rewardEdit=null; viewYM=nowYM(); render(); };
     el.append(b); });
 }
 
@@ -648,11 +668,11 @@ function renderCard(){
   const mn=document.createElement("div"); mn.className="month";
   const prev=document.createElement("button"); prev.className="mbtn"; prev.id="m-prev"; prev.setAttribute("aria-label","前の月"); prev.textContent="‹";
   const first=firstYM(p); prev.disabled = (ym.y*12+ym.m) <= (first.y*12+first.m);
-  prev.onclick=()=>{ rewardEdit=false; viewYM=addMonth(viewYM,-1); render(); };
+  prev.onclick=()=>{ rewardEdit=null; viewYM=addMonth(viewYM,-1); render(); };
   const ttl=document.createElement("div"); ttl.className="mtitle";
   ttl.innerHTML=`<small>${ym.y}</small><b>${ym.m}<span>月</span></b>${isNow?'<em>今月</em>':''}`;
   const next=document.createElement("button"); next.className="mbtn"; next.id="m-next"; next.setAttribute("aria-label","次の月"); next.textContent="›";
-  next.disabled=isNow; next.onclick=()=>{ rewardEdit=false; viewYM=addMonth(viewYM,1); render(); };
+  next.disabled=isNow; next.onclick=()=>{ rewardEdit=null; viewYM=addMonth(viewYM,1); render(); };
   mn.append(prev,ttl,next);
 
   card.append(who,mn);
@@ -667,7 +687,7 @@ function renderCard(){
   const prog=document.createElement("div"); prog.className="progress";
   const pct=Math.min(100,Math.round(ri.inRound/ri.goal*100));
   const rest=ri.goal-ri.inRound;
-  prog.innerHTML=`<div class="nums"><span><strong>${ri.inRound}</strong> こ <span class="of">/ ${ri.goal}こ</span></span><span class="goal">${ri.inRound===0&&ri.done>0?"新しいカードがスタート！":`ゴールまで あと ${rest}`}</span></div><div class="bar"><i style="width:${pct}%"></i></div>`;
+  prog.innerHTML=`<div class="nums"><span><strong>${ri.inRound}</strong> こ <span class="of">/ ${ri.goal}こ</span></span><span class="goal">${ri.inRound===0&&ri.done>0?"新しいカードがスタート！":`ゴールまで あと ${rest}`}</span></div><div class="bar"><i style="width:${pct}%"></i>${ri.mid?`<span class="flag${ri.inRound>=ri.mid?" on":""}" style="left:${ri.mid/ri.goal*100}%"></span>`:""}</div>${ri.mid?`<div class="flaglbl" style="padding-left:calc(${ri.mid/ri.goal*100}% - 1.6em)">中間 ${ri.mid}</div>`:""}`;
   card.append(prog);
 
   // calendar
@@ -698,7 +718,8 @@ function renderCard(){
     btn.disabled=done;
     btn.onclick=()=>{ const q=people[current]; if(q.stamps.includes(t)) return; q.stamps=[...q.stamps.filter(x=>x!==t),t]; const pid=current; mut(()=>rpc("sc_stamp",{k:ROOM,pid,on_:true}));
       const rq=roundInfo(q); party(q, ()=>{ justStamped=t; render(); setTimeout(()=>{justStamped=null;},700);
-        if(rq.inRound===0 && rq.done>0) setTimeout(()=>monthResult(people[current], rq.done, ()=>render()), 900); }); };
+        if(rq.inRound===0 && rq.done>0) setTimeout(()=>monthResult(people[current], rq.done, ()=>render()), 900);
+        else if(rq.mid && rq.inRound===rq.mid) setTimeout(()=>monthResult(people[current], rq.round, ()=>render(), true), 900); }); };
     card.append(btn);
     if(done){ const sub=document.createElement("div"); sub.className="sub";
       const u=document.createElement("button"); u.className="link"; u.textContent="今日の分を取り消す";
@@ -712,16 +733,16 @@ function renderCard(){
 }
 
 /* ---------- month result show ---------- */
-function monthResult(p, round, after){
+function monthResult(p, round, after, mid){
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const goal=Math.max(1,p.goal|0), got=goal, win=true, ratio=1;
+  const goal=Math.max(1,p.goal|0), got=mid?midOf(goal):goal, win=true, ratio=got/goal;
   prerenderStamps();
-  const o=document.createElement("div"); o.id="party"; o.className="res "+(win?"win":"lose");
+  const o=document.createElement("div"); o.id="party"; o.className="res "+(win?"win":"lose")+(mid?" mid":"");
   o.style.setProperty("--pc",`var(${COLORS[p.color]})`); o.style.setProperty("--glow", win?"#ffd24a":"#bcb4ff");
   const C=2*Math.PI*86;
   o.innerHTML=`<canvas class="fx"></canvas><div class="flash"></div>
     <div class="center">
-      <div class="r-head"><small>${p.name}</small><b>${round}まいめの カード</b></div>
+      <div class="r-head"><small>${p.name}</small><b>${mid?"おりかえし地点":round+"まいめの カード"}</b></div>
       <div class="meter">
         <svg viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset=".33" stop-color="#fff36b"/><stop offset=".66" stop-color="#5fd8ff"/><stop offset="1" stop-color="#b98bff"/></linearGradient></defs>
           <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="14"/>
@@ -732,11 +753,11 @@ function monthResult(p, round, after){
       </div>
       <div class="t1"></div><div class="t2"></div><div class="t4"></div><div class="t3">タップで閉じる</div>
     </div>`;
-  { const rw=rewards[rKey(Object.keys(people).find(k=>people[k]===p)||current,round)]; const t4=o.querySelector(".t4");
-    if(rw){ t4.innerHTML=GIFT; const s=document.createElement("span"); s.textContent = "ごほうび「"+rw.text+"」ゲット！"; t4.append(s); } else t4.remove(); }
+  { const rw=rewards[rKey(Object.keys(people).find(k=>people[k]===p)||current,round,mid)]; const t4=o.querySelector(".t4");
+    if(rw){ t4.innerHTML=GIFT; const s=document.createElement("span"); s.textContent = (mid?"中間ごほうび「":"ごほうび「")+rw.text+"」ゲット！"; t4.append(s); } else t4.remove(); }
   o.querySelector(".moonie").append(stampPic("moon"));
-  o.querySelector(".t1").textContent = "コンプリート！！";
-  o.querySelector(".t2").textContent = `${goal}こ 集めた！`;
+  o.querySelector(".t1").textContent = mid ? "中間ゴール！" : "コンプリート！！";
+  o.querySelector(".t2").textContent = mid ? `${got}こ たまった！ あと${goal-got}こ` : `${goal}こ 集めた！`;
   document.body.append(o); window.__party=true;
   setTimeout(()=>{ if(window.__party) document.querySelector(".wrap").style.visibility="hidden"; },300);
 
@@ -870,7 +891,7 @@ function party(p, after){
   o.querySelector(".hero").append(stampPic(p.stamp));
   const big=o.querySelector(".big");
   const orbs=STAMP_KEYS.filter(k=>k!==p.stamp).map(k=>{ const d=document.createElement("div"); d.className="orb"; d.append(stampPic(k)); big.append(d); return d; });
-  o.querySelector(".t1").textContent = goalHit ? "ゴール達成！！" : CHEERS[Math.floor(Math.random()*CHEERS.length)];
+  o.querySelector(".t1").textContent = goalHit ? "ゴール達成！！" : (_ri.mid && count===_ri.mid ? "おりかえし！" : CHEERS[Math.floor(Math.random()*CHEERS.length)]);
   o.querySelector(".t2").textContent = goalHit ? `${mgoal}こ コンプリート！` : `${count}こめ GET！ あと${mgoal-count}こ`;
   document.body.append(o); partyOpen=true; window.__party=true;
   // hide the page underneath so its animations stop painting while the show runs
