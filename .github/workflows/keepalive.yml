@@ -1,0 +1,30 @@
+name: keepalive
+# Pings the Supabase database once a week so the free project is never paused,
+# and makes a tiny commit at the start of each month so GitHub keeps this schedule enabled.
+on:
+  schedule:
+    - cron: "17 3 * * 1"   # every Monday 12:17 JST
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://karlvjvqahtmeovvmffm.supabase.co/rest/v1/rpc/mc_s_state" \
+            -H "apikey: sb_publishable_MstU1tIMnYGUUqQ7BAk9mQ_Z4Ml_95P" -H "Content-Type: application/json" \
+            -d '{"sk":"keepalive-ping-0000000000000"}')
+          echo "Supabase answered HTTP $code"
+          if [ "$code" = "000" ] || [ "$code" -ge 500 ]; then exit 1; fi
+      - uses: actions/checkout@v4
+      - name: Keep repository active (first week of each month)
+        run: |
+          if [ "$(date -u +%d)" -le 7 ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            date -u +"%Y-%m-%dT%H:%M:%SZ" > keepalive.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add keepalive.txt
+            git commit -m "keepalive" && git push || echo "nothing to commit"
+          fi
