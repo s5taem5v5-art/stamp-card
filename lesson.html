@@ -1450,6 +1450,152 @@ body.no-scroll{overflow:hidden}
 #give-sheet .tga-m{width:100%;box-sizing:border-box}
 .prof.skl .pf-road small,.prof.skl .pf-road span{color:#6a4300!important;text-shadow:0 0 4px #fff}
 
+/* ===================== GACHA v2: machine + reveal ===================== */
+.gacha{background:radial-gradient(ellipse at 50% 35%,#3a1670 0,#160832 55%,#07031a 100%)}
+.ga-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ga-bg i{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(40px);opacity:.35;animation:aur 14s ease-in-out infinite}
+.ga-bg i:nth-child(1){background:#ff4fd8;left:-25vmax;top:-20vmax}.ga-bg i:nth-child(2){background:#3ad6ff;right:-25vmax;top:10vmax;animation-delay:-5s}.ga-bg i:nth-child(3){background:#ffc93a;left:10vmax;bottom:-35vmax;animation-delay:-9s;opacity:.18}
+.gacha.blackout{background:#000}.gacha.blackout .ga-bg{opacity:0;transition:opacity .4s}
+.ga-top .ga-t{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(180deg,#ffe58a,#ffb21a);color:#5a3200;box-shadow:0 3px 0 #b36b00;padding:5px 14px}
+.ga-top .ga-t .tk{font-style:normal}
+.ga-top .ga-t .tn{font-size:1.1rem}
+.ga-fly{position:fixed;z-index:200;font-size:1.6rem;pointer-events:none;animation:ga-fly .52s cubic-bezier(.5,-0.4,.6,1) forwards}
+@keyframes ga-fly{0%{transform:translate(0,0) scale(1) rotate(0)}60%{transform:translate(calc(var(--dx) * .6),calc(var(--dy) * .4 - 40px)) scale(1.3) rotate(-20deg)}100%{transform:translate(var(--dx),var(--dy)) scale(.4) rotate(-90deg);opacity:.3}}
+/* the machine */
+.gm{position:relative;width:min(250px,64vw);display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 22px 30px rgba(0,0,0,.6))}
+.gm-sign{position:relative;z-index:3;width:86%;margin-bottom:-14px;padding:8px 6px 7px;border-radius:16px;text-align:center;background:linear-gradient(180deg,#2b0a4a,#1a0530);border:3px solid #ffd2f2;box-shadow:0 0 18px rgba(255,79,216,.55),inset 0 0 12px rgba(255,79,216,.4)}
+.gm-sign b{display:block;font-family:var(--display);font-size:1.45rem;line-height:1;letter-spacing:.06em;background:linear-gradient(180deg,#fff,#ffd2f2 50%,#ff6ad0);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 6px #ff4fd8)}
+.gm-sign small{display:block;font-size:.6rem;font-weight:900;letter-spacing:.3em;color:#ffe14a;margin-top:2px}
+.gm-bulbs{display:flex;justify-content:space-between;padding:0 4px}
+.gm-bulbs.top{margin-bottom:5px}.gm-bulbs.bot{margin-top:5px}
+.gm-bulbs i{width:7px;height:7px;border-radius:50%;background:#fff3c4;box-shadow:0 0 6px 2px rgba(255,230,140,.8);animation:bulb 1.1s steps(1) infinite;animation-delay:calc(var(--i) * -.1s)}
+@keyframes bulb{0%,49%{opacity:1}50%,100%{opacity:.25}}
+.gm.lt1 .gm-bulbs i{animation-duration:.5s}
+.gm.lt2 .gm-bulbs i{background:#e9d2ff;box-shadow:0 0 8px 3px #b46bff;animation-duration:.3s}
+.gm.lt3 .gm-bulbs i{background:#fff2a0;box-shadow:0 0 10px 4px #ffc93a;animation-duration:.18s}
+.gm.lt4 .gm-bulbs i{animation:bulb-rbw .5s linear infinite;animation-delay:calc(var(--i) * -.045s)}
+@keyframes bulb-rbw{0%{background:#ff3d3d;box-shadow:0 0 10px 4px #ff3d3d}20%{background:#ffe14a;box-shadow:0 0 10px 4px #ffe14a}40%{background:#3dff8a;box-shadow:0 0 10px 4px #3dff8a}60%{background:#3ad6ff;box-shadow:0 0 10px 4px #3ad6ff}80%{background:#ff4fd8;box-shadow:0 0 10px 4px #ff4fd8}100%{background:#ff3d3d;box-shadow:0 0 10px 4px #ff3d3d}}
+.gm.ltoff .gm-bulbs i{animation:none;opacity:.08;box-shadow:none}
+.gm.lt2 .gm-sign{box-shadow:0 0 26px #b46bff,inset 0 0 14px #b46bff}
+.gm.lt3 .gm-sign{border-color:#fff2a0;box-shadow:0 0 34px #ffc93a,inset 0 0 16px #ffc93a}
+.gm.lt4 .gm-sign{border-color:#fff;box-shadow:0 0 40px #ff4fd8,0 0 70px #3ad6ff,inset 0 0 18px #fff}
+.gm-hot{position:absolute;right:-26px;top:-18px;transform:rotate(14deg) scale(0);font-family:var(--display);font-size:1rem;padding:4px 10px;border-radius:10px;color:#fff;background:linear-gradient(180deg,#ff3d3d,#c8102e);border:2px solid #fff;box-shadow:0 0 14px #ff3d3d;transition:transform .35s cubic-bezier(.2,1.8,.4,1)}
+.gm.hot .gm-hot{transform:rotate(14deg) scale(1);animation:hot .35s ease-in-out infinite alternate}
+@keyframes hot{to{transform:rotate(8deg) scale(1.12)}}
+.gm.lt4 .gm-hot{background:linear-gradient(90deg,#ff3d3d,#ffe14a,#3dff8a,#3ad6ff,#ff4fd8);text-shadow:0 1px 2px #000}
+.gm-dome{position:relative;z-index:2;width:100%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 120%,rgba(255,79,216,.25),transparent 60%),radial-gradient(circle at 35% 28%,rgba(255,255,255,.28),rgba(255,255,255,.05) 50%,rgba(150,220,255,.1) 100%);
+  border:6px solid rgba(255,230,248,.9);box-shadow:inset 0 -14px 30px rgba(0,0,0,.35),inset 0 8px 20px rgba(255,255,255,.25),0 0 0 3px #ff5fb7;overflow:hidden}
+.gm-cv{position:absolute;inset:0;width:100%;height:100%}
+.gm-gloss{position:absolute;left:12%;top:8%;width:34%;height:22%;border-radius:50%;background:linear-gradient(160deg,rgba(255,255,255,.75),rgba(255,255,255,0));transform:rotate(-28deg);pointer-events:none}
+.gm-gloss2{position:absolute;right:12%;bottom:16%;width:12%;height:8%;border-radius:50%;background:rgba(255,255,255,.35);transform:rotate(-28deg);pointer-events:none}
+.gm-body{position:relative;z-index:1;width:94%;margin-top:-22%;padding-top:24%;height:128px;border-radius:20px 20px 28px 28px;background:linear-gradient(180deg,#ff6cc0 0,#e8338f 70%,#c91f74 100%);
+  box-shadow:inset 0 -10px 0 rgba(0,0,0,.18),inset 0 5px 0 rgba(255,255,255,.35);display:flex;align-items:center;justify-content:space-between;padding-left:12px;padding-right:12px}
+.gm-slot{display:flex;flex-direction:column;align-items:center;gap:3px}
+.gm-slot i{width:30px;height:8px;border-radius:4px;background:#3a0d24;box-shadow:inset 0 2px 3px rgba(0,0,0,.7),0 0 0 3px #ffd2f2}
+.gm-slot small{font-size:.55rem;font-weight:900;color:#fff}
+.gm-slot.eat i{animation:eat .4s}
+@keyframes eat{40%{box-shadow:inset 0 2px 3px rgba(0,0,0,.7),0 0 0 3px #fff,0 0 16px 6px #ffe14a}}
+.gm-handle{position:relative;width:76px;height:76px;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
+.gm-knob{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#ffe14a 45%,#e0a400 100%);box-shadow:0 5px 0 #a86f00,0 0 0 5px rgba(255,255,255,.4),inset 0 -4px 8px rgba(0,0,0,.2)}
+.gm-knob i{position:absolute;left:8%;right:8%;top:50%;height:18%;margin-top:-9%;border-radius:10px;background:linear-gradient(180deg,#c88a00,#8a5c00);box-shadow:inset 0 2px 2px rgba(0,0,0,.35)}
+.gm-knob b{position:absolute;right:4%;top:50%;width:18%;height:18%;margin-top:-9%;border-radius:50%;background:#ff3d6e;box-shadow:0 0 0 2px #fff}
+.gm-arrow{position:absolute;inset:-14px;display:grid;place-items:center;font-size:2.6rem;color:#fff;opacity:0;pointer-events:none;text-shadow:0 0 10px #ffe14a}
+.gm-handle.ready .gm-knob{animation:knob 1s ease-in-out infinite}
+.gm-handle.ready .gm-arrow{opacity:.9;animation:arrow 1.4s linear infinite}
+@keyframes knob{50%{box-shadow:0 5px 0 #a86f00,0 0 0 8px rgba(255,240,150,.8),0 0 24px 8px #ffe14a,inset 0 -4px 8px rgba(0,0,0,.2)}}
+@keyframes arrow{to{transform:rotate(360deg)}}
+.gm-chute{width:52px;height:44px;border-radius:14px 14px 6px 6px;background:#3a0d24;box-shadow:inset 0 8px 10px rgba(0,0,0,.7),0 0 0 4px #ffd2f2;position:relative;overflow:hidden}
+.gm-flap{position:absolute;left:4px;right:4px;top:4px;height:60%;border-radius:10px 10px 3px 3px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.15));transform-origin:top;transition:transform .2s}
+.gm-flap.open{transform:rotateX(70deg)}
+.gm-base{width:74%;height:16px;margin-top:-2px;border-radius:0 0 14px 14px;background:linear-gradient(180deg,#b81f6f,#7a0f47)}
+.ga-tray{min-height:118px}
+.ga-msg{font-size:1.02rem}
+.ga-msg small{font-size:.75rem;font-weight:700;opacity:.8}
+.ga-msg b{color:#ffe14a}
+.ga-left{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#ff3d6e;color:#fff;font-family:var(--display);margin-left:4px;animation:pfpop .5s}
+.ga-btn.ghost{background:rgba(255,255,255,.14);box-shadow:0 5px 0 rgba(0,0,0,.35);min-width:96px}
+.ga-sh .shb{display:inline-block;width:70px;height:8px;border-radius:6px;background:rgba(255,255,255,.15);position:relative;overflow:hidden;vertical-align:middle}
+.ga-sh .shb::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--p);background:linear-gradient(90deg,#3ad6ff,#b46bff);border-radius:6px}
+.gacha.shk1{animation:ga-shk .14s linear 6}
+.gacha.shk2{animation:ga-shk .1s linear 6}
+/* capsules v2 */
+.cap{--c1:#ff8fb1;--c2:#ff5c8a;width:86px;height:86px}
+.cap.sm{width:46px;height:46px}
+.cap .ck{position:absolute;inset:0;border-radius:50%;opacity:0;pointer-events:none;background:
+  linear-gradient(62deg,transparent 46%,rgba(40,20,0,.75) 47% 49%,transparent 50%) 0 0/50% 50% no-repeat,
+  linear-gradient(-48deg,transparent 46%,rgba(40,20,0,.7) 47% 49%,transparent 50%) 100% 0/50% 55% no-repeat,
+  linear-gradient(20deg,transparent 46%,rgba(40,20,0,.7) 47% 49%,transparent 50%) 30% 100%/50% 45% no-repeat}
+.cap.crk1 .ck{opacity:.45}.cap.crk2 .ck{opacity:.9}
+.cap .cg{position:absolute;inset:-30%;border-radius:50%;opacity:0;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,255,255,0) 60%)}
+.cap.crk2 .cg{opacity:.35}.cap.charge .cg{opacity:1;animation:cg .25s ease-in-out infinite alternate}
+@keyframes cg{to{transform:scale(1.25)}}
+.cap.hit{animation:hit .28s cubic-bezier(.2,1.6,.4,1)}
+@keyframes hit{0%{transform:scale(1)}30%{transform:scale(1.18,.82) rotate(-6deg)}60%{transform:scale(.92,1.1) rotate(5deg)}100%{transform:scale(1)}}
+.cap.charge{animation:cap-q .06s linear infinite}
+.cap.promote{animation:promote .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes promote{0%{transform:scale(1)}35%{transform:scale(1.7) rotate(-10deg)}100%{transform:scale(1.1)}}
+.cap.cr2{filter:drop-shadow(0 0 8px rgba(180,107,255,.9))}
+.cap.cr3{filter:drop-shadow(0 0 12px rgba(255,200,60,1)) drop-shadow(0 0 22px rgba(255,160,0,.6))}
+.cap.cr4{filter:drop-shadow(0 0 14px #ff4fd8) drop-shadow(0 0 30px #3ad6ff)}
+.cap.drop{animation:cap-drop2 .75s cubic-bezier(.3,0,.4,1) both;animation-delay:calc(var(--i,0) * .07s)}
+@keyframes cap-drop2{0%{transform:translateY(-90px) scale(.3);opacity:0}45%{transform:translateY(0) scale(1.08,.88);opacity:1}62%{transform:translateY(-26px) rotate(8deg)}78%{transform:translateY(0) scale(1.04,.95)}88%{transform:translateY(-6px)}100%{transform:none}}
+.ga-up{position:absolute;left:50%;top:-6px;transform:translateX(-50%);font-family:var(--display);font-size:1.6rem;color:#fff;text-shadow:0 0 10px #ff4fd8,0 0 20px #ffe14a,0 3px 0 #000;animation:upfly 1.1s ease-out forwards;pointer-events:none;white-space:nowrap}
+@keyframes upfly{0%{transform:translate(-50%,10px) scale(.4);opacity:0}25%{transform:translate(-50%,-10px) scale(1.3);opacity:1}100%{transform:translate(-50%,-50px) scale(1);opacity:0}}
+.ga-flash{background:#fff;opacity:0}
+.ga-flash.on{animation:ga-fl2 .8s ease-out}
+@keyframes ga-fl2{0%{opacity:var(--fo,1)}100%{opacity:0}}
+.ga-multi{grid-template-columns:repeat(5,54px);gap:10px}
+.ga-multi>*{width:54px;height:54px}
+/* reveal */
+.gr{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;background:rgba(4,1,14,.72);animation:fadein .2s}
+.gr-rays{position:absolute;left:50%;top:44%;width:1100px;height:1100px;margin:-550px 0 0 -550px;pointer-events:none;opacity:.55;animation:spin 12s linear infinite;
+  background:repeating-conic-gradient(from 0deg,var(--rc) 0 7deg,transparent 7deg 20deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%)}
+.gr0{--rc:#dfe6f0}.gr1{--rc:#4fb3ff}.gr2{--rc:#b46bff}.gr3{--rc:#ffc93a}.gr4{--rc:#ff4fd8}
+.gr3 .gr-rays{opacity:.8;animation-duration:7s}
+.gr4 .gr-rays{opacity:.9;animation-duration:4s;background:repeating-conic-gradient(from 0deg,#ff3d3d 0 6deg,transparent 6deg 12deg,#ffe14a 12deg 18deg,transparent 18deg 24deg,#3dff8a 24deg 30deg,transparent 30deg 36deg,#3ad6ff 36deg 42deg,transparent 42deg 48deg,#ff4fd8 48deg 54deg,transparent 54deg 60deg)}
+.gr-stars{position:relative;display:flex;gap:6px;min-height:40px;font-size:2rem;color:var(--rc);text-shadow:0 0 12px var(--rc),0 2px 0 rgba(0,0,0,.4)}
+.gr-stars i{font-style:normal;animation:starin .35s cubic-bezier(.2,1.8,.4,1)}
+@keyframes starin{0%{transform:scale(3) rotate(-90deg);opacity:0}100%{transform:none;opacity:1}}
+.gr-card{position:relative;width:min(290px,80vw);aspect-ratio:3/4;perspective:900px;transform:translateY(40px) scale(.6);opacity:0;transition:transform .35s cubic-bezier(.2,1.5,.4,1),opacity .2s}
+.gr-card.in{transform:none;opacity:1}
+.gr-in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.3,1.3,.4,1)}
+.gr-in.flip{transform:rotateY(180deg)}
+.gr-back,.gr-front{position:absolute;inset:0;border-radius:22px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.gr-back{display:grid;place-items:center;background:repeating-linear-gradient(45deg,#2a1250 0 12px,#1e0b3c 12px 24px);border:4px solid var(--rc);box-shadow:0 0 30px var(--rc)}
+.gr-back b{font-family:var(--display);font-size:5rem;color:var(--rc);text-shadow:0 0 20px var(--rc)}
+.gr-front{transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px;text-align:center;color:#fff;
+  background:linear-gradient(180deg,#26174a,#120a26);border:4px solid var(--rc);box-shadow:0 0 36px var(--rc),inset 0 0 30px rgba(255,255,255,.06)}
+.gr-front.solo{position:relative;transform:none;width:min(290px,80vw);min-height:300px;animation:ga-pop .6s cubic-bezier(.2,1.5,.4,1)}
+.gr-front.rr4{border:4px solid transparent;background-image:linear-gradient(180deg,#1a0830,#07020f),linear-gradient(90deg,#ff3d3d,#ffe14a,#3dff8a,#3ad6ff,#7a5cff,#ff4fd8,#ff3d3d);background-origin:border-box;background-clip:padding-box,border-box;background-size:100% 100%,300% 100%;animation:tr4 2s linear infinite}
+.gr-front.rr4.solo{animation:ga-pop .6s cubic-bezier(.2,1.5,.4,1),tr4 2s linear infinite}
+.gr-front.rr3{background:radial-gradient(circle at 50% 30%,#4a3208,#140c02)}
+.gr-rar{font-family:var(--display);font-size:2.8rem;line-height:1;color:var(--rc,#fff);text-shadow:0 0 18px var(--rc),0 3px 0 rgba(0,0,0,.5)}
+.gr-front.rr0 .gr-rar{--rc:#dfe6f0}.gr-front.rr1 .gr-rar{--rc:#4fb3ff}.gr-front.rr2 .gr-rar{--rc:#b46bff}
+.gr-front.rr3 .gr-rar{font-size:3.4rem;background:linear-gradient(100deg,#ffb21a,#fff6c8 40%,#ffb21a 60%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:nf-sh 2s linear infinite;filter:drop-shadow(0 0 10px rgba(255,200,60,.9))}
+.gr-front.rr4 .gr-rar{font-size:3.8rem;background:linear-gradient(90deg,#ff3d3d,#ffe14a,#3dff8a,#3ad6ff,#ff4fd8,#ff3d3d);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:nf-sh 1.4s linear infinite;filter:drop-shadow(0 0 12px #fff)}
+.gr-front.slam .gr-rar{animation:slam .5s cubic-bezier(.2,1.6,.4,1)}
+.gr-front.rr3.slam .gr-rar,.gr-front.rr4.slam .gr-rar{animation:slam .5s cubic-bezier(.2,1.6,.4,1),nf-sh 1.6s linear infinite}
+@keyframes slam{0%{transform:scale(3.5);opacity:0}60%{transform:scale(.9);opacity:1}100%{transform:none}}
+.gr-rarjp{font-size:.72rem;font-weight:900;letter-spacing:.2em;opacity:.85}
+.gr-front .gi.big{margin:6px 0;animation:float 2.4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+.gr-nm{font-size:1.3rem}
+.gr-cat{opacity:.7;font-size:.75rem}
+.gr-tag{position:relative;min-height:1.6em;font-weight:900}
+.gr-tag.nw{font-family:var(--display);font-size:1.7rem;color:#ff3d6e;text-shadow:0 0 12px rgba(255,61,110,.8),0 2px 0 #fff;animation:nwin .5s cubic-bezier(.2,1.8,.4,1),pfpop .9s ease-in-out .5s infinite}
+@keyframes nwin{0%{transform:scale(3) rotate(-15deg);opacity:0}100%{transform:rotate(-6deg);opacity:1}}
+.gr-front .gr-tag.nw{font-size:1.3rem}
+.gr-tag.dup{font-size:1rem;color:#8ee6ff}
+.gr-btns{position:relative;display:flex;gap:10px;opacity:0;transform:translateY(16px);transition:all .3s}
+.gr-btns.in{opacity:1;transform:none}
+.gr-cut{position:absolute;left:-20%;right:-20%;top:38%;height:120px;transform:rotate(-8deg);z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);border-top:3px solid #ff4fd8;border-bottom:3px solid #3ad6ff;animation:cut 1.5s cubic-bezier(.6,0,.4,1) forwards;pointer-events:none}
+.gr-cut b{font-family:var(--display);font-size:3rem;letter-spacing:.2em;background:linear-gradient(90deg,#ff3d3d,#ffe14a,#3dff8a,#3ad6ff,#ff4fd8);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px #fff)}
+.gr-cut span{color:#fff;font-weight:900;letter-spacing:.4em;font-size:.8rem}
+@keyframes cut{0%{transform:rotate(-8deg) translateX(110%)}25%,75%{transform:rotate(-8deg) translateX(0)}100%{transform:rotate(-8deg) translateX(-110%);opacity:0}}
+.gr.mini{gap:16px}
+@media (prefers-reduced-motion: reduce){.gacha.shk1,.gacha.shk2{animation:none}.gr-rays{animation:none}}
+
 </style>
 </head>
 <body>
@@ -2860,41 +3006,6 @@ function gIcon(it, big){
   return w;
 }
 
-/* ---- sounds (made on the spot with WebAudio, like the other sounds) ---- */
-const GSFX = (()=>{
-  const C=()=>{ try{ return SFX.on ? SFX.core() : null; }catch(e){ return null; } };
-  function tone(c,f,t,d,type="square",v=.15,f2=null){ const {ctx,comp}=c; const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.setValueAtTime(f,t); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+d);
-    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.006); g.gain.exponentialRampToValueAtTime(.0008,t+d); o.connect(g); g.connect(comp); o.start(t); o.stop(t+d+.05); }
-  function noise(c,t,d,v=.25,from=5000,to=200){ const {ctx,comp}=c; const b=ctx.createBuffer(1,ctx.sampleRate*d|0||1,ctx.sampleRate), a=b.getChannelData(0); for(let i=0;i<a.length;i++) a[i]=Math.random()*2-1;
-    const s=ctx.createBufferSource(); s.buffer=b; const fl=ctx.createBiquadFilter(); fl.type="lowpass"; fl.frequency.setValueAtTime(from,t); fl.frequency.exponentialRampToValueAtTime(to,t+d);
-    const g=ctx.createGain(); g.gain.setValueAtTime(v,t); g.gain.exponentialRampToValueAtTime(.001,t+d); s.connect(fl); fl.connect(g); g.connect(comp); s.start(t); }
-  const N=n=>440*Math.pow(2,(n-69)/12);
-  return {
-    crank(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.02; for(let i=0;i<8;i++){ tone(c,N(84+(i%2)*2),t+i*.11,.04,"square",.07); noise(c,t+i*.11,.04,.12,3000,800); } },
-    drop(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.02; tone(c,180,t,.18,"sine",.35,55); tone(c,140,t+.22,.12,"sine",.2,60); tone(c,120,t+.38,.08,"sine",.12,60); },
-    tap(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; tone(c,N(88),t,.06,"triangle",.12); },
-    open(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; noise(c,t,.25,.35,7000,600); tone(c,N(72),t,.3,"sawtooth",.08,N(96)); },
-    rumble(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; tone(c,55,t,1.6,"sawtooth",.18,40); tone(c,58,t,1.6,"sawtooth",.14,41); noise(c,t,1.4,.25,400,80); },
-    reveal(r){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.02;
-      const seqs=[[72,76],[72,76,79],[72,76,79,84],[67,72,76,79,84,88],[60,67,72,76,79,84,88,91]];
-      seqs[r].forEach((n,i)=>tone(c,N(n),t+i*.07,.5+(r>=3?.5:0),"triangle",.13));
-      if(r>=2) [96,100,103].forEach((n,i)=>tone(c,N(n),t+.3+i*.05,.25,"sine",.06));
-      if(r>=3){ [60,64,67,72].forEach(n=>{ tone(c,N(n),t+.45,1.4,"sawtooth",.05); tone(c,N(n)*1.006,t+.45,1.4,"sawtooth",.04); }); noise(c,t+.4,.6,.2,9000,1200); }
-      if(r>=4){ [48,55,60].forEach(n=>tone(c,N(n),t+.45,2.2,"square",.05)); [84,88,91,96].forEach((n,i)=>tone(c,N(n),t+.9+i*.09,.6,"triangle",.1)); }
-    }
-  };
-})();
-
-/* ---- confetti / beams for the gacha screen ---- */
-function gBurst(cv, r, big){
-  const ctx=cv.getContext("2d"), d=Math.min(2,devicePixelRatio||1), W=cv.clientWidth, H=cv.clientHeight; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
-  const cols=[["#ffffff","#cfd8e6"],["#4fb3ff","#a8dcff","#fff"],["#b46bff","#e0c2ff","#fff","#ff9cf0"],["#ffc93a","#fff3b0","#ff9a1a","#fff"],["#ff4d4d","#ffa53a","#ffe14a","#3dff8a","#3ad6ff","#7a5cff","#ff4fd8","#fff"]][r];
-  const ps=Array.from({length:big?(r>=3?220:120):60},()=>({x:W/2,y:H*.45,vx:(Math.random()-.5)*(r>=3?16:10),vy:-Math.random()*(r>=3?15:10)-2,s:3+Math.random()*5,a:Math.random()*6,va:(Math.random()-.5)*.4,c:cols[(Math.random()*cols.length)|0],l:0,L:80+Math.random()*70}));
-  let raf; const step=()=>{ ctx.clearRect(0,0,W,H); let alive=0;
-    ps.forEach(p=>{ if(p.l++>p.L) return; alive++; p.vy+=.28; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.globalAlpha=Math.max(0,1-p.l/p.L); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); });
-    if(alive && cv.isConnected) raf=requestAnimationFrame(step); else ctx.clearRect(0,0,W,H); };
-  cancelAnimationFrame(cv._raf||0); step(); cv._raf=raf;
-}
 const gWait = ms => new Promise(r=>setTimeout(r,ms));
 const G = () => (Stu.info && Stu.info.gacha) || {t:0, sh:0, owned:{}, gifts:[]};
 function gSet(g){ if(!g) return; Object.values(Stu.sib||{}).forEach(d=>{ if(d&&d.st) d.st.gacha=g; }); if(Stu.info) Stu.info.gacha=g; }
@@ -2909,106 +3020,6 @@ async function gEquip(it){
   try{ await rpc("mc_s_profile",{sk:SK, p_prof:P}); Stu.info.prof=P; if(Stu.sib[SK]) Stu.sib[SK].st.prof=P;
     const C=Stu.info.course&&COURSES[Stu.info.course]; toast((C&&Stu.keys.length>1?C.jp+"の":"")+"カードにつけたよ！"); return true; }
   catch(e){ toast("つけられませんでした（"+e.message+"）"); return false; }
-}
-
-/* ---- the machine ---- */
-function openGacha(){
-  if(document.getElementById("gacha")) return;
-  window.__party=true; document.body.classList.add("no-scroll");
-  const o=el("div","gacha"); o.id="gacha"; o.setAttribute("role","dialog"); o.setAttribute("aria-label","スタンプガチャ");
-  const balls=Array.from({length:18},(_,i)=>{ const r=[0,0,0,1,1,1,0,2,1,0,2,0,1,3,0,1,2,4][i]; return `<i class="gb gr${r}" style="--x:${(i*53+7)%84}%;--y:${48+((i*37)%46)}%;--d:${(i*.17).toFixed(2)}s;--rot:${(i*47)%360}deg"></i>`; }).join("");
-  o.innerHTML=`<canvas class="ga-fx"></canvas><div class="ga-flash"></div>
-    <div class="ga-top"><b>🎰 スタンプガチャ</b><span class="ga-t"></span><button type="button" class="ga-x" aria-label="とじる">×</button></div>
-    <div class="ga-stage">
-      <div class="ga-mach">
-        <div class="ga-dome"><div class="ga-balls">${balls}</div><i class="ga-gloss"></i></div>
-        <div class="ga-body"><div class="ga-sign">NACHA<small>GACHA</small></div><div class="ga-handle"><i></i></div><div class="ga-out"></div></div>
-        <div class="ga-base"></div>
-      </div>
-      <div class="ga-tray"></div>
-    </div>
-    <div class="ga-msg"></div>
-    <div class="ga-act"></div>
-    <div class="ga-foot"><button type="button" class="ga-zk">📖 ずかん</button><span class="ga-sh"></span></div>`;
-  document.body.append(o);
-  const $=s=>o.querySelector(s), cv=$(".ga-fx"), tray=$(".ga-tray"), act=$(".ga-act"), msg=$(".ga-msg"), mach=$(".ga-mach");
-  let busy=false;
-  const close=()=>{ if(busy) return; o.remove(); document.body.classList.remove("no-scroll"); window.__party=false; stuRender(); };
-  $(".ga-x").onclick=close; $(".ga-zk").onclick=()=>openZukan();
-  const top=()=>{ const g=G(); $(".ga-t").textContent="🎟 × "+(g.t|0); $(".ga-sh").innerHTML=""; const s=el("span",null,"💠 かけら "+(g.sh|0)+" / 30"); $(".ga-sh").append(s);
-    if((g.sh|0)>=30){ const b=el("button","ga-trade","チケットにこうかん"); b.type="button"; b.onclick=async()=>{ b.disabled=true; try{ gSet(await rpc("mc_s_shard_trade",{sk:SK})); toast("🎟 チケット1枚ゲット！"); }catch(e){ toast("こうかんできませんでした"); } top(); idle(); }; $(".ga-sh").append(b); } };
-  function idle(){
-    act.innerHTML=""; const t=G().t|0;
-    if(!t){ msg.innerHTML="チケットがないよ。<br>レッスンやイベントで先生からもらえるよ！"; return; }
-    msg.textContent="ハンドルをタップして まわそう！";
-    const one=el("button","ga-btn","1回まわす"); one.append(el("small",null,"🎟 1")); one.type="button"; one.onclick=()=>pull(1); act.append(one);
-    if(t>=2){ const k=Math.min(10,t); const many=el("button","ga-btn gold",k+"連"); many.append(el("small",null,"🎟 "+k)); many.type="button"; many.onclick=()=>pull(k); act.append(many); }
-  }
-  $(".ga-handle").onclick=()=>{ if(!busy && (G().t|0)>0) pull(1); };
-  async function pull(n){
-    if(busy) return; busy=true; act.innerHTML=""; tray.innerHTML=""; msg.textContent=""; try{ SFX.unlock(); }catch(e){}
-    let r; try{ r=await rpc("mc_s_gacha",{sk:SK, p_n:n}); }catch(e){ busy=false; toast(e.message==="no_ticket"?"チケットが足りないよ":"つながりません。もう一度ためしてね"); idle(); return; }
-    gSet(r.g); top();
-    const res=r.res||[], best=Math.max(...res.map(x=>x.r));
-    mach.classList.remove("turn","shake"); void mach.offsetWidth; mach.classList.add("turn"); if(best>=3) mach.classList.add("shake"); GSFX.crank();
-    await gWait(1050);
-    if(res.length===1) await single(res[0]); else await multi(res);
-    busy=false;
-  }
-  // a capsule: higher ones arrive looking like one step lower and then change colour
-  function capsule(x, small){ const c=el("button","cap cr"+Math.min(x.r,3)+(small?" sm":"")); c.type="button"; c.innerHTML='<i class="ct"></i><i class="cb"></i><i class="cs"></i>'; c.setAttribute("aria-label","カプセル"); return c; }
-  async function single(x){
-    const c=capsule(x); tray.append(c); c.classList.add("drop"); GSFX.drop(); await gWait(650);
-    msg.textContent="タップして あけよう！"; c.classList.add("wob"+Math.min(x.r,3));
-    await new Promise(res=>{ c.onclick=res; });
-    c.onclick=null; msg.textContent="";
-    if(x.r>=4){ await promote(c); }
-    await openCap(c, x);
-    showCard(x, ()=>{ tray.innerHTML=""; idle(); });
-  }
-  async function promote(c){
-    c.classList.add("quake"); o.classList.add("dark"); GSFX.rumble(); await gWait(1100);
-    $(".ga-flash").classList.remove("on"); void o.offsetWidth; $(".ga-flash").classList.add("on");
-    c.classList.remove("cr3","quake","wob3"); c.classList.add("cr4","rise"); o.classList.add("shk"); await gWait(900); o.classList.remove("shk");
-  }
-  async function openCap(c, x){
-    GSFX.open(); c.classList.add("open"); o.classList.add("beam","bm"+x.r);
-    gBurst(cv, x.r, true); await gWait(x.r>=3?700:420); GSFX.reveal(x.r);
-  }
-  async function multi(res){
-    const box=el("div","ga-multi"); tray.append(box);
-    const caps=res.map((x,i)=>{ const c=capsule(x,true); c.style.setProperty("--i",i); box.append(c); return c; });
-    caps.forEach(c=>c.classList.add("drop")); GSFX.drop(); await gWait(900);
-    msg.textContent="タップして1つずつ あけてね";
-    let opened=0, showing=false;
-    const all=el("button","ga-btn","ぜんぶあける"); all.type="button"; act.append(all);
-    const isOpen=res.map(()=>false);
-    const openOne=async(i)=>{ const c=caps[i], x=res[i]; if(isOpen[i]) return; isOpen[i]=true;
-      if(x.r>=4){ showing=true; await promote(c); }
-      c.classList.add("open"); GSFX.tap(); gBurst(cv, x.r, x.r>=3);
-      const t=el("span","ga-tile rr"+x.r); t.append(gIcon(GITEM[x.id]), rarBadge(x.r)); if(!x.dup) t.append(el("em","nw","NEW")); c.after(t); c.remove(); caps[i]=t;
-      t.onclick=()=>showCard(x, ()=>{});
-      if(x.r>=3){ showing=true; GSFX.reveal(x.r); o.classList.add("beam","bm"+x.r); await new Promise(rs=>showCard(x, rs)); }
-      showing=false; opened++;
-      if(opened===res.length) done(); };
-    caps.forEach((c,i)=>{ c.onclick=()=>{ if(!showing && !isOpen[i]) openOne(i); }; });
-    all.onclick=async()=>{ all.disabled=true; for(let i=0;i<res.length;i++){ if(isOpen[i]) continue; await openOne(i); await gWait(160); } };
-    const done=()=>{ act.innerHTML=""; const nw=res.filter(x=>!x.dup).length, sh=res.reduce((s,x)=>s+(x.sh|0),0);
-      msg.textContent=`NEW ${nw}こ`+(sh?` ・ 💠 かけら +${sh}`:"")+" ・ タップでくわしく";
-      const again=el("button","ga-btn","もどる"); again.type="button"; again.onclick=()=>{ tray.innerHTML=""; o.classList.remove("beam","bm0","bm1","bm2","bm3","bm4","dark"); idle(); }; act.append(again); };
-  }
-  function showCard(x, onClose){
-    const it=GITEM[x.id]; if(!it){ onClose(); return; }
-    const m=el("div","ga-rev rr"+x.r); const c=el("div","ga-card rr"+x.r);
-    if(x.r>=4) c.append(el("div","ga-leg","LEGEND"));
-    c.append(el("div","ga-rar",RAR[x.r].k), el("div","ga-rarjp",RAR[x.r].jp), gIcon(it,true), el("b","ga-nm",it.n), el("small","ga-cat",CAT_JP[it.cat]));
-    if(x.dup===false) c.append(el("div","ga-new","NEW!")); else if(x.dup) c.append(el("div","ga-dup","もってた！ 💠 かけら +"+(x.sh|0)));
-    const ac=el("div","ga-cact");
-    const wear=el("button","ga-btn gold","つけてみる"); wear.type="button"; wear.onclick=async()=>{ wear.disabled=true; if(await gEquip(it)){ wear.textContent="つけたよ ✓"; } else wear.disabled=false; };
-    const ok=el("button","ga-btn","OK"); ok.type="button"; ok.onclick=()=>{ m.remove(); o.classList.remove("beam","bm0","bm1","bm2","bm3","bm4","dark"); onClose(); };
-    ac.append(wear, ok); c.append(ac); m.append(c); o.append(m);
-  }
-  top(); idle();
 }
 
 /* ---- collection ---- */
@@ -3054,6 +3065,309 @@ function giftPop(){
   const later=el("button","link","あとで"); later.type="button"; later.onclick=()=>{ seen(); o.remove(); stuRender(); };
   c.append(go, later); o.append(c); document.body.append(o);
   try{ SFX.unlock(); GSFX.reveal(2); }catch(e){}
+}
+
+
+/* ================= GACHA: the machine (v2) ================= */
+const RM_ = (()=>{ try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } })();
+const buzz = p => { try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} };
+
+/* ---- sounds ---- */
+const GSFX = (()=>{
+  const C=()=>{ try{ return SFX.on ? SFX.core() : null; }catch(e){ return null; } };
+  const N=n=>440*Math.pow(2,(n-69)/12);
+  function tone(c,f,t,d,type="square",v=.15,f2=null,att=.006){ const {ctx,comp}=c; const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.setValueAtTime(f,t); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+d);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+att); g.gain.exponentialRampToValueAtTime(.0008,t+d); o.connect(g); g.connect(comp); o.start(t); o.stop(t+d+.05); }
+  let nb=null; function noise(c,t,d,v=.25,from=5000,to=200,type="lowpass"){ const {ctx,comp}=c; if(!nb){ nb=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate); const a=nb.getChannelData(0); for(let i=0;i<a.length;i++) a[i]=Math.random()*2-1; }
+    const s=ctx.createBufferSource(); s.buffer=nb; const fl=ctx.createBiquadFilter(); fl.type=type; fl.frequency.setValueAtTime(from,t); fl.frequency.exponentialRampToValueAtTime(to,t+d);
+    const g=ctx.createGain(); g.gain.setValueAtTime(v,t); g.gain.exponentialRampToValueAtTime(.001,t+d); s.connect(fl); fl.connect(g); g.connect(comp); s.start(t,Math.random()); s.stop(t+d+.05); }
+  const duck=s=>{ try{ BGM.duck(s); }catch(e){} };
+  return {
+    coin(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; tone(c,N(95),t,.09,"square",.07); tone(c,N(100),t+.07,.35,"square",.07); tone(c,N(107),t+.07,.35,"triangle",.06); },
+    tick(i){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.005; noise(c,t,.035,.22,4200,1400,"bandpass"); tone(c,N(70+(i%4)),t,.03,"square",.05); },
+    whirr(d=1){ const c=C(); if(!c) return; const t=c.ctx.currentTime; for(let i=0;i<d*14;i++) noise(c,t+i*.07+Math.random()*.03,.05,.08,2800+Math.random()*1500,900,"bandpass"); },
+    drop(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; tone(c,200,t,.2,"sine",.4,50); noise(c,t,.08,.25,1500,200); tone(c,160,t+.24,.12,"sine",.22,60); tone(c,140,t+.4,.08,"sine",.12,60); tone(c,N(84),t+.02,.05,"triangle",.06); },
+    knock(n){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.005; tone(c,N(64+n*5),t,.12,"triangle",.22,N(60+n*5)); noise(c,t,.06,.18,6000,1500); },
+    crack(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.005; noise(c,t,.18,.3,9000,2500,"highpass"); },
+    pop(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.005; noise(c,t,.3,.4,8000,500); tone(c,N(76),t,.25,"sawtooth",.07,N(100)); },
+    up(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.005; [76,83,88,95].forEach((n,i)=>tone(c,N(n),t+i*.05,.25,"square",.07)); noise(c,t,.4,.2,2000,9000,"bandpass"); },
+    star(i){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.005; tone(c,N(79+i*4),t,.35,"triangle",.14); tone(c,N(91+i*4),t,.25,"sine",.05); },
+    tease(r){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; if(r>=3){ duck(5); tone(c,N(60),t,.9,"sawtooth",.06,N(84)); tone(c,N(64),t,.9,"sawtooth",.05,N(88)); } else tone(c,N(72),t,.4,"triangle",.08,N(84)); },
+    roll(d){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; const n=Math.floor(d/.045); for(let i=0;i<n;i++) noise(c,t+i*.045,.04,.04+.18*i/n,5000,1800,"bandpass"); },
+    rumble(){ const c=C(); if(!c) return; duck(7); const t=c.ctx.currentTime+.01; tone(c,48,t,2,"sawtooth",.2,36); tone(c,51,t,2,"sawtooth",.15,37); noise(c,t,1.8,.3,500,60); tone(c,N(48),t+.2,1.8,"sawtooth",.05,N(84)); },
+    boom(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; tone(c,90,t,.8,"sine",.6,30); noise(c,t,.9,.5,4000,80); },
+    fanfare(r){ const c=C(); if(!c) return; duck(r>=3?6:3); const t=c.ctx.currentTime+.02;
+      const seqs=[[72,76,79],[72,76,79,84],[72,76,79,84,88],[67,72,76,79,84,88,91],[60,67,72,76,79,84,88,91,96]];
+      seqs[r].forEach((n,i)=>{ tone(c,N(n),t+i*.06,.45+(r>=3?.6:0),"square",.07); tone(c,N(n+12),t+i*.06,.3,"triangle",.05); });
+      const L=t+seqs[r].length*.06;
+      if(r>=2){ [0,4,7,12].forEach(k=>{ tone(c,N(72+k),L,1.1,"sawtooth",.035); tone(c,N(72+k)*1.007,L,1.1,"sawtooth",.03); }); noise(c,L,.6,.15,9000,1500); }
+      if(r>=3){ [76,79,84,88,91,96].forEach((n,i)=>tone(c,N(n),L+.3+i*.07,.5,"triangle",.09)); [48,55,60].forEach(n=>tone(c,N(n),L,1.8,"square",.05)); }
+      if(r>=4){ [84,88,91,96,100,103,108].forEach((n,i)=>tone(c,N(n),L+.9+i*.06,.7,"triangle",.1)); [36,43,48].forEach(n=>tone(c,N(n),L+.9,2.4,"sawtooth",.06)); noise(c,L+.9,1.5,.25,10000,800); } },
+    shard(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.005; tone(c,N(96),t,.08,"sine",.07); },
+    reveal(r){ this.fanfare(r); }
+  };
+})();
+
+/* ---- confetti / sparkles ---- */
+function gBurst(cv, r, big){
+  if(!cv) return; const ctx=cv.getContext("2d"), d=Math.min(2,devicePixelRatio||1), W=cv.clientWidth, H=cv.clientHeight; if(!W) return; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
+  const cols=[["#ffffff","#cfd8e6","#ffd6e8"],["#4fb3ff","#a8dcff","#fff"],["#b46bff","#e0c2ff","#fff","#ff9cf0"],["#ffc93a","#fff3b0","#ff9a1a","#fff"],["#ff4d4d","#ffa53a","#ffe14a","#3dff8a","#3ad6ff","#7a5cff","#ff4fd8","#fff"]][r];
+  const n=big?(r>=3?260:r>=2?160:90):40, cx=W/2, cy=H*.42;
+  const ps=Array.from({length:n},()=>{ const a=Math.random()*6.28, sp=(r>=3?9:6)+Math.random()*(r>=3?10:7); return {x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,s:3+Math.random()*6,a:Math.random()*6,va:(Math.random()-.5)*.5,c:cols[(Math.random()*cols.length)|0],l:0,L:70+Math.random()*80,k:Math.random()<.25?"star":"rect"}; });
+  const star=(x,y,s)=>{ ctx.beginPath(); for(let i=0;i<5;i++){ const a=i*1.2566-1.57, b=a+.628; ctx.lineTo(x+Math.cos(a)*s,y+Math.sin(a)*s); ctx.lineTo(x+Math.cos(b)*s*.45,y+Math.sin(b)*s*.45); } ctx.fill(); };
+  let raf; const step=()=>{ ctx.clearRect(0,0,W,H); let alive=0;
+    ps.forEach(p=>{ if(p.l++>p.L) return; alive++; p.vy+=.22; p.vx*=.985; p.vy*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.globalAlpha=Math.max(0,1-p.l/p.L); ctx.fillStyle=p.c;
+      if(p.k==="star") star(0,0,p.s); else ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2*(.4+.6*Math.abs(Math.cos(p.a*2)))); ctx.restore(); });
+    if(alive && cv.isConnected) raf=requestAnimationFrame(step); else ctx.clearRect(0,0,W,H); };
+  cancelAnimationFrame(cv._raf||0); step(); cv._raf=raf;
+}
+
+/* ---- capsules bouncing inside the dome (small physics) ---- */
+const CAP_COL = [["#ff8fb1","#ff5c8a"],["#8ee3c8","#2fbf8f"],["#ffd36b","#ffae2b"],["#9fd0ff","#4f9dff"],["#c9a7ff","#8a5cf0"],["#ffb07a","#ff7a3a"]];
+const RAR_COL = [null,["#7fd0ff","#1f86e8"],["#d4a6ff","#8a3cf0"],["#fff2a0","#ffb21a"],"rbw"];
+function domeSim(cv){
+  const ctx=cv.getContext("2d"); let W=0,H=0,R=0,cx=0,cy=0, raf=0, alive=true, stir=0, swirl=0, t0=0;
+  const balls=[]; const kinds=[0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,3,3,4];
+  function size(){ const d=Math.min(2,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0); R=Math.min(W,H)/2-4; cx=W/2; cy=H/2; }
+  size();
+  const br=()=>Math.max(12,R*.17);
+  kinds.forEach((k,i)=>{ const a=Math.random()*6.28, rr=Math.random()*R*.5; balls.push({x:cx+Math.cos(a)*rr, y:cy+R*.35+Math.sin(a)*rr*.4, vx:0, vy:0, ang:Math.random()*6.28, va:0, k, col:k===0?CAP_COL[i%CAP_COL.length]:RAR_COL[k]}); });
+  function drawBall(b,r){
+    ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.ang);
+    ctx.beginPath(); ctx.arc(0,0,r,0,6.28); ctx.fillStyle="#f6f6fb"; ctx.fill();
+    ctx.beginPath(); ctx.arc(0,0,r,Math.PI,0); ctx.closePath();
+    if(b.col==="rbw"){ const g=ctx.createLinearGradient(-r,0,r,0); ["#ff3d3d","#ffe14a","#3dff8a","#3ad6ff","#7a5cff","#ff4fd8"].forEach((c,i)=>g.addColorStop(i/5,c)); ctx.fillStyle=g; }
+    else { const g=ctx.createLinearGradient(0,-r,0,0); g.addColorStop(0,b.col[0]); g.addColorStop(1,b.col[1]); ctx.fillStyle=g; }
+    ctx.fill();
+    ctx.fillStyle="rgba(0,0,0,.18)"; ctx.fillRect(-r,-1.5,r*2,3);
+    ctx.restore();
+    // light and shadow do not turn with the ball
+    const g2=ctx.createRadialGradient(b.x-r*.35,b.y-r*.4,r*.1,b.x,b.y,r); g2.addColorStop(0,"rgba(255,255,255,.75)"); g2.addColorStop(.35,"rgba(255,255,255,0)"); g2.addColorStop(1,"rgba(0,0,0,.28)");
+    ctx.beginPath(); ctx.arc(b.x,b.y,r,0,6.28); ctx.fillStyle=g2; ctx.fill();
+    if(b.k>=3){ ctx.beginPath(); ctx.arc(b.x,b.y,r+2,0,6.28); ctx.strokeStyle=b.k===4?"rgba(255,120,240,.7)":"rgba(255,220,90,.7)"; ctx.lineWidth=2; ctx.stroke(); }
+  }
+  function step(t){
+    if(!alive) return; raf=requestAnimationFrame(step); if(!cv.isConnected){ alive=false; return; }
+    const dt=Math.min(2,(t-(t0||t))/16.67)||1; t0=t; const r=br();
+    for(const b of balls){
+      b.vy+=.35*dt;
+      if(stir>0){ b.vx+=(Math.random()-.5)*stir*1.6; b.vy-=Math.random()*stir*1.5; const dx=b.x-cx, dy=b.y-cy; b.vx+=-dy*.004*swirl; b.vy+=dx*.004*swirl; }
+      b.vx*=.995; b.vy*=.995; b.x+=b.vx*dt; b.y+=b.vy*dt; b.ang+=b.vx*.05*dt;
+      const dx=b.x-cx, dy=b.y-cy, d=Math.hypot(dx,dy), m=R-r;
+      if(d>m){ const nx=dx/d, ny=dy/d; b.x=cx+nx*m; b.y=cy+ny*m; const vn=b.vx*nx+b.vy*ny; if(vn>0){ b.vx-=1.6*vn*nx; b.vy-=1.6*vn*ny; b.vx*=.9; } }
+    }
+    for(let i=0;i<balls.length;i++) for(let j=i+1;j<balls.length;j++){ const a=balls[i], b=balls[j]; const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||.01, m=r*2;
+      if(d<m){ const nx=dx/d, ny=dy/d, o=(m-d)/2; a.x-=nx*o; a.y-=ny*o; b.x+=nx*o; b.y+=ny*o; const rv=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny; if(rv<0){ const im=-rv*.9; a.vx-=im*nx; a.vy-=im*ny; b.vx+=im*nx; b.vy+=im*ny; } } }
+    if(stir>0) stir=Math.max(0,stir-.012*dt); if(swirl>0) swirl=Math.max(0,swirl-.01*dt);
+    ctx.clearRect(0,0,W,H); balls.forEach(b=>drawBall(b,r));
+  }
+  raf=requestAnimationFrame(step);
+  let ro; try{ ro=new ResizeObserver(()=>size()); ro.observe(cv); }catch(e){}
+  return {
+    shake(p=1){ stir=Math.max(stir,1.2*p); swirl=Math.max(swirl,1.5*p); },
+    // take one capsule out through the bottom
+    take(k){ let i=balls.findIndex(b=>b.k===k); if(i<0) i=balls.findIndex(b=>b.k===0); if(i<0) i=0; const b=balls.splice(i,1)[0];
+      // keep the dome full: a new one falls in from the top
+      setTimeout(()=>{ if(!alive) return; const k2=[0,0,0,0,1,1,2,3][(Math.random()*8)|0]; balls.push({x:cx+(Math.random()-.5)*R*.6, y:cy-R*.6, vx:0, vy:2, ang:0, va:0, k:k2, col:k2===0?CAP_COL[(Math.random()*CAP_COL.length)|0]:RAR_COL[k2]}); }, 900);
+      return b; },
+    stop(){ alive=false; cancelAnimationFrame(raf); try{ ro&&ro.disconnect(); }catch(e){} }
+  };
+}
+
+/* a capsule element (shown rarity can be lower than the real one: it upgrades while opening) */
+function capEl(show, small){
+  const c=el("button","cap cr"+show+(small?" sm":"")); c.type="button";
+  if(show===0){ const p=CAP_COL[(Math.random()*CAP_COL.length)|0]; c.style.setProperty("--c1",p[0]); c.style.setProperty("--c2",p[1]); }
+  c.innerHTML='<i class="ct"></i><i class="cb"></i><i class="cs"></i><i class="ck"></i><i class="cg"></i>'; c.setAttribute("aria-label","カプセル"); return c;
+}
+function capShow(c, r){ c.classList.remove("cr0","cr1","cr2","cr3","cr4"); c.classList.add("cr"+r); if(r>0){ c.style.removeProperty("--c1"); c.style.removeProperty("--c2"); } }
+// what the capsule looks like first: sometimes one step lower, then it "upgrades" (UR always arrives as gold)
+const shownOf = r => r>=4 ? 3 : (r>=2 && Math.random()<.45 ? r-1 : r);
+
+function openGacha(){
+  if(document.getElementById("gacha")) return;
+  window.__party=true; document.body.classList.add("no-scroll");
+  try{ SFX.unlock(); }catch(e){}
+  const o=el("div","gacha"); o.id="gacha"; o.setAttribute("role","dialog"); o.setAttribute("aria-label","スタンプガチャ");
+  const bulbs=n=>Array.from({length:n},(_,i)=>`<i style="--i:${i}"></i>`).join("");
+  o.innerHTML=`<div class="ga-bg"><i></i><i></i><i></i></div><canvas class="ga-fx"></canvas><div class="ga-flash"></div>
+    <div class="ga-top"><b>🎰 スタンプガチャ</b><span class="ga-t"><i class="tk">🎟</i><b class="tn">0</b></span><button type="button" class="ga-x" aria-label="とじる">×</button></div>
+    <div class="ga-stage">
+      <div class="gm">
+        <div class="gm-sign"><div class="gm-bulbs top">${bulbs(11)}</div><b>NACHA</b><small>★ GACHA ★</small><div class="gm-bulbs bot">${bulbs(11)}</div><span class="gm-hot">激アツ!!</span></div>
+        <div class="gm-dome"><canvas class="gm-cv"></canvas><i class="gm-gloss"></i><i class="gm-gloss2"></i></div>
+        <div class="gm-body">
+          <div class="gm-slot"><i></i><small>🎟 × 1</small></div>
+          <div class="gm-handle" role="button" aria-label="ハンドルをまわす"><div class="gm-knob"><i></i><b></b></div><span class="gm-arrow">↻</span></div>
+          <div class="gm-chute"><i class="gm-flap"></i></div>
+        </div>
+        <div class="gm-base"></div>
+      </div>
+      <div class="ga-tray"></div>
+    </div>
+    <div class="ga-msg"></div>
+    <div class="ga-act"></div>
+    <div class="ga-foot"><button type="button" class="ga-zk">📖 ずかん</button><span class="ga-sh"></span></div>`;
+  document.body.append(o);
+  const $=s=>o.querySelector(s), cv=$(".ga-fx"), tray=$(".ga-tray"), act=$(".ga-act"), msg=$(".ga-msg"), gm=$(".gm"), knob=$(".gm-knob"), handle=$(".gm-handle");
+  const sim=domeSim($(".gm-cv"));
+  let busy=false, phase="idle", turnDone=null;
+  const close=()=>{ if(busy) return; sim.stop(); o.remove(); document.body.classList.remove("no-scroll"); window.__party=false; stuRender(); };
+  $(".ga-x").onclick=close; $(".ga-zk").onclick=()=>{ if(!busy) openZukan(); };
+  // idle wobble so the machine feels alive
+  const idleT=setInterval(()=>{ if(!o.isConnected){ clearInterval(idleT); return; } if(phase==="idle") sim.shake(.25); }, 3500);
+  function top(){ const g=G(); $(".ga-t .tn").textContent=g.t|0; const sh=$(".ga-sh"); sh.innerHTML="";
+    const bar=el("span","shb"); bar.style.setProperty("--p",Math.min(100,((g.sh|0)/30)*100)+"%"); sh.append(el("span",null,"💠 "+(g.sh|0)+"/30"), bar);
+    if((g.sh|0)>=30){ const b=el("button","ga-trade","🎟と交換"); b.type="button"; b.onclick=async()=>{ b.disabled=true; try{ gSet(await rpc("mc_s_shard_trade",{sk:SK})); GSFX.coin(); toast("🎟 チケット1枚ゲット！"); }catch(e){ toast("こうかんできませんでした"); } top(); idle(); }; sh.append(b); } }
+  function lights(st){ gm.classList.remove("lt1","lt2","lt3","lt4","ltoff","hot"); if(st) st.split(" ").forEach(c=>gm.classList.add(c)); }
+  function idle(){
+    phase="idle"; busy=false; act.innerHTML=""; lights(""); const t=G().t|0; handle.classList.toggle("ready",false);
+    if(!t){ msg.innerHTML="チケットがないよ。<br><small>レッスンやイベントで先生からもらえるよ！</small>"; return; }
+    msg.innerHTML="ボタンを押して ガチャをまわそう！";
+    const one=el("button","ga-btn","1回まわす"); one.append(el("small",null,"🎟 1")); one.type="button"; one.onclick=()=>start(1); act.append(one);
+    if(t>=2){ const k=Math.min(10,t); const many=el("button","ga-btn gold",k+"連まわす"); many.append(el("small",null,"🎟 "+k)); many.type="button"; many.onclick=()=>start(k); act.append(many); }
+  }
+  // ticket flies from the counter into the slot
+  async function feed(n){
+    const from=$(".ga-t").getBoundingClientRect(), to=$(".gm-slot").getBoundingClientRect();
+    for(let i=0;i<Math.min(n,5);i++){ const t=el("div","ga-fly","🎟"); t.style.left=from.left+"px"; t.style.top=from.top+"px"; t.style.setProperty("--dx",(to.left+to.width/2-from.left-12)+"px"); t.style.setProperty("--dy",(to.top-from.top)+"px"); document.body.append(t);
+      setTimeout(()=>{ t.remove(); GSFX.coin(); $(".gm-slot").classList.remove("eat"); void o.offsetWidth; $(".gm-slot").classList.add("eat"); }, 520); await gWait(n>1?110:0); }
+    await gWait(560);
+  }
+  // the handle: drag it round, or just tap it
+  (function(){
+    let drag=null, acc=0, last=0, ticks=0;
+    const ang=e=>{ const r=knob.getBoundingClientRect(); return Math.atan2(e.clientY-(r.top+r.height/2), e.clientX-(r.left+r.width/2))*180/Math.PI; };
+    handle.addEventListener("pointerdown",e=>{ if(phase!=="turn") return; drag={id:e.pointerId, a:ang(e), moved:0}; try{ handle.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+    handle.addEventListener("pointermove",e=>{ if(!drag||phase!=="turn") return; const a=ang(e); let d=a-drag.a; if(d>180) d-=360; if(d<-180) d+=360; drag.a=a; if(d<0) d*=.3; drag.moved+=Math.abs(d); acc+=d; acc=Math.max(0,acc);
+      knob.style.transform=`rotate(${acc}deg)`; const tk=Math.floor(acc/45); if(tk>ticks){ ticks=tk; GSFX.tick(tk); sim.shake(.6); buzz(8); }
+      if(acc>=360){ drag=null; finish(); } });
+    const up=()=>{ if(!drag) return; const tap=drag.moved<12; drag=null; if(tap) auto(); };
+    handle.addEventListener("pointerup",up); handle.addEventListener("pointercancel",()=>{ drag=null; });
+    async function auto(){ if(phase!=="turn") return; phase="turning"; const from=acc; const T=900, t0=performance.now();
+      await new Promise(res=>{ const f=t=>{ const k=Math.min(1,(t-t0)/T), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; acc=from+(360-from)*e; knob.style.transform=`rotate(${acc}deg)`; const tk=Math.floor(acc/45); if(tk>ticks){ ticks=tk; GSFX.tick(tk); sim.shake(.6); } if(k<1) requestAnimationFrame(f); else res(); }; requestAnimationFrame(f); });
+      finish(); }
+    function finish(){ phase="turned"; handle.classList.remove("ready"); knob.style.transition="transform .3s"; knob.style.transform="rotate(360deg)"; setTimeout(()=>{ knob.style.transition="none"; knob.style.transform="rotate(0deg)"; acc=0; ticks=0; },320); turnDone&&turnDone(); }
+    window.__gaAuto=auto;
+  })();
+  function waitTurn(){ phase="turn"; handle.classList.add("ready"); msg.innerHTML="ハンドルを <b>ぐるっと</b> まわして！<br><small>（タップでもまわるよ）</small>"; return new Promise(res=>{ turnDone=res; }); }
+
+  async function start(n){
+    if(busy) return; busy=true; act.innerHTML=""; tray.innerHTML=""; msg.textContent="";
+    const req=rpc("mc_s_gacha",{sk:SK, p_n:n}).then(r=>({r}),e=>({e}));
+    await feed(n);
+    const got=await req;
+    if(got.e){ toast(got.e.message==="no_ticket"?"チケットが足りないよ":"つながりません。もう一度ためしてね"); idle(); return; }
+    const r=got.r; gSet(r.g); top();
+    const res=(r.res||[]).map(x=>({...x, show:shownOf(x.r)}));
+    const bestShow=Math.max(...res.map(x=>x.show));
+    await waitTurn();
+    GSFX.whirr(1.2); sim.shake(2); buzz([20,30,20]);
+    // build-up: the lights tell how good it might be
+    msg.textContent="";
+    if(bestShow>=3){ lights("lt"+bestShow+" hot"); GSFX.tease(3); o.classList.add("shk1"); await gWait(1100); o.classList.remove("shk1"); }
+    else if(bestShow>=2){ lights("lt2"); GSFX.tease(2); await gWait(800); }
+    else { lights("lt1"); await gWait(500); }
+    if(res.length===1) await single(res[0]); else await multi(res);
+  }
+
+  /* ---------- one capsule ---------- */
+  async function single(x){
+    sim.take(x.show);
+    const c=capEl(x.show); c.classList.add("drop"); tray.append(c); GSFX.drop(); buzz(30); $(".gm-flap").classList.add("open"); setTimeout(()=>$(".gm-flap").classList.remove("open"),500);
+    await gWait(800);
+    let left=3; msg.innerHTML=`カプセルを <b>タップ</b> して あけよう！ <span class="ga-left">${left}</span>`;
+    c.classList.add("wob"+Math.min(x.show,3));
+    await new Promise(done=>{ c.onclick=async()=>{ if(c.dataset.busy) return; c.dataset.busy="1"; left--; GSFX.knock(3-left); buzz(15);
+      c.classList.remove("hit"); void c.offsetWidth; c.classList.add("hit","crk"+(3-left));
+      const lf=msg.querySelector(".ga-left"); if(lf) lf.textContent=left;
+      // upgrade on the 2nd tap
+      if(left===1 && x.show<x.r){ await upgrade(c, x); }
+      c.dataset.busy="";
+      if(left<=0){ c.onclick=null; done(); } }; });
+    msg.textContent="";
+    await openCap(c, x);
+    await revealOne(x);
+  }
+  async function upgrade(c, x){
+    if(x.r>=4){ // legend: blackout, rumble, rainbow
+      o.classList.add("blackout"); lights("ltoff"); GSFX.rumble(); c.classList.add("quake"); buzz([60,40,60,40,200]); await gWait(1400);
+      flash(); capShow(c,4); x.show=4; lights("lt4 hot"); c.classList.remove("quake"); c.classList.add("promote"); o.classList.add("shk2"); GSFX.boom(); await gWait(900); o.classList.remove("shk2");
+    } else {
+      c.classList.add("quake"); GSFX.crack(); await gWait(450); flash(.6); capShow(c,x.r); x.show=x.r; c.classList.remove("quake"); c.classList.add("promote"); GSFX.up(); lights("lt"+Math.min(x.r,4)+(x.r>=3?" hot":""));
+      const b=el("div","ga-up","昇格!!"); tray.append(b); setTimeout(()=>b.remove(),1100); await gWait(700);
+    }
+  }
+  function flash(op){ const f=$(".ga-flash"); f.style.setProperty("--fo",op||1); f.classList.remove("on"); void f.offsetWidth; f.classList.add("on"); }
+  async function openCap(c, x){
+    GSFX.roll(x.r>=3?1.1:.5); c.classList.add("charge"); await gWait(x.r>=3?1100:500);
+    GSFX.pop(); buzz(x.r>=3?[40,30,80]:30); c.classList.add("open"); flash(x.r>=3?1:.5); gBurst(cv, x.r, true);
+    await gWait(380);
+  }
+  /* the big result: stars, card flip, rarity, NEW */
+  function revealOne(x){ return new Promise(done=>{
+    const it=GITEM[x.id]; if(!it){ done(); return; }
+    o.classList.add("rv","rv"+x.r);
+    const m=el("div","gr gr"+x.r);
+    m.innerHTML=`<div class="gr-rays"></div><div class="gr-stars"></div>`;
+    const cut = x.r>=4 ? el("div","gr-cut") : null; if(cut){ cut.innerHTML="<b>LEGEND</b><span>伝説のアイテム</span>"; m.append(cut); }
+    const card=el("div","gr-card"); const inner=el("div","gr-in"); const back=el("div","gr-back"); back.innerHTML='<b>?</b>';
+    const front=el("div","gr-front rr"+x.r); front.append(el("div","gr-rar",RAR[x.r].k), el("div","gr-rarjp",RAR[x.r].jp), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat]));
+    inner.append(back, front); card.append(inner); m.append(card);
+    const tag=el("div","gr-tag"); m.append(tag);
+    const btns=el("div","gr-btns"); m.append(btns); o.append(m);
+    (async()=>{
+      if(cut){ await gWait(1500); }
+      const st=m.querySelector(".gr-stars");
+      for(let i=0;i<=x.r;i++){ const s=el("i",null,"★"); st.append(s); GSFX.star(i); await gWait(x.r>=3?260:170); }
+      card.classList.add("in"); await gWait(350); inner.classList.add("flip"); await gWait(420);
+      GSFX.fanfare(x.r); if(x.r>=3){ o.classList.add("shk2"); setTimeout(()=>o.classList.remove("shk2"),600); buzz([50,40,120]); }
+      gBurst(cv, x.r, true); front.classList.add("slam");
+      await gWait(450);
+      if(!x.dup){ tag.className="gr-tag nw"; tag.textContent="NEW!"; }
+      else { tag.className="gr-tag dup"; tag.textContent="もってた！ 💠 +0"; let k=0; const T=setInterval(()=>{ k++; tag.textContent="もってた！ 💠 +"+k; GSFX.shard(); if(k>=(x.sh|0)) clearInterval(T); }, Math.max(30, 500/(x.sh||1))); }
+      await gWait(300);
+      const wear=el("button","ga-btn gold","つけてみる"); wear.type="button"; wear.onclick=async()=>{ wear.disabled=true; if(await gEquip(it)){ wear.textContent="つけたよ ✓"; } else wear.disabled=false; };
+      const ok=el("button","ga-btn","OK"); ok.type="button"; ok.onclick=()=>{ m.remove(); o.classList.remove("rv","rv0","rv1","rv2","rv3","rv4","blackout"); lights(""); tray.innerHTML=""; done(); idle(); };
+      btns.append(wear, ok); btns.classList.add("in");
+    })();
+  }); }
+
+  /* ---------- 10 at once ---------- */
+  async function multi(res){
+    const box=el("div","ga-multi"); tray.append(box); const caps=[];
+    $(".gm-flap").classList.add("open");
+    for(let i=0;i<res.length;i++){ const x=res[i]; sim.take(x.show); const c=capEl(x.show,true); c.classList.add("drop"); box.append(c); caps.push(c); GSFX.tick(i); if(i%3===0) GSFX.drop(); await gWait(110); }
+    setTimeout(()=>$(".gm-flap").classList.remove("open"),300);
+    await gWait(500);
+    msg.innerHTML="タップして1つずつ あけてね";
+    const isOpen=res.map(()=>false); let showing=false, opened=0;
+    const allB=el("button","ga-btn","ぜんぶあける"); allB.type="button"; const skip=el("button","ga-btn ghost","スキップ"); skip.type="button"; act.append(allB, skip);
+    const openOne=async(i, fast)=>{ if(isOpen[i]) return; isOpen[i]=true; const c=caps[i], x=res[i];
+      if(x.show<x.r && !fast){ showing=true; await upgrade(c,x); }
+      c.classList.add("open"); GSFX.pop(); gBurst(cv, x.r, x.r>=3);
+      const t=el("span","ga-tile rr"+x.r); t.append(gIcon(GITEM[x.id]), rarBadge(x.r)); if(!x.dup) t.append(el("em","nw","NEW"));
+      await gWait(fast?0:160); c.replaceWith(t); caps[i]=t; t.onclick=()=>{ if(!showing) zoom(x); };
+      if(x.r>=3 && !fast){ showing=true; await revealMini(x); }
+      showing=false; opened++; if(opened===res.length) done(); };
+    caps.forEach((c,i)=>{ c.onclick=()=>{ if(!showing) openOne(i); }; });
+    allB.onclick=async()=>{ allB.disabled=true; skip.disabled=true; for(let i=0;i<res.length;i++){ if(isOpen[i]) continue; await openOne(i); await gWait(140); } };
+    skip.onclick=async()=>{ allB.disabled=true; skip.disabled=true; const best=Math.max(...res.map(x=>x.r)); for(let i=0;i<res.length;i++) if(!isOpen[i]) openOne(i,true); if(best>=3) GSFX.fanfare(best); };
+    function done(){ act.innerHTML=""; const nw=res.filter(x=>!x.dup).length, sh=res.reduce((s,x)=>s+(x.sh|0),0);
+      msg.innerHTML=`NEW <b>${nw}</b>こ`+(sh?` ・ 💠 +${sh}`:"")+`<br><small>タップでくわしく見られるよ</small>`;
+      const back=el("button","ga-btn","もどる"); back.type="button"; back.onclick=()=>{ tray.innerHTML=""; o.classList.remove("blackout"); idle(); }; act.append(back); }
+    function revealMini(x){ return new Promise(res_=>{ const it=GITEM[x.id]; const m=el("div","gr gr"+x.r+" mini"); m.innerHTML='<div class="gr-rays"></div>';
+      if(x.r>=4){ const cut=el("div","gr-cut"); cut.innerHTML="<b>LEGEND</b><span>伝説のアイテム</span>"; m.append(cut); }
+      const f=el("div","gr-front rr"+x.r+" solo slam"); f.append(el("div","gr-rar",RAR[x.r].k), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat])); if(!x.dup) f.append(el("div","gr-tag nw","NEW!"));
+      const ok=el("button","ga-btn","OK"); ok.type="button"; const b=el("div","gr-btns in"); b.append(ok); m.append(f,b); o.append(m);
+      GSFX.fanfare(x.r); gBurst(cv,x.r,true); o.classList.add("shk2"); setTimeout(()=>o.classList.remove("shk2"),600);
+      ok.onclick=()=>{ m.remove(); lights(""); o.classList.remove("blackout"); res_(); }; }); }
+    function zoom(x){ const it=GITEM[x.id]; const m=el("div","gr gr"+x.r+" mini"); m.innerHTML='<div class="gr-rays"></div>';
+      const f=el("div","gr-front rr"+x.r+" solo"); f.append(el("div","gr-rar",RAR[x.r].k), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat]));
+      const wear=el("button","ga-btn gold","つけてみる"); wear.type="button"; wear.onclick=async()=>{ wear.disabled=true; if(await gEquip(it)) wear.textContent="つけたよ ✓"; else wear.disabled=false; };
+      const ok=el("button","ga-btn","とじる"); ok.type="button"; ok.onclick=()=>m.remove(); const b=el("div","gr-btns in"); b.append(wear,ok); m.append(f,b); o.append(m); }
+  }
+  top(); idle();
 }
 
 // something is being watched / typed / sent -> don't redraw
