@@ -351,6 +351,12 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .filebtn{display:flex;align-items:center;justify-content:center;padding:14px;border-radius:12px;border:2px dashed var(--line);font-weight:800;cursor:pointer;text-align:center}
 .filebtn input{position:absolute;width:1px;height:1px;opacity:0}
 .picked{overflow-wrap:anywhere}
+.pv{position:relative;border-radius:14px;overflow:hidden;background:#000;border:2px solid var(--line)}
+.pv img,.pv video{display:block;width:100%;max-height:52vh;object-fit:contain;background:#000}
+.pv-dur{position:absolute;right:8px;top:8px;font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:99px;background:rgba(0,0,0,.6);color:#fff;pointer-events:none}
+.pv-ic{padding:18px 12px;text-align:center;font-weight:800;color:var(--ink)}
+.pv.aud{background:rgba(255,255,255,.05);padding:6px 10px 10px}.pv.aud audio{width:100%}
+.subform.has .filebtn{padding:8px;border-style:solid;font-size:.85rem}
 .upbar{height:10px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
 .upbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff5fa2,#8b6bff);transition:width .2s}
 .media{display:flex;flex-direction:column;gap:4px}
@@ -1756,18 +1762,44 @@ function stuTask(a){
 function subForm(a){
   const f=el("form","subform");
   f.innerHTML=`<label class="filebtn"><input type="file" accept="video/*,image/*,audio/*" class="keep-file"><span>🎥 動画・写真・録音をえらぶ</span></label>
-    <div class="picked rw-note"></div><input class="keep sub-cmt" maxlength="200" placeholder="先生へのひとこと（なくてもOK）">
+    <div class="pv" hidden></div><div class="picked rw-note"></div><input class="keep sub-cmt" maxlength="200" placeholder="先生へのひとこと（なくてもOK）">
     <div class="upbar" hidden><i></i></div><p class="rw-note up-msg"></p><button type="submit" class="btn primary sub-btn" disabled>先生に送る</button>`;
   const fi=f.querySelector("input[type=file]"), pk=f.querySelector(".picked"), sb=f.querySelector(".sub-btn"), bar=f.querySelector(".upbar"), msg=f.querySelector(".up-msg");
-  fi.onchange=()=>{ const file=fi.files[0]; fi.classList.toggle("keep", !!file); if(!file){ pk.textContent=""; sb.disabled=true; return; }
-    pk.textContent=`えらんだもの：${file.name||"ファイル"}（${fmtMB(file.size)}）`;
+  const pv=f.querySelector(".pv"), lbl=f.querySelector(".filebtn span"); let pvURL=null;
+  const clearPv=()=>{ if(pvURL){ try{ URL.revokeObjectURL(pvURL); }catch(e){} pvURL=null; } pv.innerHTML=""; pv.hidden=true; };
+  fi.onchange=()=>{ const file=fi.files[0]; fi.classList.toggle("keep", !!file); clearPv(); f.classList.toggle("has", !!file);
+    lbl.textContent = file ? "🔄 えらびなおす" : "🎥 動画・写真・録音をえらぶ";
+    if(!file){ pk.textContent=""; sb.disabled=true; return; }
+    showPreview(file);
+    pk.textContent=`${file.name||"ファイル"}（${fmtMB(file.size)}）`;
     if((file.type||"").startsWith("video/") && file.size>MAX_BYTES) pk.textContent+=" → 大きいので小さくしてから送ります（動画の長さぶん時間がかかります）";
     sb.disabled=false; };
+  // what the student is about to send: the photo itself, or the first frame of the video
+  function showPreview(file){
+    const t=file.type||"", nm=(file.name||"").toLowerCase();
+    try{ pvURL=URL.createObjectURL(file); }catch(e){ return; }
+    pv.hidden=false;
+    if(t.startsWith("image/") || /\.(jpe?g|png|gif|webp|heic|heif)$/.test(nm)){
+      const im=el("img"); im.alt="えらんだ写真"; im.src=pvURL; im.onerror=()=>{ pv.innerHTML=""; pv.append(el("div","pv-ic","🖼️ 写真")); }; pv.append(im);
+    } else if(t.startsWith("video/") || /\.(mp4|mov|m4v|webm|3gp)$/.test(nm)){
+      const v=el("video"); v.muted=true; v.playsInline=true; v.setAttribute("playsinline",""); v.setAttribute("webkit-playsinline",""); v.preload="auto"; v.controls=true;
+      v.src=pvURL+"#t=0.001";
+      const dur=el("span","pv-dur");
+      v.addEventListener("loadedmetadata",()=>{ if(isFinite(v.duration)){ const d=Math.round(v.duration); dur.textContent=`▶ ${Math.floor(d/60)}:${String(d%60).padStart(2,"0")}`; } });
+      // grab the first frame as a picture so it shows even before playing (iPhone)
+      v.addEventListener("loadeddata",()=>{ try{ const c=document.createElement("canvas"), w=v.videoWidth, h=v.videoHeight; if(!w||!h) return; const sc=Math.min(1,720/Math.max(w,h));
+        c.width=Math.round(w*sc); c.height=Math.round(h*sc); c.getContext("2d").drawImage(v,0,0,c.width,c.height); c.toBlob(b=>{ if(b && !v.poster) v.poster=URL.createObjectURL(b); },"image/jpeg",.8); }catch(e){} }, {once:true});
+      v.onerror=()=>{ pv.innerHTML=""; pv.append(el("div","pv-ic","🎥 動画（このスマホでは中身を表示できませんが、送れます）")); };
+      pv.append(v, dur);
+    } else {
+      const au=el("audio"); au.controls=true; au.preload="metadata"; au.src=pvURL; pv.classList.add("aud"); pv.append(el("div","pv-ic","🎵 録音"), au);
+    }
+  }
   f.onsubmit=async e=>{ e.preventDefault(); const file=fi.files[0]; if(!file||Stu.sending) return;
     Stu.sending=a.id; sb.disabled=true; fi.disabled=true; bar.hidden=false; msg.style.color="";
     const ui=(t,p)=>{ msg.textContent=t; bar.firstChild.style.width=Math.round(p*100)+"%"; };
     try{ await submitWork(a, file, f.querySelector(".sub-cmt").value, ui);
-      Stu.sending=null; delete Stu.reopen[a.id]; SFX.ping && SFX.ping(); toast("送りました！先生のOKを待ってね"); stuRefresh(true); }
+      Stu.sending=null; delete Stu.reopen[a.id]; clearPv(); SFX.ping && SFX.ping(); toast("送りました！先生のOKを待ってね"); stuRefresh(true); }
     catch(err){ Stu.sending=null; fi.disabled=false; sb.disabled=false; bar.hidden=true; msg.style.color="#ff8a9a";
       msg.textContent = err.message==="too_big" ? "ファイルが大きすぎます（50MBまで）。短く撮りなおすか、画質を下げて撮ってね。"
         : err.message==="too_long" ? "動画が長すぎて小さくできません。5分くらいまでにしてね。"
