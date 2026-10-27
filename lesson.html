@@ -874,6 +874,22 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .rk3 .pf-name{font-size:1.95rem}
 .rk3 .pf-stk.s0{top:6px;right:26px;font-size:1.5rem}
 
+/* ===== Advance: easier on the eyes (no strobe, slower, smoother) ===== */
+.rk3 .pf-ring i{background:conic-gradient(from 0deg,#ff1e3c,#2a0008 18%,#7a0018 30%,#b14dff 42%,#1a0012 55%,#ff1e3c 68%,#3a000c 82%,#ff1e3c);animation-duration:10s}
+.prof.rk3::after{animation:beat2 5s ease-in-out infinite;opacity:.75}
+@keyframes beat2{0%,100%{opacity:.6}50%{opacity:.9}}
+.rk3 .pf-name{animation:none}
+.rk3 .pf-name::after{text-shadow:-1px 0 rgba(255,0,60,.6),1px 0 rgba(0,210,255,.25),0 2px 0 #000,0 0 16px rgba(255,20,50,.75),0 0 34px rgba(255,20,50,.4)}
+.pf-in>.pf-flash,.pf-in>.pf-bolt.b2{display:none}
+.pf-in>.pf-bolt{animation:bolt2 11s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(185,139,255,.8))}
+@keyframes bolt2{0%,90%,100%{opacity:0}92%{opacity:.85}96%{opacity:0}}
+.pf-flames .f1{animation-duration:2.2s}.pf-flames .f2{animation-duration:1.7s}.pf-flames .f3{animation-duration:1.3s}
+.pf-shock{animation-duration:4s;border-color:rgba(255,40,70,.55)}
+.pf-in>.pf-crack{animation:magma2 6s ease-in-out infinite}
+@keyframes magma2{0%,100%{opacity:.6}50%{opacity:.95}}
+.pf-in>.pf-vortex{animation-duration:40s;opacity:.4}
+.rk3 .pf-orb{animation-duration:6s}
+
 </style>
 </head>
 <body>
