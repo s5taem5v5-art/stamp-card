@@ -1191,21 +1191,21 @@ body.no-scroll{overflow:hidden}
 .prof.skl .pf-road,.prof.skl .pf-road-h,.prof.skl .pf-tag,.prof.skl .pf-rk{color:#6a4300!important;text-shadow:0 0 4px #fff,0 0 8px #fff}
 .prof.skl .pf-name{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 1px 0 rgba(0,0,0,.25))}
 /* neon night (R): synthwave sun and a moving grid */
-.sk-neon .pf-in{background:linear-gradient(180deg,#1a0536 0%,#3a0b5e 52%,#0a0420 52.2%,#0a0420 100%)}
+.prof.sk-neon .pf-in{background:linear-gradient(180deg,#1a0536 0%,#3a0b5e 52%,#0a0420 52.2%,#0a0420 100%)}
 .sk-neon .sun{left:50%;top:18%;width:46%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:linear-gradient(180deg,#ffe56b 0%,#ff6ab4 60%,#b22bff 100%);
   -webkit-mask:repeating-linear-gradient(180deg,#000 0 9%,transparent 9% 11%);mask:repeating-linear-gradient(180deg,#000 0 9%,transparent 9% 11%);box-shadow:0 0 50px #ff5bc0;opacity:.9}
 .sk-neon .grid{left:-50%;right:-50%;top:52%;bottom:-10%;transform:perspective(140px) rotateX(58deg);transform-origin:top;
   background-image:linear-gradient(#ff3fd0 2px,transparent 2px),linear-gradient(90deg,#3fe8ff 2px,transparent 2px);background-size:44px 30px;animation:sk-grid 1.2s linear infinite;filter:drop-shadow(0 0 4px #ff3fd0);opacity:.85}
 @keyframes sk-grid{to{background-position:0 30px,0 0}}
 /* soda (R): bright, bubbles */
-.sk-soda .pf-in{background:linear-gradient(180deg,#bff6ff 0%,#7fe3ff 45%,#9bffd6 100%)}
+.prof.sk-soda .pf-in{background:linear-gradient(180deg,#bff6ff 0%,#7fe3ff 45%,#9bffd6 100%)}
 .sk-soda .b1,.sk-soda .b2{inset:0;background-image:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95) 0 2px,rgba(255,255,255,.35) 3px 5px,transparent 6px),radial-gradient(circle,rgba(255,255,255,.7) 0 2px,transparent 3px);
   background-size:60px 70px,38px 46px;animation:sk-bub 5s linear infinite}
 .sk-soda .b2{background-size:90px 110px,52px 64px;animation-duration:8s;opacity:.7}
 @keyframes sk-bub{to{background-position:0 -140px,10px -92px}}
 .sk-soda .fz{left:0;right:0;top:0;height:22%;background:linear-gradient(180deg,#fff 0,rgba(255,255,255,0) 100%);opacity:.8}
 /* aurora (SR) */
-.sk-aurora .pf-in{background:linear-gradient(180deg,#020b1f 0%,#06243a 60%,#0b1830 100%)}
+.prof.sk-aurora .pf-in{background:linear-gradient(180deg,#020b1f 0%,#06243a 60%,#0b1830 100%)}
 .sk-aurora .a1,.sk-aurora .a2,.sk-aurora .a3{left:-30%;width:160%;height:55%;top:-5%;border-radius:50%;filter:blur(18px);mix-blend-mode:screen;opacity:.85;animation:sk-aur 7s ease-in-out infinite alternate}
 .sk-aurora .a1{background:linear-gradient(90deg,transparent,#2dffb0 30%,#1affd5 50%,transparent)}
 .sk-aurora .a2{top:10%;background:linear-gradient(90deg,transparent,#7a5cff 35%,#ff5fd2 60%,transparent);animation-duration:9s;animation-delay:-3s}
@@ -1215,7 +1215,7 @@ body.no-scroll{overflow:hidden}
 .pf-skin .stars.s2{transform:rotate(180deg) scale(1.3);animation-delay:-1.5s;opacity:.7}
 @keyframes sk-tw{0%{opacity:.35}100%{opacity:1}}
 /* cyber (SR): circuits + scanlines + glitch */
-.sk-cyber .pf-in{background:radial-gradient(circle at 80% 20%,#06363a 0,#020a0d 60%)}
+.prof.sk-cyber .pf-in{background:radial-gradient(circle at 80% 20%,#06363a 0,#020a0d 60%)}
 .sk-cyber .cg{inset:0;background-image:linear-gradient(rgba(0,255,200,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,200,.16) 1px,transparent 1px),linear-gradient(90deg,transparent 48%,rgba(0,255,220,.55) 49% 51%,transparent 52%);
   background-size:22px 22px,22px 22px,140px 100%;animation:sk-cyb 3s linear infinite}
 @keyframes sk-cyb{to{background-position:0 22px,22px 0,140px 0}}
@@ -1223,24 +1223,24 @@ body.no-scroll{overflow:hidden}
 .sk-cyber .gl{left:0;right:0;height:14%;top:30%;background:linear-gradient(90deg,rgba(255,0,170,.35),rgba(0,255,230,.35));mix-blend-mode:screen;animation:sk-gl 4s steps(1) infinite;opacity:0}
 @keyframes sk-gl{0%,86%{opacity:0;transform:translateX(0)}88%{opacity:1;top:22%;transform:translateX(-6%)}91%{opacity:1;top:64%;transform:translateX(5%)}94%{opacity:0}}
 /* night sakura (SR) */
-.sk-yozakura .pf-in{background:linear-gradient(180deg,#1b0b33 0%,#3b1350 55%,#5a1a4e 100%)}
+.prof.sk-yozakura .pf-in{background:linear-gradient(180deg,#1b0b33 0%,#3b1350 55%,#5a1a4e 100%)}
 .sk-yozakura .moon{right:8%;top:6%;width:22%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fffbe8,#ffe9a8 60%,#f3c76a);box-shadow:0 0 30px 8px rgba(255,236,170,.45)}
 .sk-yozakura .pt{inset:0}
 .sk-yozakura .pt b{top:-8%;width:12px;height:9px;border-radius:12px 0 12px 0;background:linear-gradient(135deg,#ffd6ec,#ff8fc4);opacity:.95;animation:sk-petal 7s linear infinite;animation-delay:calc(var(--i) * -.8s)}
 @keyframes sk-petal{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(28px,220px) rotate(240deg)}100%{transform:translate(-10px,480px) rotate(520deg)}}
 /* galaxy (SSR) */
-.sk-galaxy .pf-in{background:#03010c}
+.prof.sk-galaxy .pf-in{background:#03010c}
 .sk-galaxy .neb{left:-40%;top:-40%;width:180%;height:180%;background:radial-gradient(closest-side at 35% 40%,rgba(160,60,255,.75),transparent 70%),radial-gradient(closest-side at 65% 55%,rgba(255,60,170,.6),transparent 70%),radial-gradient(closest-side at 50% 70%,rgba(40,140,255,.55),transparent 70%);
   filter:blur(6px);animation:spin 40s linear infinite;mix-blend-mode:screen}
 .sk-galaxy .neb.n2{animation-duration:65s;animation-direction:reverse;opacity:.55;transform:scale(.8)}
 /* golden temple (SSR) */
-.sk-temple .pf-in{background:radial-gradient(circle at 50% 0%,#ffe9a0 0,#c98a1c 45%,#5a3606 100%)}
+.prof.sk-temple .pf-in{background:radial-gradient(circle at 50% 0%,#ffe9a0 0,#c98a1c 45%,#5a3606 100%)}
 .sk-temple .rays{left:50%;top:-60%;width:220%;aspect-ratio:1;margin-left:-110%;background:repeating-conic-gradient(from 0deg,rgba(255,250,220,.35) 0 6deg,transparent 6deg 18deg);animation:spin 30s linear infinite;-webkit-mask:radial-gradient(circle,#000 0,transparent 62%);mask:radial-gradient(circle,#000 0,transparent 62%)}
 .sk-temple .pil{inset:0;background:linear-gradient(90deg,rgba(80,45,0,.55) 0 7%,rgba(255,230,160,.35) 7.5% 8.5%,transparent 9% 91%,rgba(255,230,160,.35) 91.5% 92.5%,rgba(80,45,0,.55) 93% 100%)}
 .sk-temple .dust{inset:0;background-image:radial-gradient(2px 2px at 20% 80%,#fff6c8,transparent),radial-gradient(1.5px 1.5px at 70% 60%,#fff,transparent),radial-gradient(2px 2px at 45% 30%,#ffe9a0,transparent),radial-gradient(1.5px 1.5px at 85% 85%,#fff,transparent);background-size:100% 100%;animation:sk-dust 6s linear infinite}
 @keyframes sk-dust{0%{transform:translateY(20px);opacity:0}30%{opacity:1}100%{transform:translateY(-60px);opacity:0}}
 /* black hole (UR) */
-.sk-blackhole .pf-in{background:#000}
+.prof.sk-blackhole .pf-in{background:#000}
 .sk-blackhole .bh-glow{right:-18%;top:50%;width:90%;aspect-ratio:1;transform:translateY(-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,150,40,.55) 0,rgba(170,40,255,.35) 35%,transparent 65%);filter:blur(8px);animation:bh-pulse 3s ease-in-out infinite}
 .sk-blackhole .bh-disk{right:-30%;top:50%;width:115%;aspect-ratio:1;margin-top:-57.5%;border-radius:50%;
   background:conic-gradient(from 0deg,#fff6d0,#ffa22a,#ff3d6e,#9a3cff,#3ab8ff,#fff6d0,#ffa22a,#ff3d6e,#9a3cff,#fff6d0);
@@ -1252,7 +1252,7 @@ body.no-scroll{overflow:hidden}
 @keyframes bh-pulse{50%{opacity:.6;transform:translateY(-50%) scale(1.08)}}
 .sk-blackhole .pf-in::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 74% 50%,transparent 0 12%,rgba(0,0,0,.0) 30%);}
 /* seraph / holy (UR, light) */
-.sk-seraph .pf-in{background:radial-gradient(circle at 50% -10%,#ffffff 0,#fff6d6 40%,#ffd88a 100%)}
+.prof.sk-seraph .pf-in{background:radial-gradient(circle at 50% -10%,#ffffff 0,#fff6d6 40%,#ffd88a 100%)}
 .sk-seraph .sr-rays{left:50%;top:-70%;width:240%;aspect-ratio:1;margin-left:-120%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.9) 0 4deg,rgba(255,220,120,.15) 4deg 14deg);animation:spin 24s linear infinite;opacity:.5;-webkit-mask:radial-gradient(circle,#000 0,transparent 60%);mask:radial-gradient(circle,#000 0,transparent 60%)}
 .sk-seraph .sr-halo{left:50%;top:-6%;width:62%;height:16%;margin-left:-31%;border-radius:50%;border:5px solid #ffd54a;box-shadow:0 0 18px 4px #fff2a8,inset 0 0 12px #fff2a8;animation:sr-halo 3s ease-in-out infinite}
 @keyframes sr-halo{50%{transform:translateY(5px);box-shadow:0 0 30px 10px #fff2a8,inset 0 0 18px #fff}}
@@ -1595,6 +1595,90 @@ body.no-scroll{overflow:hidden}
 @keyframes cut{0%{transform:rotate(-8deg) translateX(110%)}25%,75%{transform:rotate(-8deg) translateX(0)}100%{transform:rotate(-8deg) translateX(-110%);opacity:0}}
 .gr.mini{gap:16px}
 @media (prefers-reduced-motion: reduce){.gacha.shk1,.gacha.shk2{animation:none}.gr-rays{animation:none}}
+
+/* ===================== v3: drawn avatars, frames, more skins / name effects ===================== */
+.avsvg{display:block;width:100%;height:100%}
+.pf-av{width:48px;height:48px;right:-12px;bottom:-10px;padding:0;overflow:visible;background:transparent!important;border:0!important}
+.pf-av .avsvg{border-radius:50%;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+.srow-av{background:transparent;overflow:hidden}
+.gi.gi-av{width:44px;height:44px;min-width:0}
+.gi.gi-av.big{width:130px;height:130px}
+.gi.big .avsvg{filter:drop-shadow(0 8px 16px rgba(0,0,0,.45))}
+.dk-grid.avs{grid-template-columns:repeat(3,1fr)}
+.dk-grid.avs .dk-it{padding:8px 4px}
+.dk-grid.avs .gi-av{width:56px;height:56px}
+.dk-grid.avs .dk-l{font-size:.66rem;line-height:1.2}
+.ga-tile .gi.gi-av{width:38px;height:38px}
+.zk-it .gi.gi-av{width:46px;height:46px}
+/* frames: recolour the spinning border + glow */
+.prof.fr .pf-ring i{animation-duration:5s}
+.fr-pastel .pf-ring i{background:conic-gradient(#ffc6e0,#c9e7ff,#d8ffd6,#fff3b8,#e6d4ff,#ffc6e0)!important}
+.fr-mint .pf-ring i{background:conic-gradient(#b8ffe6,#5fe0c0,#e8fff7,#5fe0c0,#b8ffe6)!important}
+.fr-neon .pf-ring i{background:conic-gradient(#ff2fd0,#2fe8ff,#ff2fd0,#2fe8ff,#ff2fd0)!important}
+.prof.fr-neon::after{opacity:1!important;box-shadow:0 0 14px 2px rgba(255,47,208,.7),0 0 26px 4px rgba(47,232,255,.45)!important}
+.fr-ocean .pf-ring i{background:conic-gradient(#0a3d8f,#3ad6ff,#e8fbff,#3ad6ff,#0a3d8f)!important}
+.fr-sakura .pf-ring i{background:conic-gradient(#ff8fc4,#fff0f7,#ffb8da,#ff5fa2,#fff0f7,#ff8fc4)!important}
+.prof.fr-sakura::after{opacity:1!important;box-shadow:0 0 18px 3px rgba(255,143,196,.6)!important}
+.fr-volt .pf-ring i{background:conic-gradient(#fff,#ffe14a 10%,#1a1a2a 12% 38%,#7fe3ff 40%,#fff 42%,#1a1a2a 44% 70%,#ffe14a 72%,#fff 74%,#1a1a2a 76% 100%)!important;animation-duration:1.4s!important}
+.prof.fr-volt::after{opacity:1!important;box-shadow:0 0 16px 3px rgba(127,227,255,.7)!important;animation:volt 1.2s steps(2) infinite}
+@keyframes volt{50%{box-shadow:0 0 24px 6px rgba(255,225,74,.8)}}
+.fr-gold .pf-ring i{background:conic-gradient(#7a4a00,#ffd75a,#fff6c8,#ffb21a,#7a4a00,#ffd75a,#fff6c8,#ffb21a,#7a4a00)!important;animation-duration:3s!important}
+.prof.fr-gold{padding:5px}
+.prof.fr-gold::after{opacity:1!important;box-shadow:0 0 22px 4px rgba(255,200,60,.75),0 0 40px 8px rgba(255,160,0,.35)!important}
+.fr-flame .pf-ring i{background:conic-gradient(#ff2a00,#ffd000,#ff7a00,#ff2a00,#ffd000,#ff7a00,#ff2a00)!important;animation-duration:1.6s!important}
+.prof.fr-flame{padding:5px}
+.prof.fr-flame::after{opacity:1!important;box-shadow:0 -6px 22px 4px rgba(255,90,0,.8),0 0 40px 8px rgba(255,40,0,.4)!important;animation:flamep .5s ease-in-out infinite alternate}
+@keyframes flamep{to{box-shadow:0 -10px 30px 6px rgba(255,140,0,.9),0 0 46px 10px rgba(255,40,0,.5)}}
+.fr-prism .pf-ring i{background:conic-gradient(#ff3d3d,#ffa53a,#ffe14a,#3dff8a,#3ad6ff,#7a5cff,#ff4fd8,#ff3d3d)!important;animation-duration:1.8s!important}
+.prof.fr-prism{padding:6px}
+.prof.fr-prism::after{opacity:1!important;box-shadow:0 0 22px 4px rgba(255,79,216,.7),0 0 44px 10px rgba(58,214,255,.5)!important;animation:prismp 2s linear infinite}
+@keyframes prismp{0%,100%{filter:hue-rotate(0)}50%{filter:hue-rotate(180deg)}}
+/* small frame preview */
+.gfr{position:relative;display:block;width:46px;height:32px;border-radius:9px;padding:3px;overflow:hidden;transform:none!important}
+.gfr .pf-ring{border-radius:9px}
+.gfr .gfr-in{position:relative;display:block;width:100%;height:100%;border-radius:6px;background:#1a1030}
+.gi.big .gfr{width:200px;height:130px;border-radius:18px;padding:7px}
+.gi.big .gfr .pf-ring{border-radius:18px}
+.gi.big .gfr .gfr-in{border-radius:12px}
+.dk-grid.frames .gfr{width:60px;height:40px}
+/* new skins */
+.prof.sk-pastel .pf-in{background:linear-gradient(160deg,#ffe3f1 0%,#e6f0ff 45%,#e9fff1 100%)}
+.sk-pastel .hz{inset:0}
+.sk-pastel .hz b{top:-8%;width:12px;height:12px;background:radial-gradient(circle at 30% 30%,#fff,#ffb3d6);border-radius:50%;opacity:.8;animation:sk-petal 9s linear infinite;animation-delay:calc(var(--i) * -1s)}
+.prof.sk-mintdot .pf-in{background:#e6fff6}
+.sk-mintdot .md{inset:0;background-image:radial-gradient(circle,#9be8cf 0 4px,transparent 5px),radial-gradient(circle,#c9f5e6 0 3px,transparent 4px);background-size:26px 26px,26px 26px;background-position:0 0,13px 13px;animation:sk-md 8s linear infinite}
+@keyframes sk-md{to{background-position:26px 26px,39px 39px}}
+.prof.sk-sunset .pf-in{background:linear-gradient(180deg,#2a1450 0%,#a43a7a 40%,#ff8a4a 70%,#ffd27a 100%)}
+.sk-sunset .sun2{right:4%;top:4%;width:30%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff6c8,#ffb84a 60%,rgba(255,120,60,0) 72%);animation:sun2 6s ease-in-out infinite alternate}
+@keyframes sun2{to{transform:translateY(8px)}}
+.sk-sunset .wv,.sk-ocean .wv{left:-20%;right:-20%;bottom:0;height:26%;background:repeating-linear-gradient(170deg,rgba(255,255,255,.18) 0 3px,transparent 3px 14px),linear-gradient(180deg,rgba(40,20,80,.4),rgba(20,10,40,.85));animation:wv 5s ease-in-out infinite alternate}
+@keyframes wv{to{transform:translateX(6%)}}
+.prof.sk-candy .pf-in{background:repeating-linear-gradient(135deg,#fff 0 16px,#ffd1e6 16px 32px,#fff 32px 48px,#cdeeff 48px 64px)}
+.sk-candy .cs1{inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.7),transparent 40%);animation:sk-tw 3s ease-in-out infinite alternate}
+.prof.sk-ocean .pf-in{background:linear-gradient(180deg,#0a4f8f 0%,#06305e 50%,#020c22 100%)}
+.sk-ocean .ray{left:-10%;right:-10%;top:-10%;height:80%;background:repeating-linear-gradient(100deg,rgba(150,230,255,.18) 0 18px,transparent 18px 50px);-webkit-mask:linear-gradient(180deg,#000,transparent);mask:linear-gradient(180deg,#000,transparent);animation:wv 7s ease-in-out infinite alternate}
+.sk-ocean .bb{inset:0;background-image:radial-gradient(circle,rgba(200,240,255,.7) 0 2px,transparent 3px),radial-gradient(circle,rgba(200,240,255,.5) 0 3px,transparent 4px);background-size:50px 80px,80px 120px;animation:sk-bub 6s linear infinite}
+.sk-ocean .wv{top:auto;opacity:.6}
+.prof.sk-matrix .pf-in{background:#010a03}
+.sk-matrix .mx{inset:-50% 0 0 0;background-image:repeating-linear-gradient(90deg,transparent 0 12px,rgba(0,255,90,.0) 12px 14px),linear-gradient(180deg,transparent 0,rgba(0,255,100,.55) 2px,transparent 6px);
+  background-size:14px 100%,14px 26px;-webkit-mask:repeating-linear-gradient(90deg,#000 0 6px,transparent 6px 14px);mask:repeating-linear-gradient(90deg,#000 0 6px,transparent 6px 14px);animation:mx 2.4s linear infinite;filter:drop-shadow(0 0 4px #00ff66)}
+.sk-matrix .mx.m2{left:7px;animation-duration:3.7s;opacity:.7}
+@keyframes mx{to{transform:translateY(50%)}}
+.prof.sk-lava .pf-in{background:radial-gradient(circle at 50% 120%,#ff5a00 0,#7a0f00 50%,#1a0300 100%)}
+.sk-lava .lv{left:-20%;width:70%;aspect-ratio:1;bottom:-30%;border-radius:50%;background:radial-gradient(circle,#ffd000,#ff4a00 45%,transparent 70%);filter:blur(10px);animation:lava 6s ease-in-out infinite alternate;mix-blend-mode:screen}
+.sk-lava .lv.l2{left:55%;bottom:-40%;animation-duration:8s;animation-delay:-3s}
+@keyframes lava{to{transform:translate(20%,-30%) scale(1.3)}}
+.sk-lava .cr{inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,140,0,.55) 41%,transparent 42%),linear-gradient(60deg,transparent 60%,rgba(255,100,0,.45) 61%,transparent 62%),linear-gradient(160deg,transparent 25%,rgba(255,180,0,.4) 26%,transparent 27%);animation:sk-tw 1.6s ease-in-out infinite alternate}
+/* new name effects */
+.nf-pastel{color:#fff!important;-webkit-text-stroke:.6px #ff8fc4;text-shadow:2px 2px 0 #ffd1e6,-1px -1px 0 #c9e7ff!important}
+.nf-ice{color:#e8fbff!important;text-shadow:0 0 4px #fff,0 0 10px #8fe3ff,0 2px 0 #5fb8ff!important;background:linear-gradient(100deg,#fff 0 40%,#bdefff 50%,#fff 60%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nf-sh 3s linear infinite}
+.nf-glitch{color:#fff!important;text-shadow:2px 0 #ff2fd0,-2px 0 #2fe8ff!important;animation:glitch 2.4s steps(1) infinite}
+@keyframes glitch{0%,88%,100%{transform:none;text-shadow:2px 0 #ff2fd0,-2px 0 #2fe8ff}90%{transform:translateX(-3px) skewX(-12deg);text-shadow:-3px 0 #ff2fd0,3px 0 #2fe8ff}93%{transform:translateX(2px);clip-path:inset(30% 0 20% 0)}96%{transform:none;clip-path:none}}
+.nf-galaxy{background:linear-gradient(90deg,#7a5cff,#ff4fd8,#3ad6ff,#fff,#7a5cff);background-size:300% 100%;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent;animation:nf-sh 4s linear infinite;text-shadow:none!important;filter:drop-shadow(0 0 4px rgba(180,120,255,.9)) drop-shadow(0 0 10px rgba(80,200,255,.6))}
+.prof.skl .pf-st div{background:rgba(255,255,255,.78)!important;box-shadow:0 2px 0 rgba(0,0,0,.08)!important;border-color:rgba(0,0,0,.06)!important}
+.prof.skl .pf-st b{color:#4a3aa8!important;text-shadow:none!important}
+.prof.skl .pf-st small,.prof.skl .pf-who,.prof.skl .pf-nm:not(.nf){color:#2a2140!important;text-shadow:none!important}
+.prof.skl .pf-lad small,.prof.skl .pf-road-h b{color:#2a2140!important;text-shadow:0 0 3px #fff!important}
 
 </style>
 </head>
@@ -2488,9 +2572,9 @@ const RAR = [
 ];
 const GACHA = [
   // ---- N ----
-  {id:"g_av_turtle", r:0, cat:"av", v:"🐢", n:"のんびりカメ"},
-  {id:"g_av_hedge",  r:0, cat:"av", v:"🦔", n:"ハリネズミ"},
-  {id:"g_av_lady",   r:0, cat:"av", v:"🐞", n:"てんとうむし"},
+  {id:"g_av_turtle", r:0, cat:"av", v:{b:"panda", c:"#ffffff", c2:"#2e2b38", bg:"#e8e4ff", e:"sleepy", a:"nightcap", ac:"#7a8cff"}, n:"おひるねパンダ"},
+  {id:"g_av_hedge",  r:0, cat:"av", v:{b:"hamster", c:"#e9a86a", c2:"#fff4e6", bg:"#ffe9f2", e:"happy", a:"beanie", ac:"#ff7aa8"}, n:"ニットぼうハムスター"},
+  {id:"g_av_lady",   r:0, cat:"av", v:{b:"chick", c:"#ffd93d", c2:"#ff9f1c", bg:"#e2f4ff", e:"wink", a:"cap", ac:"#ff5c5c"}, n:"キャップひよこ"},
   {id:"g_st_cherry", r:0, cat:"st", v:"🍒", n:"さくらんぼ"},
   {id:"g_st_bear",   r:0, cat:"st", v:"🧸", n:"くまのぬいぐるみ"},
   {id:"g_st_bubble", r:0, cat:"st", v:"🫧", n:"しゃぼんだま"},
@@ -2499,9 +2583,9 @@ const GACHA = [
   {id:"g_ti_yubi",   r:0, cat:"title", v:"ゆびがつよい", n:"しょうごう"},
   {id:"g_nf_glow",   r:0, cat:"nfx", v:"glow", n:"ふんわり光る名前"},
   // ---- R ----
-  {id:"g_av_flam",   r:1, cat:"av", v:"🦩", n:"フラミンゴ"},
-  {id:"g_av_whale",  r:1, cat:"av", v:"🐳", n:"くじら"},
-  {id:"g_av_peac",   r:1, cat:"av", v:"🦚", n:"クジャク"},
+  {id:"g_av_flam",   r:1, cat:"av", v:{b:"cat", c:"#ffd1e6", c2:"#fff3f8", bg:"#2b1b4a", e:"happy", a:"headphones", ac:"#3ad6ff", fr:1}, n:"DJにゃんこ"},
+  {id:"g_av_whale",  r:1, cat:"av", v:{b:"dog", c:"#f2dcc0", c2:"#8a5a33", bg:"#ffe4b8", e:"dot", a:"shades", ac:"#ff4fd8", fr:1}, n:"サングラスわんこ"},
+  {id:"g_av_peac",   r:1, cat:"av", v:{b:"rabbit", c:"#ffffff", c2:"#ffb5c8", bg:"#e9ffe9", e:"happy", a:"flower", fr:1}, n:"はなかんむりうさぎ"},
   {id:"g_st_head",   r:1, cat:"st", v:"🎧", n:"ヘッドホン"},
   {id:"g_st_mirror", r:1, cat:"st", v:"🪩", n:"ミラーボール"},
   {id:"g_ti_gkid",   r:1, cat:"title", v:"ギターキッズ", n:"しょうごう"},
@@ -2512,9 +2596,9 @@ const GACHA = [
   {id:"g_sk_soda",   r:1, cat:"skin", v:"soda", n:"ソーダフロート"},
   {id:"g_nf_neon",   r:1, cat:"nfx", v:"neon", n:"ネオン管の名前"},
   // ---- SR ----
-  {id:"g_av_shark",  r:2, cat:"av", v:"🦈", n:"サメ"},
-  {id:"g_av_fairy",  r:2, cat:"av", v:"🧚", n:"ようせい"},
-  {id:"g_av_eagle",  r:2, cat:"av", v:"🦅", n:"イーグル"},
+  {id:"g_av_shark",  r:2, cat:"av", v:{b:"fox", c:"#5b4a7a", c2:"#e8e0ff", bg:"#1d1433", e:"dot", a:"ninja", ac:"#ff3d6e", fr:2}, n:"ニンジャきつね"},
+  {id:"g_av_fairy",  r:2, cat:"av", v:{b:"owl", c:"#6a4fb0", c2:"#e6dcff", bg:"#20164a", e:"star", a:"wizard", ac:"#5a3ae0", fr:2}, n:"まほうつかいフクロウ"},
+  {id:"g_av_eagle",  r:2, cat:"av", v:{b:"bear", c:"#2b2b33", c2:"#6b6b7a", bg:"#ff4f8b", e:"dot", a:"shades", ac:"#ffe14a", fr:2}, n:"ロックスターくま"},
   {id:"g_st_crystal",r:2, cat:"st", v:"🔮", n:"すいしょう玉"},
   {id:"g_st_sword",  r:2, cat:"st", v:"🗡️", n:"伝説の剣"},
   {id:"g_ti_stage",  r:2, cat:"title", v:"ステージの支配者", n:"しょうごう"},
@@ -2526,8 +2610,8 @@ const GACHA = [
   {id:"g_sk_yozak",  r:2, cat:"skin", v:"yozakura", n:"夜桜"},
   {id:"g_nf_gold",   r:2, cat:"nfx", v:"gold", n:"黄金の名前"},
   // ---- SSR ----
-  {id:"g_av_dragon", r:3, cat:"av", v:"🐉", n:"ドラゴン"},
-  {id:"g_av_vamp",   r:3, cat:"av", v:"🧛", n:"ヴァンパイア"},
+  {id:"g_av_dragon", r:3, cat:"av", v:{b:"dragon", c:"#4fc98a", c2:"#ffd23f", bg:"#14304a", e:"dot", fr:3}, n:"ドラゴン"},
+  {id:"g_av_vamp",   r:3, cat:"av", v:{b:"cat", c:"#3a2a4a", c2:"#6b5580", bg:"#3a0a1a", e:"star", a:"horns", ac:"#ff3d3d", fr:3}, n:"デビルにゃんこ"},
   {id:"g_st_galaxy", r:3, cat:"st", v:"🌌", n:"銀河"},
   {id:"g_ti_kami",   r:3, cat:"title", v:"神に選ばれし声", n:"しょうごう"},
   {id:"g_ti_haou",   r:3, cat:"title", v:"六弦の覇王", n:"しょうごう"},
@@ -2541,13 +2625,198 @@ const GACHA = [
   {id:"g_sk_seraph", r:4, cat:"skin", v:"seraph", n:"神域"},
   {id:"g_fx_storm",  r:4, cat:"fx", v:"storm", n:"神雷"},
   {id:"g_ti_legend", r:4, cat:"title", v:"NACHAの伝説", n:"しょうごう"},
-  {id:"g_nf_rbw",    r:4, cat:"nfx", v:"rainbow", n:"虹の覇気"}
+  {id:"g_nf_rbw",    r:4, cat:"nfx", v:"rainbow", n:"虹の覇気"},
+  // ---- more (v2) ----
+  {id:"g_av_beanie_p", r:1, cat:"av", v:{b:"penguin", c:"#2f3b63", c2:"#ffffff", bg:"#d6f0ff", e:"happy", a:"beanie", ac:"#ffb21a", fr:1}, n:"ニットペンギン"},
+  {id:"g_av_alien_dj", r:3, cat:"av", v:{b:"alien", c:"#b48eff", c2:"#140f24", bg:"#0b2a3a", e:"dot", a:"headphones", ac:"#3dff8a", fr:3}, n:"宇宙DJ"},
+  {id:"g_av_unicorn",  r:4, cat:"av", v:{b:"unicorn", c:"#ffffff", c2:"#ffe0f2", bg:"#2a1250", e:"star", fr:4}, n:"天界ユニコーン"},
+  {id:"g_av_robo_k",   r:2, cat:"av", v:{b:"robot", c:"#ffd36b", c2:"#ff4fd8", bg:"#2a1250", e:"happy", a:"crown", fr:2}, n:"キングロボ"},
+  {id:"g_av_ghost_t",  r:1, cat:"av", v:{b:"ghost", c:"#ffffff", c2:"#d9d2ff", bg:"#3a2a6a", e:"wink", a:"tophat", ac:"#ff4f8b", fr:1}, n:"シルクハットおばけ"},
+  // frames (the border around the card)
+  {id:"g_fr_pastel", r:0, cat:"frame", v:"pastel", n:"パステルフレーム"},
+  {id:"g_fr_mint",   r:0, cat:"frame", v:"mint", n:"ミントフレーム"},
+  {id:"g_fr_neon",   r:1, cat:"frame", v:"neon", n:"ネオンフレーム"},
+  {id:"g_fr_ocean",  r:1, cat:"frame", v:"ocean", n:"オーシャンフレーム"},
+  {id:"g_fr_sakura", r:2, cat:"frame", v:"sakura", n:"さくらフレーム"},
+  {id:"g_fr_volt",   r:2, cat:"frame", v:"volt", n:"エレキフレーム"},
+  {id:"g_fr_gold",   r:3, cat:"frame", v:"gold", n:"純金フレーム"},
+  {id:"g_fr_flame",  r:3, cat:"frame", v:"flame", n:"業火フレーム"},
+  {id:"g_fr_prism",  r:4, cat:"frame", v:"prism", n:"プリズムフレーム"},
+  // skins
+  {id:"g_sk_pastel", r:0, cat:"skin", v:"pastel", n:"パステルドリーム"},
+  {id:"g_sk_mintdot",r:0, cat:"skin", v:"mintdot", n:"ミントドット"},
+  {id:"g_sk_sunset", r:1, cat:"skin", v:"sunset", n:"サンセット"},
+  {id:"g_sk_candy",  r:1, cat:"skin", v:"candy", n:"キャンディ"},
+  {id:"g_sk_ocean",  r:2, cat:"skin", v:"ocean", n:"深海"},
+  {id:"g_sk_matrix", r:3, cat:"skin", v:"matrix", n:"マトリックス"},
+  {id:"g_sk_lava",   r:3, cat:"skin", v:"lava", n:"マグマ"},
+  // name effects
+  {id:"g_nf_pastel", r:0, cat:"nfx", v:"pastel", n:"パステルの名前"},
+  {id:"g_nf_ice",    r:1, cat:"nfx", v:"ice", n:"こおりの名前"},
+  {id:"g_nf_glitch", r:2, cat:"nfx", v:"glitch", n:"バグった名前"},
+  {id:"g_nf_galaxy", r:3, cat:"nfx", v:"galaxy", n:"銀河の名前"},
+  // effects
+  {id:"g_fx_confetti",r:0, cat:"fx", v:"confetti", n:"かみふぶき"},
+  {id:"g_fx_paw",    r:0, cat:"fx", v:"paw", n:"あしあと"},
+  {id:"g_fx_ghost",  r:1, cat:"fx", v:"ghost", n:"おばけパーティー"},
+  {id:"g_fx_moon",   r:2, cat:"fx", v:"moon", n:"月夜"},
+  {id:"g_fx_fireworks",r:3,cat:"fx", v:"fireworks", n:"はなび"},
+  // titles
+  {id:"g_ti_rhythm", r:0, cat:"title", v:"リズム職人見習い", n:"しょうごう"},
+  {id:"g_ti_hamori", r:0, cat:"title", v:"ハモリの達人", n:"しょうごう"},
+  {id:"g_ti_magic",  r:1, cat:"title", v:"高音の魔術師", n:"しょうごう"},
+  {id:"g_ti_stroke", r:1, cat:"title", v:"ストローク番長", n:"しょうごう"},
+  {id:"g_ti_sonic",  r:2, cat:"title", v:"音速のギタリスト", n:"しょうごう"},
+  {id:"g_ti_shout",  r:2, cat:"title", v:"魂のシャウト", n:"しょうごう"},
+  {id:"g_ti_diva",   r:3, cat:"title", v:"NACHAの歌姫", n:"しょうごう"},
+  {id:"g_ti_god",    r:4, cat:"title", v:"音楽の神に愛されし者", n:"しょうごう"}
 ];
 const GITEM = Object.fromEntries(GACHA.map(g=>[g.id,g]));
-const CAT_JP = {av:"アバター", st:"ステッカー", title:"しょうごう", fx:"エフェクト", skin:"カードスキン", nfx:"ネームエフェクト"};
+const CAT_JP = {av:"アバター", st:"ステッカー", title:"しょうごう", fx:"エフェクト", skin:"カードスキン", nfx:"ネームエフェクト", frame:"フレーム"};
 // a stored decoration value: gacha items are stored by id, everything else as itself
 const gv = v => (typeof v==="string" && GITEM[v]) ? GITEM[v].v : v;
 const gr = v => (typeof v==="string" && GITEM[v]) ? GITEM[v].r : -1;
+/* ================= AVATARS: drawn characters (no emoji) ================= */
+// spec: b = base animal, c = main colour, c2 = second colour, bg = background, e = eyes, a = accessory, ac = accessory colour, fr = frame (0 none .. 4 rainbow)
+const AV_FREE = [
+  ["a_cat",     0, "ねこ",       {b:"cat", c:"#ffb15c", c2:"#ffd9a8", bg:"#fff1dc", e:"dot"}],
+  ["a_dog",     0, "いぬ",       {b:"dog", c:"#e8c08f", c2:"#a8743f", bg:"#fff4e2", e:"dot"}],
+  ["a_bear",    0, "くま",       {b:"bear", c:"#b07a4f", c2:"#e8c8a4", bg:"#f6eadc", e:"dot"}],
+  ["a_rabbit",  0, "うさぎ",     {b:"rabbit", c:"#ffffff", c2:"#ffb5c8", bg:"#ffe6ee", e:"dot"}],
+  ["a_panda",   0, "パンダ",     {b:"panda", c:"#ffffff", c2:"#2e2b38", bg:"#e5f6e8", e:"dot"}],
+  ["a_penguin", 0, "ペンギン",   {b:"penguin", c:"#2f3b63", c2:"#ffffff", bg:"#dff1ff", e:"dot"}],
+  ["a_chick",   0, "ひよこ",     {b:"chick", c:"#ffd93d", c2:"#ff9f1c", bg:"#fff9d6", e:"dot"}],
+  ["a_frog",    0, "かえる",     {b:"frog", c:"#7ed957", c2:"#c9f5b0", bg:"#ecffe2", e:"dot"}],
+  ["a_hamster", 0, "ハムスター", {b:"hamster", c:"#f2b880", c2:"#fff4e6", bg:"#fff0e0", e:"dot"}],
+  ["a_fox",     0, "きつね",     {b:"fox", c:"#ff8a3d", c2:"#ffffff", bg:"#ffeedd", e:"dot"}],
+  ["a_owl",     3, "ふくろう",   {b:"owl", c:"#9c6b45", c2:"#f3dcc0", bg:"#f1e6ff", e:"dot"}],
+  ["a_cat_hp",  5, "ヘッドホンねこ", {b:"cat", c:"#8d8d9e", c2:"#d8d8e6", bg:"#e6f4ff", e:"happy", a:"headphones", ac:"#ff4f8b"}],
+  ["a_bear_cap",8, "キャップくま", {b:"bear", c:"#d9955a", c2:"#f6dcc0", bg:"#e8f7ff", e:"wink", a:"cap", ac:"#3a7bff"}],
+  ["a_rabbit_bow",10,"リボンうさぎ", {b:"rabbit", c:"#fff3f7", c2:"#ff9fbc", bg:"#fff0f6", e:"happy", a:"bow", ac:"#ff4f8b"}],
+  ["a_robot",  15, "ロボ",       {b:"robot", c:"#cfd8e6", c2:"#5ee6ff", bg:"#e3ecff", e:"dot"}],
+  ["a_ghost",  20, "おばけ",     {b:"ghost", c:"#ffffff", c2:"#d9d2ff", bg:"#ece8ff", e:"dot"}],
+  ["a_alien",  25, "うちゅうじん", {b:"alien", c:"#8ef0a0", c2:"#1c1d2b", bg:"#1c1442", e:"dot"}],
+  ["a_peng_crown",30,"王さまペンギン", {b:"penguin", c:"#2f3b63", c2:"#ffffff", bg:"#fff4c7", e:"happy", a:"crown", ac:"#ffc93a", fr:3}]
+];
+const AV_SPEC = Object.fromEntries(AV_FREE.map(a=>[a[0],a[3]]));
+// old emoji avatars -> the new drawings
+const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bear","🐼":"a_panda","🐨":"a_bear","🦊":"a_fox","🐸":"a_frog","🐧":"a_penguin","🐤":"a_chick","🐹":"a_hamster","🤖":"a_robot","👾":"a_alien","👑":"a_peng_crown"};
+const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
+const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
+
+function shade(hex, k){ // k<0 darker, k>0 lighter
+  let h=hex.replace("#",""); if(h.length===3) h=h.split("").map(x=>x+x).join("");
+  const n=parseInt(h,16); let r=n>>16, g=(n>>8)&255, b=n&255;
+  const f=v=>Math.max(0,Math.min(255,Math.round(k<0? v*(1+k) : v+(255-v)*k)));
+  return "#"+[f(r),f(g),f(b)].map(x=>x.toString(16).padStart(2,"0")).join(""); }
+let _avn=0;
+function avatarSVG(s){
+  if(!s) return "";
+  const u="av"+(++_avn), c=s.c, c2=s.c2||"#fff", ol=shade(c==="#ffffff"||c==="#fff3f7"?"#c9c3d6":c,-.38), ink="#2b2233";
+  const L=[];
+  // background + frame
+  L.push(`<defs><radialGradient id="${u}g" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".55" stop-color="${s.bg}"/><stop offset="1" stop-color="${shade(s.bg,-.12)}"/></radialGradient>
+    <linearGradient id="${u}r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3d3d"/><stop offset=".2" stop-color="#ffe14a"/><stop offset=".4" stop-color="#3dff8a"/><stop offset=".6" stop-color="#3ad6ff"/><stop offset=".8" stop-color="#7a5cff"/><stop offset="1" stop-color="#ff4fd8"/>${s.fr===4?`<animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="3s" repeatCount="indefinite"/>`:""}</linearGradient>
+    <linearGradient id="${u}au" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".5" stop-color="#ffc93a"/><stop offset="1" stop-color="#c98a00"/></linearGradient>
+    <clipPath id="${u}c"><circle cx="32" cy="32" r="30"/></clipPath></defs>`);
+  L.push(`<circle cx="32" cy="32" r="30" fill="url(#${u}g)"/>`);
+  L.push(`<g clip-path="url(#${u}c)">`);
+  const eyesY = s.b==="frog"?25: s.b==="chick"?36: s.b==="robot"?36 : 36;
+  const EX = s.b==="frog"?[22,42] : [25,39];
+  const head=(cx,cy,r,fill)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${ol}" stroke-width="1.8"/>`;
+  const cheeks=(y=41,x=[20.5,43.5])=>`<ellipse cx="${x[0]}" cy="${y}" rx="3.2" ry="2" fill="#ff7fa3" opacity=".55"/><ellipse cx="${x[1]}" cy="${y}" rx="3.2" ry="2" fill="#ff7fa3" opacity=".55"/>`;
+  const B=s.b;
+  if(B==="cat"){ L.push(`<path d="M14 30 L16 11 L28 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/><path d="M50 30 L48 11 L36 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M17.5 24 L18.5 15.5 L24.5 20.5 Z" fill="#ff9fbc"/><path d="M46.5 24 L45.5 15.5 L39.5 20.5 Z" fill="#ff9fbc"/>`, head(32,37,19,c),
+    `<ellipse cx="32" cy="44" rx="9" ry="6" fill="${c2}"/>`, cheeks(), `<path d="M30.5 41.5 h3 l-1.5 1.8 z" fill="#ff6f91"/><path d="M28.5 44.5 q1.8 1.8 3.5 0 q1.7 1.8 3.5 0" fill="none" stroke="${ink}" stroke-width="1.3" stroke-linecap="round"/>
+    <path d="M12 39 l7 1 M12 43 l7 -.5 M52 39 l-7 1 M52 43 l-7 -.5" stroke="${ol}" stroke-width="1" stroke-linecap="round" opacity=".6"/>`); }
+  else if(B==="dog"){ L.push(head(32,37,18.5,c), `<ellipse cx="14" cy="33" rx="6" ry="12" transform="rotate(18 14 33)" fill="${c2}" stroke="${shade(c2,-.3)}" stroke-width="1.6"/><ellipse cx="50" cy="33" rx="6" ry="12" transform="rotate(-18 50 33)" fill="${c2}" stroke="${shade(c2,-.3)}" stroke-width="1.6"/>`,
+    `<ellipse cx="32" cy="44.5" rx="9.5" ry="7" fill="${shade(c,.55)}"/><ellipse cx="32" cy="41" rx="3.4" ry="2.4" fill="${ink}"/><path d="M32 43.4 v2 M29 46 q3 2.5 6 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M31 47 q1 3 2 0" fill="#ff6f91"/>`, cheeks(42)); }
+  else if(B==="bear"){ L.push(`<circle cx="17" cy="21" r="7" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="47" cy="21" r="7" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="17" cy="21" r="3.6" fill="${c2}"/><circle cx="47" cy="21" r="3.6" fill="${c2}"/>`, head(32,37,19,c),
+    `<ellipse cx="32" cy="44" rx="8.5" ry="6.5" fill="${c2}"/><ellipse cx="32" cy="41.2" rx="3.2" ry="2.3" fill="${ink}"/><path d="M29 45.5 q3 2.4 6 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`, cheeks()); }
+  else if(B==="rabbit"){ L.push(`<ellipse cx="24" cy="14" rx="5.5" ry="13" transform="rotate(-8 24 14)" fill="${c}" stroke="${ol}" stroke-width="1.8"/><ellipse cx="40" cy="14" rx="5.5" ry="13" transform="rotate(8 40 14)" fill="${c}" stroke="${ol}" stroke-width="1.8"/>
+    <ellipse cx="24" cy="15" rx="2.6" ry="9" transform="rotate(-8 24 15)" fill="${c2}"/><ellipse cx="40" cy="15" rx="2.6" ry="9" transform="rotate(8 40 15)" fill="${c2}"/>`, head(32,38,18,c),
+    `<path d="M30.6 42 h2.8 l-1.4 1.6z" fill="#ff6f91"/><path d="M32 43.6 v1.4 M29.5 45.6 q2.5 1.8 5 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(42)); }
+  else if(B==="panda"){ L.push(`<circle cx="17" cy="22" r="7" fill="${c2}"/><circle cx="47" cy="22" r="7" fill="${c2}"/>`, head(32,37,19,c),
+    `<ellipse cx="25" cy="36.5" rx="5" ry="6.2" transform="rotate(20 25 36.5)" fill="${c2}"/><ellipse cx="39" cy="36.5" rx="5" ry="6.2" transform="rotate(-20 39 36.5)" fill="${c2}"/>
+     <ellipse cx="32" cy="42" rx="3" ry="2.1" fill="${ink}"/><path d="M29.3 45.3 q2.7 2.2 5.4 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`, cheeks(44,[19.5,44.5])); }
+  else if(B==="penguin"){ L.push(head(32,37,20,c), `<path d="M32 26 C24 22 15 30 17 41 C19 50 27 54 32 54 C37 54 45 50 47 41 C49 30 40 22 32 26Z" fill="${c2}"/>`,
+    `<path d="M28.5 41 L35.5 41 L32 45.5 Z" fill="#ffa62b" stroke="#d97a00" stroke-width="1" stroke-linejoin="round"/>`, cheeks(43)); }
+  else if(B==="chick"){ L.push(`<path d="M29 15 q2 -6 4 0 q3 -5 4 1" fill="none" stroke="${shade(c,-.3)}" stroke-width="2" stroke-linecap="round"/>`, `<circle cx="32" cy="37" r="20" fill="${c}" stroke="${shade(c,-.3)}" stroke-width="1.8"/>`,
+    `<path d="M28.5 41 L32 38.5 L35.5 41 L32 44 Z" fill="${c2}" stroke="${shade(c2,-.3)}" stroke-width="1"/><path d="M14 44 q-4 -6 2 -10 M50 44 q4 -6 -2 -10" stroke="${shade(c,-.3)}" stroke-width="2" fill="none" stroke-linecap="round"/>`, cheeks(43,[20,44])); }
+  else if(B==="frog"){ L.push(`<ellipse cx="32" cy="41" rx="22" ry="16" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="22" cy="26" r="8" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="42" cy="26" r="8" fill="${c}" stroke="${ol}" stroke-width="1.8"/>
+    <circle cx="22" cy="26" r="5.5" fill="#fff"/><circle cx="42" cy="26" r="5.5" fill="#fff"/><ellipse cx="32" cy="47" rx="12" ry="6" fill="${c2}" opacity=".8"/>
+    <path d="M22 41 q10 8 20 0" stroke="${ink}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`, cheeks(41,[16,48])); }
+  else if(B==="hamster"){ L.push(`<circle cx="18" cy="23" r="5.5" fill="${c}" stroke="${ol}" stroke-width="1.6"/><circle cx="46" cy="23" r="5.5" fill="${c}" stroke="${ol}" stroke-width="1.6"/><circle cx="18" cy="23" r="2.8" fill="#ffb5c8"/><circle cx="46" cy="23" r="2.8" fill="#ffb5c8"/>`, head(32,38,19.5,c),
+    `<path d="M14 42 C14 52 50 52 50 42 C46 46 40 44 32 44 C24 44 18 46 14 42Z" fill="${c2}"/><ellipse cx="18.5" cy="43" rx="6" ry="4.5" fill="${c2}"/><ellipse cx="45.5" cy="43" rx="6" ry="4.5" fill="${c2}"/>
+     <ellipse cx="32" cy="41" rx="2.2" ry="1.6" fill="#ff6f91"/><path d="M29.5 44 q2.5 2 5 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(42,[19,45])); }
+  else if(B==="fox"){ L.push(`<path d="M13 31 L15 9 L29 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/><path d="M51 31 L49 9 L35 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M15.2 14 L15 9 L19.5 13 Z M48.8 14 L49 9 L44.5 13 Z" fill="${ink}"/><path d="M17 25 L17.5 15 L25 21 Z M47 25 L46.5 15 L39 21 Z" fill="#fff" opacity=".8"/>`, head(32,37,19,c),
+    `<path d="M13.5 38 C18 39 24 43 32 52 C40 43 46 39 50.5 38 C50 47 42 56 32 56 C22 56 14 47 13.5 38Z" fill="${c2}"/><ellipse cx="32" cy="44" rx="2.8" ry="2" fill="${ink}"/><path d="M30 47 q2 1.5 4 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(42,[21,43])); }
+  else if(B==="owl"){ L.push(`<path d="M15 26 L14 12 L24 21 Z M49 26 L50 12 L40 21 Z" fill="${shade(c,-.15)}" stroke="${ol}" stroke-width="1.6" stroke-linejoin="round"/>`, head(32,38,20,c),
+    `<ellipse cx="32" cy="48" rx="11" ry="8" fill="${c2}" opacity=".9"/><path d="M27 47 q1.5 1.5 3 0 M34 47 q1.5 1.5 3 0 M30.5 51 q1.5 1.5 3 0" stroke="${shade(c,-.1)}" stroke-width="1" fill="none"/>
+     <circle cx="25" cy="35" r="7.5" fill="#fff" stroke="${shade(c,-.25)}" stroke-width="1.5"/><circle cx="39" cy="35" r="7.5" fill="#fff" stroke="${shade(c,-.25)}" stroke-width="1.5"/><path d="M30 40 L34 40 L32 44 Z" fill="#ffa62b"/>`); }
+  else if(B==="robot"){ L.push(`<line x1="32" y1="10" x2="32" y2="20" stroke="${ol}" stroke-width="2"/><circle cx="32" cy="9" r="3.2" fill="#ff4f6e" stroke="#c81d3b" stroke-width="1"/>
+    <rect x="12" y="20" width="40" height="34" rx="9" fill="${c}" stroke="${ol}" stroke-width="1.8"/><rect x="8" y="31" width="5" height="11" rx="2" fill="${shade(c,-.15)}" stroke="${ol}" stroke-width="1.2"/><rect x="51" y="31" width="5" height="11" rx="2" fill="${shade(c,-.15)}" stroke="${ol}" stroke-width="1.2"/>
+    <rect x="17" y="26" width="30" height="20" rx="6" fill="#1d2433"/><rect x="18.5" y="27.5" width="27" height="6" rx="3" fill="#fff" opacity=".08"/>
+    <path d="M27 49 h10" stroke="${ol}" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="50" r="1.6" fill="#ffd23f"/><circle cx="47" cy="50" r="1.6" fill="#5ee6ff"/>`); }
+  else if(B==="ghost"){ L.push(`<path d="M14 58 L14 33 C14 21 22 14 32 14 C42 14 50 21 50 33 L50 58 L45 53 L40 58 L35 53 L32 58 L29 53 L24 58 L19 53 Z" fill="${c}" stroke="${c2}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M44 22 C48 26 49 31 49 36" stroke="${c2}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/><path d="M28 44 q4 4 8 0 q-4 6 -8 0" fill="#ff7fa3"/>`, cheeks(40,[20,44])); }
+  else if(B==="alien"){ L.push(`<path d="M22 20 L16 8 M42 20 L48 8" stroke="${shade(c,-.35)}" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="3" fill="#ff4fd8"/><circle cx="48" cy="7" r="3" fill="#ff4fd8"/>
+    <path d="M32 15 C46 15 52 26 50 37 C48 48 40 56 32 56 C24 56 16 48 14 37 C12 26 18 15 32 15Z" fill="${c}" stroke="${shade(c,-.35)}" stroke-width="1.8"/>
+    <ellipse cx="24" cy="36" rx="6" ry="8" transform="rotate(-30 24 36)" fill="${c2}"/><ellipse cx="40" cy="36" rx="6" ry="8" transform="rotate(30 40 36)" fill="${c2}"/>
+    <ellipse cx="22.5" cy="33.5" rx="1.8" ry="2.6" transform="rotate(-30 22.5 33.5)" fill="#fff" opacity=".85"/><ellipse cx="38.5" cy="33.5" rx="1.8" ry="2.6" transform="rotate(30 38.5 33.5)" fill="#fff" opacity=".85"/>
+    <path d="M29 48 q3 2 6 0" stroke="${shade(c,-.45)}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`); }
+  else if(B==="dragon"){ L.push(`<path d="M18 22 C14 14 16 8 20 5 C20 11 23 15 26 18 Z M46 22 C50 14 48 8 44 5 C44 11 41 15 38 18 Z" fill="#fff1c9" stroke="#c9a24a" stroke-width="1.4"/>
+    <path d="M27 14 l2 -6 l3 5 l3 -5 l2 6" fill="${c2}" stroke="${ol}" stroke-width="1.2" stroke-linejoin="round"/>`, head(32,35,18,c),
+    `<ellipse cx="32" cy="46" rx="12" ry="8.5" fill="${shade(c,.25)}" stroke="${ol}" stroke-width="1.6"/><ellipse cx="28" cy="44.5" rx="1.4" ry="1" fill="${ink}"/><ellipse cx="36" cy="44.5" rx="1.4" ry="1" fill="${ink}"/>
+     <path d="M26 49 q6 3.5 12 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M29 49.5 l1 2 l1 -1.6 M35 49.5 l-1 2 l-1 -1.6" fill="#fff" stroke="${ink}" stroke-width=".6"/>
+     <path d="M14 30 l-6 -3 l5 6 M50 30 l6 -3 l-5 6" fill="${c2}" stroke="${ol}" stroke-width="1"/>`); }
+  else if(B==="unicorn"){ L.push(`<path d="M18 30 C12 22 14 12 22 10 C20 16 22 20 26 22 Z" fill="#ff8fd0"/><path d="M15 34 C9 28 10 18 16 14 C16 22 19 26 23 28 Z" fill="#8fd6ff"/><path d="M14 42 C7 38 7 28 11 24 C12 30 15 34 20 36 Z" fill="#c9a7ff"/>
+    <path d="M24 17 L21 9 L29 14 Z M40 17 L43 9 L35 14 Z" fill="${c}" stroke="${ol}" stroke-width="1.5"/>`, head(32,37,18,c),
+    `<path d="M32 4 L28.5 20 L35.5 20 Z" fill="url(#${u}au)" stroke="#c98a00" stroke-width="1"/><path d="M29.6 15 L34.4 13.5 M29.1 18 L34.9 16.5 M30.2 11.5 L33.8 10.3" stroke="#fff6c2" stroke-width=".9"/>
+     <ellipse cx="32" cy="45" rx="9" ry="6.5" fill="${c2}"/><ellipse cx="29" cy="45" rx="1.2" ry="1" fill="${shade(c2,-.4)}"/><ellipse cx="35" cy="45" rx="1.2" ry="1" fill="${shade(c2,-.4)}"/><path d="M29 48.5 q3 2 6 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(41)); }
+  // eyes (shades hide them)
+  if(s.a!=="shades" && B!=="robot"){
+    const ey=B==="owl"?35:eyesY, ex=B==="owl"?[25,39]:EX, eye=s.e||"dot", eyeC = B==="alien"? null : ink;
+    const pan=B==="panda", lc=pan?"#fff":ink;
+    if(eyeC){ ex.forEach((x,i)=>{
+      if(eye==="happy" || (eye==="wink" && i===1)) L.push(`<path d="M${x-3} ${ey+1} q3 -4 6 0" stroke="${lc}" stroke-width="2" fill="none" stroke-linecap="round"/>`);
+      else if(eye==="sleepy") L.push(`<path d="M${x-3} ${ey} q3 2.5 6 0" stroke="${lc}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`);
+      else if(pan && eye==="dot") L.push(`<circle cx="${x}" cy="${ey}" r="3.3" fill="#fff"/><circle cx="${x+.3}" cy="${ey+.3}" r="2" fill="${ink}"/><circle cx="${x+1}" cy="${ey-.6}" r=".8" fill="#fff"/>`);
+      else if(eye==="star") L.push(`<path d="M${x} ${ey-4.2} l1.3 2.8 3 .4 -2.2 2.1 .6 3 -2.7 -1.5 -2.7 1.5 .6 -3 -2.2 -2.1 3 -.4z" fill="#ffd23f" stroke="${ink}" stroke-width=".9" stroke-linejoin="round"/>`);
+      else { const big=B==="owl"?1.35:B==="frog"?1.1:1; L.push(`<ellipse cx="${x}" cy="${ey}" rx="${2.7*big}" ry="${3.3*big}" fill="${ink}"/><circle cx="${x+1}" cy="${ey-1.3}" r="${1.1*big}" fill="#fff"/>`); }
+    }); }
+  }
+  if(B==="robot"){ const e=s.e||"dot"; if(e==="happy") L.push(`<path d="M21.5 38 q3.5 -5 7 0 M35.5 38 q3.5 -5 7 0" stroke="${c2}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`); else L.push(`<rect x="22" y="31" width="6" height="8" rx="2" fill="${c2}"/><rect x="36" y="31" width="6" height="8" rx="2" fill="${c2}"/>`); L.push(`<path d="M27 42 q5 3 10 0" stroke="${c2}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`); }
+  // accessories
+  const ac=s.ac||"#ff4f8b", A=s.a;
+  if(A==="headphones") L.push(`<path d="M12 36 A20 20 0 0 1 52 36" fill="none" stroke="${shade(ac,-.3)}" stroke-width="4.5" stroke-linecap="round"/><path d="M12 36 A20 20 0 0 1 52 36" fill="none" stroke="${ac}" stroke-width="2.6" stroke-linecap="round"/>
+    <rect x="6.5" y="31" width="9" height="15" rx="4" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><rect x="48.5" y="31" width="9" height="15" rx="4" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><rect x="8.5" y="33" width="3" height="11" rx="1.5" fill="#fff" opacity=".45"/><rect x="50.5" y="33" width="3" height="11" rx="1.5" fill="#fff" opacity=".45"/>`);
+  if(A==="crown") L.push(`<path d="M20 20 L21 8 L26.5 14 L32 6 L37.5 14 L43 8 L44 20 Z" fill="url(#${u}au)" stroke="#a87400" stroke-width="1.4" stroke-linejoin="round"/><circle cx="32" cy="15" r="2.2" fill="#ff3d6e"/><circle cx="25" cy="16.5" r="1.5" fill="#3ad6ff"/><circle cx="39" cy="16.5" r="1.5" fill="#3dff8a"/>`);
+  if(A==="shades") L.push(`<path d="M16 32 h32" stroke="${ink}" stroke-width="2"/><rect x="17" y="31" width="13" height="9" rx="3.5" fill="#1b1424" stroke="${ink}" stroke-width="1"/><rect x="34" y="31" width="13" height="9" rx="3.5" fill="#1b1424" stroke="${ink}" stroke-width="1"/>
+    <path d="M19 33.5 l5 0 M36 33.5 l5 0" stroke="${ac}" stroke-width="1.6" stroke-linecap="round" opacity=".9"/>`);
+  if(A==="cap") L.push(`<path d="M13 30 C13 16 51 16 51 30 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.6"/><path d="M40 29 C48 28 58 30 60 33 C52 33 46 32 40 32 Z" fill="${shade(ac,-.2)}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><circle cx="32" cy="17.5" r="1.8" fill="#fff"/><path d="M24 25 h10" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>`);
+  if(A==="bow") L.push(`<path d="M44 18 L36 12 L36 24 Z M44 18 L52 12 L52 24 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.3" stroke-linejoin="round"/><circle cx="44" cy="18" r="2.8" fill="${shade(ac,-.15)}"/>`);
+  if(A==="beanie") L.push(`<path d="M13 30 C13 12 51 12 51 30 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.6"/><rect x="12" y="26" width="40" height="7" rx="3" fill="${shade(ac,-.15)}" stroke="${shade(ac,-.35)}" stroke-width="1.2"/><path d="M17 26 v7 M22 26 v7 M27 26 v7 M32 26 v7 M37 26 v7 M42 26 v7 M47 26 v7" stroke="${shade(ac,-.3)}" stroke-width=".8"/><circle cx="32" cy="11" r="4.5" fill="#fff" stroke="#ddd" stroke-width="1"/>`);
+  if(A==="halo") L.push(`<ellipse cx="32" cy="9" rx="12" ry="3.6" fill="none" stroke="#ffd54a" stroke-width="3"/><ellipse cx="32" cy="9" rx="12" ry="3.6" fill="none" stroke="#fff6c2" stroke-width="1"/>`);
+  if(A==="horns") L.push(`<path d="M18 22 C14 16 15 10 18 7 C19 13 22 16 25 18 Z M46 22 C50 16 49 10 46 7 C45 13 42 16 39 18 Z" fill="${ac}" stroke="${shade(ac,-.4)}" stroke-width="1.3"/>`);
+  if(A==="wizard") L.push(`<path d="M18 24 L34 0 L46 24 Z" fill="${ac}" stroke="${shade(ac,-.4)}" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="32" cy="24" rx="19" ry="4" fill="${shade(ac,-.2)}" stroke="${shade(ac,-.4)}" stroke-width="1.3"/><path d="M30 12 l1 2 2 .3 -1.5 1.4 .4 2 -1.9 -1 -1.9 1 .4 -2 -1.5 -1.4 2 -.3z" fill="#ffd23f"/><circle cx="37" cy="18" r="1.2" fill="#ffd23f"/>`);
+  if(A==="flower") L.push([[16,24,"#ff8fb1"],[22,18,"#ffd93d"],[29,15,"#8fd6ff"],[36,15,"#ff8fb1"],[42,18,"#c9a7ff"],[48,24,"#ffd93d"]].map(([x,y,col])=>`<g transform="translate(${x} ${y})">${[0,72,144,216,288].map(a=>`<circle cx="${(Math.cos(a*Math.PI/180)*2.6).toFixed(2)}" cy="${(Math.sin(a*Math.PI/180)*2.6).toFixed(2)}" r="2.2" fill="${col}"/>`).join("")}<circle r="1.6" fill="#fff6c2"/></g>`).join(""));
+  if(A==="star") L.push(`<path d="M47 14 l2 4.2 4.5 .6 -3.3 3.1 .8 4.5 -4 -2.2 -4 2.2 .8 -4.5 -3.3 -3.1 4.5 -.6z" fill="url(#${u}au)" stroke="#a87400" stroke-width="1"/>`);
+  if(A==="ninja") L.push(`<path d="M12 27 Q32 22 52 27 L52 33 Q32 28 12 33 Z" fill="${ac}" stroke="${shade(ac,-.4)}" stroke-width="1.2"/><rect x="28" y="25" width="8" height="5" rx="1" fill="#cfd8e6" stroke="#7a8599" stroke-width=".8"/><path d="M52 29 l8 -4 M52 31 l8 3" stroke="${ac}" stroke-width="2.4" stroke-linecap="round"/>`);
+  if(A==="nightcap") L.push(`<path d="M14 28 C14 14 40 10 50 16 C56 20 58 28 56 34 C52 26 46 22 40 22 C44 24 50 26 50 30 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><circle cx="56" cy="35" r="3.5" fill="#fff"/><path d="M14 28 Q32 22 50 30" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`);
+  if(A==="tophat") L.push(`<rect x="21" y="2" width="22" height="18" rx="2" fill="#1f1a2b" stroke="#000" stroke-width="1"/><rect x="21" y="14" width="22" height="4" fill="${ac}"/><ellipse cx="32" cy="20.5" rx="17" ry="3.5" fill="#1f1a2b"/>`);
+  L.push(`</g>`);
+  // frame
+  if(s.fr===1) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="#cfd8e6" stroke-width="3"/>`);
+  if(s.fr===2) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="#b46bff" stroke-width="3.2"/>`);
+  if(s.fr===3) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="url(#${u}au)" stroke-width="3.6"/><path d="M56 10 l1 2.4 2.4 1 -2.4 1 -1 2.4 -1 -2.4 -2.4 -1 2.4 -1z M7 52 l.8 1.8 1.8 .8 -1.8 .8 -.8 1.8 -.8 -1.8 -1.8 -.8 1.8 -.8z" fill="#fff6c2"/>`);
+  if(s.fr===4) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="url(#${u}r)" stroke-width="4"/>`);
+  return `<svg viewBox="0 0 64 64" class="avsvg" aria-hidden="true">${L.join("")}</svg>`;
+}
+// an element showing the avatar for a stored value (id, or an old emoji)
+function avEl(v, cls){ const s=avSpec(v); if(!s) return null; const e=el("span", cls||"av"); e.innerHTML=avatarSVG(s); return e; }
 
 /* ================= profile card + ranks ================= */
 const RANKS = [
@@ -2745,7 +3014,7 @@ function profileEl(info, stats, opts){
   const sp=el("div","pf-sp"); SPARK[r].forEach((c,i)=>{ const s=el("i",null,c); s.style.setProperty("--i",i); s.style.left=(2+(i*13+5)%24)+"%"; s.style.top=(3+(i*17+7)%34)+"%"; sp.append(s); });
   const em=el("div","pf-em"); em.innerHTML=`${r>=2?'<span class="pf-rays"></span>':""}<span class="pf-halo"></span>${wreathSVG(r)}${rankEmblem(r)}${r>=2?'<span class="pf-orb"><i></i><i></i><i></i></span>':""}`;
   if(r===3){ const fl=el("span","pf-flames"); fl.innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="rbf" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".18" stop-color="#ff8a1a"/><stop offset=".34" stop-color="#ffe14a"/><stop offset=".5" stop-color="#2dff8a"/><stop offset=".66" stop-color="#1ac8ff"/><stop offset=".82" stop-color="#6a4dff"/><stop offset="1" stop-color="#d040ff"/></linearGradient></defs><path class="f1" d="M50 96C26 92 18 70 28 52c4 10 10 12 12 6-2-16 6-30 18-40-2 14 6 22 14 30 6 6 10 14 8 24-2 16-14 24-30 24z"/><path class="f2" d="M50 96c-14-2-20-14-14-28 4 6 8 6 8 2 0-10 6-18 12-22 0 10 6 14 10 22 4 12-2 26-16 26z"/><path class="f3" d="M50 96c-7-1-10-8-7-15 2 3 4 3 4 1 0-6 3-10 6-12 0 6 3 8 5 12 2 7-1 14-8 14z"/></svg>'; em.prepend(fl); em.append(el("span","pf-shock")); }
-  if(P.av){ const av=el("span","pf-av"+(gr(P.av)>=0?" gr"+gr(P.av):""),String(gv(P.av)).slice(0,4)); em.append(av); }
+  if(P.av){ const av=avEl(P.av, "pf-av"+(gr(P.av)>=0?" gr"+gr(P.av):"")); if(av) em.append(av); }
   const tx=el("div","pf-tx");
   const nm=el("b","pf-name"); [...R.name].forEach((ch,i)=>{ const s=el("span",null,ch); s.style.setProperty("--d",i); nm.append(s); }); nm.setAttribute("data-t",R.name);
   const stars=el("span","pf-stars"); for(let i=0;i<4;i++) stars.append(el("i",i<=r?"on":"",i<=r?"★":"☆"));
@@ -2783,7 +3052,7 @@ function profileEl(info, stats, opts){
     gb.append(el("b",null,gLabel(g)), seg, el("small",null,txt)); lad.append(gb); }
   const pat=el("div","pf-pat"+(PAT_OK.has(P.pat)&&P.pat!=="none"?" p-"+P.pat:""));
   const mark = R.mark ? el("div","pf-mark",R.mark) : null;
-  skinLayer(card, inn, P.skin);
+  skinLayer(card, inn, P.skin); frameLayer(card, P.frame);
   inn.append(aur, pat);
   if(r===3){ inn.append(el("div","pf-vortex")); const ck=el("div","pf-crack"); ck.innerHTML='<svg viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="rbc" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="400"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".18" stop-color="#ff8a1a"/><stop offset=".34" stop-color="#ffe14a"/><stop offset=".5" stop-color="#2dff8a"/><stop offset=".66" stop-color="#1ac8ff"/><stop offset=".82" stop-color="#6a4dff"/><stop offset="1" stop-color="#d040ff"/></linearGradient></defs><path stroke="url(#rbc)" d="M0 150l16 5 6 16 14 5M16 155l-4 18M300 200l-16 7-6 18-14 6M284 207l10 14M0 350l20-6 8 12 10-2M300 320l-18 4-6 16M282 324l12 12M60 400l4-14 12-4M240 400l-4-12 10-8"/></svg>'; inn.append(ck); } if(mark) inn.append(mark); inn.append(cv, sp, top);
   if(bub) inn.append(bub);
@@ -2973,7 +3242,8 @@ Object.assign(FXSET, {
   feather:{e:["🪶","🤍"],m:"fall"},
   dragon:{e:["🐉","🔥"],m:"orbit"},
   crown:{e:["👑","💎","✨"],m:"orbit"},
-  storm:{e:["⚡","💥","✨"],m:"fast",bolt:.05}
+  storm:{e:["⚡","💥","✨"],m:"fast",bolt:.05},
+  confetti:{e:["🎊","🎉"],m:"fall"}, paw:{e:["🐾"],m:"up"}, ghost:{e:["👻"],m:"up"}, moon:{e:["🌙","⭐","✨"],m:"tw"}, fireworks:{e:["🎆","🎇","✨"],m:"tw"}
 });
 const PETALS = Array.from({length:9},(_,i)=>`<b style="--i:${i};left:${(i*37+11)%96}%"></b>`).join("");
 const FEATHERS = Array.from({length:7},(_,i)=>`<b style="--i:${i};left:${(i*29+7)%92}%"></b>`).join("");
@@ -2986,9 +3256,12 @@ const SKIN_HTML = {
   galaxy:'<i class="neb"></i><i class="neb n2"></i><i class="stars"></i><i class="stars s2"></i>',
   temple:'<i class="rays"></i><i class="pil"></i><i class="dust"></i>',
   blackhole:'<i class="stars"></i><i class="bh-glow"></i><i class="bh-disk"></i><i class="bh-core"></i><i class="bh-ring"></i>',
-  seraph:'<i class="sr-rays"></i><i class="sr-halo"></i><i class="ft">'+FEATHERS+'</i>'
+  seraph:'<i class="sr-rays"></i><i class="sr-halo"></i><i class="ft">'+FEATHERS+'</i>',
+  pastel:'<i class="hz">'+PETALS+'</i>', mintdot:'<i class="md"></i>', sunset:'<i class="sun2"></i><i class="wv"></i>', candy:'<i class="cs1"></i>',
+  ocean:'<i class="ray"></i><i class="wv"></i><i class="bb"></i>', matrix:'<i class="mx"></i><i class="mx m2"></i>', lava:'<i class="lv"></i><i class="lv l2"></i><i class="cr"></i>'
 };
-const SKIN_LIGHT = new Set(["soda","seraph"]);
+const SKIN_LIGHT = new Set(["soda","seraph","pastel","mintdot","candy"]);
+function frameLayer(card, id){ const F=GITEM[id]; if(F && F.cat==="frame") card.classList.add("fr","fr-"+F.v); }
 function skinLayer(card, inn, id){
   const SK=GITEM[id]; if(!SK || SK.cat!=="skin") return;
   card.classList.add("sk","sk-"+SK.v, SKIN_LIGHT.has(SK.v)?"skl":"skd");
@@ -2998,7 +3271,9 @@ const rarBadge = r => el("i","rb rb"+r, RAR[r].k);
 // a small picture of an item (for the gacha result, the collection and the deco screen)
 function gIcon(it, big){
   const w=el("span","gi gi-"+it.cat+(big?" big":""));
-  if(it.cat==="av"||it.cat==="st") w.textContent=it.v;
+  if(it.cat==="av"){ w.innerHTML=avatarSVG(it.v); }
+  else if(it.cat==="st") w.textContent=it.v;
+  else if(it.cat==="frame"){ const f=el("span","gfr prof fr fr-"+it.v); const r=el("span","pf-ring"); r.append(el("i")); f.append(r, el("span","gfr-in")); w.append(f); }
   else if(it.cat==="title"){ const t=el("span","pf-title tr tr"+it.r,(it.r>=3?"👑 ":"🎖 ")+it.v); w.append(t); }
   else if(it.cat==="fx") w.textContent=(FXSET[it.v]&&FXSET[it.v].e[0])||"✨";
   else if(it.cat==="skin"){ const c=el("span","gsw prof sk sk-"+it.v+" "+(SKIN_LIGHT.has(it.v)?"skl":"skd")); const inn=el("span","pf-in"); const sl=el("span","pf-skin"); sl.innerHTML=SKIN_HTML[it.v]||""; inn.append(sl); c.append(inn); w.append(c); }
@@ -3678,9 +3953,9 @@ function openDeco(){
   p.append(pv, tabs, body, act);
   let pvT=0; const drawPv=(soon)=>{ clearTimeout(pvT); pvT=setTimeout(()=>{ pv.innerHTML=""; pv.append(profileEl({...Stu.info, prof:d}, stats)); }, soon?250:0); };
   const lockTag=n=>{ const t=el("small","lk","🔒 "+n+"こ"); t.title=`スタンプ${n}こで解放（あと${n-total}こ）`; return t; };
-  const TABS=[["basic","きほん"],["skin","スキン✨"],["nfx","ネーム✨"],["av","アバター"],["title","しょうごう"],["st","ステッカー"],["pat","がら"],["fx","エフェクト"]];
+  const TABS=[["basic","きほん"],["av","アバター"],["skin","スキン✨"],["frame","フレーム✨"],["nfx","ネーム✨"],["title","しょうごう"],["st","ステッカー"],["pat","がら"],["fx","エフェクト"]];
   // gacha items of a category: [value, label, 0, item]  (owned ones can be picked, others show what the gacha can give)
-  const gItems=cat=>GACHA.filter(g=>g.cat===cat).map(g=>{ const w=el("span","dk-gw"); w.append(g.r>=4&&!gOwned(g.id)?el("span","gi q","？"):gIcon(g), rarBadge(g.r)); if(g.cat!=="av"&&g.cat!=="st") w.append(el("span","dk-l",g.r>=4&&!gOwned(g.id)?"？？？":g.n)); return [g.id, w, 0, g]; });
+  const gItems=cat=>GACHA.filter(g=>g.cat===cat).map(g=>{ const w=el("span","dk-gw"); w.append(g.r>=4&&!gOwned(g.id)?el("span","gi q","？"):gIcon(g), rarBadge(g.r)); if(g.cat!=="st") w.append(el("span","dk-l",g.r>=4&&!gOwned(g.id)?"？？？":g.n)); return [g.id, w, 0, g]; });
   const gHas=(v,cat)=>!!(GITEM[v] && GITEM[v].cat===cat && gOwned(v));
   function drawTabs(){ tabs.innerHTML=""; TABS.forEach(([k,l])=>{ const b=el("button","chip"+(tab===k?" on":""),l); b.type="button"; b.dataset.tab=k; b.onclick=()=>{ tab=k; lsSet("mc_deco_tab",k); drawTabs(); drawBody(); }; tabs.append(b); }); }
   function grid(items, cls, isOn, onPick){ const g=el("div","dk-grid "+cls);
@@ -3703,8 +3978,9 @@ function openDeco(){
       f.append(row("好きな曲（20文字まで）",sg));
       body.append(f);
     } else if(tab==="av"){
-      body.append(el("p","rw-note","カードのマークのよこに出るよ"));
-      body.append(grid([["","なし",0], ...DECO.av.map(([e,n])=>[e,e,n]), ...gItems("av")], "emo", v=>(d.av||"")===v, v=>{ d.av=v; }));
+      body.append(el("p","rw-note","カードのマークのよこに出るキャラクター。スタンプを集めたりガチャで増えるよ"));
+      if(d.av && !avKey(d.av)) d.av=""; else if(d.av) d.av=avKey(d.av);
+      body.append(grid([["","なし",0], ...AV_FREE.map(([k,n,nm,sp])=>{ const w=el("span","dk-gw"); const a=el("span","gi gi-av"); a.innerHTML=avatarSVG(sp); w.append(a, el("span","dk-l",nm)); return [k,w,n]; }), ...gItems("av")], "avs", v=>(d.av||"")===v, v=>{ d.av=v; }));
     } else if(tab==="title"){
       body.append(el("p","rw-note","名前の下に出る「しょうごう」。スタンプを集めるとカッコいいのが使えるよ"));
       body.append(grid([["","なし",0], ...DECO.title.map(([t,n])=>[t,"🎖 "+t,n]), ...gItems("title")], "list", v=>(d.title||"")===v, v=>{ d.title=v; }));
@@ -3721,6 +3997,9 @@ function openDeco(){
     } else if(tab==="skin"){
       body.append(el("p","rw-note","カードまるごと着がえる「スキン」。ガチャでしか出ないよ！"));
       body.append(grid([["","なし",0], ...gItems("skin")], "list2 skins", v=>(d.skin||"")===v, v=>{ d.skin=v; }));
+    } else if(tab==="frame"){
+      body.append(el("p","rw-note","カードのまわりのフチがかわる「フレーム」。ガチャでしか出ないよ！"));
+      body.append(grid([["","なし",0], ...gItems("frame")], "list2 frames", v=>(d.frame||"")===v, v=>{ d.frame=v; }));
     } else if(tab==="nfx"){
       body.append(el("p","rw-note","名前が光ったり燃えたりする「ネームエフェクト」。ガチャでしか出ないよ！"));
       body.append(grid([["","なし",0], ...gItems("nfx")], "list2", v=>(d.nfx||"")===v, v=>{ d.nfx=v; }));
@@ -3733,10 +4012,10 @@ function openDeco(){
     const t=(v,n)=>String(v||"").replace(/[\u0000-\u001f]/g,"").trim().slice(0,n);
     if(t(d.nick,10)) clean.nick=t(d.nick,10); if(t(d.bio,30)) clean.bio=t(d.bio,30); if(t(d.song,20)) clean.song=t(d.song,20);
     if(d.inst && DECO.inst.some(x=>x[1]===d.inst)) clean.inst=d.inst;
-    if(d.av && (DECO.av.some(x=>x[0]===d.av && unlocked(x[1],total)) || gHas(d.av,"av"))) clean.av=d.av;
+    { const ak=avKey(d.av); const fa=AV_FREE.find(x=>x[0]===ak); if(ak && ((fa && unlocked(fa[1],total)) || gHas(ak,"av"))) clean.av=ak; }
     if(d.title && (DECO.title.some(x=>x[0]===d.title && unlocked(x[1],total)) || gHas(d.title,"title"))) clean.title=d.title;
     const st=d.st.filter(v=>DECO.st.some(x=>x[0]===v && unlocked(x[1],total)) || gHas(v,"st")).slice(0,3); if(st.length) clean.st=st;
-    if(gHas(d.skin,"skin")) clean.skin=d.skin; if(gHas(d.nfx,"nfx")) clean.nfx=d.nfx;
+    if(gHas(d.skin,"skin")) clean.skin=d.skin; if(gHas(d.frame,"frame")) clean.frame=d.frame; if(gHas(d.nfx,"nfx")) clean.nfx=d.nfx;
     if(d.pat && d.pat!=="none" && DECO.pat.some(x=>x[0]===d.pat && unlocked(x[2],total))) clean.pat=d.pat;
     if(d.fx && d.fx!=="none" && (DECO.fx.some(x=>x[0]===d.fx && unlocked(x[2],total)) || gHas(d.fx,"fx"))) clean.fx=d.fx;
     save.disabled=true;
@@ -4003,7 +4282,7 @@ function tStudents(app){
     if(!arr.length){ list.append(el("div","empty","見つかりません")); return; }
     const subSet=new Set(T.review.map(a=>a.sid));
     arr.forEach(p=>{ const s=p.s, multi=p.g.length>1; const r=el("button","srow"+(multi?" multi":"")); r.dataset.id=s.id;
-      const av=p.g.map(x=>x.prof&&x.prof.av).find(Boolean); if(av){ r.append(el("span","srow-av",String(gv(av)).slice(0,4))); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
+      const av=p.g.map(x=>x.prof&&avKey(x.prof.av)).find(Boolean); const ae=av&&avEl(av,"srow-av"); if(ae){ r.append(ae); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
       const nw=el("span","nmw"); nw.append(el("span","nm",s.name));
       p.g.forEach(x=>{ const sub=el("span","nsub");
