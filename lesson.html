@@ -928,6 +928,31 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .login .lock-ico{font-size:2.6rem;line-height:1;margin:4px 0 -4px}
 #t-lock input{font-size:1rem!important;letter-spacing:0!important;text-align:left}
 
+/* ===== class grade (G1 … G20+) ===== */
+.pf-g{font-family:var(--display);font-size:.85rem;line-height:1;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,.92);color:#1a1033;letter-spacing:.02em;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.rk1 .pf-g{background:linear-gradient(180deg,#f2f6fb,#aebdcc);color:#14202c}
+.rk2 .pf-g{background:linear-gradient(180deg,#ffe9a8,#c8902a);color:#2a1a04}
+.rk3 .pf-g{background:#07040e;color:#fff;border:1.5px solid transparent;background:linear-gradient(#07040e,#07040e) padding-box,conic-gradient(var(--rb)) border-box;box-shadow:0 0 10px rgba(140,100,255,.6)}
+.pf-gbar{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;align-items:center;margin-top:10px;font-size:.72rem}
+.pf-gbar b{font-family:var(--display);font-weight:400;font-size:.9rem;grid-row:span 2}
+.pf-gbar small{opacity:.85;text-align:right}
+.pf-gseg{display:flex;gap:2px;height:8px}
+.pf-gseg i{flex:1;border-radius:2px;background:rgba(127,127,127,.28)}
+.pf-gseg i.on{background:currentColor;opacity:.75}
+.pf-gseg i.now{background:currentColor;box-shadow:0 0 6px currentColor}
+.rk3 .pf-gseg i.on,.rk3 .pf-gseg i.now{background:linear-gradient(90deg,var(--rb));background-size:2000% 100%;opacity:1}
+.gstep{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.gstep .gk{font-size:.75rem;opacity:.7;writing-mode:vertical-rl;letter-spacing:.2em}
+.gstep .gbtn{width:54px;height:54px;border-radius:14px;font-size:1.7rem;font-weight:800;border:none;background:var(--card2,rgba(255,255,255,.12));color:inherit;cursor:pointer;touch-action:manipulation}
+.gstep .gbtn:active{transform:scale(.94)}.gstep .gbtn:disabled{opacity:.3}
+.gstep .gmid{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.gstep .glab{font-family:var(--display);font-weight:400;font-size:1.9rem;line-height:1.1}
+.gstep .gsub{font-size:.72rem;opacity:.75}
+.card.gstep{flex-direction:row!important;flex-wrap:nowrap}
+.gstep .gk{writing-mode:horizontal-tb;letter-spacing:.05em;position:absolute;left:14px;top:8px;font-size:.68rem}
+.card.gstep{position:relative;padding-top:22px}
+.pf-gbar{margin-bottom:4px}
+
 </style>
 </head>
 <body>
@@ -1766,6 +1791,12 @@ const RANKS = [
   {key:"advance", name:"Advance", jp:"アドバンス", tag:"頂に立つ者 ― 無敵", mark:"覇"}
 ];
 const rankOf = r => Math.max(0, Math.min(3, r|0));
+/* class grade: 0="1", 1="1+", then "2-","2","2+" ... 58="20+" */
+const G_MAX=58, G_BAND=[[0,22],[23,37],[38,49],[50,58]];   // Starter G1-8, Middle G9-13, Upper G14-17, Advance G18-20
+const gOk = g => g!=null && g!=="" && isFinite(g) && g>=0 && g<=G_MAX;
+function gParts(g){ g=g|0; if(g<2) return [1, g?"+":""]; return [2+Math.floor((g-2)/3), ["-","","+"][(g-2)%3]]; }
+const gLabel = g => { const [n,s]=gParts(g); return "G"+n+(s==="-"?"−":s); };
+const gRank = g => g<=22?0:g<=37?1:g<=49?2:3;
 /* things a student can decorate their card with; n = stamps needed to unlock */
 const DECO = {
   av: [["🐱",0],["🐶",0],["🐰",0],["🐻",0],["🐼",0],["🐨",0],["🦊",0],["🐸",0],["🐧",0],["🐤",0],["🐹",0],["🐵",0],["🦁",0],["🐯",0],["🐬",0],["🐙",0],
@@ -1944,7 +1975,7 @@ function profileEl(info, stats, opts){
   const stars=el("span","pf-stars"); for(let i=0;i<4;i++) stars.append(el("i",i<=r?"on":"",i<=r?"★":"☆"));
   const rkl=el("span","pf-rk","RANK"); rkl.append(stars);
   const lv=el("div","pf-lv"); lv.append(rkl, nm);
-  const who=el("div","pf-who"); if(info.num!=null) who.append(el("span","pf-no","No."+info.num));
+  const who=el("div","pf-who"); if(gOk(info.grade)) who.append(el("span","pf-g",gLabel(info.grade))); if(info.num!=null) who.append(el("span","pf-no","No."+info.num));
   const nick=(P.nick||"").trim();
   who.append(el("span","pf-nm", nick ? nick : (info.name||"")+(info.name?" さん":"")));
   if(nick && forT) who.append(el("span","pf-real","（"+(info.name||"")+"）"));
@@ -1967,6 +1998,11 @@ function profileEl(info, stats, opts){
   RANKS.forEach((x,i)=>{ const li=el("li",i<r?"past":i===r?"now":"lock"); const dot=el("span","pf-node",i<r?"✓":i===r?String(i+1):"🔒");
     li.append(dot, el("small",null,x.name)); if(i<r) li.append(el("em","pf-seal","CLEAR")); ol.append(li); });
   lad.append(rh, ol);
+  if(gOk(info.grade)){ const g=info.grade|0, [a,b]=G_BAND[gRank(g)], gb=el("div","pf-gbar"), seg=el("div","pf-gseg");
+    for(let i=a;i<=b;i++) seg.append(el("i",i<g?"on":i===g?"now":""));
+    const left=b-g, nx=gRank(g)<3?RANKS[gRank(g)+1].name:null;
+    const txt = left>0 ? (nx ? `${nx}まで あと${left}段` : `頂点 G20+ まで あと${left}段`) : (nx ? `次は ${nx}！` : "頂点 G20+ 到達！");
+    gb.append(el("b",null,gLabel(g)), seg, el("small",null,txt)); lad.append(gb); }
   const pat=el("div","pf-pat"+(PAT_OK.has(P.pat)&&P.pat!=="none"?" p-"+P.pat:""));
   const mark = R.mark ? el("div","pf-mark",R.mark) : null;
   inn.append(aur, pat);
@@ -2072,7 +2108,7 @@ const TAP = (()=>{
 })();
 
 // something is being watched / typed / sent -> don't redraw
-function busyNow(){ if(busyTyping()) return true;
+function busyNow(){ if(busyTyping() || window.__gEditing) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
   if([...document.querySelectorAll(".keep")].some(x=>x.value)) return true;
   if(document.querySelector(".sheet")) return true; return false; }
@@ -2108,6 +2144,9 @@ function stuRankCheck(){
   if(seen===null || seen===""){ lsSet(k,String(r)); return; }
   if(r>+seen && !window.__party && !Stu.playing){ lsSet(k,String(r)); rankUpShow(r, ()=>stuRender()); }
   else if(r<+seen) lsSet(k,String(r));
+  // grade went up inside the same rank -> a small cheer
+  const gk="mc_g_"+SK, g=Stu.info.grade, gs=lsGet(gk);
+  if(gOk(g)){ if(gs!==null && gs!=="" && g>+gs && r===+(lsGet(k)||0) && !window.__party) toast("🎉 "+gLabel(g)+" に上がったよ！"); lsSet(gk,String(g)); }
 }
 function stuLogout(msg){ SK=null; lsSet("mc_sk",""); Stu.info=null; Stu.stamps=[]; Stu.assign=[]; stuLogin(msg); }
 function stuLogin(msg){
@@ -2558,7 +2597,7 @@ function tStudents(app){
     const subSet=new Set(T.review.map(a=>a.sid));
     arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; if(s.prof && s.prof.av){ r.append(el("span","srow-av",String(s.prof.av).slice(0,4))); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
-      r.append(el("span","nm",s.name), el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name)); if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
+      r.append(el("span","nm",s.name), el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name+(gOk(s.grade)?" "+gLabel(s.grade):""))); if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
       const c=el("span","ct"); c.innerHTML=stuCount(s); r.append(c);
       r.onclick=()=>{ T.sel=s.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.confirmStu=false; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); };
       list.append(r); });
@@ -2606,6 +2645,7 @@ function tStudent(app){
   if(!s){ app.append(el("div","empty","読み込み中…")); return; }
   const stamps=(T.detail&&T.detail.stamps)||[];
   app.append(profileEl(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
+  app.append(gStepper(s));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
   who.append(hh); box.append(who);
@@ -2679,6 +2719,25 @@ async function tCleanup(){
     await fetch(SB_URL+"/storage/v1/object/mc-submissions",{method:"DELETE", headers:{apikey:SB_KEY,"Content-Type":"application/json"}, body:JSON.stringify({prefixes:files})});
     await rpc("mc_mark_deleted",{p_paths:files});
   }catch(e){}
+}
+
+/* teacher: quick − / + for the class grade (saves after a short pause, so several taps = one save) */
+function gStepper(s){
+  const box=el("section","card gstep"); box.id="g-step";
+  const has=gOk(s.grade); let g = has ? s.grade|0 : null, timer=null;
+  const minus=el("button","gbtn","−"), plus=el("button","gbtn","＋"), lab=el("b","glab"), sub=el("small","gsub");
+  minus.id="g-minus"; plus.id="g-plus";
+  const show=()=>{ lab.textContent = g==null ? "G未設定" : gLabel(g); sub.textContent = g==null ? "＋でG1から" : RANKS[gRank(g)].name+"（ランク自動）";
+    minus.disabled = g==null || g<=0; plus.disabled = g!=null && g>=G_MAX; };
+  const save=()=>{ clearTimeout(timer); window.__gEditing=true; timer=setTimeout(async()=>{
+      try{ const r=await rpc("mc_t_grade",{tk:TK, sid:s.id, p_grade:g}); s.grade=r.grade; if(r.rank!=null) s.rank=r.rank;
+        const li=(T.students||[]).find(x=>x.id===s.id); if(li){ li.grade=s.grade; li.rank=s.rank; }
+        toast(gLabel(g)+" にしました"); window.__gEditing=false; tRender(); }
+      catch(e){ window.__gEditing=false; toast("保存できませんでした（"+e.message+"）"); } }, 800); };
+  minus.onclick=()=>{ if(g==null||g<=0) return; g--; show(); save(); };
+  plus.onclick=()=>{ g = g==null ? 0 : Math.min(G_MAX, g+1); show(); save(); };
+  const mid=el("div","gmid"); mid.append(lab, sub);
+  box.append(el("span","gk","クラス"), minus, mid, plus); show(); return box;
 }
 
 /* ================= boot ================= */
