@@ -378,6 +378,127 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .toggle input{width:auto !important;transform:scale(1.3)}
 .toggle small{color:var(--muted);font-weight:500;font-size:.76rem}
 
+/* ---------- profile card / ranks ---------- */
+.prof{position:relative;border-radius:24px;padding:3px;overflow:hidden;isolation:isolate}
+.prof::before{content:"";position:absolute;left:50%;top:50%;width:max(220%,640px);aspect-ratio:1;margin-left:calc(max(220%,640px) / -2);margin-top:calc(max(220%,640px) / -2);z-index:-1}
+.pf-in{position:relative;border-radius:21px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.pf-top{display:flex;gap:14px;align-items:center;position:relative;z-index:1}
+.pf-em{width:88px;height:88px;flex:none;position:relative}
+.pf-em svg{width:100%;height:100%;display:block;overflow:visible}
+.pf-tx{min-width:0;display:flex;flex-direction:column;gap:3px}
+.pf-lv{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pf-rk{font-size:.62rem;font-weight:800;letter-spacing:.22em;opacity:.8}
+.pf-name{font-family:var(--display);font-weight:400;font-size:1.75rem;line-height:1.05;letter-spacing:.02em}
+.pf-who{display:flex;gap:6px;align-items:baseline;min-width:0;font-weight:800}
+.pf-no{font-size:.72rem;padding:1px 7px;border-radius:99px;flex:none}
+.pf-nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-tag{font-size:.78rem;font-weight:800;opacity:.9}
+.pf-st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1}
+.pf-st div{display:flex;flex-direction:column;align-items:center;padding:7px 4px;border-radius:14px}
+.pf-st b{font-family:var(--display);font-weight:400;font-size:1.25rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.pf-st small{font-size:.66rem;font-weight:800;opacity:.85;white-space:nowrap}
+.pf-lad{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;position:relative;z-index:1}
+.pf-lad li{font-size:.62rem;font-weight:800;text-align:center;padding:4px 0;border-radius:99px;opacity:.45;letter-spacing:.04em}
+.pf-lad li.past{opacity:.75}
+.pf-lad li.now{opacity:1}
+.pf-sp{position:absolute;inset:0;pointer-events:none;z-index:0}
+.pf-sp i{position:absolute;font-style:normal;animation:tw 2.4s ease-in-out infinite;animation-delay:calc(var(--i) * -.53s)}
+@keyframes tw{0%,100%{opacity:.2;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(20deg)}}
+
+/* Starter: soft, pastel, just getting started */
+.prof.rk0{background:linear-gradient(135deg,#ffc2dc,#c9f5df)}
+.rk0 .pf-in{background:linear-gradient(160deg,#fff7fb 0%,#fff0f6 55%,#eefcf4 100%);color:#6a2f55}
+.rk0 .pf-name{color:#ff5fa2}
+.rk0 .pf-no{background:#ffe0ee;color:#d43f85}
+.rk0 .pf-st div{background:#fff;box-shadow:0 2px 0 #ffd6e8}
+.rk0 .pf-st b{color:#ff5fa2}
+.rk0 .pf-lad li{background:#ffe6f1;color:#c23e7c}.rk0 .pf-lad li.now{background:#ff7fb6;color:#fff}
+.rk0 .pf-sp i{color:#ff9cc6;font-size:.9rem}
+.rk0 .pf-em{animation:boing 2.6s ease-in-out infinite}
+@keyframes boing{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+
+/* Middle: cool blue, a gentle shine */
+.prof.rk1{background:linear-gradient(135deg,#8eeaff,#2d6dff 60%,#8eeaff)}
+.rk1 .pf-in{background:linear-gradient(160deg,#10264f,#0d1b3d 60%,#132f5e);color:#e6f6ff}
+.rk1 .pf-name{color:#8eeaff;text-shadow:0 0 14px rgba(56,214,255,.5)}
+.rk1 .pf-no{background:rgba(142,234,255,.16);color:#8eeaff}
+.rk1 .pf-st div{background:rgba(142,234,255,.09);border:1px solid rgba(142,234,255,.25)}
+.rk1 .pf-st b{color:#bdf2ff}
+.rk1 .pf-lad li{background:rgba(142,234,255,.12)}.rk1 .pf-lad li.now{background:#38d6ff;color:#0b1a3a}
+.rk1 .pf-sp i{color:#bdf2ff;font-size:.8rem}
+.rk1 .pf-in::after,.rk2 .pf-in::after,.rk3 .pf-in::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 48%,transparent 60%);background-size:250% 100%;animation:sheen 5s ease-in-out infinite}
+@keyframes sheen{0%,55%{background-position:130% 0}100%{background-position:-60% 0}}
+
+/* Upper: gold & violet, twinkling */
+.prof.rk2::before{background:conic-gradient(from 0deg,#ffe27a,#ff9a2e,#b98bff,#ffe27a,#fff3b0,#ffc93c,#ffe27a);animation:spin 6s linear infinite}
+.rk2 .pf-in{background:radial-gradient(120% 90% at 0% 0%,#4a2a8a 0%,#24124f 55%,#1a0d3a 100%);color:#fff7e0}
+.rk2 .pf-name{background:linear-gradient(180deg,#fff7c8,#ffc93c 55%,#e08a00);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 6px rgba(255,180,40,.45))}
+.rk2 .pf-no{background:rgba(255,201,60,.18);color:#ffd96b}
+.rk2 .pf-st div{background:linear-gradient(180deg,rgba(255,226,122,.16),rgba(185,139,255,.12));border:1px solid rgba(255,226,122,.35)}
+.rk2 .pf-st b{color:#ffe27a}
+.rk2 .pf-lad li{background:rgba(255,226,122,.12)}.rk2 .pf-lad li.now{background:linear-gradient(90deg,#ffe27a,#ffb03a);color:#3a1d00}
+.rk2 .pf-sp i{color:#ffe27a;font-size:1rem;text-shadow:0 0 8px #ffc93c}
+.rk2 .pf-em{filter:drop-shadow(0 0 10px rgba(255,201,60,.6))}
+.rk2 .pf-em .rays,.rk3 .pf-em .rays{transform-origin:50px 50px;transform-box:view-box;animation:spin 14s linear infinite}
+.rk3 .pf-em .rays{transform-origin:50px 52px;animation-duration:7s}
+
+/* Advance: holographic, rainbow, invincible */
+.prof.rk3{box-shadow:0 0 28px rgba(255,95,162,.35),0 0 46px rgba(56,214,255,.25)}
+.prof.rk3::before{background:conic-gradient(from 0deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff,#b98bff,#ff5fa2);animation:spin 3.2s linear infinite}
+.rk3 .pf-in{background:
+  radial-gradient(90% 70% at 15% 10%,rgba(255,95,162,.35),transparent 60%),
+  radial-gradient(90% 70% at 90% 20%,rgba(56,214,255,.32),transparent 60%),
+  radial-gradient(90% 80% at 50% 110%,rgba(185,139,255,.45),transparent 60%),#120a2e;color:#fff}
+.rk3 .pf-name{font-size:2rem;background:linear-gradient(90deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff,#b98bff,#ff5fa2);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:holo 3s linear infinite;filter:drop-shadow(0 0 8px rgba(255,255,255,.45))}
+@keyframes holo{to{background-position:200% 0}}
+.rk3 .pf-rk::after{content:" ・ 無敵";letter-spacing:.1em;color:#ffd24a}
+.rk3 .pf-no{background:linear-gradient(90deg,#ff5fa2,#b98bff);color:#fff}
+.rk3 .pf-tag{color:#ffe98a;text-shadow:0 0 10px rgba(255,210,74,.7)}
+.rk3 .pf-st div{background:rgba(255,255,255,.08);border:1px solid transparent;
+  background-image:linear-gradient(#1b1040,#1b1040),linear-gradient(90deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff,#b98bff);background-origin:border-box;background-clip:padding-box,border-box}
+.rk3 .pf-st b{color:#fff;text-shadow:0 0 10px rgba(255,255,255,.6)}
+.rk3 .pf-lad li{background:rgba(255,255,255,.1)}.rk3 .pf-lad li.now{background:linear-gradient(90deg,#ff5fa2,#ffd24a,#38d6ff,#b98bff);background-size:200% 100%;animation:holo 3s linear infinite;color:#1a0d3a}
+.rk3 .pf-sp i{font-size:1.05rem;color:#fff;text-shadow:0 0 6px #fff,0 0 14px #ff5fa2}
+.rk3 .pf-sp i:nth-child(3n+2){text-shadow:0 0 6px #fff,0 0 14px #38d6ff}.rk3 .pf-sp i:nth-child(3n){text-shadow:0 0 6px #fff,0 0 14px #ffd24a}
+.rk3 .pf-em{width:96px;height:96px;filter:drop-shadow(0 0 12px rgba(255,255,255,.55));animation:float3 3s ease-in-out infinite}
+@keyframes float3{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.04)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* small rank chips in the teacher's list */
+.rkc{font-size:.6rem;font-weight:800;padding:1px 7px;border-radius:99px;flex:none;letter-spacing:.03em}
+.rkc.rk0{background:#ffe0ee;color:#d43f85}.rkc.rk1{background:#cdf3ff;color:#1f5bd8}
+.rkc.rk2{background:linear-gradient(90deg,#ffe27a,#ffb03a);color:#3a1d00}
+.rkc.rk3{background:linear-gradient(90deg,#ff5fa2,#ffd24a,#38d6ff,#b98bff);color:#1a0d3a}
+
+/* rank-up show */
+.rankup{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;cursor:pointer;
+  background:radial-gradient(circle at 50% 40%,rgba(120,90,220,.55),rgba(8,5,26,.97) 60%);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadein .3s}
+.rankup.rk0{background:radial-gradient(circle at 50% 40%,rgba(255,150,200,.5),rgba(8,5,26,.97) 60%)}
+.rankup.rk1{background:radial-gradient(circle at 50% 40%,rgba(56,160,255,.5),rgba(8,5,26,.97) 60%)}
+.rankup.rk2{background:radial-gradient(circle at 50% 40%,rgba(255,190,60,.45),rgba(8,5,26,.97) 60%)}
+.rankup.bye{opacity:0;transition:opacity .35s}
+@keyframes fadein{from{opacity:0}}
+.ru-in{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;max-width:340px}
+.ru-k{font-family:var(--display);font-size:1rem;letter-spacing:.3em;color:#ffd24a;animation:pop .6s both}
+.ru-em{width:min(52vw,200px);aspect-ratio:1;animation:pop .7s .15s both}
+.ru-em svg{width:100%;height:100%;overflow:visible}
+.ru-em .rays{transform-origin:50px 50px;transform-box:view-box;animation:spin 8s linear infinite}
+.ru-n{font-family:var(--display);font-size:2.6rem;line-height:1.1;animation:pop .6s .35s both;
+  background:linear-gradient(90deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff,#b98bff,#ff5fa2);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s .35s both,holo 3s linear infinite}
+.rankup.rk0 .ru-n{background:none;color:#ff8fbf;-webkit-text-fill-color:#ff8fbf}
+.rankup.rk1 .ru-n{background:none;color:#8eeaff;-webkit-text-fill-color:#8eeaff;text-shadow:0 0 18px rgba(56,214,255,.7)}
+.rankup.rk2 .ru-n{background:linear-gradient(180deg,#fff7c8,#ffc93c 55%,#e08a00);-webkit-background-clip:text;background-clip:text;animation:pop .6s .35s both}
+.ru-j{color:#fff}
+.ru-j{font-weight:800;font-size:1.05rem}
+.ru-t{font-size:.85rem;color:var(--muted)}
+.ru-tap{font-size:.72rem;color:var(--muted);margin-top:10px}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.12)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){
+  .prof::before,.pf-in::after,.pf-sp i,.pf-em,.pf-em .rays,.pf-name,.pf-lad li.now,.ru-em .rays{animation:none !important}
+}
+
 </style>
 </head>
 <body>
@@ -1190,6 +1311,84 @@ async function submitWork(a, file, comment, ui){
   await rpc("mc_s_submit",{sk:SK, p_assign:a.id, p_type:f.type||"", p_size:f.size, p_comment:comment||""});
 }
 
+/* ================= profile card + ranks ================= */
+const RANKS = [
+  {key:"starter", name:"Starter", jp:"スターター", tag:"まだまだこれから！ぐんぐん伸びるよ"},
+  {key:"middle",  name:"Middle",  jp:"ミドル",     tag:"いい調子！どんどんうまくなってる"},
+  {key:"upper",   name:"Upper",   jp:"アッパー",   tag:"キラキラ上級者！頂点まであと少し"},
+  {key:"advance", name:"Advance", jp:"アドバンス", tag:"最高ランク！もう無敵！"}
+];
+const rankOf = r => Math.max(0, Math.min(3, r|0));
+let _emb=0;
+function rankEmblem(r){
+  const u="e"+(++_emb);
+  if(r===0) return `<svg viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="52" r="44" fill="#fff4f9" stroke="#ffa6cc" stroke-width="5"/>
+    <ellipse cx="50" cy="80" rx="20" ry="6" fill="#ffd0e4"/>
+    <path d="M50 79V52" stroke="#3fbf80" stroke-width="5" stroke-linecap="round"/>
+    <path d="M50 58C35 58 26 48 26 35c15 0 24 9 24 23z" fill="#82e6b0"/>
+    <path d="M50 51c13 0 23-9 23-22-14 0-23 9-23 22z" fill="#5ad49a"/>
+    <circle cx="36" cy="66" r="4" fill="#ffb3d1"/><circle cx="64" cy="66" r="4" fill="#ffb3d1"/>
+    <path d="M78 20v14a4 3 0 1 1-2-3V20z" fill="#ff8fbf"/></svg>`;
+  if(r===1) return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs>
+    <linearGradient id="${u}a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8eeaff"/><stop offset="1" stop-color="#2d6dff"/></linearGradient></defs>
+    <path d="M50 5l37 13v30c0 25-17 40-37 47C30 88 13 73 13 48V18z" fill="url(#${u}a)" stroke="#e3f9ff" stroke-width="4"/>
+    <path d="M50 12l30 10v26c0 20-13 33-30 39" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3"/>
+    <path d="M44 72a8 6 -20 1 1-3-9V34l23-6v32a8 6 -20 1 1-3-9V39l-17 4z" fill="#fff"/>
+    <path d="M50 14l2.6 5.3 5.8.8-4.2 4.1 1 5.8L50 27.3l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#fff6a8"/></svg>`;
+  if(r===2) return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs>
+    <linearGradient id="${u}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3b0"/><stop offset=".45" stop-color="#ffc93c"/><stop offset="1" stop-color="#d98a00"/></linearGradient>
+    <linearGradient id="${u}r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b98bff"/><stop offset="1" stop-color="#6a3dff"/></linearGradient></defs>
+    <path d="M32 62l-10 32 14-6 8 12 8-30zM68 62l10 32-14-6-8 12-8-30z" fill="url(#${u}r)"/>
+    <g class="rays">${Array.from({length:12},(_,i)=>`<path d="M50 50L${50+48*Math.cos(i*Math.PI/6-.12)} ${48+48*Math.sin(i*Math.PI/6-.12)}L${50+48*Math.cos(i*Math.PI/6+.12)} ${48+48*Math.sin(i*Math.PI/6+.12)}z" fill="#ffe27a" opacity=".55"/>`).join("")}</g>
+    <circle cx="50" cy="48" r="30" fill="url(#${u}g)" stroke="#fff6cf" stroke-width="4"/>
+    <circle cx="50" cy="48" r="22" fill="none" stroke="#b86e00" stroke-opacity=".35" stroke-width="2"/>
+    <path d="M50 30l5.3 10.8 11.9 1.7-8.6 8.4 2 11.8L50 57.1l-10.6 5.6 2-11.8-8.6-8.4 11.9-1.7z" fill="#fff" stroke="#e09a00" stroke-width="1.5"/>
+    <path d="M36 14l7 7 7-11 7 11 7-7-3 12H39z" fill="url(#${u}g)" stroke="#fff6cf" stroke-width="2" stroke-linejoin="round"/></svg>`;
+  return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs>
+    <linearGradient id="${u}h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset=".25" stop-color="#ffd24a"/><stop offset=".5" stop-color="#5dffb0"/><stop offset=".75" stop-color="#38d6ff"/><stop offset="1" stop-color="#b98bff"/></linearGradient>
+    <linearGradient id="${u}d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#bff3ff"/><stop offset="1" stop-color="#8b6bff"/></linearGradient>
+    <radialGradient id="${u}o"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="50" cy="52" r="48" fill="url(#${u}o)" opacity=".5"/>
+    <g class="rays">${Array.from({length:16},(_,i)=>`<path d="M50 52L${50+50*Math.cos(i*Math.PI/8-.09)} ${52+50*Math.sin(i*Math.PI/8-.09)}L${50+50*Math.cos(i*Math.PI/8+.09)} ${52+50*Math.sin(i*Math.PI/8+.09)}z" fill="url(#${u}h)" opacity=".75"/>`).join("")}</g>
+    <path d="M18 40l15 13 17-27 17 27 15-13-6 36H24z" fill="url(#${u}h)" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/>
+    <rect x="24" y="72" width="52" height="10" rx="3" fill="url(#${u}h)" stroke="#fff" stroke-width="3"/>
+    <path d="M50 46l9 11-9 13-9-13z" fill="url(#${u}d)" stroke="#fff" stroke-width="2"/>
+    <circle cx="18" cy="40" r="5" fill="#fff"/><circle cx="50" cy="24" r="6" fill="#fff"/><circle cx="82" cy="40" r="5" fill="#fff"/>
+    <circle cx="33" cy="66" r="3.5" fill="#ff5fa2" stroke="#fff" stroke-width="1.5"/><circle cx="67" cy="66" r="3.5" fill="#38d6ff" stroke="#fff" stroke-width="1.5"/></svg>`;
+}
+const SPARK = {0:["♡","♪","♡"], 1:["✦","✦"], 2:["✦","✧","✦","✧","✦"], 3:["✦","✧","✦","✧","✦","✧","✦","✧","✦"]};
+/* info: student (name, num, rank) ; stats: {total, done, tasks} */
+function profileEl(info, stats){
+  const r=rankOf(info.rank), R=RANKS[r];
+  const card=el("section","prof rk"+r); card.id="prof"; card.setAttribute("aria-label",`プロフィール ・ ランク ${R.name}`);
+  const inn=el("div","pf-in");
+  const sp=el("div","pf-sp"); SPARK[r].forEach((c,i)=>{ const s=el("i",null,c); s.style.setProperty("--i",i); s.style.left=(6+(i*29+11)%86)+"%"; s.style.top=(4+(i*41+7)%30)+"%"; sp.append(s); });
+  const em=el("div","pf-em"); em.innerHTML=rankEmblem(r);
+  const tx=el("div","pf-tx");
+  const lv=el("div","pf-lv"); lv.append(el("span","pf-rk","RANK"), el("b","pf-name",R.name));
+  const who=el("div","pf-who"); if(info.num!=null) who.append(el("span","pf-no","No."+info.num)); who.append(el("span","pf-nm",(info.name||"")+(info.name?" さん":"")));
+  tx.append(lv, who, el("div","pf-tag",R.tag));
+  const top=el("div","pf-top"); top.append(em, tx);
+  const st=el("div","pf-st");
+  [["スタンプ",stats.total],["コンプリート",stats.done],["おわった課題",stats.tasks]].forEach(([k,v])=>{ const d=el("div"); d.append(el("b",null,String(v|0)), el("small",null,k)); st.append(d); });
+  const lad=el("ol","pf-lad"); RANKS.forEach((x,i)=>{ const li=el("li",i<r?"past":i===r?"now":"", x.name); lad.append(li); });
+  inn.append(sp, top, st, lad); card.append(inn); return card;
+}
+function profileStats(info, stamps, assign){
+  const c=cardAll(info, stamps), ri=roundInfo(c);
+  return {total:ri.total, done:ri.done, tasks:(assign||[]).filter(a=>a.status==="stamped").length};
+}
+/* students see a little show the first time they open the page after a rank-up */
+function rankUpShow(r, done){
+  const R=RANKS[r]; const o=el("div","rankup rk"+r); o.id="rankup"; o.setAttribute("role","dialog");
+  o.innerHTML=`<div class="ru-in"><div class="ru-k">RANK UP!</div><div class="ru-em">${rankEmblem(r)}</div><div class="ru-n">${R.name}</div><div class="ru-j">${R.jp} に ランクアップ！</div><div class="ru-t">${R.tag}</div><div class="ru-tap">タップで閉じる</div></div>`;
+  let closed=false; const close=()=>{ if(closed) return; closed=true; o.classList.add("bye"); setTimeout(()=>{ o.remove(); window.__party=false; done&&done(); },350); };
+  o.onclick=close; document.body.append(o); window.__party=true;
+  try{ SFX.unlock(); BGM.duck && BGM.duck(3); SFX.result(false); }catch(e){}
+  setTimeout(close, 9000);
+}
+
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping()) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
@@ -1218,8 +1417,15 @@ async function stuRefresh(force){
     Stu.info=st; Stu.stamps=st.stamps||[]; Stu.assign=as||[]; lsSet("mc_cache_"+SK, JSON.stringify({st, as}));
     document.title=st.name+"さんのスタンプカード"; setNote("課題を出して、先生がOKしたら自分でスタンプを押せるよ。");
     if(force || (!Stu.styling && !window.__party && !Stu.playing && !Stu.sending && !busyNow())) stuRender();
+    stuRankCheck();
   }catch(e){ if(e.message==="bad_key"){ stuLogout("番号が見つからなくなりました。もう一度入れてね。"); return; }
     setNote("つながりません。電波のいいところで開き直してください。"); }
+}
+function stuRankCheck(){
+  const k="mc_rank_"+SK, r=rankOf(Stu.info.rank), seen=lsGet(k);
+  if(seen===null || seen===""){ lsSet(k,String(r)); return; }
+  if(r>+seen && !window.__party && !Stu.playing){ lsSet(k,String(r)); rankUpShow(r, ()=>stuRender()); }
+  else if(r<+seen) lsSet(k,String(r));
 }
 function stuLogout(msg){ SK=null; lsSet("mc_sk",""); Stu.info=null; Stu.stamps=[]; Stu.assign=[]; stuLogin(msg); }
 function stuLogin(msg){
@@ -1259,6 +1465,7 @@ function stuRender(){
   const card=cardAll(Stu.info, Stu.stamps), ok=Stu.assign.filter(a=>a.status==="approved");
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
+  app.append(profileEl(Stu.info, profileStats(Stu.info, Stu.stamps, Stu.assign)));
   if(ok.length){ const n=el("div","notice big okn"); n.id="ok-notice"; n.innerHTML=`<span class="dot"></span><span>先生から OK が ${ok.length}こ 出たよ！スタンプを押そう！</span>`; app.append(n); }
   const who=el("div","who"); who.append(el("h2",null,"♪ スタンプカード"));
   const eb=el("button","edit-btn","デザイン"); eb.id="style-btn"; eb.onclick=()=>{ Stu.styling=true; Stu.draft={stamp_p:Stu.info.stamp_p, color:Stu.info.color|0}; stuRender(); };
@@ -1512,7 +1719,7 @@ function tStudents(app){
     const subSet=new Set(T.review.map(a=>a.sid));
     arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
-      r.append(el("span","nm",s.name)); if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
+      r.append(el("span","nm",s.name), el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name)); if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
       const c=el("span","ct"); c.innerHTML=stuCount(s); r.append(c);
       r.onclick=()=>{ T.sel=s.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.confirmStu=false; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); };
       list.append(r); });
@@ -1559,6 +1766,7 @@ function tStudent(app){
   const back=el("button","btn small back","‹ 生徒一覧へ"); back.id="back"; back.onclick=()=>{ T.sel=null; T.detail=null; tRender(); tRefresh(); }; app.append(back);
   if(!s){ app.append(el("div","empty","読み込み中…")); return; }
   const stamps=(T.detail&&T.detail.stamps)||[];
+  app.append(profileEl(s, profileStats(s, stamps, T.sAssign)));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
   who.append(hh); box.append(who);
@@ -1590,14 +1798,15 @@ function tStudent(app){
       ul.append(li); });
     hs.append(ul); app.append(hs); }
   // settings
-  const st=el("details","sec"); st.id="settings"; st.innerHTML="<summary>設定（番号・名前・ゴール・ごほうび）</summary>";
+  const st=el("details","sec"); st.id="settings"; st.innerHTML="<summary>設定（番号・名前・ランク・ごほうび）</summary>";
   const f=el("form"); f.innerHTML=`<div class="row2 r12"><label>番号<input id="s-num" maxlength="12" inputmode="numeric"></label><label>名前<input id="s-name" maxlength="20"></label></div>
+    <label>ランク<select id="s-rank">${RANKS.map((x,i)=>`<option value="${i}">${x.name}（${x.jp}）</option>`).join("")}</select></label>
     <label>ごほうびまでのスタンプ数<input id="s-gp" type="number" inputmode="numeric" min="1" max="500" step="1"></label>
     <label>ごほうび<input id="s-rp" maxlength="40" placeholder="例：シールを1まい"></label>
     <label class="toggle"><input type="checkbox" id="s-mid"> 中間ごほうびをつける<small id="s-midn"></small></label>
     <label id="s-rm-l">中間ごほうび<input id="s-rm" maxlength="40" placeholder="例：シールを1まい"></label>
     <div class="actions"><button type="submit" class="save" id="s-save">保存</button></div>`;
-  f.querySelector("#s-gp").value=String(s.goal_p);
+  f.querySelector("#s-gp").value=String(s.goal_p); f.querySelector("#s-rank").value=String(rankOf(s.rank));
   const mc=f.querySelector("#s-mid"), rmL=f.querySelector("#s-rm-l"), gpI=f.querySelector("#s-gp"), mn=f.querySelector("#s-midn");
   mc.checked=!!s.mid_on; f.querySelector("#s-rm").value=s.reward_m||"";
   const midUI=()=>{ rmL.hidden=!mc.checked; const g=+gpI.value|0; mn.textContent = mc.checked ? (g>=2?`（${Math.ceil(g/2)}こ目でもらえます）`:"（スタンプ数が2以上のときだけ）") : ""; };
@@ -1610,6 +1819,7 @@ function tStudent(app){
       p_reward_p:f.querySelector("#s-rp").value, p_reward_e:s.reward_e||""});
       if(r==="dup_num"){ toast("その番号はほかの生徒が使っています"); return; }
       await rpc("mc_t_mid",{tk:TK, sid:s.id, p_on:mc.checked, p_reward:f.querySelector("#s-rm").value});
+      const nr=+f.querySelector("#s-rank").value; if(nr!==rankOf(s.rank)) await rpc("mc_t_rank",{tk:TK, sid:s.id, p_rank:nr});
       toast("保存しました"); st.open=false; await tLoadStudent(); tRender(); tRefresh(); }
     catch(err){ toast("保存できませんでした（"+err.message+"）"); } };
   st.append(f); app.append(st);
