@@ -1850,11 +1850,24 @@ const MAX_BYTES = 50*1024*1024, TARGET_BYTES = 44*1024*1024;
 const VID = { maxSide: 854, vbps: 800000, abps: 128000, maxSec: 300, keepBps: 1200000 };
 const extOf = f => { const m=(f.name||"").match(/\.([A-Za-z0-9]{1,5})$/); if(m) return m[1].toLowerCase();
   const t=f.type||""; return t.includes("mp4")?"mp4":t.includes("quicktime")?"mov":t.includes("webm")?"webm":t.includes("jpeg")?"jpg":t.includes("png")?"png":t.startsWith("audio")?"m4a":"bin"; };
+const MIME_BY_EXT = { mp4:"video/mp4", m4v:"video/mp4", mov:"video/quicktime", qt:"video/quicktime", webm:"video/webm", "3gp":"video/3gpp", "3g2":"video/3gpp2", mkv:"video/x-matroska", avi:"video/x-msvideo",
+  jpg:"image/jpeg", jpeg:"image/jpeg", png:"image/png", gif:"image/gif", webp:"image/webp", heic:"image/heic", heif:"image/heif",
+  m4a:"audio/mp4", mp3:"audio/mpeg", wav:"audio/wav", aac:"audio/aac", caf:"audio/x-caf", amr:"audio/amr", ogg:"audio/ogg", opus:"audio/ogg", flac:"audio/flac", aif:"audio/aiff", aiff:"audio/aiff" };
+// the storage only accepts video/*, image/*, audio/* — make sure every file carries one of those
+function mediaFile(f){
+  const t=(f.type||"").toLowerCase();
+  if(/^(video|image|audio)\//.test(t)) return f;
+  const m=(f.name||"").match(/\.([A-Za-z0-9]{1,5})$/), ext=m?m[1].toLowerCase():"", mt=MIME_BY_EXT[ext];
+  if(!mt) return null;
+  try{ return new File([f], f.name||("file."+ext), {type:mt}); }catch(e){ try{ const b=f.slice(0,f.size,mt); b.name=f.name; return b; }catch(_){ return null; } }
+}
+const isVideo = f => (f.type||"").startsWith("video/");
 const fmtMB = b => (b/1024/1024).toFixed(b>10*1024*1024?0:1)+"MB";
 
 /* photos: shrink big ones to a 1600px JPEG */
 async function shrinkImage(file){
-  if(file.size < 1.5*1024*1024) return file;
+  const heic=/hei[cf]/i.test(file.type||"")||/\.hei[cf]$/i.test(file.name||"");   // iPhone photos: turn into JPEG so every phone/PC can open them
+  if(file.size < 1.5*1024*1024 && !heic) return file;
   try{ const bmp=await createImageBitmap(file); const s=Math.min(1, 1600/Math.max(bmp.width,bmp.height));
     const c=document.createElement("canvas"); c.width=Math.round(bmp.width*s); c.height=Math.round(bmp.height*s); c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
     const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.85)); return b ? new File([b],"photo.jpg",{type:"image/jpeg"}) : file; }
@@ -1872,7 +1885,9 @@ function compressVideo(file, onProgress){
     const startP=v.play().catch(()=>{});          // started inside the tap so phones allow sound
     let done=false; const fail=e=>{ if(done) return; done=true; try{ v.pause(); v.remove(); ac.close(); }catch(_){} reject(e); };
     v.onerror=()=>fail(new Error("cannot_read"));
+    const metaT=setTimeout(()=>fail(new Error("cannot_read")), 20000);   // some files never load here: give up and send the original
     v.onloadedmetadata=async()=>{
+      clearTimeout(metaT);
       try{
         await startP; v.pause(); v.currentTime=0;
         const dur=v.duration; if(!isFinite(dur)||dur<=0) return fail(new Error("cannot_read"));
@@ -1889,10 +1904,21 @@ function compressVideo(file, onProgress){
         const mime=types.find(t=>MediaRecorder.isTypeSupported(t)); if(!mime) return fail(new Error("no_support"));
         const rec=new MediaRecorder(stream,{mimeType:mime, videoBitsPerSecond:vbps, audioBitsPerSecond:VID.abps}); const chunks=[];
         rec.ondataavailable=e=>{ if(e.data&&e.data.size) chunks.push(e.data); };
-        rec.onstop=()=>{ if(done) return; done=true; v.remove(); try{ ac.close(); }catch(_){}
-          const type=mime.split(";")[0]; resolve(new File([new Blob(chunks,{type})], "practice."+(type.includes("mp4")?"mp4":"webm"), {type})); };
-        let raf=0; const draw=()=>{ if(done) return; x.drawImage(v,0,0,c.width,c.height); onProgress && onProgress(Math.min(1,v.currentTime/dur)); if(!v.ended) raf=requestAnimationFrame(draw); };
-        v.onended=()=>{ cancelAnimationFrame(raf); x.drawImage(v,0,0,c.width,c.height); setTimeout(()=>rec.state!=="inactive"&&rec.stop(),200); };
+        let wd=0;
+        rec.onstop=()=>{ clearInterval(wd); if(done) return; done=true; v.remove(); try{ ac.close(); }catch(_){}
+          const type=mime.split(";")[0], blob=new Blob(chunks,{type});
+          if(blob.size < 2048) { reject(new Error("enc_failed")); return; }          // nothing usable came out
+          resolve(new File([blob], "practice."+(type.includes("mp4")?"mp4":"webm"), {type})); };
+        let raf=0, finishing=false; const finish=()=>{ if(finishing) return; finishing=true; cancelAnimationFrame(raf); try{ x.drawImage(v,0,0,c.width,c.height); }catch(_){} setTimeout(()=>rec.state!=="inactive"&&rec.stop(),200); };
+        const draw=()=>{ if(done||finishing) return; x.drawImage(v,0,0,c.width,c.height); onProgress && onProgress(Math.min(1,v.currentTime/dur)); if(v.ended || v.currentTime >= dur-0.05) return finish(); raf=requestAnimationFrame(draw); };
+        v.onended=finish;
+        // watchdog: if the video stops moving (app switched, screen locked), try to resume; give up after a while
+        let lastT=-1, still=0;
+        wd=setInterval(()=>{ if(done||finishing){ clearInterval(wd); return; }
+          if(v.currentTime > lastT + 0.05){ lastT=v.currentTime; still=0; return; }
+          still+=2;
+          if(still===6 || still===14){ v.play().catch(()=>{}); if(ac.state!=="running") ac.resume().catch(()=>{}); if(!raf) draw(); }
+          if(still>=30){ clearInterval(wd); try{ rec.state!=="inactive" && rec.stop(); }catch(_){} fail(new Error("stalled")); } }, 2000);
         if(ac.state!=="running") await ac.resume().catch(()=>{});
         rec.start(1000); await v.play(); draw();
       }catch(e){ fail(e); }
@@ -1900,36 +1926,62 @@ function compressVideo(file, onProgress){
   });
 }
 
-/* upload straight to storage with a progress callback */
+/* upload straight to storage with a progress callback; gives up on a stalled connection so it can be retried */
 function putFile(path, file, onProgress){
   return new Promise((resolve,reject)=>{
-    const xhr=new XMLHttpRequest();
+    const xhr=new XMLHttpRequest(); let last=Date.now(), wd=0;
+    const end=()=>clearInterval(wd);
     xhr.open("POST", SB_URL+"/storage/v1/object/mc-submissions/"+path.split("/").map(encodeURIComponent).join("/"));
     xhr.setRequestHeader("apikey", SB_KEY); xhr.setRequestHeader("Content-Type", file.type||"application/octet-stream"); xhr.setRequestHeader("x-upsert","false");
-    xhr.upload.onprogress=e=>{ if(e.lengthComputable) onProgress && onProgress(e.loaded/e.total); };
-    xhr.onload=()=>{ if(xhr.status>=200 && xhr.status<300) resolve(); else { let m=String(xhr.status); try{ m=JSON.parse(xhr.responseText).message||m; }catch(e){} reject(new Error(m)); } };
-    xhr.onerror=()=>reject(new Error("network")); xhr.send(file);
+    xhr.upload.onprogress=e=>{ last=Date.now(); if(e.lengthComputable) onProgress && onProgress(e.loaded/e.total); };
+    xhr.onload=()=>{ end(); if(xhr.status>=200 && xhr.status<300) return resolve();
+      let m=""; try{ const j=JSON.parse(xhr.responseText); m=(j.message||j.error||"")+""; }catch(e){ m=xhr.responseText||""; }
+      if(xhr.status===413 || /too large|maximum allowed size|size limit/i.test(m)) return reject(new Error("too_big"));
+      if(/mime|content type|invalid_mime/i.test(m)) return reject(new Error("bad_type"));
+      if(/quota|exceed|storage limit/i.test(m)) return reject(new Error("full"));
+      if(xhr.status>=500 || xhr.status===0 || xhr.status===408 || xhr.status===429) return reject(new Error("network"));
+      reject(new Error(m||String(xhr.status))); };
+    xhr.onerror=()=>{ end(); reject(new Error("network")); };
+    xhr.onabort=()=>{ end(); reject(new Error("network")); };
+    wd=setInterval(()=>{ if(Date.now()-last > 60000){ end(); try{ xhr.abort(); }catch(e){} } }, 5000);   // no progress for a minute
+    xhr.send(file);
   });
 }
+const isNetErr = e => { const m=(e&&e.message)||""; return m==="network" || /failed to fetch|networkerror|load failed|network/i.test(m); };
+async function retry(fn, tries, onWait){
+  for(let i=1;;i++){
+    try{ return await fn(i); }
+    catch(e){ if(i>=tries || !isNetErr(e)) throw e; onWait && onWait(i); await new Promise(r=>setTimeout(r, 1500*i)); }
+  }
+}
+// keep the screen on while sending (phones stop the work when the screen sleeps)
+async function holdScreen(){ try{ if(navigator.wakeLock) return await navigator.wakeLock.request("screen"); }catch(e){} return null; }
 
 async function submitWork(a, file, comment, ui){
-  let f=file;
-  if((f.type||"").startsWith("image/")) f=await shrinkImage(f);
-  if((f.type||"").startsWith("video/") || /\.(mp4|mov|m4v|webm|3gp)$/i.test(f.name||"")){
-    ui("動画を軽くしています…（画面をとじずに待ってね）", 0);
-    try{ f=await compressVideo(f, p=>ui("動画を軽くしています… "+Math.round(p*100)+"%", p*.5)); }
-    catch(e){
-      if(e.message==="too_long") throw new Error("too_long");
-      if(f.size > MAX_BYTES) throw new Error("too_big");   // can't shrink here: send the original only if it fits
+  let f=mediaFile(file);
+  if(!f) throw new Error("bad_type");
+  const lockP=holdScreen();   // not awaited: the video must start playing inside the tap (iPhone rule)
+  try{
+    if(f.type.startsWith("image/")) f=await shrinkImage(f);
+    if(isVideo(f)){
+      ui("動画を軽くしています…（画面をとじずに待ってね）", 0);
+      try{
+        const c=await compressVideo(f, p=>ui("動画を軽くしています… "+Math.round(p*100)+"%", p*.5));
+        if(c && c.size && !(c.size > f.size && f.size <= MAX_BYTES)) f=c;    // keep whichever is smaller
+      }catch(e){
+        if(e.message==="too_long") throw new Error("too_long");
+        if(f.size > MAX_BYTES) throw new Error(e.message==="stalled" ? "stalled" : "too_big");   // couldn't shrink: the original must fit as it is
+      }
     }
     if(f.size > MAX_BYTES) throw new Error("too_big");
-  }
-  if(f.size > MAX_BYTES) throw new Error("too_big");
-  const path=await rpc("mc_s_begin_upload",{sk:SK, p_assign:a.id, p_ext:extOf(f)});
-  const base = (f===file) ? 0 : .5;
-  ui("送っています… 0%", base);
-  await putFile(path, f, p=>ui("送っています… "+Math.round(p*100)+"%", base+(1-base)*p));
-  await rpc("mc_s_submit",{sk:SK, p_assign:a.id, p_type:f.type||"", p_size:f.size, p_comment:comment||""});
+    const base = isVideo(file)||isVideo(f) ? .5 : 0;
+    await retry(async(n)=>{
+      const path=await rpc("mc_s_begin_upload",{sk:SK, p_assign:a.id, p_ext:extOf(f)});   // a fresh path for every try
+      ui("送っています… 0%", base);
+      await putFile(path, f, p=>ui("送っています… "+Math.round(p*100)+"%", base+(1-base)*p));
+    }, 3, n=>ui(`電波が不安定なので、もう一度送っています…（${n+1}回目）`, base));
+    await retry(()=>rpc("mc_s_submit",{sk:SK, p_assign:a.id, p_type:f.type||"", p_size:f.size, p_comment:comment||""}), 4);
+  } finally { lockP.then(l=>{ try{ l && l.release(); }catch(e){} }); }
 }
 
 /* ================= profile card + ranks ================= */
@@ -2507,9 +2559,16 @@ function subForm(a){
     try{ await submitWork(a, file, f.querySelector(".sub-cmt").value, ui);
       Stu.sending=null; delete Stu.reopen[a.id]; clearPv(); SFX.ping && SFX.ping(); toast("送りました！先生のOKを待ってね"); stuRefresh(true); }
     catch(err){ Stu.sending=null; fi.disabled=false; sb.disabled=false; bar.hidden=true; msg.style.color="#ff8a9a";
-      msg.textContent = err.message==="too_big" ? "ファイルが大きすぎます（50MBまで）。短く撮りなおすか、画質を下げて撮ってね。"
-        : err.message==="too_long" ? "動画が長すぎます。5分までにして撮りなおしてね。"
-        : err.message==="network" ? "送れませんでした。電波のいいところでもう一度ためしてね。" : "送れませんでした（"+err.message+"）"; } };
+      const em=err&&err.message||"";
+      msg.textContent = em==="too_big" ? "ファイルが大きすぎます（50MBまで）。短く撮りなおすか、画質を下げて撮ってね。"
+        : em==="too_long" ? "動画が長すぎます。5分までにして撮りなおしてね。"
+        : em==="bad_type" ? "このファイルは送れません。動画・写真・録音のファイルをえらんでね。"
+        : em==="stalled" ? "動画を軽くしている途中で止まりました。この画面を開いたまま、もう一度「先生に送る」を押してね。"
+        : em==="full" ? "先生の保存スペースがいっぱいです。先生に知らせてね。"
+        : em==="cannot_submit" ? "この課題はもう送れない状態です（先生がOKずみ等）。画面を下に引っぱって更新してね。"
+        : em==="bad_key" ? "番号が見つかりません。もう一度ログインしてね。"
+        : isNetErr(err) ? "送れませんでした。電波のいいところでもう一度ためしてね。" : "送れませんでした（"+em+"）";
+      if(em==="cannot_submit") stuRefresh(true); } };
   return f;
 }
 /* ---------- profile decorating ---------- */
