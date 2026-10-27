@@ -1680,6 +1680,77 @@ body.no-scroll{overflow:hidden}
 .prof.skl .pf-st small,.prof.skl .pf-who,.prof.skl .pf-nm:not(.nf){color:#2a2140!important;text-shadow:none!important}
 .prof.skl .pf-lad small,.prof.skl .pf-road-h b{color:#2a2140!important;text-shadow:0 0 3px #fff!important}
 
+/* ===================== AVATARS v2 ===================== */
+.av2{position:relative;display:block;width:100%;height:100%;border-radius:50%;isolation:isolate}
+.av2>i,.av2>img{position:absolute;display:block}
+.av2 .bg{inset:0;border-radius:50%;overflow:hidden}
+.av2 .ch{left:13%;top:12%;width:74%;height:74%;object-fit:contain;z-index:2;filter:drop-shadow(0 6% 6% rgba(0,0,0,.35))}
+.av2 .rg{inset:0;border-radius:50%;z-index:3;padding:6%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.pf-av .av2,.srow-av .av2,.gi-av .av2{width:100%;height:100%}
+.pf-av{filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
+/* --- cute --- */
+.st-pastel .bg{background:radial-gradient(circle at 32% 28%,#fff 0,#ffe0f0 35%,#e3dcff 75%,#cfc4ff 100%)}
+.st-pastel .rg{background:linear-gradient(145deg,#fff,#ffd1e8 50%,#fff)}
+.st-cream .bg{background:radial-gradient(circle at 32% 28%,#fffdf6 0,#fff0d4 40%,#ffd9a8 100%)}
+.st-cream .rg{background:linear-gradient(145deg,#fff,#ffe6c2 55%,#fff)}
+.st-mint .bg{background:radial-gradient(circle at 32% 28%,#fff 0,#dcfff2 40%,#a8ecd6 100%)}
+.st-mint .rg{background:linear-gradient(145deg,#fff,#c8f5e6 55%,#fff)}
+.st-pastel .rg,.st-cream .rg,.st-mint .rg{box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+/* --- cool --- */
+.st-steel .bg{background:radial-gradient(circle at 50% 30%,#3a4558 0,#1a2130 55%,#0a0d14 100%)}
+.st-steel .bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.04) 0 2px,transparent 2px 5px)}
+.st-steel .rg{padding:7%;background:conic-gradient(from 210deg,#5d6676,#e9eef6,#7c8597,#2b313c,#c9d2df,#5d6676)}
+.st-steel .ch{filter:drop-shadow(0 0 4px rgba(90,220,255,.55)) drop-shadow(0 6% 6% rgba(0,0,0,.6))}
+.st-neon .bg{background:radial-gradient(circle at 50% 45%,#2a0a4a 0,#08020f 70%);}
+.st-neon .bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,230,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,200,.18) 1px,transparent 1px);background-size:18% 18%;-webkit-mask:radial-gradient(circle,#000 30%,transparent 75%);mask:radial-gradient(circle,#000 30%,transparent 75%)}
+.st-neon .rg{padding:5%;background:conic-gradient(#ff2fd0,#2fe8ff,#ff2fd0);filter:drop-shadow(0 0 3px #ff2fd0) drop-shadow(0 0 6px #2fe8ff)}
+.st-neon .ch{filter:drop-shadow(0 0 5px rgba(255,47,208,.7)) drop-shadow(0 0 2px rgba(47,232,255,.8))}
+/* --- flashy --- */
+.st-holo .bg{background:conic-gradient(from 0deg,#ffd1f4,#c9f1ff,#d8ffd6,#fff4c2,#e3d4ff,#ffd1f4);animation:av-spin 8s linear infinite}
+.st-holo .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),transparent 55%)}
+.st-holo .rg{padding:6.5%;background:conic-gradient(#ff3d3d,#ffa53a,#ffe14a,#3dff8a,#3ad6ff,#7a5cff,#ff4fd8,#ff3d3d);animation:av-spin 3s linear infinite}
+.st-flame .bg{background:radial-gradient(circle at 50% 70%,#ff7a1a 0,#b31b00 45%,#2a0400 100%)}
+.st-flame .bg::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-20%;height:70%;background:radial-gradient(ellipse at 30% 100%,#ffd000 0,transparent 50%),radial-gradient(ellipse at 70% 100%,#ffae00 0,transparent 45%);filter:blur(2px);animation:av-flame .6s ease-in-out infinite alternate}
+.st-flame .rg{padding:6.5%;background:conic-gradient(#ff2a00,#ffd000,#ff7a00,#ff2a00,#ffd000,#ff7a00,#ff2a00);animation:av-spin 1.6s linear infinite;filter:drop-shadow(0 0 4px #ff5a00)}
+.st-flame .ch{filter:drop-shadow(0 0 5px rgba(255,140,0,.8)) drop-shadow(0 6% 6% rgba(0,0,0,.5))}
+@keyframes av-flame{to{transform:translateY(-6%) scaleY(1.08);opacity:.85}}
+@keyframes av-spin{to{transform:rotate(360deg)}}
+/* --- realistic: photo studio light, floor and reflection --- */
+.st-studio .bg{background:radial-gradient(ellipse at 50% 22%,#8a8f9e 0,#4a4e5a 30%,#1c1e24 62%,#0a0b0e 100%)}
+.st-studio .bg::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(0,0,0,.6))}
+.st-studio .ch{top:9%;width:70%;height:70%;left:15%;filter:drop-shadow(0 8% 5% rgba(0,0,0,.75)) saturate(1.05) contrast(1.08)}
+.st-studio .rf{position:absolute;left:15%;top:74%;width:70%;height:70%;object-fit:contain;transform:scaleY(-1);opacity:.25;z-index:1;filter:blur(1.5px);-webkit-mask:linear-gradient(0deg,transparent 65%,#000 100%);mask:linear-gradient(0deg,transparent 65%,#000 100%)}
+.st-studio .rg{padding:4.5%;background:linear-gradient(160deg,#f2f2f5,#8d9099 40%,#2a2c33 60%,#c9ccd4)}
+/* --- luxury --- */
+.st-gold .bg{background:radial-gradient(circle at 50% 35%,#3a2408 0,#120a02 60%,#000 100%)}
+.st-gold .bg::after{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,200,80,.06) 0 6deg,transparent 6deg 15deg)}
+.st-gold .rg,.st-royal .rg{padding:9%;background:conic-gradient(from 200deg,#7a4a00,#ffd75a,#fff6c8,#e0a020,#7a4a00,#ffd75a,#fff6c8,#c98a00,#7a4a00)}
+.st-gold .ch,.st-royal .ch{filter:drop-shadow(0 0 4px rgba(255,210,90,.7)) drop-shadow(0 6% 6% rgba(0,0,0,.7))}
+.st-royal .bg{background:radial-gradient(circle at 50% 35%,#5a1a8a 0,#2a0646 55%,#12011f 100%)}
+.st-royal .bg::after{content:"";position:absolute;inset:0;opacity:.35;background-image:radial-gradient(circle at 50% 50%,transparent 26%,#e8b84a 27% 29%,transparent 30%),radial-gradient(circle,#e8b84a 0 4%,transparent 5%);background-size:30% 30%,30% 30%;background-position:0 0,15% 15%}
+.st-diamond .bg{background:radial-gradient(circle at 35% 30%,#fff 0,#eef2f8 40%,#c9d3e3 100%)}
+.st-diamond .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(190,205,230,.5) 32%,transparent 36%),linear-gradient(40deg,transparent 55%,rgba(170,185,215,.45) 57%,transparent 60%),linear-gradient(160deg,transparent 70%,rgba(190,205,230,.4) 72%,transparent 75%)}
+.st-diamond .rg{padding:9%;background:conic-gradient(from 0deg,#fff,#b9c6dc,#ffffff,#8fa6cc,#fff,#d6e0f0,#ffffff,#9fb3d6,#fff);animation:av-spin 6s linear infinite}
+.st-diamond .ch{filter:drop-shadow(0 0 5px rgba(160,200,255,.9)) drop-shadow(0 6% 6% rgba(40,60,100,.45))}
+/* gem studs on the ring (luxury) */
+.av2 [class^="st"]{z-index:4;width:13%;height:13%;transform:rotate(45deg);border-radius:2px}
+.st-gold [class^="st"]{background:linear-gradient(135deg,#fff,#7fe3ff 40%,#1f86e8)}
+.st-royal [class^="st"]{background:linear-gradient(135deg,#fff,#ff7aa8 40%,#c8102e)}
+.st-diamond [class^="st"]{background:linear-gradient(135deg,#fff,#e0f4ff 40%,#9fc4ff);box-shadow:0 0 6px #fff}
+.av2 .st1{left:43.5%;top:-2%}.av2 .st2{right:-2%;top:43.5%}.av2 .st3{left:43.5%;bottom:-2%}.av2 .st4{left:-2%;top:43.5%}
+/* twinkles */
+.av2 .tw{z-index:5;width:15%;height:15%;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:0;animation:av-tw 2.4s ease-in-out infinite}
+.av2 .t1{left:8%;top:14%}.av2 .t2{right:6%;top:30%;animation-delay:-.8s}.av2 .t3{left:62%;bottom:4%;animation-delay:-1.6s}
+@keyframes av-tw{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1)}70%{opacity:0;transform:scale(.4)}}
+.st-pastel .tw{filter:drop-shadow(0 0 2px #ff9fd0)}
+@media (prefers-reduced-motion: reduce){.av2 .bg,.av2 .rg,.av2 .tw{animation:none!important}}
+/* sizes */
+.pf-av{width:52px!important;height:52px!important;right:-14px!important;bottom:-12px!important}
+.gi.gi-av.big{width:150px;height:150px}
+.ga-tile .gi.gi-av,.zk-it .gi.gi-av{width:46px;height:46px}
+.dk-grid.avs .gi-av{width:62px;height:62px}
+.dk-gw .avst{font-size:.55rem;font-weight:800;opacity:.75}
+
 </style>
 </head>
 <body>
@@ -2571,10 +2642,36 @@ const RAR = [
   {k:"UR",  jp:"伝説",         c:"#ff4fd8", rate:1.5}
 ];
 const GACHA = [
+  {id:"g_av_turtle", r:0, cat:"av", v:{ch:"1f422", st:"mint"}, n:"カメ"},
+  {id:"g_av_hedge", r:0, cat:"av", v:{ch:"1f994", st:"cream"}, n:"ハリネズミ"},
+  {id:"g_av_lady", r:0, cat:"av", v:{ch:"1f437", st:"pastel"}, n:"こぶた"},
+  {id:"g_av2_octo", r:0, cat:"av", v:{ch:"1f419", st:"mint"}, n:"タコ"},
+  {id:"g_av_flam", r:1, cat:"av", v:{ch:"1f9a9", st:"holo"}, n:"フラミンゴ"},
+  {id:"g_av_whale", r:1, cat:"av", v:{ch:"1f42c", st:"neon"}, n:"イルカ"},
+  {id:"g_av_peac", r:1, cat:"av", v:{ch:"1f98b", st:"holo"}, n:"ちょうちょ"},
+  {id:"g_av_beanie_p", r:1, cat:"av", v:{ch:"1f9a6", st:"studio"}, n:"カワウソ"},
+  {id:"g_av_ghost_t", r:1, cat:"av", v:{ch:"1f383", st:"flame"}, n:"ジャック・オ・ランタン"},
+  {id:"g_av2_bcat", r:1, cat:"av", v:{ch:"1f408-200d-2b1b", st:"neon"}, n:"くろねこ"},
+  {id:"g_av2_parrot", r:1, cat:"av", v:{ch:"1f99c", st:"holo"}, n:"インコ"},
+  {id:"g_av2_horse", r:1, cat:"av", v:{ch:"1f434", st:"studio"}, n:"ウマ"},
+  {id:"g_av2_fairy", r:1, cat:"av", v:{ch:"1f9da", st:"pastel"}, n:"ようせい"},
+  {id:"g_av_shark", r:2, cat:"av", v:{ch:"1f988", st:"steel"}, n:"シャーク"},
+  {id:"g_av_fairy", r:2, cat:"av", v:{ch:"1f9d9", st:"royal"}, n:"まほうつかい"},
+  {id:"g_av_eagle", r:2, cat:"av", v:{ch:"1f985", st:"studio"}, n:"イーグル"},
+  {id:"g_av_robo_k", r:2, cat:"av", v:{ch:"1f9d1-200d-1f3a4", st:"holo"}, n:"シンガー"},
+  {id:"g_av2_wolf", r:2, cat:"av", v:{ch:"1f43a", st:"steel"}, n:"ウルフ"},
+  {id:"g_av2_trex", r:2, cat:"av", v:{ch:"1f996", st:"flame"}, n:"ティラノ"},
+  {id:"g_av2_astro", r:2, cat:"av", v:{ch:"1f9d1-200d-1f680", st:"neon"}, n:"うちゅうひこうし"},
+  {id:"g_av2_swan", r:2, cat:"av", v:{ch:"1f9a2", st:"diamond"}, n:"スワン"},
+  {id:"g_av_dragon", r:3, cat:"av", v:{ch:"1f409", st:"flame"}, n:"ドラゴン"},
+  {id:"g_av_vamp", r:3, cat:"av", v:{ch:"1f42f", st:"gold"}, n:"ゴールドタイガー"},
+  {id:"g_av_alien_dj", r:3, cat:"av", v:{ch:"1f99a", st:"royal"}, n:"ロイヤルクジャク"},
+  {id:"g_av2_lion", r:3, cat:"av", v:{ch:"1f981", st:"gold"}, n:"ゴールドライオン"},
+  {id:"g_av2_diva", r:3, cat:"av", v:{ch:"1f469-200d-1f3a4", st:"royal"}, n:"ディーバ"},
+  {id:"g_av2_genie", r:3, cat:"av", v:{ch:"1f9de", st:"holo"}, n:"ランプの魔人"},
+  {id:"g_av_unicorn", r:4, cat:"av", v:{ch:"1f984", st:"diamond"}, n:"ダイヤモンドユニコーン"},
+  {id:"g_av2_ryu", r:4, cat:"av", v:{ch:"1f432", st:"diamond"}, n:"ダイヤモンド神龍"},
   // ---- N ----
-  {id:"g_av_turtle", r:0, cat:"av", v:{b:"panda", c:"#ffffff", c2:"#2e2b38", bg:"#e8e4ff", e:"sleepy", a:"nightcap", ac:"#7a8cff"}, n:"おひるねパンダ"},
-  {id:"g_av_hedge",  r:0, cat:"av", v:{b:"hamster", c:"#e9a86a", c2:"#fff4e6", bg:"#ffe9f2", e:"happy", a:"beanie", ac:"#ff7aa8"}, n:"ニットぼうハムスター"},
-  {id:"g_av_lady",   r:0, cat:"av", v:{b:"chick", c:"#ffd93d", c2:"#ff9f1c", bg:"#e2f4ff", e:"wink", a:"cap", ac:"#ff5c5c"}, n:"キャップひよこ"},
   {id:"g_st_cherry", r:0, cat:"st", v:"🍒", n:"さくらんぼ"},
   {id:"g_st_bear",   r:0, cat:"st", v:"🧸", n:"くまのぬいぐるみ"},
   {id:"g_st_bubble", r:0, cat:"st", v:"🫧", n:"しゃぼんだま"},
@@ -2583,9 +2680,6 @@ const GACHA = [
   {id:"g_ti_yubi",   r:0, cat:"title", v:"ゆびがつよい", n:"しょうごう"},
   {id:"g_nf_glow",   r:0, cat:"nfx", v:"glow", n:"ふんわり光る名前"},
   // ---- R ----
-  {id:"g_av_flam",   r:1, cat:"av", v:{b:"cat", c:"#ffd1e6", c2:"#fff3f8", bg:"#2b1b4a", e:"happy", a:"headphones", ac:"#3ad6ff", fr:1}, n:"DJにゃんこ"},
-  {id:"g_av_whale",  r:1, cat:"av", v:{b:"dog", c:"#f2dcc0", c2:"#8a5a33", bg:"#ffe4b8", e:"dot", a:"shades", ac:"#ff4fd8", fr:1}, n:"サングラスわんこ"},
-  {id:"g_av_peac",   r:1, cat:"av", v:{b:"rabbit", c:"#ffffff", c2:"#ffb5c8", bg:"#e9ffe9", e:"happy", a:"flower", fr:1}, n:"はなかんむりうさぎ"},
   {id:"g_st_head",   r:1, cat:"st", v:"🎧", n:"ヘッドホン"},
   {id:"g_st_mirror", r:1, cat:"st", v:"🪩", n:"ミラーボール"},
   {id:"g_ti_gkid",   r:1, cat:"title", v:"ギターキッズ", n:"しょうごう"},
@@ -2596,9 +2690,6 @@ const GACHA = [
   {id:"g_sk_soda",   r:1, cat:"skin", v:"soda", n:"ソーダフロート"},
   {id:"g_nf_neon",   r:1, cat:"nfx", v:"neon", n:"ネオン管の名前"},
   // ---- SR ----
-  {id:"g_av_shark",  r:2, cat:"av", v:{b:"fox", c:"#5b4a7a", c2:"#e8e0ff", bg:"#1d1433", e:"dot", a:"ninja", ac:"#ff3d6e", fr:2}, n:"ニンジャきつね"},
-  {id:"g_av_fairy",  r:2, cat:"av", v:{b:"owl", c:"#6a4fb0", c2:"#e6dcff", bg:"#20164a", e:"star", a:"wizard", ac:"#5a3ae0", fr:2}, n:"まほうつかいフクロウ"},
-  {id:"g_av_eagle",  r:2, cat:"av", v:{b:"bear", c:"#2b2b33", c2:"#6b6b7a", bg:"#ff4f8b", e:"dot", a:"shades", ac:"#ffe14a", fr:2}, n:"ロックスターくま"},
   {id:"g_st_crystal",r:2, cat:"st", v:"🔮", n:"すいしょう玉"},
   {id:"g_st_sword",  r:2, cat:"st", v:"🗡️", n:"伝説の剣"},
   {id:"g_ti_stage",  r:2, cat:"title", v:"ステージの支配者", n:"しょうごう"},
@@ -2610,8 +2701,6 @@ const GACHA = [
   {id:"g_sk_yozak",  r:2, cat:"skin", v:"yozakura", n:"夜桜"},
   {id:"g_nf_gold",   r:2, cat:"nfx", v:"gold", n:"黄金の名前"},
   // ---- SSR ----
-  {id:"g_av_dragon", r:3, cat:"av", v:{b:"dragon", c:"#4fc98a", c2:"#ffd23f", bg:"#14304a", e:"dot", fr:3}, n:"ドラゴン"},
-  {id:"g_av_vamp",   r:3, cat:"av", v:{b:"cat", c:"#3a2a4a", c2:"#6b5580", bg:"#3a0a1a", e:"star", a:"horns", ac:"#ff3d3d", fr:3}, n:"デビルにゃんこ"},
   {id:"g_st_galaxy", r:3, cat:"st", v:"🌌", n:"銀河"},
   {id:"g_ti_kami",   r:3, cat:"title", v:"神に選ばれし声", n:"しょうごう"},
   {id:"g_ti_haou",   r:3, cat:"title", v:"六弦の覇王", n:"しょうごう"},
@@ -2627,11 +2716,6 @@ const GACHA = [
   {id:"g_ti_legend", r:4, cat:"title", v:"NACHAの伝説", n:"しょうごう"},
   {id:"g_nf_rbw",    r:4, cat:"nfx", v:"rainbow", n:"虹の覇気"},
   // ---- more (v2) ----
-  {id:"g_av_beanie_p", r:1, cat:"av", v:{b:"penguin", c:"#2f3b63", c2:"#ffffff", bg:"#d6f0ff", e:"happy", a:"beanie", ac:"#ffb21a", fr:1}, n:"ニットペンギン"},
-  {id:"g_av_alien_dj", r:3, cat:"av", v:{b:"alien", c:"#b48eff", c2:"#140f24", bg:"#0b2a3a", e:"dot", a:"headphones", ac:"#3dff8a", fr:3}, n:"宇宙DJ"},
-  {id:"g_av_unicorn",  r:4, cat:"av", v:{b:"unicorn", c:"#ffffff", c2:"#ffe0f2", bg:"#2a1250", e:"star", fr:4}, n:"天界ユニコーン"},
-  {id:"g_av_robo_k",   r:2, cat:"av", v:{b:"robot", c:"#ffd36b", c2:"#ff4fd8", bg:"#2a1250", e:"happy", a:"crown", fr:2}, n:"キングロボ"},
-  {id:"g_av_ghost_t",  r:1, cat:"av", v:{b:"ghost", c:"#ffffff", c2:"#d9d2ff", bg:"#3a2a6a", e:"wink", a:"tophat", ac:"#ff4f8b", fr:1}, n:"シルクハットおばけ"},
   // frames (the border around the card)
   {id:"g_fr_pastel", r:0, cat:"frame", v:"pastel", n:"パステルフレーム"},
   {id:"g_fr_mint",   r:0, cat:"frame", v:"mint", n:"ミントフレーム"},
@@ -2676,147 +2760,53 @@ const CAT_JP = {av:"アバター", st:"ステッカー", title:"しょうごう"
 // a stored decoration value: gacha items are stored by id, everything else as itself
 const gv = v => (typeof v==="string" && GITEM[v]) ? GITEM[v].v : v;
 const gr = v => (typeof v==="string" && GITEM[v]) ? GITEM[v].r : -1;
-/* ================= AVATARS: drawn characters (no emoji) ================= */
-// spec: b = base animal, c = main colour, c2 = second colour, bg = background, e = eyes, a = accessory, ac = accessory colour, fr = frame (0 none .. 4 rainbow)
+/* ================= AVATARS v2: 3D characters in styled badges =================
+   characters: Microsoft Fluent Emoji 3D (MIT), served from jsDelivr.
+   styles: cute (pastel/cream/mint) / cool (steel/neon) / flashy (holo/flame) / real (studio) / luxury (gold/royal/diamond) */
+const AV_CDN = "https://cdn.jsdelivr.net/npm/@lobehub/fluent-emoji-3d@1.1.0/assets/";
+const AV_STYLE = {
+  pastel:{jp:"かわいい"}, cream:{jp:"かわいい"}, mint:{jp:"かわいい"},
+  steel:{jp:"かっこいい"}, neon:{jp:"かっこいい"},
+  holo:{jp:"ハデ"}, flame:{jp:"ハデ"},
+  studio:{jp:"リアル"},
+  gold:{jp:"高級"}, royal:{jp:"高級"}, diamond:{jp:"高級"}
+};
+// [id, stamps needed, name, {ch, st}]
 const AV_FREE = [
-  ["a_cat",     0, "ねこ",       {b:"cat", c:"#ffb15c", c2:"#ffd9a8", bg:"#fff1dc", e:"dot"}],
-  ["a_dog",     0, "いぬ",       {b:"dog", c:"#e8c08f", c2:"#a8743f", bg:"#fff4e2", e:"dot"}],
-  ["a_bear",    0, "くま",       {b:"bear", c:"#b07a4f", c2:"#e8c8a4", bg:"#f6eadc", e:"dot"}],
-  ["a_rabbit",  0, "うさぎ",     {b:"rabbit", c:"#ffffff", c2:"#ffb5c8", bg:"#ffe6ee", e:"dot"}],
-  ["a_panda",   0, "パンダ",     {b:"panda", c:"#ffffff", c2:"#2e2b38", bg:"#e5f6e8", e:"dot"}],
-  ["a_penguin", 0, "ペンギン",   {b:"penguin", c:"#2f3b63", c2:"#ffffff", bg:"#dff1ff", e:"dot"}],
-  ["a_chick",   0, "ひよこ",     {b:"chick", c:"#ffd93d", c2:"#ff9f1c", bg:"#fff9d6", e:"dot"}],
-  ["a_frog",    0, "かえる",     {b:"frog", c:"#7ed957", c2:"#c9f5b0", bg:"#ecffe2", e:"dot"}],
-  ["a_hamster", 0, "ハムスター", {b:"hamster", c:"#f2b880", c2:"#fff4e6", bg:"#fff0e0", e:"dot"}],
-  ["a_fox",     0, "きつね",     {b:"fox", c:"#ff8a3d", c2:"#ffffff", bg:"#ffeedd", e:"dot"}],
-  ["a_owl",     3, "ふくろう",   {b:"owl", c:"#9c6b45", c2:"#f3dcc0", bg:"#f1e6ff", e:"dot"}],
-  ["a_cat_hp",  5, "ヘッドホンねこ", {b:"cat", c:"#8d8d9e", c2:"#d8d8e6", bg:"#e6f4ff", e:"happy", a:"headphones", ac:"#ff4f8b"}],
-  ["a_bear_cap",8, "キャップくま", {b:"bear", c:"#d9955a", c2:"#f6dcc0", bg:"#e8f7ff", e:"wink", a:"cap", ac:"#3a7bff"}],
-  ["a_rabbit_bow",10,"リボンうさぎ", {b:"rabbit", c:"#fff3f7", c2:"#ff9fbc", bg:"#fff0f6", e:"happy", a:"bow", ac:"#ff4f8b"}],
-  ["a_robot",  15, "ロボ",       {b:"robot", c:"#cfd8e6", c2:"#5ee6ff", bg:"#e3ecff", e:"dot"}],
-  ["a_ghost",  20, "おばけ",     {b:"ghost", c:"#ffffff", c2:"#d9d2ff", bg:"#ece8ff", e:"dot"}],
-  ["a_alien",  25, "うちゅうじん", {b:"alien", c:"#8ef0a0", c2:"#1c1d2b", bg:"#1c1442", e:"dot"}],
-  ["a_peng_crown",30,"王さまペンギン", {b:"penguin", c:"#2f3b63", c2:"#ffffff", bg:"#fff4c7", e:"happy", a:"crown", ac:"#ffc93a", fr:3}]
+  ["a_cat",      0, "ねこ",        {ch:"1f431", st:"pastel"}],
+  ["a_dog",      0, "いぬ",        {ch:"1f436", st:"cream"}],
+  ["a_rabbit",   0, "うさぎ",      {ch:"1f430", st:"pastel"}],
+  ["a_bear",     0, "くま",        {ch:"1f43b", st:"cream"}],
+  ["a_panda",    0, "パンダ",      {ch:"1f43c", st:"mint"}],
+  ["a_penguin",  0, "ペンギン",    {ch:"1f427", st:"mint"}],
+  ["a_chick",    0, "ひよこ",      {ch:"1f425", st:"cream"}],
+  ["a_frog",     0, "かえる",      {ch:"1f438", st:"mint"}],
+  ["a_hamster",  0, "ハムスター",  {ch:"1f439", st:"pastel"}],
+  ["a_fox",      0, "きつね",      {ch:"1f98a", st:"cream"}],
+  ["a_owl",      3, "ふくろう",    {ch:"1f989", st:"mint"}],
+  ["a_cat_hp",   5, "コアラ",      {ch:"1f428", st:"pastel"}],
+  ["a_bear_cap", 8, "しろくま",    {ch:"1f43b-200d-2744-fe0f", st:"mint"}],
+  ["a_rabbit_bow",10,"ユニコーン", {ch:"1f984", st:"pastel"}],
+  ["a_robot",   15, "ロボ",        {ch:"1f916", st:"steel"}],
+  ["a_ghost",   20, "おばけ",      {ch:"1f47b", st:"neon"}],
+  ["a_alien",   25, "うちゅうじん",{ch:"1f47d", st:"neon"}],
+  ["a_peng_crown",30,"ライオン",   {ch:"1f981", st:"studio"}]
 ];
 const AV_SPEC = Object.fromEntries(AV_FREE.map(a=>[a[0],a[3]]));
-// old emoji avatars -> the new drawings
-const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bear","🐼":"a_panda","🐨":"a_bear","🦊":"a_fox","🐸":"a_frog","🐧":"a_penguin","🐤":"a_chick","🐹":"a_hamster","🤖":"a_robot","👾":"a_alien","👑":"a_peng_crown"};
+const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bear","🐼":"a_panda","🐨":"a_cat_hp","🦊":"a_fox","🐸":"a_frog","🐧":"a_penguin","🐤":"a_chick","🐹":"a_hamster","🤖":"a_robot","👾":"a_alien","👑":"a_peng_crown"};
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
-
-function shade(hex, k){ // k<0 darker, k>0 lighter
-  let h=hex.replace("#",""); if(h.length===3) h=h.split("").map(x=>x+x).join("");
-  const n=parseInt(h,16); let r=n>>16, g=(n>>8)&255, b=n&255;
-  const f=v=>Math.max(0,Math.min(255,Math.round(k<0? v*(1+k) : v+(255-v)*k)));
-  return "#"+[f(r),f(g),f(b)].map(x=>x.toString(16).padStart(2,"0")).join(""); }
-let _avn=0;
-function avatarSVG(s){
-  if(!s) return "";
-  const u="av"+(++_avn), c=s.c, c2=s.c2||"#fff", ol=shade(c==="#ffffff"||c==="#fff3f7"?"#c9c3d6":c,-.38), ink="#2b2233";
-  const L=[];
-  // background + frame
-  L.push(`<defs><radialGradient id="${u}g" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".55" stop-color="${s.bg}"/><stop offset="1" stop-color="${shade(s.bg,-.12)}"/></radialGradient>
-    <linearGradient id="${u}r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3d3d"/><stop offset=".2" stop-color="#ffe14a"/><stop offset=".4" stop-color="#3dff8a"/><stop offset=".6" stop-color="#3ad6ff"/><stop offset=".8" stop-color="#7a5cff"/><stop offset="1" stop-color="#ff4fd8"/>${s.fr===4?`<animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="3s" repeatCount="indefinite"/>`:""}</linearGradient>
-    <linearGradient id="${u}au" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".5" stop-color="#ffc93a"/><stop offset="1" stop-color="#c98a00"/></linearGradient>
-    <clipPath id="${u}c"><circle cx="32" cy="32" r="30"/></clipPath></defs>`);
-  L.push(`<circle cx="32" cy="32" r="30" fill="url(#${u}g)"/>`);
-  L.push(`<g clip-path="url(#${u}c)">`);
-  const eyesY = s.b==="frog"?25: s.b==="chick"?36: s.b==="robot"?36 : 36;
-  const EX = s.b==="frog"?[22,42] : [25,39];
-  const head=(cx,cy,r,fill)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${ol}" stroke-width="1.8"/>`;
-  const cheeks=(y=41,x=[20.5,43.5])=>`<ellipse cx="${x[0]}" cy="${y}" rx="3.2" ry="2" fill="#ff7fa3" opacity=".55"/><ellipse cx="${x[1]}" cy="${y}" rx="3.2" ry="2" fill="#ff7fa3" opacity=".55"/>`;
-  const B=s.b;
-  if(B==="cat"){ L.push(`<path d="M14 30 L16 11 L28 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/><path d="M50 30 L48 11 L36 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/>
-    <path d="M17.5 24 L18.5 15.5 L24.5 20.5 Z" fill="#ff9fbc"/><path d="M46.5 24 L45.5 15.5 L39.5 20.5 Z" fill="#ff9fbc"/>`, head(32,37,19,c),
-    `<ellipse cx="32" cy="44" rx="9" ry="6" fill="${c2}"/>`, cheeks(), `<path d="M30.5 41.5 h3 l-1.5 1.8 z" fill="#ff6f91"/><path d="M28.5 44.5 q1.8 1.8 3.5 0 q1.7 1.8 3.5 0" fill="none" stroke="${ink}" stroke-width="1.3" stroke-linecap="round"/>
-    <path d="M12 39 l7 1 M12 43 l7 -.5 M52 39 l-7 1 M52 43 l-7 -.5" stroke="${ol}" stroke-width="1" stroke-linecap="round" opacity=".6"/>`); }
-  else if(B==="dog"){ L.push(head(32,37,18.5,c), `<ellipse cx="14" cy="33" rx="6" ry="12" transform="rotate(18 14 33)" fill="${c2}" stroke="${shade(c2,-.3)}" stroke-width="1.6"/><ellipse cx="50" cy="33" rx="6" ry="12" transform="rotate(-18 50 33)" fill="${c2}" stroke="${shade(c2,-.3)}" stroke-width="1.6"/>`,
-    `<ellipse cx="32" cy="44.5" rx="9.5" ry="7" fill="${shade(c,.55)}"/><ellipse cx="32" cy="41" rx="3.4" ry="2.4" fill="${ink}"/><path d="M32 43.4 v2 M29 46 q3 2.5 6 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M31 47 q1 3 2 0" fill="#ff6f91"/>`, cheeks(42)); }
-  else if(B==="bear"){ L.push(`<circle cx="17" cy="21" r="7" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="47" cy="21" r="7" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="17" cy="21" r="3.6" fill="${c2}"/><circle cx="47" cy="21" r="3.6" fill="${c2}"/>`, head(32,37,19,c),
-    `<ellipse cx="32" cy="44" rx="8.5" ry="6.5" fill="${c2}"/><ellipse cx="32" cy="41.2" rx="3.2" ry="2.3" fill="${ink}"/><path d="M29 45.5 q3 2.4 6 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`, cheeks()); }
-  else if(B==="rabbit"){ L.push(`<ellipse cx="24" cy="14" rx="5.5" ry="13" transform="rotate(-8 24 14)" fill="${c}" stroke="${ol}" stroke-width="1.8"/><ellipse cx="40" cy="14" rx="5.5" ry="13" transform="rotate(8 40 14)" fill="${c}" stroke="${ol}" stroke-width="1.8"/>
-    <ellipse cx="24" cy="15" rx="2.6" ry="9" transform="rotate(-8 24 15)" fill="${c2}"/><ellipse cx="40" cy="15" rx="2.6" ry="9" transform="rotate(8 40 15)" fill="${c2}"/>`, head(32,38,18,c),
-    `<path d="M30.6 42 h2.8 l-1.4 1.6z" fill="#ff6f91"/><path d="M32 43.6 v1.4 M29.5 45.6 q2.5 1.8 5 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(42)); }
-  else if(B==="panda"){ L.push(`<circle cx="17" cy="22" r="7" fill="${c2}"/><circle cx="47" cy="22" r="7" fill="${c2}"/>`, head(32,37,19,c),
-    `<ellipse cx="25" cy="36.5" rx="5" ry="6.2" transform="rotate(20 25 36.5)" fill="${c2}"/><ellipse cx="39" cy="36.5" rx="5" ry="6.2" transform="rotate(-20 39 36.5)" fill="${c2}"/>
-     <ellipse cx="32" cy="42" rx="3" ry="2.1" fill="${ink}"/><path d="M29.3 45.3 q2.7 2.2 5.4 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`, cheeks(44,[19.5,44.5])); }
-  else if(B==="penguin"){ L.push(head(32,37,20,c), `<path d="M32 26 C24 22 15 30 17 41 C19 50 27 54 32 54 C37 54 45 50 47 41 C49 30 40 22 32 26Z" fill="${c2}"/>`,
-    `<path d="M28.5 41 L35.5 41 L32 45.5 Z" fill="#ffa62b" stroke="#d97a00" stroke-width="1" stroke-linejoin="round"/>`, cheeks(43)); }
-  else if(B==="chick"){ L.push(`<path d="M29 15 q2 -6 4 0 q3 -5 4 1" fill="none" stroke="${shade(c,-.3)}" stroke-width="2" stroke-linecap="round"/>`, `<circle cx="32" cy="37" r="20" fill="${c}" stroke="${shade(c,-.3)}" stroke-width="1.8"/>`,
-    `<path d="M28.5 41 L32 38.5 L35.5 41 L32 44 Z" fill="${c2}" stroke="${shade(c2,-.3)}" stroke-width="1"/><path d="M14 44 q-4 -6 2 -10 M50 44 q4 -6 -2 -10" stroke="${shade(c,-.3)}" stroke-width="2" fill="none" stroke-linecap="round"/>`, cheeks(43,[20,44])); }
-  else if(B==="frog"){ L.push(`<ellipse cx="32" cy="41" rx="22" ry="16" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="22" cy="26" r="8" fill="${c}" stroke="${ol}" stroke-width="1.8"/><circle cx="42" cy="26" r="8" fill="${c}" stroke="${ol}" stroke-width="1.8"/>
-    <circle cx="22" cy="26" r="5.5" fill="#fff"/><circle cx="42" cy="26" r="5.5" fill="#fff"/><ellipse cx="32" cy="47" rx="12" ry="6" fill="${c2}" opacity=".8"/>
-    <path d="M22 41 q10 8 20 0" stroke="${ink}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`, cheeks(41,[16,48])); }
-  else if(B==="hamster"){ L.push(`<circle cx="18" cy="23" r="5.5" fill="${c}" stroke="${ol}" stroke-width="1.6"/><circle cx="46" cy="23" r="5.5" fill="${c}" stroke="${ol}" stroke-width="1.6"/><circle cx="18" cy="23" r="2.8" fill="#ffb5c8"/><circle cx="46" cy="23" r="2.8" fill="#ffb5c8"/>`, head(32,38,19.5,c),
-    `<path d="M14 42 C14 52 50 52 50 42 C46 46 40 44 32 44 C24 44 18 46 14 42Z" fill="${c2}"/><ellipse cx="18.5" cy="43" rx="6" ry="4.5" fill="${c2}"/><ellipse cx="45.5" cy="43" rx="6" ry="4.5" fill="${c2}"/>
-     <ellipse cx="32" cy="41" rx="2.2" ry="1.6" fill="#ff6f91"/><path d="M29.5 44 q2.5 2 5 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(42,[19,45])); }
-  else if(B==="fox"){ L.push(`<path d="M13 31 L15 9 L29 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/><path d="M51 31 L49 9 L35 21 Z" fill="${c}" stroke="${ol}" stroke-width="1.8" stroke-linejoin="round"/>
-    <path d="M15.2 14 L15 9 L19.5 13 Z M48.8 14 L49 9 L44.5 13 Z" fill="${ink}"/><path d="M17 25 L17.5 15 L25 21 Z M47 25 L46.5 15 L39 21 Z" fill="#fff" opacity=".8"/>`, head(32,37,19,c),
-    `<path d="M13.5 38 C18 39 24 43 32 52 C40 43 46 39 50.5 38 C50 47 42 56 32 56 C22 56 14 47 13.5 38Z" fill="${c2}"/><ellipse cx="32" cy="44" rx="2.8" ry="2" fill="${ink}"/><path d="M30 47 q2 1.5 4 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(42,[21,43])); }
-  else if(B==="owl"){ L.push(`<path d="M15 26 L14 12 L24 21 Z M49 26 L50 12 L40 21 Z" fill="${shade(c,-.15)}" stroke="${ol}" stroke-width="1.6" stroke-linejoin="round"/>`, head(32,38,20,c),
-    `<ellipse cx="32" cy="48" rx="11" ry="8" fill="${c2}" opacity=".9"/><path d="M27 47 q1.5 1.5 3 0 M34 47 q1.5 1.5 3 0 M30.5 51 q1.5 1.5 3 0" stroke="${shade(c,-.1)}" stroke-width="1" fill="none"/>
-     <circle cx="25" cy="35" r="7.5" fill="#fff" stroke="${shade(c,-.25)}" stroke-width="1.5"/><circle cx="39" cy="35" r="7.5" fill="#fff" stroke="${shade(c,-.25)}" stroke-width="1.5"/><path d="M30 40 L34 40 L32 44 Z" fill="#ffa62b"/>`); }
-  else if(B==="robot"){ L.push(`<line x1="32" y1="10" x2="32" y2="20" stroke="${ol}" stroke-width="2"/><circle cx="32" cy="9" r="3.2" fill="#ff4f6e" stroke="#c81d3b" stroke-width="1"/>
-    <rect x="12" y="20" width="40" height="34" rx="9" fill="${c}" stroke="${ol}" stroke-width="1.8"/><rect x="8" y="31" width="5" height="11" rx="2" fill="${shade(c,-.15)}" stroke="${ol}" stroke-width="1.2"/><rect x="51" y="31" width="5" height="11" rx="2" fill="${shade(c,-.15)}" stroke="${ol}" stroke-width="1.2"/>
-    <rect x="17" y="26" width="30" height="20" rx="6" fill="#1d2433"/><rect x="18.5" y="27.5" width="27" height="6" rx="3" fill="#fff" opacity=".08"/>
-    <path d="M27 49 h10" stroke="${ol}" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="50" r="1.6" fill="#ffd23f"/><circle cx="47" cy="50" r="1.6" fill="#5ee6ff"/>`); }
-  else if(B==="ghost"){ L.push(`<path d="M14 58 L14 33 C14 21 22 14 32 14 C42 14 50 21 50 33 L50 58 L45 53 L40 58 L35 53 L32 58 L29 53 L24 58 L19 53 Z" fill="${c}" stroke="${c2}" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M44 22 C48 26 49 31 49 36" stroke="${c2}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/><path d="M28 44 q4 4 8 0 q-4 6 -8 0" fill="#ff7fa3"/>`, cheeks(40,[20,44])); }
-  else if(B==="alien"){ L.push(`<path d="M22 20 L16 8 M42 20 L48 8" stroke="${shade(c,-.35)}" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="3" fill="#ff4fd8"/><circle cx="48" cy="7" r="3" fill="#ff4fd8"/>
-    <path d="M32 15 C46 15 52 26 50 37 C48 48 40 56 32 56 C24 56 16 48 14 37 C12 26 18 15 32 15Z" fill="${c}" stroke="${shade(c,-.35)}" stroke-width="1.8"/>
-    <ellipse cx="24" cy="36" rx="6" ry="8" transform="rotate(-30 24 36)" fill="${c2}"/><ellipse cx="40" cy="36" rx="6" ry="8" transform="rotate(30 40 36)" fill="${c2}"/>
-    <ellipse cx="22.5" cy="33.5" rx="1.8" ry="2.6" transform="rotate(-30 22.5 33.5)" fill="#fff" opacity=".85"/><ellipse cx="38.5" cy="33.5" rx="1.8" ry="2.6" transform="rotate(30 38.5 33.5)" fill="#fff" opacity=".85"/>
-    <path d="M29 48 q3 2 6 0" stroke="${shade(c,-.45)}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`); }
-  else if(B==="dragon"){ L.push(`<path d="M18 22 C14 14 16 8 20 5 C20 11 23 15 26 18 Z M46 22 C50 14 48 8 44 5 C44 11 41 15 38 18 Z" fill="#fff1c9" stroke="#c9a24a" stroke-width="1.4"/>
-    <path d="M27 14 l2 -6 l3 5 l3 -5 l2 6" fill="${c2}" stroke="${ol}" stroke-width="1.2" stroke-linejoin="round"/>`, head(32,35,18,c),
-    `<ellipse cx="32" cy="46" rx="12" ry="8.5" fill="${shade(c,.25)}" stroke="${ol}" stroke-width="1.6"/><ellipse cx="28" cy="44.5" rx="1.4" ry="1" fill="${ink}"/><ellipse cx="36" cy="44.5" rx="1.4" ry="1" fill="${ink}"/>
-     <path d="M26 49 q6 3.5 12 0" stroke="${ink}" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M29 49.5 l1 2 l1 -1.6 M35 49.5 l-1 2 l-1 -1.6" fill="#fff" stroke="${ink}" stroke-width=".6"/>
-     <path d="M14 30 l-6 -3 l5 6 M50 30 l6 -3 l-5 6" fill="${c2}" stroke="${ol}" stroke-width="1"/>`); }
-  else if(B==="unicorn"){ L.push(`<path d="M18 30 C12 22 14 12 22 10 C20 16 22 20 26 22 Z" fill="#ff8fd0"/><path d="M15 34 C9 28 10 18 16 14 C16 22 19 26 23 28 Z" fill="#8fd6ff"/><path d="M14 42 C7 38 7 28 11 24 C12 30 15 34 20 36 Z" fill="#c9a7ff"/>
-    <path d="M24 17 L21 9 L29 14 Z M40 17 L43 9 L35 14 Z" fill="${c}" stroke="${ol}" stroke-width="1.5"/>`, head(32,37,18,c),
-    `<path d="M32 4 L28.5 20 L35.5 20 Z" fill="url(#${u}au)" stroke="#c98a00" stroke-width="1"/><path d="M29.6 15 L34.4 13.5 M29.1 18 L34.9 16.5 M30.2 11.5 L33.8 10.3" stroke="#fff6c2" stroke-width=".9"/>
-     <ellipse cx="32" cy="45" rx="9" ry="6.5" fill="${c2}"/><ellipse cx="29" cy="45" rx="1.2" ry="1" fill="${shade(c2,-.4)}"/><ellipse cx="35" cy="45" rx="1.2" ry="1" fill="${shade(c2,-.4)}"/><path d="M29 48.5 q3 2 6 0" stroke="${ink}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`, cheeks(41)); }
-  // eyes (shades hide them)
-  if(s.a!=="shades" && B!=="robot"){
-    const ey=B==="owl"?35:eyesY, ex=B==="owl"?[25,39]:EX, eye=s.e||"dot", eyeC = B==="alien"? null : ink;
-    const pan=B==="panda", lc=pan?"#fff":ink;
-    if(eyeC){ ex.forEach((x,i)=>{
-      if(eye==="happy" || (eye==="wink" && i===1)) L.push(`<path d="M${x-3} ${ey+1} q3 -4 6 0" stroke="${lc}" stroke-width="2" fill="none" stroke-linecap="round"/>`);
-      else if(eye==="sleepy") L.push(`<path d="M${x-3} ${ey} q3 2.5 6 0" stroke="${lc}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`);
-      else if(pan && eye==="dot") L.push(`<circle cx="${x}" cy="${ey}" r="3.3" fill="#fff"/><circle cx="${x+.3}" cy="${ey+.3}" r="2" fill="${ink}"/><circle cx="${x+1}" cy="${ey-.6}" r=".8" fill="#fff"/>`);
-      else if(eye==="star") L.push(`<path d="M${x} ${ey-4.2} l1.3 2.8 3 .4 -2.2 2.1 .6 3 -2.7 -1.5 -2.7 1.5 .6 -3 -2.2 -2.1 3 -.4z" fill="#ffd23f" stroke="${ink}" stroke-width=".9" stroke-linejoin="round"/>`);
-      else { const big=B==="owl"?1.35:B==="frog"?1.1:1; L.push(`<ellipse cx="${x}" cy="${ey}" rx="${2.7*big}" ry="${3.3*big}" fill="${ink}"/><circle cx="${x+1}" cy="${ey-1.3}" r="${1.1*big}" fill="#fff"/>`); }
-    }); }
-  }
-  if(B==="robot"){ const e=s.e||"dot"; if(e==="happy") L.push(`<path d="M21.5 38 q3.5 -5 7 0 M35.5 38 q3.5 -5 7 0" stroke="${c2}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`); else L.push(`<rect x="22" y="31" width="6" height="8" rx="2" fill="${c2}"/><rect x="36" y="31" width="6" height="8" rx="2" fill="${c2}"/>`); L.push(`<path d="M27 42 q5 3 10 0" stroke="${c2}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`); }
-  // accessories
-  const ac=s.ac||"#ff4f8b", A=s.a;
-  if(A==="headphones") L.push(`<path d="M12 36 A20 20 0 0 1 52 36" fill="none" stroke="${shade(ac,-.3)}" stroke-width="4.5" stroke-linecap="round"/><path d="M12 36 A20 20 0 0 1 52 36" fill="none" stroke="${ac}" stroke-width="2.6" stroke-linecap="round"/>
-    <rect x="6.5" y="31" width="9" height="15" rx="4" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><rect x="48.5" y="31" width="9" height="15" rx="4" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><rect x="8.5" y="33" width="3" height="11" rx="1.5" fill="#fff" opacity=".45"/><rect x="50.5" y="33" width="3" height="11" rx="1.5" fill="#fff" opacity=".45"/>`);
-  if(A==="crown") L.push(`<path d="M20 20 L21 8 L26.5 14 L32 6 L37.5 14 L43 8 L44 20 Z" fill="url(#${u}au)" stroke="#a87400" stroke-width="1.4" stroke-linejoin="round"/><circle cx="32" cy="15" r="2.2" fill="#ff3d6e"/><circle cx="25" cy="16.5" r="1.5" fill="#3ad6ff"/><circle cx="39" cy="16.5" r="1.5" fill="#3dff8a"/>`);
-  if(A==="shades") L.push(`<path d="M16 32 h32" stroke="${ink}" stroke-width="2"/><rect x="17" y="31" width="13" height="9" rx="3.5" fill="#1b1424" stroke="${ink}" stroke-width="1"/><rect x="34" y="31" width="13" height="9" rx="3.5" fill="#1b1424" stroke="${ink}" stroke-width="1"/>
-    <path d="M19 33.5 l5 0 M36 33.5 l5 0" stroke="${ac}" stroke-width="1.6" stroke-linecap="round" opacity=".9"/>`);
-  if(A==="cap") L.push(`<path d="M13 30 C13 16 51 16 51 30 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.6"/><path d="M40 29 C48 28 58 30 60 33 C52 33 46 32 40 32 Z" fill="${shade(ac,-.2)}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><circle cx="32" cy="17.5" r="1.8" fill="#fff"/><path d="M24 25 h10" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>`);
-  if(A==="bow") L.push(`<path d="M44 18 L36 12 L36 24 Z M44 18 L52 12 L52 24 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.3" stroke-linejoin="round"/><circle cx="44" cy="18" r="2.8" fill="${shade(ac,-.15)}"/>`);
-  if(A==="beanie") L.push(`<path d="M13 30 C13 12 51 12 51 30 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.6"/><rect x="12" y="26" width="40" height="7" rx="3" fill="${shade(ac,-.15)}" stroke="${shade(ac,-.35)}" stroke-width="1.2"/><path d="M17 26 v7 M22 26 v7 M27 26 v7 M32 26 v7 M37 26 v7 M42 26 v7 M47 26 v7" stroke="${shade(ac,-.3)}" stroke-width=".8"/><circle cx="32" cy="11" r="4.5" fill="#fff" stroke="#ddd" stroke-width="1"/>`);
-  if(A==="halo") L.push(`<ellipse cx="32" cy="9" rx="12" ry="3.6" fill="none" stroke="#ffd54a" stroke-width="3"/><ellipse cx="32" cy="9" rx="12" ry="3.6" fill="none" stroke="#fff6c2" stroke-width="1"/>`);
-  if(A==="horns") L.push(`<path d="M18 22 C14 16 15 10 18 7 C19 13 22 16 25 18 Z M46 22 C50 16 49 10 46 7 C45 13 42 16 39 18 Z" fill="${ac}" stroke="${shade(ac,-.4)}" stroke-width="1.3"/>`);
-  if(A==="wizard") L.push(`<path d="M18 24 L34 0 L46 24 Z" fill="${ac}" stroke="${shade(ac,-.4)}" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="32" cy="24" rx="19" ry="4" fill="${shade(ac,-.2)}" stroke="${shade(ac,-.4)}" stroke-width="1.3"/><path d="M30 12 l1 2 2 .3 -1.5 1.4 .4 2 -1.9 -1 -1.9 1 .4 -2 -1.5 -1.4 2 -.3z" fill="#ffd23f"/><circle cx="37" cy="18" r="1.2" fill="#ffd23f"/>`);
-  if(A==="flower") L.push([[16,24,"#ff8fb1"],[22,18,"#ffd93d"],[29,15,"#8fd6ff"],[36,15,"#ff8fb1"],[42,18,"#c9a7ff"],[48,24,"#ffd93d"]].map(([x,y,col])=>`<g transform="translate(${x} ${y})">${[0,72,144,216,288].map(a=>`<circle cx="${(Math.cos(a*Math.PI/180)*2.6).toFixed(2)}" cy="${(Math.sin(a*Math.PI/180)*2.6).toFixed(2)}" r="2.2" fill="${col}"/>`).join("")}<circle r="1.6" fill="#fff6c2"/></g>`).join(""));
-  if(A==="star") L.push(`<path d="M47 14 l2 4.2 4.5 .6 -3.3 3.1 .8 4.5 -4 -2.2 -4 2.2 .8 -4.5 -3.3 -3.1 4.5 -.6z" fill="url(#${u}au)" stroke="#a87400" stroke-width="1"/>`);
-  if(A==="ninja") L.push(`<path d="M12 27 Q32 22 52 27 L52 33 Q32 28 12 33 Z" fill="${ac}" stroke="${shade(ac,-.4)}" stroke-width="1.2"/><rect x="28" y="25" width="8" height="5" rx="1" fill="#cfd8e6" stroke="#7a8599" stroke-width=".8"/><path d="M52 29 l8 -4 M52 31 l8 3" stroke="${ac}" stroke-width="2.4" stroke-linecap="round"/>`);
-  if(A==="nightcap") L.push(`<path d="M14 28 C14 14 40 10 50 16 C56 20 58 28 56 34 C52 26 46 22 40 22 C44 24 50 26 50 30 Z" fill="${ac}" stroke="${shade(ac,-.35)}" stroke-width="1.4"/><circle cx="56" cy="35" r="3.5" fill="#fff"/><path d="M14 28 Q32 22 50 30" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`);
-  if(A==="tophat") L.push(`<rect x="21" y="2" width="22" height="18" rx="2" fill="#1f1a2b" stroke="#000" stroke-width="1"/><rect x="21" y="14" width="22" height="4" fill="${ac}"/><ellipse cx="32" cy="20.5" rx="17" ry="3.5" fill="#1f1a2b"/>`);
-  L.push(`</g>`);
-  // frame
-  if(s.fr===1) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="#cfd8e6" stroke-width="3"/>`);
-  if(s.fr===2) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="#b46bff" stroke-width="3.2"/>`);
-  if(s.fr===3) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="url(#${u}au)" stroke-width="3.6"/><path d="M56 10 l1 2.4 2.4 1 -2.4 1 -1 2.4 -1 -2.4 -2.4 -1 2.4 -1z M7 52 l.8 1.8 1.8 .8 -1.8 .8 -.8 1.8 -.8 -1.8 -1.8 -.8 1.8 -.8z" fill="#fff6c2"/>`);
-  if(s.fr===4) L.push(`<circle cx="32" cy="32" r="30" fill="none" stroke="url(#${u}r)" stroke-width="4"/>`);
-  return `<svg viewBox="0 0 64 64" class="avsvg" aria-hidden="true">${L.join("")}</svg>`;
+function avHTML(s){
+  if(!s||!s.ch) return "";
+  const st=s.st||"pastel";
+  const deco = st==="gold"||st==="royal"||st==="diamond" ? '<i class="st1"></i><i class="st2"></i><i class="st3"></i><i class="st4"></i>' : "";
+  const tw = (st==="holo"||st==="diamond"||st==="pastel"||st==="royal") ? '<i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i>' : "";
+  const refl = st==="studio" ? `<img class="rf" src="${AV_CDN}${s.ch}.webp" alt="" loading="lazy" decoding="async">` : "";
+  return `<span class="av2 st-${st}"><i class="bg">${refl}</i><img class="ch" src="${AV_CDN}${s.ch}.webp" alt="" loading="lazy" decoding="async"><i class="rg"></i>${deco}${tw}</span>`;
 }
-// an element showing the avatar for a stored value (id, or an old emoji)
-function avEl(v, cls){ const s=avSpec(v); if(!s) return null; const e=el("span", cls||"av"); e.innerHTML=avatarSVG(s); return e; }
+// kept name for older callers
+const avatarSVG = avHTML;
+function avEl(v, cls){ const s=avSpec(v); if(!s) return null; const e=el("span", cls||"av"); e.innerHTML=avHTML(s); return e; }
 
 /* ================= profile card + ranks ================= */
 const RANKS = [
@@ -3955,7 +3945,7 @@ function openDeco(){
   const lockTag=n=>{ const t=el("small","lk","🔒 "+n+"こ"); t.title=`スタンプ${n}こで解放（あと${n-total}こ）`; return t; };
   const TABS=[["basic","きほん"],["av","アバター"],["skin","スキン✨"],["frame","フレーム✨"],["nfx","ネーム✨"],["title","しょうごう"],["st","ステッカー"],["pat","がら"],["fx","エフェクト"]];
   // gacha items of a category: [value, label, 0, item]  (owned ones can be picked, others show what the gacha can give)
-  const gItems=cat=>GACHA.filter(g=>g.cat===cat).map(g=>{ const w=el("span","dk-gw"); w.append(g.r>=4&&!gOwned(g.id)?el("span","gi q","？"):gIcon(g), rarBadge(g.r)); if(g.cat!=="st") w.append(el("span","dk-l",g.r>=4&&!gOwned(g.id)?"？？？":g.n)); return [g.id, w, 0, g]; });
+  const gItems=cat=>GACHA.filter(g=>g.cat===cat).map(g=>{ const w=el("span","dk-gw"); w.append(g.r>=4&&!gOwned(g.id)?el("span","gi q","？"):gIcon(g), rarBadge(g.r)); if(g.cat!=="st") w.append(el("span","dk-l",g.r>=4&&!gOwned(g.id)?"？？？":g.n)); if(g.cat==="av" && AV_STYLE[g.v.st]) w.append(el("span","avst",AV_STYLE[g.v.st].jp)); return [g.id, w, 0, g]; });
   const gHas=(v,cat)=>!!(GITEM[v] && GITEM[v].cat===cat && gOwned(v));
   function drawTabs(){ tabs.innerHTML=""; TABS.forEach(([k,l])=>{ const b=el("button","chip"+(tab===k?" on":""),l); b.type="button"; b.dataset.tab=k; b.onclick=()=>{ tab=k; lsSet("mc_deco_tab",k); drawTabs(); drawBody(); }; tabs.append(b); }); }
   function grid(items, cls, isOn, onPick){ const g=el("div","dk-grid "+cls);
@@ -3980,7 +3970,7 @@ function openDeco(){
     } else if(tab==="av"){
       body.append(el("p","rw-note","カードのマークのよこに出るキャラクター。スタンプを集めたりガチャで増えるよ"));
       if(d.av && !avKey(d.av)) d.av=""; else if(d.av) d.av=avKey(d.av);
-      body.append(grid([["","なし",0], ...AV_FREE.map(([k,n,nm,sp])=>{ const w=el("span","dk-gw"); const a=el("span","gi gi-av"); a.innerHTML=avatarSVG(sp); w.append(a, el("span","dk-l",nm)); return [k,w,n]; }), ...gItems("av")], "avs", v=>(d.av||"")===v, v=>{ d.av=v; }));
+      body.append(grid([["","なし",0], ...AV_FREE.map(([k,n,nm,sp])=>{ const w=el("span","dk-gw"); const a=el("span","gi gi-av"); a.innerHTML=avHTML(sp); w.append(a, el("span","dk-l",nm), el("span","avst",AV_STYLE[sp.st].jp)); return [k,w,n]; }), ...gItems("av")], "avs", v=>(d.av||"")===v, v=>{ d.av=v; }));
     } else if(tab==="title"){
       body.append(el("p","rw-note","名前の下に出る「しょうごう」。スタンプを集めるとカッコいいのが使えるよ"));
       body.append(grid([["","なし",0], ...DECO.title.map(([t,n])=>[t,"🎖 "+t,n]), ...gItems("title")], "list", v=>(d.title||"")===v, v=>{ d.title=v; }));
