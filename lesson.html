@@ -679,6 +679,39 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .dk-sw .pf-pat{position:absolute;inset:0;opacity:.5}
 .dk-act{flex:none}
 
+/* ---------- trials: stars, laurel wreath, road of trials ---------- */
+.pf-stars{display:inline-flex;gap:1px;margin-left:6px;letter-spacing:0;vertical-align:1px}
+.pf-stars i{font-style:normal;font-size:.7rem;opacity:.35}
+.pf-stars i.on{opacity:1}
+.rk0 .pf-stars i.on{color:#3cae4a}.rk1 .pf-stars i.on{color:#8eeaff}.rk2 .pf-stars i.on{color:#ffd24a}.rk3 .pf-stars i.on{color:#ffd24a;text-shadow:0 0 6px #ff5fa2}
+.pf-em svg.pf-wreath{position:absolute;left:-20%;top:-20%;width:140%;height:140%;pointer-events:none;overflow:visible;display:block}
+.rk2 .pf-wreath,.rk3 .pf-wreath{filter:drop-shadow(0 0 4px rgba(255,200,60,.5))}
+.pf-road{display:flex;flex-direction:column;gap:6px}
+.pf-road-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:.7rem;font-weight:800;letter-spacing:.06em}
+.pf-road-h b{letter-spacing:.12em}
+.pf-road-h span{opacity:.8;font-variant-numeric:tabular-nums}
+.pf-road .pf-lad{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-top:2px}
+.pf-road .pf-lad::before,.pf-road .pf-lad::after{content:"";position:absolute;left:12.5%;right:12.5%;top:15px;height:4px;border-radius:99px;background:rgba(127,127,127,.3)}
+.pf-road .pf-lad::after{right:auto;width:calc(75% * var(--prog) / 100%);background:currentColor;opacity:.7}
+.pf-road .pf-lad li{display:flex;flex-direction:column;align-items:center;gap:3px;background:none!important;padding:0;opacity:1;position:relative;z-index:1;animation:none;box-shadow:none!important;color:inherit}
+.pf-road .pf-lad li small{font-size:.6rem;font-weight:800;opacity:.85}
+.pf-node{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:900;border:2px solid currentColor;background:rgba(0,0,0,.35)}
+.pf-road li.lock .pf-node{opacity:.45;font-size:.65rem;border-style:dashed}
+.pf-road li.lock small{opacity:.45}
+.pf-road li.past .pf-node{color:#1a1030;background:linear-gradient(135deg,#fff,#cfd8e3);border-color:#fff}
+.pf-road li.now .pf-node{width:32px;height:32px;margin-top:-2px;position:relative;box-shadow:0 0 0 4px rgba(255,255,255,.15),0 0 12px currentColor}
+.pf-road li.now .pf-node::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid currentColor;will-change:transform,opacity;animation:ringp 1.8s ease-out infinite}
+@keyframes ringp{from{transform:scale(.85);opacity:.9}to{transform:scale(1.55);opacity:0}}
+.pf-seal{position:absolute;top:-6px;right:calc(50% - 26px);font-style:normal;font-size:.5rem;font-weight:900;letter-spacing:.08em;padding:1px 4px;border-radius:4px;transform:rotate(14deg);
+  color:#b3121f;background:rgba(255,255,255,.92);border:1.5px solid #b3121f;line-height:1.2}
+.rk0 .pf-road{color:#2f8a2a}.rk0 .pf-node{background:#fff}.rk0 .pf-road li.now .pf-node{background:linear-gradient(135deg,#6fd14a,#2fb4e8);color:#fff;border-color:#fff}
+.rk1 .pf-road{color:#8eeaff}.rk1 .pf-road li.now .pf-node{background:#38d6ff;color:#0b1a3a;border-color:#bdf2ff}
+.rk2 .pf-road{color:#ffd24a}.rk2 .pf-road li.now .pf-node{background:linear-gradient(135deg,#fff3b0,#ffb03a);color:#3a1d00;border-color:#fff3b0}
+.rk2 .pf-road li.past .pf-node{background:linear-gradient(135deg,#fff,#e6eef7)}
+.rk3 .pf-road{color:#ffd24a}.rk3 .pf-road .pf-lad::after{background:linear-gradient(90deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff);opacity:1}
+.rk3 .pf-road li.now .pf-node{background:linear-gradient(135deg,#ff5fa2,#ffd24a,#38d6ff,#b98bff);color:#1a0d3a;border-color:#fff}
+.rk3 .pf-road li.past .pf-node{background:linear-gradient(135deg,#fff3b0,#ffb03a);border-color:#fff3b0}
+
 </style>
 </head>
 <body>
@@ -1560,6 +1593,21 @@ function rankEmblem(r){
     <circle cx="18" cy="40" r="5" fill="#fff"/><circle cx="50" cy="24" r="6" fill="#fff"/><circle cx="82" cy="40" r="5" fill="#fff"/>
     <circle cx="33" cy="66" r="3.5" fill="#ff5fa2" stroke="#fff" stroke-width="1.5"/><circle cx="67" cy="66" r="3.5" fill="#38d6ff" stroke="#fff" stroke-width="1.5"/></svg>`;
 }
+/* laurel wreath that grows with rank (number of leaves per side) */
+function wreathSVG(r){
+  const n=[0,3,5,8][r]; if(!n) return "";
+  const col=r===1?["#cfd8e3","#8fa3b8"]:["#fff1a8","#e0a100"], u="w"+(++_emb);
+  let leaves="";
+  const maxT=[0,70,120,168][r], R=45;
+  for(const side of [-1,1]) for(let i=0;i<n;i++){
+    const th=(22 + i*(maxT-22)/Math.max(1,n-1))*Math.PI/180;          // angle from the bottom, climbing up each side
+    const x=50+side*R*Math.sin(th), y=52+R*Math.cos(th);
+    const rot=Math.atan2(-Math.sin(th), side*Math.cos(th))*180/Math.PI + side*-28;
+    leaves+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="7.5" ry="3.3" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="url(#${u})" stroke="${col[1]}" stroke-width=".6"/>`;
+  }
+  const tie = r>=2 ? `<path d="M44 96l6-5 6 5-6 3z" fill="${r===3?"#ff5fa2":"#c0392b"}"/>` : "";
+  return `<svg class="pf-wreath" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${col[0]}"/><stop offset="1" stop-color="${col[1]}"/></linearGradient></defs>${leaves}${tie}</svg>`;
+}
 const SPARK = {0:["♪","✦","♫"], 1:["✦","✦"], 2:["✦","✧","✦","✧","✦"], 3:["✦","✧","✦","✧","✦","✧","✦","✧","✦"]};
 /* info: student (name, num, rank) ; stats: {total, done, tasks} */
 /* ---- moving particles behind the card (one shared loop for every .pf-fx canvas) ---- */
@@ -1660,11 +1708,13 @@ function profileEl(info, stats, opts){
   const cv=el("canvas","pf-fx"); cv.setAttribute("aria-hidden","true");
   const glare=el("div","pf-glare");
   const sp=el("div","pf-sp"); SPARK[r].forEach((c,i)=>{ const s=el("i",null,c); s.style.setProperty("--i",i); s.style.left=(6+(i*29+11)%86)+"%"; s.style.top=(4+(i*41+7)%30)+"%"; sp.append(s); });
-  const em=el("div","pf-em"); em.innerHTML=`${r>=2?'<span class="pf-rays"></span>':""}<span class="pf-halo"></span>${rankEmblem(r)}${r>=2?'<span class="pf-orb"><i></i><i></i><i></i></span>':""}`;
+  const em=el("div","pf-em"); em.innerHTML=`${r>=2?'<span class="pf-rays"></span>':""}<span class="pf-halo"></span>${wreathSVG(r)}${rankEmblem(r)}${r>=2?'<span class="pf-orb"><i></i><i></i><i></i></span>':""}`;
   if(P.av){ const av=el("span","pf-av",String(P.av).slice(0,4)); em.append(av); }
   const tx=el("div","pf-tx");
   const nm=el("b","pf-name"); [...R.name].forEach((ch,i)=>{ const s=el("span",null,ch); s.style.setProperty("--d",i); nm.append(s); }); nm.setAttribute("data-t",R.name);
-  const lv=el("div","pf-lv"); lv.append(el("span","pf-rk","RANK"), nm);
+  const stars=el("span","pf-stars"); for(let i=0;i<4;i++) stars.append(el("i",i<=r?"on":"",i<=r?"★":"☆"));
+  const rkl=el("span","pf-rk","RANK"); rkl.append(stars);
+  const lv=el("div","pf-lv"); lv.append(rkl, nm);
   const who=el("div","pf-who"); if(info.num!=null) who.append(el("span","pf-no","No."+info.num));
   const nick=(P.nick||"").trim();
   who.append(el("span","pf-nm", nick ? nick : (info.name||"")+(info.name?" さん":"")));
@@ -1674,14 +1724,20 @@ function profileEl(info, stats, opts){
   else tx.append(el("div","pf-tag",R.tag));
   const top=el("div","pf-top"); top.append(em, tx);
   const st=el("div","pf-st");
-  [["スタンプ",stats.total],["コンプリート",stats.done],["おわった課題",stats.tasks]].forEach(([k,v])=>{ const d=el("div"); const b=el("b",null,"0"); d.append(b, el("small",null,k)); st.append(d); countUp(b, v|0); });
+  [["スタンプ",stats.total],["コンプリート",stats.done],["乗り越えた試練",stats.tasks]].forEach(([k,v])=>{ const d=el("div"); const b=el("b",null,"0"); d.append(b, el("small",null,k)); st.append(d); countUp(b, v|0); });
   if(!_countedOnce) card.classList.add("enter"); _countedOnce=true;
   // likes + speech bubble
   const likes=el("div","pf-likes");
   if(P.inst){ const it=DECO.inst.find(x=>x[1]===P.inst); likes.append(el("span","pf-chip",(it?it[0]:"🎵")+" "+P.inst)); }
   if(P.song) likes.append(el("span","pf-chip","🎶 "+String(P.song).slice(0,20)));
   const bio=(P.bio||"").trim(); const bub= bio ? el("div","pf-bio",bio.slice(0,30)) : null;
-  const lad=el("ol","pf-lad"); RANKS.forEach((x,i)=>{ const li=el("li",i<r?"past":i===r?"now":"", x.name); lad.append(li); });
+  // the road of trials: cleared ranks get a CLEAR seal
+  const lad=el("div","pf-road");
+  const rh=el("div","pf-road-h"); rh.append(el("b",null,"⚔ 試練の道"), el("span",null,`${r}/3 突破`+(stats.days?` ・ 修行${stats.days}日目`:"")));
+  const ol=el("ol","pf-lad"); ol.style.setProperty("--prog",(r/3*100)+"%");
+  RANKS.forEach((x,i)=>{ const li=el("li",i<r?"past":i===r?"now":"lock"); const dot=el("span","pf-node",i<r?"✓":i===r?String(i+1):"🔒");
+    li.append(dot, el("small",null,x.name)); if(i<r) li.append(el("em","pf-seal","CLEAR")); ol.append(li); });
+  lad.append(rh, ol);
   const pat=el("div","pf-pat"+(PAT_OK.has(P.pat)&&P.pat!=="none"?" p-"+P.pat:""));
   inn.append(aur, pat, cv, sp, top);
   if(bub) inn.append(bub);
@@ -1707,7 +1763,8 @@ function profileEl(info, stats, opts){
 }
 function profileStats(info, stamps, assign){
   const c=cardAll(info, stamps), ri=roundInfo(c);
-  return {total:ri.total, done:ri.done, tasks:(assign||[]).filter(a=>a.status==="stamped").length};
+  const days=(stamps&&stamps.length)?(()=>{ const f=[...stamps].map(x=>x.day).filter(Boolean).sort()[0]; if(!f) return 0; const d0=new Date(f+"T00:00:00"); return Math.max(1, Math.floor((Date.now()-d0)/86400000)+1); })():0;
+  return {total:ri.total, done:ri.done, tasks:(assign||[]).filter(a=>a.status==="stamped").length, days};
 }
 /* students see a show the first time they open the page after a rank-up */
 function rankUpShow(r, done){
