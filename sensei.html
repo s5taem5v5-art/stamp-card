@@ -1071,6 +1071,37 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .pushc .pc-on{font-weight:800;font-size:.85rem}
 .pushc .pc-guide ol{margin:4px 0 0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px;font-size:.85rem;line-height:1.5}
 
+/* ===== courses ===== */
+.pf-flip.has-ct{margin-top:36px}
+.pf-ctag{position:absolute;top:-24px;left:16px;z-index:7;display:flex;align-items:center;gap:6px;padding:5px 11px 5px 8px;border-radius:12px;pointer-events:none;
+  background:#fff;color:#2a1a4a;box-shadow:0 3px 0 rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.25);transform:rotate(-2deg);line-height:1}
+.pf-ctag .ci{font-size:1.15rem}.pf-ctag b{font-family:var(--serif);font-weight:900;font-size:.85rem;letter-spacing:.12em}.pf-ctag small{font-size:.6rem;opacity:.7;font-weight:800}
+.pf-ctag.rk0{background:linear-gradient(180deg,#fff,#e8ffe0);color:#2c7a1a;border:2px solid #9be15d}
+.pf-ctag.rk1{background:linear-gradient(180deg,#f7fbff,#b9c8d8);color:#122030;border:2px solid #8fa3b8}
+.pf-ctag.rk2{background:linear-gradient(180deg,#fff3c4,#d9a23a 60%,#a86e12);color:#2a1702;border:2px solid #ffe08a}
+.pf-ctag.rk3{background:linear-gradient(#07040e,#07040e) padding-box,conic-gradient(#ff2a3d,#ff8a1a,#ffe14a,#2dff8a,#1ac8ff,#6a4dff,#d040ff,#ff2a3d) border-box;border:2px solid transparent;color:#fff}
+.pf-ctag.rk3 small{color:#cfc6ff;opacity:1}
+.pf-flip.is-back>.pf-ctag{display:none}
+.pf-courses{display:flex;flex-direction:column;gap:6px;margin:0 -6px}
+.pf-cnav{display:flex;justify-content:center;gap:8px;padding:0 6px}
+.pf-ctab{border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.07);color:inherit;border-radius:999px;padding:6px 14px;font-weight:800;font-size:.85rem;cursor:pointer}
+.pf-ctab.on{background:#fff;color:#2a1a4a;border-color:#fff}
+.pf-car{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+.pf-car::-webkit-scrollbar{display:none}
+.pf-slide{flex:0 0 100%;box-sizing:border-box;padding:0 6px 16px;scroll-snap-align:center;scroll-snap-stop:always}
+.pf-dots{display:flex;justify-content:center;gap:7px;margin-top:-4px}
+.pf-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:transform .2s,background .2s}
+.pf-dots i.on{background:#fff;transform:scale(1.3)}
+.pf-swipe{margin:0;text-align:center;font-size:.7rem;opacity:.6}
+.rankup .ru-c{font-weight:800;font-size:1rem;letter-spacing:.08em;margin:-4px 0 6px;opacity:.95}
+.cpick .cp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cpick .cp-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 6px;border-radius:14px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:inherit;cursor:pointer}
+.cpick .cp-btn .ci{font-size:1.6rem}.cpick .cp-btn b{font-size:1rem}.cpick .cp-btn small{font-size:.7rem;opacity:.75}
+.cpick .cp-btn.on{border-color:#ffd24a;background:rgba(255,210,74,.14);box-shadow:0 0 0 2px rgba(255,210,74,.25)}
+.cpick .cp-btn.warn{border-color:#ff6b6b;background:rgba(255,80,80,.15)}
+.gstep .gk2{font-weight:800}
+.pf-slide{width:100%;min-width:0;max-width:100%}.pf-slide>.pf-flip{min-width:0;max-width:100%}.pf-slide .prof{max-width:100%}
+
 </style>
 </head>
 <body>
@@ -2169,11 +2200,37 @@ function fitNameSoon(card){
 }
 let _fitT=null;
 window.addEventListener("resize",()=>{ clearTimeout(_fitT); _fitT=setTimeout(()=>{ for(const c of _fitCards){ if(c.isConnected) fitName(c); else _fitCards.delete(c); } },150); });
+/* courses: one card per course, swipe left/right to switch */
+const COURSES={ vocal:{ico:"🎤", jp:"ボーカル", en:"VOCAL"}, guitar:{ico:"🎸", jp:"ギター", en:"GUITAR"} };
+const COURSE_KEYS=Object.keys(COURSES);
+function courseList(info){ return (Array.isArray(info&&info.courses)?info.courses:[]).filter(c=>COURSES[c.course]); }
+function courseCards(info, stats, opts={}){
+  const cs=courseList(info);
+  if(!cs.length) return profileEl(info, stats, opts);
+  const one=c=>profileEl({...info, rank:c.rank, grade:c.grade, course:c.course}, stats, opts);
+  if(cs.length===1) return one(cs[0]);
+  const box=el("div","pf-courses"), nav=el("div","pf-cnav"), car=el("div","pf-car"), dots=el("div","pf-dots");
+  const key="mc_cslide_"+(typeof SK!=="undefined"&&SK&&!opts.teacher?SK:(info.id||info.num||""));
+  let cur=Math.max(0, Math.min(cs.length-1, +(lsGet(key)||0)||0));
+  const tabs=[], dd=[];
+  cs.forEach((c,i)=>{ const sl=el("div","pf-slide"); sl.append(one(c)); car.append(sl);
+    const C=COURSES[c.course]; const t=el("button","pf-ctab",C.ico+" "+C.jp); t.type="button"; t.dataset.course=c.course; t.onclick=()=>go(i,true); tabs.push(t); nav.append(t);
+    const d=el("i"); dots.append(d); dd.push(d); });
+  const mark=i=>{ cur=i; tabs.forEach((t,j)=>t.classList.toggle("on",j===i)); dd.forEach((d,j)=>d.classList.toggle("on",j===i)); lsSet(key,String(i)); };
+  const go=(i,smooth)=>{ car.scrollTo({left:i*car.clientWidth, behavior:smooth?"smooth":"auto"}); mark(i); };
+  let st=null; car.addEventListener("scroll",()=>{ clearTimeout(st); st=setTimeout(()=>{ const i=Math.round(car.scrollLeft/Math.max(1,car.clientWidth)); if(i!==cur) mark(i); },60); },{passive:true});
+  mark(cur);
+  let n=0; const fix=()=>{ if(box.isConnected && car.clientWidth){ go(cur,false); return; } if(n++<120) requestAnimationFrame(fix); }; requestAnimationFrame(fix);
+  box.append(nav, car, dots, el("p","pf-swipe","← 横にスワイプでコースを切りかえ →"));
+  return box;
+}
 /* the card can be turned over: the back shows the teacher's message; it turns itself back after a while untouched */
 const FLIP_MS=9000;
 function msgSeenKey(info){ return "mc_msgseen_"+(typeof SK!=="undefined"&&SK?SK:(info.num||"")); }
 function flipWrap(card, info, r, forT){
-  const wrap=el("div","pf-flip"+(card._gp?" has-gp":"")); wrap.append(card); if(card._gp){ card._gp.classList.add("rk"+r); wrap.append(card._gp); const s0=card.querySelector(".pf-stk.s0"); if(s0) wrap.append(s0); }
+  const C = info.course && COURSES[info.course];
+  const wrap=el("div","pf-flip"+(card._gp?" has-gp":"")+(C?" has-ct":"")); wrap.append(card);
+  if(C){ const ct=el("div","pf-ctag rk"+r); ct.append(el("span","ci",C.ico), el("b",null,C.en), el("small",null,C.jp+"コース")); wrap.append(ct); } if(card._gp){ card._gp.classList.add("rk"+r); wrap.append(card._gp); const s0=card.querySelector(".pf-stk.s0"); if(s0) wrap.append(s0); }
   const msg=(info.t_msg||"").trim(), at=info.t_msg_at||"";
   const unread = !forT && msg && lsGet(msgSeenKey(info))!==at;
   const fb=el("button","pf-flipbtn"+(unread?" new":""), unread?"💌 先生からメッセージ！":"💌 うら"); fb.type="button"; fb.id="flip-btn";
@@ -2209,9 +2266,9 @@ function profileStats(info, stamps, assign){
   return {total:ri.total, done:ri.done, tasks:(assign||[]).filter(a=>a.status==="stamped").length, days};
 }
 /* students see a show the first time they open the page after a rank-up */
-function rankUpShow(r, done){
-  const R=RANKS[r]; const o=el("div","rankup rk"+r); o.id="rankup"; o.setAttribute("role","dialog");
-  o.innerHTML=`<canvas class="pf-fx ru-fx" aria-hidden="true"></canvas><div class="ru-beams"></div><div class="ru-in"><div class="ru-k">RANK UP!</div><div class="ru-em">${r>=2?'<span class="pf-rays"></span>':""}<span class="pf-halo"></span>${rankEmblem(r)}</div><div class="ru-n">${R.name}</div><div class="ru-j">${R.jp} に ランクアップ！</div><div class="ru-t">${R.tag}</div><div class="ru-tap">タップで閉じる</div></div>`;
+function rankUpShow(r, done, course){
+  const R=RANKS[r]; const o=el("div","rankup rk"+r); o.id="rankup"; o.setAttribute("role","dialog"); const CC=course&&COURSES[course];
+  o.innerHTML=`<canvas class="pf-fx ru-fx" aria-hidden="true"></canvas><div class="ru-beams"></div><div class="ru-in"><div class="ru-k">RANK UP!</div>${CC?`<div class="ru-c">${CC.ico} ${CC.jp}コース</div>`:""}<div class="ru-em">${r>=2?'<span class="pf-rays"></span>':""}<span class="pf-halo"></span>${rankEmblem(r)}</div><div class="ru-n">${R.name}</div><div class="ru-j">${R.jp} に ランクアップ！</div><div class="ru-t">${R.tag}</div><div class="ru-tap">タップで閉じる</div></div>`;
   let closed=false; const close=()=>{ if(closed) return; closed=true; o.classList.add("bye"); setTimeout(()=>{ o.remove(); window.__party=false; done&&done(); },350); };
   o.onclick=close; document.body.append(o); window.__party=true;
   FX.attach(o.querySelector("canvas"), Math.max(1,r), {boost:6, big:true});
@@ -2312,13 +2369,18 @@ async function stuRefresh(force){
     setNote("つながりません。電波のいいところで開き直してください。"); }
 }
 function stuRankCheck(){
-  const k="mc_rank_"+SK, r=rankOf(Stu.info.rank), seen=lsGet(k);
-  if(seen===null || seen===""){ lsSet(k,String(r)); return; }
-  if(r>+seen && !window.__party && !Stu.playing){ lsSet(k,String(r)); rankUpShow(r, ()=>stuRender()); }
-  else if(r<+seen) lsSet(k,String(r));
-  // grade went up inside the same rank -> a small cheer
-  const gk="mc_g_"+SK, g=Stu.info.grade, gs=lsGet(gk);
-  if(gOk(g)){ if(gs!==null && gs!=="" && g>+gs && r===+(lsGet(k)||0) && !window.__party) toast("🎉 "+gLabel(g)+" に上がったよ！"); lsSet(gk,String(g)); }
+  const cs=courseList(Stu.info);
+  const items = cs.length ? cs.map(c=>({k:"_"+c.course, r:rankOf(c.rank), g:c.grade, course:c.course})) : [{k:"", r:rankOf(Stu.info.rank), g:Stu.info.grade, course:null}];
+  let shown=false;
+  for(const it of items){
+    const k="mc_rank_"+SK+it.k, seen=lsGet(k);
+    if(seen===null || seen===""){ lsSet(k,String(it.r)); }
+    else if(it.r>+seen && !shown && !window.__party && !Stu.playing){ lsSet(k,String(it.r)); shown=true; rankUpShow(it.r, ()=>stuRender(), it.course); }
+    else if(it.r<+seen) lsSet(k,String(it.r));
+    // class (G) went up inside the same rank -> a small cheer
+    const gk="mc_g_"+SK+it.k, gs=lsGet(gk);
+    if(gOk(it.g)){ if(!shown && gs!==null && gs!=="" && it.g>+gs && it.r===+(lsGet(k)||0) && !window.__party){ const C=it.course&&COURSES[it.course]; toast("🎉 "+(C?C.ico+C.jp+"が ":"")+gLabel(it.g)+" に上がったよ！"); } lsSet(gk,String(it.g)); }
+  }
 }
 function stuLogout(msg){ SK=null; lsSet("mc_sk",""); Stu.info=null; Stu.stamps=[]; Stu.assign=[]; stuLogin(msg); }
 function stuLogin(msg){
@@ -2357,7 +2419,7 @@ function stuRender(){
   const card=cardAll(Stu.info, Stu.stamps), ok=Stu.assign.filter(a=>a.status==="approved");
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
-  app.append(profileEl(Stu.info, profileStats(Stu.info, Stu.stamps, Stu.assign)));
+  app.append(courseCards(Stu.info, profileStats(Stu.info, Stu.stamps, Stu.assign)));
   const db=el("button","deco-btn","✏️ プロフィールをデコる"); db.id="deco-btn"; db.onclick=openDeco; app.append(db);
   app.append(pushCard());
   if(ok.length){ const n=el("div","notice big okn"); n.id="ok-notice"; n.innerHTML=`<span class="dot"></span><span>先生から OK が ${ok.length}こ 出たよ！スタンプを押そう！</span>`; app.append(n); }
@@ -2770,7 +2832,7 @@ function tStudents(app){
     const subSet=new Set(T.review.map(a=>a.sid));
     arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; if(s.prof && s.prof.av){ r.append(el("span","srow-av",String(s.prof.av).slice(0,4))); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
-      r.append(el("span","nm",s.name), el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name+(gOk(s.grade)?" "+gLabel(s.grade):""))); if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
+      r.append(el("span","nm",s.name)); { const cs=courseList(s); if(cs.length) cs.forEach(c=>r.append(el("span","rkc rk"+rankOf(c.rank), COURSES[c.course].ico+" "+RANKS[rankOf(c.rank)].name+(gOk(c.grade)?" "+gLabel(c.grade):"")))); else r.append(el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name+(gOk(s.grade)?" "+gLabel(s.grade):""))); } if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
       const c=el("span","ct"); c.innerHTML=stuCount(s); r.append(c);
       r.onclick=()=>{ T.sel=s.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.confirmStu=false; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); };
       list.append(r); });
@@ -2819,8 +2881,9 @@ function tStudent(app){
   const back=el("button","btn small back","‹ 生徒一覧へ"); back.id="back"; back.onclick=()=>{ T.sel=null; T.detail=null; tRender(); tRefresh(); }; app.append(back);
   if(!s){ app.append(el("div","empty","読み込み中…")); return; }
   const stamps=(T.detail&&T.detail.stamps)||[];
-  app.append(profileEl(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
-  app.append(gStepper(s));
+  app.append(courseCards(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
+  app.append(coursePicker(s));
+  { const cs=courseList(s); if(cs.length) cs.forEach(c=>app.append(gStepper(s, c.course))); else app.append(gStepper(s)); }
   app.append(msgEditor(s));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
@@ -2898,18 +2961,22 @@ async function tCleanup(){
 }
 
 /* teacher: class grade — step 1: tap a rank, step 2: its G list appears, tap one (saves right away) */
-function gStepper(s){
-  const box=el("section","card gstep"); box.id="g-step";
-  let g = gOk(s.grade) ? s.grade|0 : null, tab = (window.__gOpen&&window.__gOpen.sid===s.id) ? window.__gOpen.tab : null, timer=null;
-  const keep=()=>{ window.__gOpen={sid:s.id, tab}; };
-  const head=el("div","gtop2"), lab=el("b","glab"), sub=el("small","gsub"); const hm=el("div","gmid"); hm.append(el("span","gk2","クラス"), lab, sub); head.append(hm);
+function gStepper(s, course){
+  const C=course&&COURSES[course], ce=()=>courseList(s).find(x=>x.course===course)||{};
+  const box=el("section","card gstep"+(C?" gc-"+course:"")); box.id="g-step"+(C?"-"+course:"");
+  const okey=s.id+"|"+(course||"");
+  let g0 = C ? ce().grade : s.grade;
+  let g = gOk(g0) ? g0|0 : null, tab = (window.__gOpen&&window.__gOpen.key===okey) ? window.__gOpen.tab : null, timer=null;
+  const keep=()=>{ window.__gOpen={key:okey, tab}; };
+  const head=el("div","gtop2"), lab=el("b","glab"), sub=el("small","gsub"); const hm=el("div","gmid"); hm.append(el("span","gk2", C ? C.ico+" "+C.jp+"コースのクラス" : "クラス"), lab, sub); head.append(hm);
   const s1=el("p","gstep-t","① ランクを選ぶ"), tabs=el("div","gtabs"), s2=el("p","gstep-t","② Gを選ぶ"), grid=el("div","ggrid"), fine=el("div","gfine");
   const minus=el("button","btn small","−1段"), plus=el("button","btn small","＋1段"); minus.id="g-minus"; plus.id="g-plus"; minus.type=plus.type="button";
   fine.append(minus, plus);
   const save=(ms)=>{ clearTimeout(timer); window.__gEditing=true; timer=setTimeout(async()=>{
-      try{ const r=await rpc("mc_t_grade",{tk:TK, sid:s.id, p_grade:g}); s.grade=r.grade; if(r.rank!=null) s.rank=r.rank;
-        const li=(T.students||[]).find(x=>x.id===s.id); if(li){ li.grade=s.grade; li.rank=s.rank; }
-        toast(gLabel(g)+" にしました（"+RANKS[gRank(g)].name+"）"); window.__gEditing=false; tRender(); }
+      try{ const li=(T.students||[]).find(x=>x.id===s.id);
+        if(C){ const r=await rpc("mc_t_cgrade",{tk:TK, sid:s.id, p_course:course, p_grade:g}); s.courses=r; if(li) li.courses=r; }
+        else { const r=await rpc("mc_t_grade",{tk:TK, sid:s.id, p_grade:g}); s.grade=r.grade; if(r.rank!=null) s.rank=r.rank; if(li){ li.grade=s.grade; li.rank=s.rank; } }
+        toast((C?C.ico+C.jp+"：":"")+gLabel(g)+" にしました（"+RANKS[gRank(g)].name+"）"); window.__gEditing=false; tRender(); }
       catch(e){ window.__gEditing=false; toast("保存できませんでした（"+e.message+"）"); } }, ms); };
   const draw=()=>{
     lab.textContent = g==null ? "G未設定" : gLabel(g); sub.textContent = g==null ? "まずランクを選んでね" : RANKS[gRank(g)].name+"（ランクは自動で合います）";
@@ -2922,6 +2989,24 @@ function gStepper(s){
   minus.onclick=()=>{ if(g==null||g<=0) return; g--; tab=gRank(g); keep(); draw(); save(800); };
   plus.onclick=()=>{ if(g==null||g>=G_MAX) return; g++; tab=gRank(g); keep(); draw(); save(800); };
   box.append(head, s1, tabs, s2, grid, fine); draw(); return box;
+}
+
+/* teacher: which courses the student takes (vocal / guitar / both) */
+function coursePicker(s){
+  const box=el("section","card cpick"); box.id="course-pick";
+  box.append(el("h3","sech","📚 コース"));
+  const row=el("div","cp-row"); const sel=new Set(courseList(s).map(c=>c.course));
+  const save=async(next, note)=>{ try{ const r=await rpc("mc_t_courses",{tk:TK, sid:s.id, p_courses:[...next]}); s.courses=r; const li=(T.students||[]).find(x=>x.id===s.id); if(li) li.courses=r; toast(note); tRender(); }
+    catch(e){ toast("保存できませんでした（"+e.message+"）"); } };
+  COURSE_KEYS.forEach(k=>{ const C=COURSES[k]; const on=sel.has(k);
+    const b=el("button","cp-btn"+(on?" on":"")); b.type="button"; b.dataset.course=k; b.append(el("span","ci",C.ico), el("b",null,C.jp), el("small",null,on?"受講中":"なし"));
+    b.onclick=()=>{ const next=new Set(sel);
+      if(on){ if(!b.dataset.ok){ b.dataset.ok=1; b.querySelector("small").textContent="もう一度押すと外す"; b.classList.add("warn"); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.ok; b.classList.remove("warn"); b.querySelector("small").textContent="受講中"; } },3500); return; }
+        next.delete(k); save(next, C.jp+"コースを外しました"); }
+      else { next.add(k); save(next, C.jp+"コースを追加しました"); } };
+    row.append(b); });
+  box.append(row, el("p","rw-note", sel.size ? "コースごとにランクとGを下で決められます。外すとそのコースのレベルは消えます。" : "コースを選ぶと、コースごとにランクとGを決められます（今のレベルは最初に選んだコースに引きつがれます）。"));
+  return box;
 }
 
 /* teacher: the message on the back of the student's card */
