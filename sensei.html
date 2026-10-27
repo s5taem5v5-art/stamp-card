@@ -1120,6 +1120,34 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .ctabs{display:flex;gap:8px;justify-content:center;margin:2px 0 30px}
 .ctabs .ctab{flex:1;max-width:180px;border:2px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:inherit;border-radius:14px;padding:10px 6px;font-weight:800;font-size:.95rem;cursor:pointer}
 .ctabs .ctab.on{background:#fff;color:#2a1a4a;border-color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+/* ---- sharing cards between students ---- */
+.card.share{display:flex;flex-direction:column;gap:8px}
+.card.share .sh-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card.share .sh-h b{font-size:1.05rem}
+.card.share .sh-st{font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:99px;background:rgba(127,127,127,.18)}
+.card.share .sh-st.on{background:#2fd17a;color:#04220f}
+.card.share .rw-note{margin:0;text-align:left;font-size:.82rem;line-height:1.55}
+.card.share .sh-row{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+.card.share .press{min-height:52px;font-size:1rem}
+.card.share .sh-off{align-self:center;font-size:.85rem}
+.srow .nsub .shc{font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:99px;background:rgba(47,209,122,.18);color:#5fe39b}
+body.no-scroll{overflow:hidden}
+.peers{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;background:#0b0920;color:#fff;isolation:isolate;padding:max(10px,env(safe-area-inset-top)) 0 max(10px,env(safe-area-inset-bottom))}
+.peers .pe-h{display:flex;align-items:center;gap:10px;padding:6px 16px 10px}
+.peers .pe-h b{font-size:1.1rem}
+.peers .pe-n{font-size:.8rem;opacity:.75}
+.peers .pe-x{margin-left:auto;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer}
+.peers .pe-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto}
+.peers .empty{margin:auto;text-align:center;opacity:.85;line-height:1.7;padding:0 24px}
+.peers .pe-car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.peers .pe-car::-webkit-scrollbar{display:none}
+.peers .pe-slide{flex:0 0 100%;min-width:0;width:100%;scroll-snap-align:center;padding:44px 16px 12px;box-sizing:border-box}
+.peers .pe-slide .pf-flip{max-width:420px;margin:0 auto}
+.peers .pe-nav{display:flex;align-items:center;justify-content:center;gap:18px;padding:6px 0}
+.peers .pe-arw{width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:1.7rem;cursor:pointer}
+.peers .pe-arw:disabled{opacity:.3}
+.peers .pe-pos{font-variant-numeric:tabular-nums;font-weight:700;min-width:64px;text-align:center}
+.peers .pf-swipe{text-align:center;font-size:.75rem;opacity:.6;margin:0}
 
 </style>
 </head>
@@ -2514,6 +2542,7 @@ function stuRender(){
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(stuCards());
   const db=el("button","deco-btn","✏️ "+(Stu.info.course&&Stu.keys.length>1?courseTag(Stu.info.course)+"の":"")+"プロフィールをデコる"); db.id="deco-btn"; db.onclick=openDeco; app.append(db);
+  app.append(shareCard());
   app.append(pushCard());
   if(ok.length){ const n=el("div","notice big okn"); n.id="ok-notice"; n.innerHTML=`<span class="dot"></span><span>先生から OK が ${ok.length}こ 出たよ！スタンプを押そう！</span>`; app.append(n); }
   const who=el("div","who"); who.append(el("h2",null,"♪ "+(Stu.info.course?courseTag(Stu.info.course)+"の":"")+"スタンプカード"));
@@ -2543,6 +2572,46 @@ function stuRender(){
       li.append(n, el("time",null,fmtDate(a.stamped_at))); ul.append(li); });
     d.append(ul); app.append(d); }
   const lo=el("button","link","べつの番号で入りなおす"); lo.id="logout"; lo.style.alignSelf="center"; lo.onclick=()=>{ if(lo.dataset.ok){ stuLogout(); } else { lo.dataset.ok="1"; lo.textContent="もう一度押すと入りなおせます"; } }; app.append(lo);
+}
+/* sharing: a student who shares this course card can see the others of the same course who share theirs */
+function shareCard(){
+  const C=Stu.info.course&&COURSES[Stu.info.course], on=!!Stu.info.share, lab=C?C.ico+" "+C.jp+"のカード":"このカード";
+  const box=el("section","card share"+(on?" on":"")); box.id="share-card";
+  const h=el("div","sh-h"); h.append(el("b",null,"👀 みんなのカード"), el("span","sh-st"+(on?" on":""), on?"公開中":"ひみつ")); box.append(h);
+  box.append(el("p","rw-note", on ? `${lab}を公開しているよ。おなじコースで公開している人のカードが見られるよ。` : `${lab}を公開すると、おなじコースで公開している人どうしでカードを見せあえるよ。（名前・ランク・G・スタンプの数・デコが見えます。番号と先生のメッセージは見えません）`));
+  const row=el("div","sh-row");
+  if(on){ const see=el("button","press sh-see","みんなのカードを見る"); see.id="peers-btn"; see.type="button"; see.onclick=openPeers; row.append(see); }
+  const tg=el("button",on?"link sh-off":"press sh-on", on?"公開をやめる":"🌐 "+(C?C.jp+"のカードを":"")+"公開する"); tg.id="share-btn"; tg.type="button";
+  tg.onclick=async()=>{ tg.disabled=true; try{ const v=await rpc("mc_s_share",{sk:SK, p_on:!on}); Stu.info.share=!!v; if(Stu.sib[SK]) Stu.sib[SK].st.share=!!v; lsSet("mc_cache_"+SK, JSON.stringify({st:Stu.info, as:Stu.assign}));
+      toast(v?"公開したよ！":"公開をやめたよ"); stuRender(); const c=document.getElementById("share-card"); if(c) c.scrollIntoView({block:"center"}); }
+    catch(e){ tg.disabled=false; toast("できませんでした。電波のいいところでもう一度ためしてね。"); } };
+  row.append(tg); box.append(row);
+  return box;
+}
+async function openPeers(){
+  const C=Stu.info.course&&COURSES[Stu.info.course];
+  const o=el("div","peers"); o.id="peers"; o.setAttribute("role","dialog");
+  const hd=el("div","pe-h"); const ttl=el("b",null,(C?C.ico+" "+C.jp+"の":"")+"みんなのカード"); const cnt=el("span","pe-n",""); const x=el("button","pe-x","×"); x.type="button"; x.setAttribute("aria-label","とじる");
+  hd.append(ttl, cnt, x); const body=el("div","pe-body"); body.append(el("div","empty","よみこみ中…")); o.append(hd, body);
+  const close=()=>{ o.remove(); document.body.classList.remove("no-scroll"); }; x.onclick=close;
+  document.body.append(o); document.body.classList.add("no-scroll");
+  let r; try{ r=await rpc("mc_s_peers",{sk:SK}); }catch(e){ body.innerHTML=""; body.append(el("div","empty","つながりません。電波のいいところでもう一度ためしてね。")); return; }
+  body.innerHTML="";
+  const list=(r&&r.list)||[];
+  if(!r||!r.on){ body.append(el("div","empty","カードを公開すると見られるよ。")); return; }
+  if(!list.length){ body.append(el("div","empty","まだ公開している人がいないよ。<br>おともだちにも公開してもらおう！")); body.lastChild.innerHTML="まだ公開している人がいないよ。<br>おともだちにも公開してもらおう！"; return; }
+  const car=el("div","pe-car"); const slides=[];
+  list.forEach(p=>{ const sl=el("div","pe-slide"); const info={...p, num:null, t_msg:null, t_msg_at:null};
+    const w=profileEl(info, profileStats(info, p.stamps||[], Array.from({length:p.tasks|0},()=>({status:"stamped"}))));
+    w.querySelectorAll(".pf-flipbtn,.pf-back").forEach(n=>n.remove()); w.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id")); if(w.id) w.removeAttribute("id");
+    sl.append(w); car.append(sl); slides.push(sl); });
+  const nav=el("div","pe-nav"); const pv=el("button","pe-arw","‹"), nx=el("button","pe-arw","›"); pv.type=nx.type="button"; pv.setAttribute("aria-label","まえ"); nx.setAttribute("aria-label","つぎ");
+  const pos=el("span","pe-pos",""); nav.append(pv,pos,nx);
+  let cur=0; const show=()=>{ pos.textContent=(cur+1)+" / "+list.length; pv.disabled=cur<=0; nx.disabled=cur>=list.length-1; };
+  const go=i=>{ cur=Math.max(0,Math.min(list.length-1,i)); car.scrollTo({left:cur*car.clientWidth, behavior:"smooth"}); show(); };
+  pv.onclick=()=>go(cur-1); nx.onclick=()=>go(cur+1);
+  let t=null; car.addEventListener("scroll",()=>{ clearTimeout(t); t=setTimeout(()=>{ cur=Math.round(car.scrollLeft/Math.max(1,car.clientWidth)); show(); },80); },{passive:true});
+  cnt.textContent=list.length+"人"; body.append(car, nav, el("p","pf-swipe","← 横にスワイプ →")); show();
 }
 function stuTask(a){
   const it=el("div","task "+(STATUS[a.status]||["",""])[1]); it.dataset.id=a.id;
@@ -2946,6 +3015,7 @@ function tStudents(app){
         if(x.course&&COURSES[x.course]) sub.append(el("span","cc cc-"+x.course, courseTag(x.course)));
         sub.append(el("span","rkc rk"+rankOf(x.rank), RANKS[rankOf(x.rank)].name+(gOk(x.grade)?" "+gLabel(x.grade):"")));
         if(multi){ const c=el("span","cct"); c.innerHTML=stuCount(x).replace(/<br>.*$/,""); sub.append(c); }
+        if(x.share) sub.append(el("span","shc","👀公開"));
         if(subSet.has(x.id)) sub.append(el("span","td","提出あり"));
         nw.append(sub); });
       r.append(nw);
