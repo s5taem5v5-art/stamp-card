@@ -1563,11 +1563,15 @@ function rankUpShow(r, done){
 /* ---- tap the card to play: each tap = next note of the rank's song ---- */
 const SOLFA = ["ド","レ","ミ","ファ","ソ","ラ","シ","ド"];
 const C_MAJ = [0,2,4,5,7,9,11,12];
+const SCALE7 = [0,2,4,5,7,9,11];
+const degMidi = (base,d) => base + 12*Math.floor(d/7) + SCALE7[((d%7)+7)%7];
+const degName = d => SOLFA[((d%7)+7)%7];
+const thirdBelow = m => { const pc=((m%12)+12)%12, i=SCALE7.indexOf(pc); if(i<0) return null; let j=i-2, o=0; if(j<0){ j+=7; o=-12; } return m-pc+SCALE7[j]+o; };
 const SONGS = [
   {title:"きらきら星", base:72, notes:[0,0,4,4,5,5,4, 3,3,2,2,1,1,0, 4,4,3,3,2,2,1, 4,4,3,3,2,2,1, 0,0,4,4,5,5,4, 3,3,2,2,1,1,0]},
   {title:"かえるの合唱", base:72, notes:[0,1,2,3,2,1,0, 2,3,4,5,4,3,2, 0,0,0,0, 0,0,1,1,2,2,3,3,2,1,0]},
   {title:"よろこびの歌", base:72, notes:[2,2,3,4,4,3,2,1,0,0,1,2,2,1,1, 2,2,3,4,4,3,2,1,0,0,1,2,1,0,0]},
-  {title:"聖者の行進", base:72, notes:[0,2,3,4, 0,2,3,4, 0,2,3,4,2,0,2,1, 2,2,1,0,0,2,4,4,3, 2,3,4,2,0,1,0]}
+  {title:"木星（ジュピター）", base:72, notes:[-5,-3,-2, -2,0,-1,-3, 0,1,0,-1, -2,-1,-2,-3,-5,  -5,-3,-2, -2,0,-1,-3, 0,1,2,2, 2,1,0, -1,0,-2]}
 ];
 const TAP = (()=>{
   const st={rank:-1, i:0, last:0};
@@ -1589,7 +1593,8 @@ const TAP = (()=>{
       const lead=(fr,v)=>[-12,0,12].forEach(d=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type="sawtooth"; o.frequency.value=fr; o.detune.value=d;
         g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0005,t+.9); o.connect(g); g.connect(lp); o.start(t); o.stop(t+.95); });
       lead(f,.15); lead(f/2,.07);
-      const deg=C_MAJ.indexOf(midi-72); if(deg>=0){ const h=deg>=2 ? 72+C_MAJ[deg-2] : 72+C_MAJ[deg+5]-12; lead(N(h),.06); }
+      const h=thirdBelow(midi); if(h!=null) lead(N(h),.06);
+      osc("sine",f/2,.22,.004,.35); osc("sine",f/4,.18,.004,.25);   // low punch
       [4,5,6].forEach(k=>osc("triangle",f*k,.04,.002,.18));
       osc("sine",f*8,.035,.001,.25);
     }
@@ -1602,11 +1607,11 @@ const TAP = (()=>{
     const now=performance.now(), song=SONGS[r];
     if(st.rank!==r || now-st.last>2500) st.i=0;
     st.rank=r; st.last=now;
-    const deg=song.notes[st.i], midi=song.base+C_MAJ[deg];
+    const deg=song.notes[st.i], midi=degMidi(song.base,deg);
     if(SFX.on){ try{ SFX.unlock(); const c=SFX.core(); if(c){ voice(r, midi, c.ctx.currentTime+.005); } BGM.duck && BGM.duck(1.4); }catch(e){} }
     const rc=card.getBoundingClientRect(); const p=ev && (ev.touches?ev.touches[0]:ev);
     const x=p&&p.clientX!=null ? p.clientX-rc.left : rc.width/2, y=p&&p.clientY!=null ? p.clientY-rc.top : rc.height/2;
-    floatLabel(card, x, y, SOLFA[deg]);
+    floatLabel(card, x, y, degName(deg));
     st.i++;
     if(st.i>=song.notes.length){ st.i=0; st.last=0;
       setTimeout(()=>{ floatLabel(card, rc.width/2, rc.height*.45, "♪ "+song.title+" ♪", true); FX.burst(cv); FX.burst(cv);
