@@ -374,6 +374,10 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .pk .no{font-size:.72rem;color:var(--p2);min-width:3.4em;font-variant-numeric:tabular-nums}
 .pk.dis{opacity:.5}
 
+.toggle{display:flex !important;flex-direction:row !important;align-items:center;gap:8px;flex-wrap:wrap}
+.toggle input{width:auto !important;transform:scale(1.3)}
+.toggle small{color:var(--muted);font-weight:500;font-size:.76rem}
+
 </style>
 </head>
 <body>
@@ -409,8 +413,8 @@ const sameYM = (a,b) => a.y===b.y && a.m===b.m;
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
 function md(k){ const [,m,d]=k.split("-"); return (+m)+"/"+(+d); }
 const rot = k => { let h=0; for(const c of String(k)) h=(h*31+c.charCodeAt(0))%31; return (h-15)+"deg"; };
-const midOf = g => 0;   // no midpoint reward on this card
-const roundInfo = p => { const g=Math.max(1,p.goal|0), n=p.stamps.length, done=Math.floor(n/g); return {total:n, goal:g, done, inRound:n-done*g, round:done+1, mid:midOf(g)}; };
+const midOf = g => (g>=2 ? Math.ceil(g/2) : 0);
+const roundInfo = p => { const g=Math.max(1,p.goal|0), n=p.stamps.length, done=Math.floor(n/g); return {total:n, goal:g, done, inRound:n-done*g, round:done+1, mid:p.mid_on?midOf(g):0}; };
 const okStamp = k => STAMPS[k] ? k : "star";
 const el = (tag, cls, txt) => { const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; };
 function setNote(t){ document.getElementById("note").textContent=t; }
@@ -434,7 +438,7 @@ function cardOf(info, stamps, kind){
 /* one card for everything: all stamps count toward the same goal */
 function cardAll(info, stamps){
   return {name:(info.name||"")+" ・ スタンプカード", kind:"p", stamp: okStamp(info.stamp_p), color:(info.color|0)%4,
-    goal: Math.max(1, info.goal_p|0 || 1), reward: info.reward_p||"", stamps: stamps.map(s=>s.day), list: stamps};
+    goal: Math.max(1, info.goal_p|0 || 1), reward: info.reward_p||"", mid_on: !!info.mid_on, reward_m: info.reward_m||"", stamps: stamps.map(s=>s.day), list: stamps};
 }
 const fileURL = p => SB_URL+"/storage/v1/object/public/mc-submissions/"+p.split("/").map(encodeURIComponent).join("/");
 const fmtDate = iso => { if(!iso) return ""; const d=new Date(iso); return (d.getMonth()+1)+"/"+d.getDate(); };
@@ -720,8 +724,8 @@ function monthResult(p, round, after, mid){
       </div>
       <div class="t1"></div><div class="t2"></div><div class="t4"></div><div class="t3">タップで閉じる</div>
     </div>`;
-  { const rt = mid ? "" : (p.reward||""); const t4=o.querySelector(".t4");
-    if(rt){ t4.innerHTML=GIFT; const s=document.createElement("span"); s.textContent = "ごほうび「"+rt+"」ゲット！"; t4.append(s); } else t4.remove(); }
+  { const rt = mid ? (p.reward_m||"") : (p.reward||""); const t4=o.querySelector(".t4");
+    if(rt){ t4.innerHTML=GIFT; const s=document.createElement("span"); s.textContent = (mid?"中間ごほうび「":"ごほうび「")+rt+"」ゲット！"; t4.append(s); } else t4.remove(); }
   o.querySelector(".moonie").append(stampPic("moon"));
   o.querySelector(".t1").textContent = mid ? "中間ゴール！" : "コンプリート！！";
   o.querySelector(".t2").textContent = mid ? `${got}こ たまった！ あと${goal-got}こ` : `${goal}こ 集めた！`;
@@ -1070,7 +1074,13 @@ function rewardEl(card, forTeacher){
   const ri=roundInfo(card), box=el("div","reward");
   box.innerHTML=`<div class="rw-head"><span class="gift">${GIFT}</span><span class="lbl">${ri.goal}こ たまったら</span>${ri.done>0?`<em class="got">${ri.done}回 達成</em>`:""}</div>`;
   const body=el("div","rw-body"); const b=el("b", card.reward?"":"none", card.reward || (forTeacher?"ごほうび未設定（下の「設定」で決められます）":"ごほうびは先生がきめるよ"));
-  body.append(b); box.append(body); return box;
+  body.append(b); box.append(body);
+  if(!ri.mid) return box;
+  // midpoint reward (only when the teacher turned it on)
+  const wrap=el("div","rewards"), mb=el("div","reward mid");
+  mb.innerHTML=`<div class="rw-head"><span class="gift">${GIFT}</span><span class="lbl">中間 ${ri.mid}こ で</span>${ri.inRound>=ri.mid?'<em class="got">ゲット！</em>':""}</div>`;
+  const mbd=el("div","rw-body"); mbd.append(el("b", card.reward_m?"":"none", card.reward_m || (forTeacher?"中間ごほうび未設定（「設定」で決められます）":"中間ごほうびは先生がきめるよ")));
+  mb.append(mbd); wrap.append(mb, box); return wrap;
 }
 function calendarEl(card, ym){
   const cal=el("div","cal");
@@ -1584,8 +1594,14 @@ function tStudent(app){
   const f=el("form"); f.innerHTML=`<div class="row2 r12"><label>番号<input id="s-num" maxlength="12" inputmode="numeric"></label><label>名前<input id="s-name" maxlength="20"></label></div>
     <label>ごほうびまでのスタンプ数<input id="s-gp" type="number" inputmode="numeric" min="1" max="500" step="1"></label>
     <label>ごほうび<input id="s-rp" maxlength="40" placeholder="例：シールを1まい"></label>
+    <label class="toggle"><input type="checkbox" id="s-mid"> 中間ごほうびをつける<small id="s-midn"></small></label>
+    <label id="s-rm-l">中間ごほうび<input id="s-rm" maxlength="40" placeholder="例：シールを1まい"></label>
     <div class="actions"><button type="submit" class="save" id="s-save">保存</button></div>`;
   f.querySelector("#s-gp").value=String(s.goal_p);
+  const mc=f.querySelector("#s-mid"), rmL=f.querySelector("#s-rm-l"), gpI=f.querySelector("#s-gp"), mn=f.querySelector("#s-midn");
+  mc.checked=!!s.mid_on; f.querySelector("#s-rm").value=s.reward_m||"";
+  const midUI=()=>{ rmL.hidden=!mc.checked; const g=+gpI.value|0; mn.textContent = mc.checked ? (g>=2?`（${Math.ceil(g/2)}こ目でもらえます）`:"（スタンプ数が2以上のときだけ）") : ""; };
+  mc.onchange=midUI; gpI.oninput=midUI; midUI();
   f.querySelector("#s-num").value=s.num??""; f.querySelector("#s-name").value=s.name; f.querySelector("#s-rp").value=s.reward_p||"";
   f.onsubmit=async e=>{ e.preventDefault();
     const g=+String(f.querySelector("#s-gp").value).replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248));
@@ -1593,6 +1609,7 @@ function tStudent(app){
     try{ const r=await rpc("mc_t_update2",{tk:TK, sid:s.id, p_num:f.querySelector("#s-num").value, p_name:f.querySelector("#s-name").value, p_goal_p:g, p_goal_e:s.goal_e|0||5,
       p_reward_p:f.querySelector("#s-rp").value, p_reward_e:s.reward_e||""});
       if(r==="dup_num"){ toast("その番号はほかの生徒が使っています"); return; }
+      await rpc("mc_t_mid",{tk:TK, sid:s.id, p_on:mc.checked, p_reward:f.querySelector("#s-rm").value});
       toast("保存しました"); st.open=false; await tLoadStudent(); tRender(); tRefresh(); }
     catch(err){ toast("保存できませんでした（"+err.message+"）"); } };
   st.append(f); app.append(st);
