@@ -624,6 +624,61 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .vw-n{flex:1;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
 .vw .media video,.vw .media img{max-height:46vh}
 
+/* ---------- profile decorations ---------- */
+.pf-av{position:absolute;right:-10px;bottom:-8px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1.55rem;line-height:1;z-index:3;
+  background:#fff;box-shadow:0 0 0 3px var(--avr,#fff),0 4px 10px rgba(0,0,0,.25)}
+.rk0 .pf-av{--avr:#9be15d}.rk1 .pf-av{--avr:#38d6ff}.rk2 .pf-av{--avr:#ffc93c}.rk3 .pf-av{--avr:#ff5fa2;background:linear-gradient(135deg,#fff,#fde7ff)}
+.pf-real{font-size:.7rem;opacity:.7;font-weight:500;white-space:nowrap}
+.pf-title{align-self:flex-start;font-size:.72rem;font-weight:800;padding:2px 10px;border-radius:99px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);letter-spacing:.04em}
+.rk0 .pf-title{background:#fff;border-color:#bfe9a7;color:#2f8a2a}
+.rk2 .pf-title{background:linear-gradient(90deg,rgba(255,226,122,.25),rgba(255,176,58,.2));border-color:rgba(255,226,122,.6);color:#ffe27a}
+.rk3 .pf-title{background:linear-gradient(90deg,#ff5fa2,#b98bff);border-color:transparent;color:#fff}
+.pf-bio{position:relative;align-self:stretch;padding:8px 12px;border-radius:14px;font-weight:800;font-size:.86rem;overflow-wrap:anywhere;
+  background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3)}
+.pf-bio::before{content:"";position:absolute;left:34px;top:-8px;border:8px solid transparent;border-top:0;border-bottom-color:rgba(255,255,255,.3)}
+.rk0 .pf-bio{background:#fff;border-color:#cdeebb}.rk0 .pf-bio::before{border-bottom-color:#cdeebb}
+.pf-likes{display:flex;flex-wrap:wrap;gap:6px}
+.pf-chip{font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk0 .pf-chip{background:#eef9ff;border-color:#bfe3f5;color:#2b7fa8}
+.pf-stk{position:absolute;z-index:4;font-size:1.7rem;line-height:1;pointer-events:none;will-change:transform;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));animation:stk 3s ease-in-out infinite}
+.pf-stk.s0{right:10px;top:8px;--r:14deg}.pf-stk.s1{left:8px;top:4px;--r:-14deg;animation-delay:-1s}.pf-stk.s2{right:12px;top:78px;--r:8deg;animation-delay:-2s;font-size:1.45rem}
+@keyframes stk{0%,100%{transform:rotate(var(--r)) translateY(0)}50%{transform:rotate(calc(var(--r) * -.4)) translateY(-4px) scale(1.06)}}
+.pf-in>.pf-pat{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.13}
+.pf-pat.p-dots{background:radial-gradient(currentColor 1.6px,transparent 2.2px) 0 0/14px 14px}
+.pf-pat.p-stripe{background:repeating-linear-gradient(45deg,currentColor 0 5px,transparent 5px 15px)}
+.pf-pat.p-check{background:conic-gradient(currentColor 25%,transparent 0 50%,currentColor 0 75%,transparent 0) 0 0/22px 22px;opacity:.09}
+.pf-pat.p-wave{background:repeating-radial-gradient(circle at 0 100%,transparent 0 8px,currentColor 8px 10px) 0 0/24px 24px}
+.pf-pat.p-note{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34'%3E%3Cpath d='M12 24a4 3 -20 1 1-2-4V8l12-3v15a4 3 -20 1 1-2-4V9l-8 2z' fill='%23888'/%3E%3C/svg%3E") 0 0/34px 34px;opacity:.28}
+.pf-pat.p-star{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cpath d='M15 4l3 7 7 .6-5.4 4.6 1.7 7L15 19.4 8.7 23.2l1.7-7L5 11.6l7-.6z' fill='%23999'/%3E%3C/svg%3E") 0 0/30px 30px;opacity:.26}
+.pf-pat.p-heart{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cpath d='M14 23s-8-5-8-11a4.5 4.5 0 0 1 8-2.6A4.5 4.5 0 0 1 22 12c0 6-8 11-8 11z' fill='%23999'/%3E%3C/svg%3E") 0 0/28px 28px;opacity:.26}
+.deco-btn{font:inherit;font-weight:800;font-size:.95rem;padding:11px;border-radius:14px;border:2px dashed rgba(255,255,255,.35);background:rgba(255,255,255,.06);color:var(--ink);cursor:pointer}
+.srow-av{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.4rem;background:#fff}
+/* editor */
+.deco.sheet{align-items:stretch}
+.dk{max-width:560px;max-height:100vh;height:100%;border-radius:22px 22px 0 0;gap:10px;padding:12px}
+.dk-pv{position:relative;flex:none}
+.dk-pv .prof{transform:none}
+.dk-tabs{display:flex;gap:6px;overflow-x:auto;flex:none;scrollbar-width:none;padding:2px}
+.dk-tabs .chip{white-space:nowrap;flex:none;font-weight:800}
+.dk-body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px}
+.dk-form{display:flex;flex-direction:column;gap:10px}
+.dk-h{font-size:.8rem;font-weight:800;color:var(--muted)}
+.dk-grid{display:grid;gap:6px}
+.dk-grid.emo{grid-template-columns:repeat(auto-fill,minmax(52px,1fr))}
+.dk-grid.inst,.dk-grid.list2{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+.dk-grid.list{grid-template-columns:1fr 1fr}
+.dk-grid.pat{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
+.dk-it{font:inherit;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:48px;padding:6px;border-radius:12px;
+  border:2px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);cursor:pointer;font-weight:800;font-size:.8rem}
+.dk-grid.emo .dk-it{font-size:1.6rem;min-height:52px}
+.dk-it.on{border-color:var(--p2);background:rgba(255,201,60,.16);box-shadow:0 0 0 2px rgba(255,201,60,.25)}
+.dk-it.lock{opacity:.45}
+.dk-it .lk{font-size:.58rem;font-weight:800;color:var(--muted);line-height:1}
+.dk-pw{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
+.dk-sw{position:relative;display:block;width:100%;height:34px;border-radius:8px;background:#fff;color:#556;overflow:hidden}
+.dk-sw .pf-pat{position:absolute;inset:0;opacity:.5}
+.dk-act{flex:none}
+
 </style>
 </head>
 <body>
@@ -1453,6 +1508,23 @@ const RANKS = [
   {key:"advance", name:"Advance", jp:"アドバンス", tag:"最高ランク！もう無敵！"}
 ];
 const rankOf = r => Math.max(0, Math.min(3, r|0));
+/* things a student can decorate their card with; n = stamps needed to unlock */
+const DECO = {
+  av: [["🐱",0],["🐶",0],["🐰",0],["🐻",0],["🐼",0],["🐨",0],["🦊",0],["🐸",0],["🐧",0],["🐤",0],["🐹",0],["🐵",0],["🦁",0],["🐯",0],["🐬",0],["🐙",0],
+       ["🍓",0],["🍙",0],["🍩",0],["⚽",0],["🎹",0],["🎻",0],["🎸",0],["🥁",0],["🎺",0],["🎷",0],["🎤",0],
+       ["🦖",5],["🚀",8],["🦄",10],["🐲",15],["👾",20],["🤖",25],["👑",30]],
+  title: [["はじめの一歩",0],["音楽だいすき",0],["のびざかり",0],["こつこつ練習家",3],["リズムマスター",5],["メロディーの達人",10],
+          ["ステージの主役",15],["音楽の魔法使い",20],["伝説の演奏家",30],["音楽の神",50]],
+  st: [["⭐",0],["💖",0],["🎵",0],["🍀",0],["🌸",0],["🎀",0],["🍭",0],["🌙",0],["⚡",0],["🦋",0],["🎉",3],["🔥",5],["🌈",8],["👑",10],["💎",15],["🏆",20],["🪐",25],["🌟",30]],
+  pat: [["none","なし",0],["dots","みずたま",0],["stripe","ストライプ",0],["check","チェック",0],["wave","なみなみ",3],["note","おんぷ",5],["star","ほし",10],["heart","ハート",15]],
+  fx: [["none","なし",0],["notes","音符",0],["sakura","さくら",0],["snow","ゆき",0],["bubble","あわ",0],["heart","ハート",3],["candy","おかし",5],["leaf","もみじ",8],
+       ["star","ほし",10],["fire","ほのお",15],["gem","ダイヤ",20],["rainbow","にじ",30]],
+  inst: [["","えらばない"],["🎹","ピアノ"],["🎹","エレクトーン"],["🎻","バイオリン"],["🎸","ギター"],["🥁","ドラム"],["🪈","フルート"],["🎺","トランペット"],["🎷","サックス"],["🎤","うた"],["🪕","ウクレレ"],["🎵","そのほか"]]
+};
+const FXSET = { notes:{e:["🎵","🎶"],m:"up"}, sakura:{e:["🌸"],m:"fall"}, snow:{e:["❄️"],m:"fall"}, bubble:{e:["🫧"],m:"up"}, heart:{e:["💖","💗"],m:"up"},
+  candy:{e:["🍬","🍭"],m:"fall"}, leaf:{e:["🍁","🍂"],m:"fall"}, star:{e:["⭐","✨"],m:"tw"}, fire:{e:["🔥"],m:"fast"}, gem:{e:["💎"],m:"tw"}, rainbow:{e:["🌈","✨","⭐"],m:"up"} };
+const profOf = info => { const p=(info && info.prof && typeof info.prof==="object") ? info.prof : {}; return p; };
+const unlocked = (n, total) => (total|0) >= (n|0);
 let _emb=0;
 function rankEmblem(r){
   const u="e"+(++_emb);
@@ -1512,6 +1584,15 @@ const FX = (()=>{
     return {k:"glit", x:rnd(0,W), y:H+5, vx:rnd(-.4,.4), vy:rnd(-.7,-1.5), s:rnd(1.4,3.2), life:rnd(160,260), t:0, c:RAINBOW[(Math.random()*5)|0], w:rnd(0,6.28)};
   }
   const RATE=[.3,.75,1.3,2.4];
+  const EMO={}; function emoSprite(ch){ if(EMO[ch]) return EMO[ch]; const S=64, cv=document.createElement("canvas"); cv.width=cv.height=S; const x=cv.getContext("2d");
+    x.font="48px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; x.textAlign="center"; x.textBaseline="middle"; x.fillText(ch,S/2,S/2+3); return EMO[ch]=cv; }
+  function spawnEmo(f){ const set=FXSET[f.fx]; if(!set) return null; const W=f.w, H=f.h, ch=set.e[(Math.random()*set.e.length)|0], m=set.m;
+    const p={k:"emo", img:emoSprite(ch), s:rnd(14,24), t:0, rot:rnd(-.5,.5), vr:rnd(-.02,.02), w:rnd(0,6.28), m};
+    if(m==="fall"){ p.x=rnd(0,W); p.y=-20; p.vx=rnd(-.2,.2); p.vy=rnd(.35,.7); p.life=rnd(260,380); }
+    else if(m==="tw"){ p.x=rnd(10,W-10); p.y=rnd(10,H-10); p.vx=0; p.vy=0; p.life=rnd(60,100); p.s=rnd(14,22); }
+    else if(m==="fast"){ p.x=rnd(0,W); p.y=H+16; p.vx=rnd(-.3,.3); p.vy=rnd(-1.4,-2.2); p.life=rnd(110,170); }
+    else { p.x=rnd(0,W); p.y=H+16; p.vx=rnd(-.2,.2); p.vy=rnd(-.4,-.8); p.life=rnd(240,360); }
+    return p; }
   const SPR={}; function sprite(c){ if(SPR[c]) return SPR[c]; const S=48, cv=document.createElement("canvas"); cv.width=cv.height=S; const x=cv.getContext("2d");
     const g=x.createRadialGradient(S/2,S/2,0,S/2,S/2,S/2); g.addColorStop(0,"#ffffff"); g.addColorStop(.18,c); g.addColorStop(.45,c+"55"); g.addColorStop(1,c+"00"); x.fillStyle=g; x.fillRect(0,0,S,S); return SPR[c]=cv; }
   const glow=(c,col,x,y,r)=>c.drawImage(sprite(col),x-r,y-r,r*2,r*2);
@@ -1537,6 +1618,16 @@ const FX = (()=>{
       else { const tw=.55+.45*Math.sin(p.w*3); c.globalAlpha=fade*tw; glow(c,p.c,p.x,p.y,p.s*3); }
     }
     c.globalAlpha=1; c.globalCompositeOperation="source-over";
+    // decoration particles (emoji) chosen by the student
+    if(f.fx && f.fx!=="none"){
+      f.eacc+=(FXSET[f.fx]&&FXSET[f.fx].m==="tw"?.035:.05)*f.boost*dt; while(f.eacc>=1 && f.es.length<16){ const p=spawnEmo(f); if(p) f.es.push(p); f.eacc--; }
+      for(let i=f.es.length-1;i>=0;i--){ const p=f.es[i]; p.t+=dt; const k=p.t/p.life; if(k>=1){ f.es.splice(i,1); continue; }
+        const fade = k<.12 ? k/.12 : k>.75 ? (1-k)/.25 : 1; p.w+=.04*dt; p.rot+=p.vr*dt;
+        p.x+=(p.vx+Math.sin(p.w)*(p.m==="fall"?.45:.2))*dt; p.y+=p.vy*dt;
+        const sz = p.m==="tw" ? p.s*Math.sin(k*Math.PI) : p.s;
+        c.globalAlpha=fade*.95; c.save(); c.translate(p.x,p.y); c.rotate(p.rot); c.drawImage(p.img,-sz/2,-sz/2,sz,sz); c.restore(); }
+      c.globalAlpha=1;
+    }
   }
   function loop(t){
     raf=0; const dt=Math.min(3,(t-(last||t))/16.67); last=t;
@@ -1550,7 +1641,7 @@ const FX = (()=>{
   function size(f){ const rc=f.cv.getBoundingClientRect(), d=Math.min(1.5,devicePixelRatio||1); f.w=rc.width; f.h=rc.height; f.cv.width=Math.round(rc.width*d); f.cv.height=Math.round(rc.height*d); f.ctx.setTransform(d,0,0,d,0,0);
     const em=f.cv.parentNode && f.cv.parentNode.querySelector(".pf-em, .ru-em"); if(em){ const e=em.getBoundingClientRect(); f.ox=e.left-rc.left+e.width/2; f.oy=e.top-rc.top+e.height/2; } else { f.ox=f.w/2; f.oy=f.h/2; } }
   document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && live.size && !raf){ last=0; raf=requestAnimationFrame(loop); } });
-  return { burst(cv){ for(const f of live) if(f.cv===cv) f.boost=7; }, attach(cv, r, opts){ if(RM) return; const f={cv, r, ctx:cv.getContext("2d"), ps:[], acc:0, w:0, h:0, ox:0, oy:0, boost:(opts&&opts.boost)||1, big:!!(opts&&opts.big)};
+  return { setFx(cv, fx){ for(const f of live) if(f.cv===cv){ f.fx=fx; f.es=[]; } }, burst(cv){ for(const f of live) if(f.cv===cv) f.boost=7; }, attach(cv, r, opts){ if(RM) return; const f={cv, r, ctx:cv.getContext("2d"), ps:[], es:[], acc:0, eacc:0, fx:(opts&&opts.fx)||"", w:0, h:0, ox:0, oy:0, boost:(opts&&opts.boost)||1, big:!!(opts&&opts.big)};
       f.vis=true; f.dirty=true;
       try{ f.io=new IntersectionObserver(es=>{ f.vis=es[es.length-1].isIntersecting; }); f.io.observe(cv); }catch(e){}
       try{ f.ro=new ResizeObserver(()=>{ f.dirty=true; }); f.ro.observe(cv); }catch(e){}
@@ -1559,8 +1650,10 @@ const FX = (()=>{
 let _countedOnce=false;
 function countUp(b, to){ if(_countedOnce || to<=0 || (window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)){ b.textContent=String(to); return; }
   const t0=performance.now(), d=900; (function f(t){ const k=Math.min(1,(t-t0)/d), e=1-Math.pow(1-k,3); b.textContent=String(Math.round(to*e)); if(k<1) requestAnimationFrame(f); })(t0); }
-function profileEl(info, stats){
-  const r=rankOf(info.rank), R=RANKS[r];
+let _layoutGen=0; addEventListener("scroll",()=>{ _layoutGen++; },{passive:true}); addEventListener("resize",()=>{ _layoutGen++; });
+const PAT_OK = new Set(DECO.pat.map(x=>x[0]));
+function profileEl(info, stats, opts){
+  const r=rankOf(info.rank), R=RANKS[r], P=profOf(info), forT=!!(opts&&opts.teacher);
   const card=el("section","prof rk"+r); card.id="prof"; card.setAttribute("aria-label",`プロフィール ・ ランク ${R.name}`);
   const inn=el("div","pf-in");
   const aur=el("div","pf-aur"); aur.innerHTML="<i></i><i></i><i></i>";
@@ -1568,32 +1661,48 @@ function profileEl(info, stats){
   const glare=el("div","pf-glare");
   const sp=el("div","pf-sp"); SPARK[r].forEach((c,i)=>{ const s=el("i",null,c); s.style.setProperty("--i",i); s.style.left=(6+(i*29+11)%86)+"%"; s.style.top=(4+(i*41+7)%30)+"%"; sp.append(s); });
   const em=el("div","pf-em"); em.innerHTML=`${r>=2?'<span class="pf-rays"></span>':""}<span class="pf-halo"></span>${rankEmblem(r)}${r>=2?'<span class="pf-orb"><i></i><i></i><i></i></span>':""}`;
+  if(P.av){ const av=el("span","pf-av",String(P.av).slice(0,4)); em.append(av); }
   const tx=el("div","pf-tx");
   const nm=el("b","pf-name"); [...R.name].forEach((ch,i)=>{ const s=el("span",null,ch); s.style.setProperty("--d",i); nm.append(s); }); nm.setAttribute("data-t",R.name);
   const lv=el("div","pf-lv"); lv.append(el("span","pf-rk","RANK"), nm);
-  const who=el("div","pf-who"); if(info.num!=null) who.append(el("span","pf-no","No."+info.num)); who.append(el("span","pf-nm",(info.name||"")+(info.name?" さん":"")));
-  tx.append(lv, who, el("div","pf-tag",R.tag));
+  const who=el("div","pf-who"); if(info.num!=null) who.append(el("span","pf-no","No."+info.num));
+  const nick=(P.nick||"").trim();
+  who.append(el("span","pf-nm", nick ? nick : (info.name||"")+(info.name?" さん":"")));
+  if(nick && forT) who.append(el("span","pf-real","（"+(info.name||"")+"）"));
+  tx.append(lv, who);
+  if(P.title) tx.append(el("span","pf-title","🎖 "+String(P.title).slice(0,20)));
+  else tx.append(el("div","pf-tag",R.tag));
   const top=el("div","pf-top"); top.append(em, tx);
   const st=el("div","pf-st");
   [["スタンプ",stats.total],["コンプリート",stats.done],["おわった課題",stats.tasks]].forEach(([k,v])=>{ const d=el("div"); const b=el("b",null,"0"); d.append(b, el("small",null,k)); st.append(d); countUp(b, v|0); });
   if(!_countedOnce) card.classList.add("enter"); _countedOnce=true;
+  // likes + speech bubble
+  const likes=el("div","pf-likes");
+  if(P.inst){ const it=DECO.inst.find(x=>x[1]===P.inst); likes.append(el("span","pf-chip",(it?it[0]:"🎵")+" "+P.inst)); }
+  if(P.song) likes.append(el("span","pf-chip","🎶 "+String(P.song).slice(0,20)));
+  const bio=(P.bio||"").trim(); const bub= bio ? el("div","pf-bio",bio.slice(0,30)) : null;
   const lad=el("ol","pf-lad"); RANKS.forEach((x,i)=>{ const li=el("li",i<r?"past":i===r?"now":"", x.name); lad.append(li); });
-  inn.append(aur, cv, sp, top, st, lad, glare);
+  const pat=el("div","pf-pat"+(PAT_OK.has(P.pat)&&P.pat!=="none"?" p-"+P.pat:""));
+  inn.append(aur, pat, cv, sp, top);
+  if(bub) inn.append(bub);
+  if(likes.children.length) inn.append(likes);
+  inn.append(st, lad, glare);
+  // stickers
+  (Array.isArray(P.st)?P.st:[]).slice(0,3).forEach((ch,i)=>{ const s=el("span","pf-stk s"+i,String(ch).slice(0,4)); inn.append(s); });
   if(r>=1) inn.append(el("div","pf-shine"));
   if(r===3) inn.append(el("div","pf-holo"));
   if(r>=2){ const mq=el("div","pf-mq"); const txt = r===3 ? "★ INVINCIBLE ★ ADVANCE ★ 無敵 ★ TOP RANK ★ " : "✦ GOLD CLASS ✦ UPPER ✦ キラキラ上級者 ✦ "; mq.innerHTML=`<span>${txt.repeat(4)}</span><span aria-hidden="true">${txt.repeat(4)}</span>`; inn.append(mq); }
   const ring=el("div","pf-ring"); ring.append(el("i")); card.append(ring, inn);
   // glare + tilt follow the finger / mouse
-  let mvq=null, mvr=0, rcache=null;
-  const mvApply=()=>{ mvr=0; if(!mvq) return; const rc=rcache||(rcache=card.getBoundingClientRect()); const x=Math.max(0,Math.min(1,(mvq.x-rc.left)/rc.width)), y=Math.max(0,Math.min(1,(mvq.y-rc.top)/rc.height));
+  let mvq=null, mvr=0, rcache=null, rgen=-1;
+  const mvApply=()=>{ mvr=0; if(!mvq) return; if(rgen!==_layoutGen){ rcache=null; rgen=_layoutGen; } const rc=rcache||(rcache=card.getBoundingClientRect()); const x=Math.max(0,Math.min(1,(mvq.x-rc.left)/rc.width)), y=Math.max(0,Math.min(1,(mvq.y-rc.top)/rc.height));
     card.style.setProperty("--mx",(x*100).toFixed(1)+"%"); card.style.setProperty("--my",(y*100).toFixed(1)+"%");
     card.style.setProperty("--rx",((.5-y)*10).toFixed(2)+"deg"); card.style.setProperty("--ry",((x-.5)*14).toFixed(2)+"deg"); card.classList.add("hov"); };
   const mv=e=>{ const p=e.touches?e.touches[0]:e; mvq={x:p.clientX,y:p.clientY}; if(!mvr) mvr=requestAnimationFrame(mvApply); };
-  addEventListener("scroll",()=>{ rcache=null; },{passive:true}); addEventListener("resize",()=>{ rcache=null; });
   const lv2=()=>{ card.classList.remove("hov"); rcache=null; };
   card.addEventListener("pointermove",mv); card.addEventListener("pointerleave",lv2); card.addEventListener("touchmove",mv,{passive:true}); card.addEventListener("touchend",lv2);
   card.addEventListener("click",e=>{ card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop"); FX.burst(cv); TAP(card, r, e, cv); });
-  FX.attach(cv, r);
+  FX.attach(cv, r, {fx: P.fx||""});
   return card;
 }
 function profileStats(info, stamps, assign){
@@ -1748,6 +1857,7 @@ function stuRender(){
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(profileEl(Stu.info, profileStats(Stu.info, Stu.stamps, Stu.assign)));
+  const db=el("button","deco-btn","✏️ プロフィールをデコる"); db.id="deco-btn"; db.onclick=openDeco; app.append(db);
   if(ok.length){ const n=el("div","notice big okn"); n.id="ok-notice"; n.innerHTML=`<span class="dot"></span><span>先生から OK が ${ok.length}こ 出たよ！スタンプを押そう！</span>`; app.append(n); }
   const who=el("div","who"); who.append(el("h2",null,"♪ スタンプカード"));
   const eb=el("button","edit-btn","デザイン"); eb.id="style-btn"; eb.onclick=()=>{ Stu.styling=true; Stu.draft={stamp_p:Stu.info.stamp_p, color:Stu.info.color|0}; stuRender(); };
@@ -1837,6 +1947,77 @@ function subForm(a){
         : err.message==="too_long" ? "動画が長すぎます。5分までにして撮りなおしてね。"
         : err.message==="network" ? "送れませんでした。電波のいいところでもう一度ためしてね。" : "送れませんでした（"+err.message+"）"; } };
   return f;
+}
+/* ---------- profile decorating ---------- */
+function openDeco(){
+  if(document.getElementById("deco")) return;
+  const stats=profileStats(Stu.info, Stu.stamps, Stu.assign), total=stats.total;
+  const d=JSON.parse(JSON.stringify(profOf(Stu.info))); if(!Array.isArray(d.st)) d.st=[];
+  let tab=lsGet("mc_deco_tab")||"basic";
+  const o=el("div","sheet deco"); o.id="deco";
+  const p=el("div","panel dk"); p.setAttribute("role","dialog"); p.setAttribute("aria-label","プロフィールをデコる"); o.append(p);
+  const pv=el("div","dk-pv"); const tabs=el("div","dk-tabs"); const body=el("div","dk-body");
+  const act=el("div","actions dk-act"); const cancel=el("button",null,"やめる"); cancel.type="button"; const save=el("button","save","これにする！"); save.type="button"; save.id="deco-save"; act.append(cancel,save);
+  p.append(pv, tabs, body, act);
+  let pvT=0; const drawPv=(soon)=>{ clearTimeout(pvT); pvT=setTimeout(()=>{ pv.innerHTML=""; pv.append(profileEl({...Stu.info, prof:d}, stats)); }, soon?250:0); };
+  const lockTag=n=>{ const t=el("small","lk","🔒 "+n+"こ"); t.title=`スタンプ${n}こで解放（あと${n-total}こ）`; return t; };
+  const TABS=[["basic","きほん"],["av","アバター"],["title","しょうごう"],["st","ステッカー"],["pat","がら"],["fx","エフェクト"]];
+  function drawTabs(){ tabs.innerHTML=""; TABS.forEach(([k,l])=>{ const b=el("button","chip"+(tab===k?" on":""),l); b.type="button"; b.dataset.tab=k; b.onclick=()=>{ tab=k; lsSet("mc_deco_tab",k); drawTabs(); drawBody(); }; tabs.append(b); }); }
+  function grid(items, cls, isOn, onPick){ const g=el("div","dk-grid "+cls);
+    items.forEach(it=>{ const [val,label,n]=it; const lock=!unlocked(n,total); const b=el("button","dk-it"+(isOn(val)?" on":"")+(lock?" lock":"")); b.type="button";
+      b.append(label instanceof Node ? label : el("span","dk-l",label)); if(lock) b.append(lockTag(n));
+      b.onclick=()=>{ if(lock){ toast(`スタンプを${n}こ集めると使えるよ！（あと${n-total}こ）`); return; } onPick(val); drawBody(); drawPv(); try{ SFX.ping(); }catch(e){} };
+      g.append(b); });
+    return g; }
+  function drawBody(){
+    body.innerHTML="";
+    if(tab==="basic"){
+      const f=el("div","dk-form");
+      const row=(label,inp)=>{ const l=el("label"); l.append(document.createTextNode(label), inp); return l; };
+      const nk=el("input","keep"); nk.id="dk-nick"; nk.maxLength=10; nk.placeholder="例：ひなっち"; nk.value=d.nick||""; nk.oninput=()=>{ d.nick=nk.value; drawPv(true); };
+      const bi=el("input","keep"); bi.id="dk-bio"; bi.maxLength=30; bi.placeholder="例：発表会がんばるぞ！"; bi.value=d.bio||""; bi.oninput=()=>{ d.bio=bi.value; drawPv(true); };
+      const sg=el("input","keep"); sg.id="dk-song"; sg.maxLength=20; sg.placeholder="例：エリーゼのために"; sg.value=d.song||""; sg.oninput=()=>{ d.song=sg.value; drawPv(true); };
+      f.append(row("ニックネーム（10文字まで）",nk), row("ひとこと（30文字まで）",bi));
+      f.append(el("div","dk-h","好きな楽器"));
+      f.append(grid(DECO.inst.map(([e,n])=>[n, (e?e+" ":"")+n, 0]), "inst", v=>(d.inst||"")===v, v=>{ d.inst=v; }));
+      f.append(row("好きな曲（20文字まで）",sg));
+      body.append(f);
+    } else if(tab==="av"){
+      body.append(el("p","rw-note","カードのマークのよこに出るよ"));
+      body.append(grid([["","なし",0], ...DECO.av.map(([e,n])=>[e,e,n])], "emo", v=>(d.av||"")===v, v=>{ d.av=v; }));
+    } else if(tab==="title"){
+      body.append(el("p","rw-note","名前の下に出る「しょうごう」。スタンプを集めるとカッコいいのが使えるよ"));
+      body.append(grid([["","なし",0], ...DECO.title.map(([t,n])=>[t,"🎖 "+t,n])], "list", v=>(d.title||"")===v, v=>{ d.title=v; }));
+    } else if(tab==="st"){
+      body.append(el("p","rw-note",`カードにはるステッカー（3つまで） ・ いま ${d.st.length}/3`));
+      body.append(grid(DECO.st.map(([e,n])=>[e,e,n]), "emo", v=>d.st.includes(v), v=>{ const i=d.st.indexOf(v); if(i>=0) d.st.splice(i,1); else { if(d.st.length>=3) d.st.shift(); d.st.push(v); } }));
+      if(d.st.length){ const c=el("button","btn small","ステッカーをぜんぶはがす"); c.type="button"; c.onclick=()=>{ d.st=[]; drawBody(); drawPv(); }; body.append(c); }
+    } else if(tab==="pat"){
+      body.append(el("p","rw-note","カードのうしろのもよう"));
+      body.append(grid(DECO.pat.map(([k,l,n])=>{ const sw=el("span","dk-sw"); const pz=el("span","pf-pat p-"+k); sw.append(pz); const w=el("span","dk-pw"); w.append(sw, el("span","dk-l",l)); return [k, w, n]; }), "pat", v=>(d.pat||"none")===v, v=>{ d.pat=v; }));
+    } else if(tab==="fx"){
+      body.append(el("p","rw-note","カードの中をふわふわ動くエフェクト"));
+      body.append(grid(DECO.fx.map(([k,l,n])=>[k, (FXSET[k]?FXSET[k].e[0]+" ":"🚫 ")+l, n]), "list2", v=>(d.fx||"none")===v, v=>{ d.fx=v; }));
+    }
+  }
+  const close=()=>{ o.remove(); stuRender(); };
+  cancel.onclick=close; o.onclick=e=>{ if(e.target===o) close(); };
+  save.onclick=async()=>{
+    const clean={};
+    const t=(v,n)=>String(v||"").replace(/[\u0000-\u001f]/g,"").trim().slice(0,n);
+    if(t(d.nick,10)) clean.nick=t(d.nick,10); if(t(d.bio,30)) clean.bio=t(d.bio,30); if(t(d.song,20)) clean.song=t(d.song,20);
+    if(d.inst && DECO.inst.some(x=>x[1]===d.inst)) clean.inst=d.inst;
+    if(d.av && DECO.av.some(x=>x[0]===d.av && unlocked(x[1],total))) clean.av=d.av;
+    if(d.title && DECO.title.some(x=>x[0]===d.title && unlocked(x[1],total))) clean.title=d.title;
+    const st=d.st.filter(v=>DECO.st.some(x=>x[0]===v && unlocked(x[1],total))).slice(0,3); if(st.length) clean.st=st;
+    if(d.pat && d.pat!=="none" && DECO.pat.some(x=>x[0]===d.pat && unlocked(x[2],total))) clean.pat=d.pat;
+    if(d.fx && d.fx!=="none" && DECO.fx.some(x=>x[0]===d.fx && unlocked(x[2],total))) clean.fx=d.fx;
+    save.disabled=true;
+    try{ await rpc("mc_s_profile",{sk:SK, p_prof:clean}); Stu.info.prof=clean; o.remove(); stuRender(); toast("デコったよ！かわいい＆かっこいい！");
+      try{ SFX.unlock(); SFX.stamp(false,false); }catch(e){} const cv=document.querySelector("#prof .pf-fx"); if(cv) setTimeout(()=>{ FX.burst(cv); FX.burst(cv); },300); }
+    catch(e){ save.disabled=false; toast("保存できませんでした（"+e.message+"）"); }
+  };
+  document.body.append(o); drawTabs(); drawBody(); drawPv();
 }
 function stuStyle(box){
   const dr=Stu.draft;
@@ -2085,7 +2266,7 @@ function tStudents(app){
     if(!T.students.length){ list.append(el("div","empty","まだ生徒がいません。「＋ 生徒を追加」から登録してね。")); return; }
     if(!arr.length){ list.append(el("div","empty","見つかりません")); return; }
     const subSet=new Set(T.review.map(a=>a.sid));
-    arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; r.innerHTML=stampSVG(okStamp(s.stamp_p));
+    arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; if(s.prof && s.prof.av){ r.append(el("span","srow-av",String(s.prof.av).slice(0,4))); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
       r.append(el("span","nm",s.name), el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name)); if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
       const c=el("span","ct"); c.innerHTML=stuCount(s); r.append(c);
@@ -2134,7 +2315,7 @@ function tStudent(app){
   const back=el("button","btn small back","‹ 生徒一覧へ"); back.id="back"; back.onclick=()=>{ T.sel=null; T.detail=null; tRender(); tRefresh(); }; app.append(back);
   if(!s){ app.append(el("div","empty","読み込み中…")); return; }
   const stamps=(T.detail&&T.detail.stamps)||[];
-  app.append(profileEl(s, profileStats(s, stamps, T.sAssign)));
+  app.append(profileEl(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
   who.append(hh); box.append(who);
