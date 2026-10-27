@@ -352,7 +352,7 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .filebtn input{position:absolute;width:1px;height:1px;opacity:0}
 .picked{overflow-wrap:anywhere}
 .pv{position:relative;border-radius:14px;overflow:hidden;background:#000;border:2px solid var(--line)}
-.pv img,.pv video{display:block;width:100%;max-height:52vh;object-fit:contain;background:#000}
+.pv img,.pv video{display:block;width:100%;max-height:40vh;object-fit:contain;background:#000}
 .pv-dur{position:absolute;right:8px;top:8px;font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:99px;background:rgba(0,0,0,.6);color:#fff;pointer-events:none}
 .pv-ic{padding:18px 12px;text-align:center;font-weight:800;color:var(--ink)}
 .pv.aud{background:rgba(255,255,255,.05);padding:6px 10px 10px}.pv.aud audio{width:100%}
@@ -600,6 +600,29 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
   .prof,.prof::after,.pf-ring i,.pf-aur i,.pf-shine,.pf-holo,.pf-halo,.pf-orb,.pf-mq span,.pf-name span,.lf,.ru-beams,
   .pf-sp i,.pf-em,.pf-rays,.pf-name,.pf-lad li.now{animation:none !important}
 }
+
+/* ---------- compact review list + viewer ---------- */
+.rv-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.rv-filter .chip{white-space:nowrap;flex:none}
+.chip.on{background:var(--p2);color:#2b1433;border-color:var(--p2);font-weight:800}
+.rv-hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rv-list{display:flex;flex-direction:column;gap:6px}
+.rvr{display:flex;align-items:center;gap:10px;padding:6px 8px 6px 6px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);cursor:pointer;transition:opacity .3s,transform .3s}
+.rvr.done{opacity:.35;transform:scale(.98)}
+.rvt{width:56px;height:56px;flex:none;border-radius:10px;overflow:hidden;background:#000;position:relative;display:grid;place-items:center;font-size:1.3rem}
+.rvt.ic{background:rgba(255,255,255,.08)}
+.rvt img,.rvt video{width:100%;height:100%;object-fit:cover;display:block}
+.rvt-play{position:absolute;inset:auto 3px 3px auto;font-size:.6rem;background:rgba(0,0,0,.6);color:#fff;border-radius:99px;padding:1px 5px}
+.rvi{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;line-height:1.35}
+.rvi b{font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rvm,.rvc{font-size:.72rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rvc{color:#9fdcff}
+.rv-qok{font:inherit;font-weight:800;font-size:.85rem;flex:none;min-width:52px;padding:10px 8px;border-radius:12px;border:0;cursor:pointer;color:#fff;background:linear-gradient(135deg,#ff5fa2,#8b6bff)}
+.rv-qok:disabled{opacity:.7}
+.viewer .vw{width:min(560px,100%);max-height:calc(100vh - 24px);display:flex;flex-direction:column;gap:10px}
+.vw-top{display:flex;align-items:center;gap:6px}
+.vw-n{flex:1;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+.vw .media video,.vw .media img{max-height:46vh}
 
 </style>
 </head>
@@ -1853,28 +1876,87 @@ function tRender(){
   return T.sel ? tStudent(app) : tStudents(app);
 }
 /* ---- review ---- */
-function reviewCard(a, name, after){
-  const c=el("div","rv"); c.dataset.id=a.id;
-  const hd=el("div","task-hd"); hd.append(el("b","task-t",name)); hd.append(el("span","rw-note",fmtDate(a.submitted_at)+" 提出")); c.append(hd);
-  c.append(el("div","task-meta","📝 "+a.title));
-  if(a.comment) c.append(el("div","scmt","生徒：「"+a.comment+"」"));
-  c.append(mediaEl(a));
-  const cm=el("input","keep rv-cmt"); cm.maxLength=200; cm.placeholder="ひとこと（なくてもOK）例：リズムがよくなったね！"; c.append(cm);
-  const bt=el("div","big2");
-  const ok=el("button","press rv-ok","OK！\nスタンプOK"); ok.style.whiteSpace="pre-line";
-  const ng=el("button","btn rv-ng","やり直し\nしてもらう"); ng.style.whiteSpace="pre-line";
-  const go=async v=>{ ok.disabled=ng.disabled=true;
-    try{ const r=await rpc("mc_t_review",{tk:TK, p_assign:a.id, p_ok:v, p_comment:cm.value}); cm.value="";
-      if(r!=="ok") toast("この課題は見つかりませんでした"); else { if(v) SFX.ping && SFX.ping(); toast(v?`${name}さんにOKを出しました。生徒がスタンプを押せます`:`${name}さんにやり直しをお願いしました`); }
-      T.review=T.review.filter(x=>x.id!==a.id); after(); }
-    catch(e){ ok.disabled=ng.disabled=false; toast("できませんでした（"+e.message+"）"); } };
-  ok.onclick=()=>go(true); ng.onclick=()=>go(false); bt.append(ok,ng); c.append(bt);
-  return c;
+async function doReview(a, ok, comment){
+  const r=await rpc("mc_t_review",{tk:TK, p_assign:a.id, p_ok:ok, p_comment:comment||""});
+  T.review=T.review.filter(x=>x.id!==a.id);
+  if(r!=="ok"){ toast("この課題は見つかりませんでした"); return false; }
+  if(ok) try{ SFX.ping(); }catch(e){} return true;
+}
+/* small thumbnail; videos load only when scrolled into view */
+const _thumbIO = ("IntersectionObserver" in window) ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const v=e.target; _thumbIO.unobserve(v); v.src=v.dataset.src; } }),{rootMargin:"200px"}) : null;
+function thumbEl(a){
+  const t=el("div","rvt");
+  if(!a.file_path){ t.textContent=a.file_deleted?"🗑":"—"; return t; }
+  const ft=a.file_type||"", u=fileURL(a.file_path);
+  if(ft.startsWith("image/")){ const im=el("img"); im.loading="lazy"; im.alt=""; im.src=u; t.append(im); }
+  else if(ft.startsWith("audio/")){ t.textContent="🎵"; t.classList.add("ic"); }
+  else { const v=el("video"); v.muted=true; v.playsInline=true; v.setAttribute("playsinline",""); v.preload="metadata"; v.dataset.src=u+"#t=0.1";
+    if(_thumbIO) _thumbIO.observe(v); else v.src=v.dataset.src; t.append(v, el("span","rvt-play","▶")); }
+  return t;
+}
+/* one compact row per submission: tap to open the viewer, or OK right away */
+function reviewRow(a, name, list, after){
+  const r=el("div","rvr"); r.dataset.id=a.id; r.tabIndex=0; r.setAttribute("role","button");
+  const info=el("div","rvi"); info.append(el("b",null,name), el("span","rvm","📝 "+a.title+" ・ "+fmtDate(a.submitted_at)));
+  if(a.comment) info.append(el("span","rvc","「"+a.comment+"」"));
+  const ok=el("button","rv-qok","OK"); ok.title="見てOKにする";
+  ok.onclick=async e=>{ e.stopPropagation(); ok.disabled=true; ok.textContent="…";
+    try{ await doReview(a,true,""); r.classList.add("done"); ok.textContent="✓"; toast(`${name}さんにOK`); setTimeout(after,600); }
+    catch(err){ ok.disabled=false; ok.textContent="OK"; toast("できませんでした（"+err.message+"）"); } };
+  r.append(thumbEl(a), info, ok);
+  const open=()=>openViewer(list, list.findIndex(x=>x.a.id===a.id), after);
+  r.onclick=open; r.onkeydown=e=>{ if(e.key==="Enter") open(); };
+  return r;
+}
+/* full-screen viewer that walks through the queue */
+function openViewer(list, idx, after){
+  if(!list.length) return; let i=Math.max(0,idx), changed=false;
+  const o=el("div","sheet viewer"); o.id="viewer";
+  const p=el("div","panel vw"); p.setAttribute("role","dialog"); o.append(p);
+  const close=()=>{ o.remove(); if(changed) after(); };
+  o.onclick=e=>{ if(e.target===o) close(); };
+  function draw(){
+    if(!list.length){ close(); toast("チェック待ちはぜんぶ終わりました 🎉"); return; }
+    if(i>=list.length) i=list.length-1;
+    const {a, name}=list[i]; p.innerHTML="";
+    const top=el("div","vw-top");
+    const pv=el("button","btn small","‹"); pv.disabled=i===0; pv.onclick=()=>{ i--; draw(); };
+    const nx=el("button","btn small","›"); nx.disabled=i>=list.length-1; nx.onclick=()=>{ i++; draw(); };
+    const x=el("button","btn small","とじる"); x.onclick=close;
+    top.append(pv, el("span","vw-n",`${i+1} / ${list.length}`), nx, x); p.append(top);
+    const hd=el("div","task-hd"); hd.append(el("b","task-t",name), el("span","rw-note",fmtDate(a.submitted_at)+" 提出")); p.append(hd);
+    p.append(el("div","task-meta","📝 "+a.title));
+    if(a.comment) p.append(el("div","scmt","生徒：「"+a.comment+"」"));
+    const m=mediaEl(a); p.append(m); const mv=m.querySelector("video"); if(mv){ mv.autoplay=true; }
+    const cm=el("input","rv-cmt"); cm.maxLength=200; cm.placeholder="ひとこと（なくてもOK）例：リズムがよくなったね！"; p.append(cm);
+    const chips=el("div","chips"); ["よくできました！","リズムがよくなったね","もう少しゆっくりひいてみよう","指づかいに気をつけて"].forEach(t=>{ const c=el("button","chip",t); c.type="button"; c.onclick=()=>{ cm.value=t; }; chips.append(c); }); p.append(chips);
+    const bt=el("div","big2");
+    const ok=el("button","press rv-ok","OK！\nスタンプOK"); ok.style.whiteSpace="pre-line";
+    const ng=el("button","btn rv-ng","やり直し\nしてもらう"); ng.style.whiteSpace="pre-line";
+    const go=async v=>{ ok.disabled=ng.disabled=true;
+      try{ await doReview(a, v, cm.value); changed=true; toast(v?`${name}さんにOK（生徒がスタンプを押せます）`:`${name}さんにやり直しをお願いしました`); list.splice(i,1); draw(); }
+      catch(e){ ok.disabled=ng.disabled=false; toast("できませんでした（"+e.message+"）"); } };
+    ok.onclick=()=>go(true); ng.onclick=()=>go(false); bt.append(ok,ng); p.append(bt);
+    p.scrollTop=0;
+  }
+  document.body.append(o); draw();
 }
 function tReview(app){
   if(!T.review.length){ app.append(el("div","empty","チェック待ちの提出はありません 🎉")); return; }
-  app.append(el("p","rw-note",`チェック待ち ${T.review.length}件 ・ 古い順`));
-  T.review.forEach(a=>app.append(reviewCard(a, stuName(a.sid), ()=>{ tRender(); tRefresh(); })));
+  // filter by task
+  const byTask={}; T.review.forEach(a=>{ (byTask[a.task_id]=byTask[a.task_id]||{title:a.title,n:0}).n++; });
+  if(T.rvTask && !byTask[T.rvTask]) T.rvTask=null;
+  const fl=el("div","rv-filter");
+  const mk=(id,label,n)=>{ const b=el("button","chip"+((T.rvTask||null)===id?" on":""),`${label}（${n}）`); b.onclick=()=>{ T.rvTask=id; tRender(); }; return b; };
+  fl.append(mk(null,"すべて",T.review.length)); Object.keys(byTask).forEach(id=>fl.append(mk(+id, byTask[id].title, byTask[id].n)));
+  app.append(fl);
+  const items=T.review.filter(a=>!T.rvTask || a.task_id===T.rvTask).map(a=>({a, name:stuName(a.sid)}));
+  const hd=el("div","rv-hd"); hd.append(el("span","rw-note",`チェック待ち ${items.length}件 ・ 古い順`));
+  const all=el("button","btn small primary","順番に見ていく ▶"); all.id="rv-start"; all.onclick=()=>openViewer(items.slice(), 0, ()=>{ tRender(); tRefresh(); }); hd.append(all);
+  app.append(hd);
+  const list=el("div","rv-list"); list.id="rv-list";
+  items.forEach(it=>list.append(reviewRow(it.a, it.name, items, ()=>{ tRender(); tRefresh(); })));
+  app.append(list);
 }
 /* ---- tasks ---- */
 function tTasks(app){
@@ -1900,7 +1982,7 @@ function tTask(app){
   box.append(el("div","stats",Object.keys(T_STATUS).filter(k=>cnt[k]).map(k=>T_STATUS[k][0]+" "+cnt[k]).join(" ・ ")||"だれにも出していません"));
   const ul=el("div","list");
   items.forEach(i=>{ const a=i.a, nm=(i.num!=null?"No."+i.num+" ":"")+i.name;
-    if(a.status==="submitted"){ ul.append(reviewCard(a, nm, ()=>tLoadTask())); return; }
+    if(a.status==="submitted"){ const q=items.filter(x=>x.a.status==="submitted").map(x=>({a:x.a, name:(x.num!=null?"No."+x.num+" ":"")+x.name})); ul.append(reviewRow(a, nm, q, ()=>{ tLoadTask(); tRefresh(); })); return; }
     const r=el("div","srow static"); r.append(el("span","nm",nm), badge(T_STATUS,a.status));
     if(a.status!=="stamped"){ const x=el("button","btn small","はずす"); x.title="この生徒の課題からはずす"; x.onclick=async()=>{ if(!x.dataset.ok){ x.dataset.ok=1; x.textContent="はずす？"; return; }
       try{ await rpc("mc_t_unassign",{tk:TK, p_assign:a.id}); toast("はずしました"); tLoadTask(); tRefresh(); }catch(e){ toast("できませんでした（"+e.message+"）"); } }; r.append(x); }
@@ -2056,7 +2138,7 @@ function tStudent(app){
   const qa=el("button","btn small","＋ この生徒だけに課題を出す"); qa.id="stu-task"; qa.onclick=()=>openTask(s.id); as.append(qa);
   if(T.detail && !T.sAssign.length) as.append(el("div","empty","まだ課題がありません"));
   T.sAssign.forEach(a=>{
-    if(a.status==="submitted"){ as.append(reviewCard(a, s.name, ()=>{ tLoadStudent(); tRefresh(); })); return; }
+    if(a.status==="submitted"){ const q=T.sAssign.filter(x=>x.status==="submitted").map(x=>({a:x, name:s.name})); as.append(reviewRow(a, s.name, q, ()=>{ tLoadStudent(); tRefresh(); })); return; }
     const r=el("div","srow static"); const nm=el("span","nm"); nm.append(el("b",null,a.title)); if(a.t_comment) nm.append(el("small",null,"先生：「"+a.t_comment+"」"));
     r.append(nm, badge(T_STATUS,a.status));
     if(a.status!=="stamped"){ const x=el("button","btn small","はずす"); x.onclick=async()=>{ if(!x.dataset.ok){ x.dataset.ok=1; x.textContent="はずす？"; return; }
