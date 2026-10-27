@@ -435,21 +435,21 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 @keyframes sheen{0%,50%{background-position:150% 0}100%{background-position:-50% 0}}
 
 /* Starter: pastel, bouncy, cute */
-.prof.rk0::before{background:linear-gradient(135deg,#ffc2dc,#c9f5df,#ffe3a8,#ffc2dc);background-size:300% 300%;animation:grad 6s ease infinite}
+.prof.rk0::before{background:linear-gradient(135deg,#9be15d,#4fc3f7,#ffd84a,#9be15d);background-size:300% 300%;animation:grad 6s ease infinite}
 @keyframes grad{50%{background-position:100% 100%}}
-.rk0 .pf-in{background:linear-gradient(160deg,#fff7fb 0%,#fff0f6 55%,#eefcf4 100%);color:#6a2f55}
-.rk0 .pf-aur{opacity:.6}.rk0 .pf-aur i:nth-child(1){background:#ffd1e6}.rk0 .pf-aur i:nth-child(2){background:#d2f7e4}.rk0 .pf-aur i:nth-child(3){background:#fff0b8}
+.rk0 .pf-in{background:linear-gradient(160deg,#f6fff0 0%,#ecfbff 55%,#fffbe6 100%);color:#1d4a45}
+.rk0 .pf-aur{opacity:.6}.rk0 .pf-aur i:nth-child(1){background:#d8f7c2}.rk0 .pf-aur i:nth-child(2){background:#c9ecff}.rk0 .pf-aur i:nth-child(3){background:#fff1b0}
 .rk0 .pf-aur i{mix-blend-mode:multiply}
-.rk0 .pf-name{color:#ff5fa2}
+.rk0 .pf-name span{background:linear-gradient(180deg,#5cc93a,#1fa3d9);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rk0 .pf-name span{animation:hop 3.2s ease-in-out infinite;animation-delay:calc(var(--d) * .08s)}
 @keyframes hop{0%,70%,100%{transform:translateY(0)}78%{transform:translateY(-7px) rotate(-6deg)}86%{transform:translateY(0)}}
-.rk0 .pf-no{background:#ffe0ee;color:#d43f85}
-.rk0 .pf-st div{background:#fff;box-shadow:0 2px 0 #ffd6e8}
-.rk0 .pf-st b{color:#ff5fa2}
-.rk0 .pf-lad li{background:#ffe6f1;color:#c23e7c}.rk0 .pf-lad li.now{background:#ff7fb6;color:#fff}
-.rk0 .pf-sp i{color:#ff9cc6;font-size:.9rem}
+.rk0 .pf-no{background:#dff5d2;color:#2f8a2a}
+.rk0 .pf-st div{background:#fff;box-shadow:0 2px 0 #cdeebb}
+.rk0 .pf-st b{color:#1fa3d9}
+.rk0 .pf-lad li{background:#e3f6ff;color:#2b7fa8}.rk0 .pf-lad li.now{background:linear-gradient(90deg,#6fd14a,#2fb4e8);color:#fff}
+.rk0 .pf-sp i{color:#3fb8e8;font-size:.95rem}
 .rk0 .pf-em{animation:boing 2.6s ease-in-out infinite}
-.rk0 .pf-halo{background:radial-gradient(circle,rgba(255,180,215,.55),transparent 65%);animation:breathe 2.6s ease-in-out infinite}
+.rk0 .pf-halo{background:radial-gradient(circle,rgba(155,225,93,.5),transparent 65%);animation:breathe 2.6s ease-in-out infinite}
 .rk0 .lf{transform-box:fill-box;animation:leaf 1.6s ease-in-out infinite}
 .rk0 .lf.l1{transform-origin:100% 100%}.rk0 .lf.l2{transform-origin:0% 100%;animation-delay:-.8s}
 @keyframes leaf{50%{transform:rotate(-9deg)}}
@@ -540,14 +540,14 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 
 /* small rank chips in the teacher's list */
 .rkc{font-size:.6rem;font-weight:800;padding:1px 7px;border-radius:99px;flex:none;letter-spacing:.03em}
-.rkc.rk0{background:#ffe0ee;color:#d43f85}.rkc.rk1{background:#cdf3ff;color:#1f5bd8}
+.rkc.rk0{background:#dff5d2;color:#2f8a2a}.rkc.rk1{background:#cdf3ff;color:#1f5bd8}
 .rkc.rk2{background:linear-gradient(90deg,#ffe27a,#ffb03a);color:#3a1d00}
 .rkc.rk3{background:linear-gradient(90deg,#ff5fa2,#ffd24a,#38d6ff,#b98bff);color:#1a0d3a}
 
 /* rank-up show */
 .rankup{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;cursor:pointer;
   background:radial-gradient(circle at 50% 40%,rgba(120,90,220,.55),rgba(8,5,26,.97) 60%);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadein .3s}
-.rankup.rk0{background:radial-gradient(circle at 50% 40%,rgba(255,150,200,.5),rgba(8,5,26,.97) 60%)}
+.rankup.rk0{background:radial-gradient(circle at 50% 40%,rgba(130,220,90,.45),rgba(8,5,26,.97) 60%)}
 .rankup.rk1{background:radial-gradient(circle at 50% 40%,rgba(56,160,255,.5),rgba(8,5,26,.97) 60%)}
 .rankup.rk2{background:radial-gradient(circle at 50% 40%,rgba(255,190,60,.45),rgba(8,5,26,.97) 60%)}
 .rankup.bye{opacity:0;transition:opacity .35s}
@@ -559,7 +559,7 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .ru-em .rays{transform-origin:50px 50px;transform-box:view-box;animation:spin 8s linear infinite}
 .ru-n{font-family:var(--display);font-size:2.6rem;line-height:1.1;animation:pop .6s .35s both;
   background:linear-gradient(90deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff,#b98bff,#ff5fa2);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s .35s both,holo 3s linear infinite}
-.rankup.rk0 .ru-n{background:none;color:#ff8fbf;-webkit-text-fill-color:#ff8fbf}
+.rankup.rk0 .ru-n{background:none;color:#9be15d;-webkit-text-fill-color:#9be15d}
 .rankup.rk1 .ru-n{background:none;color:#8eeaff;-webkit-text-fill-color:#8eeaff;text-shadow:0 0 18px rgba(56,214,255,.7)}
 .rankup.rk2 .ru-n{background:linear-gradient(180deg,#fff7c8,#ffc93c 55%,#e08a00);-webkit-background-clip:text;background-clip:text;animation:pop .6s .35s both}
 .ru-j{color:#fff}
@@ -1403,13 +1403,12 @@ let _emb=0;
 function rankEmblem(r){
   const u="e"+(++_emb);
   if(r===0) return `<svg viewBox="0 0 100 100" aria-hidden="true">
-    <circle cx="50" cy="52" r="44" fill="#fff4f9" stroke="#ffa6cc" stroke-width="5"/>
-    <ellipse cx="50" cy="80" rx="20" ry="6" fill="#ffd0e4"/>
+    <circle cx="50" cy="52" r="44" fill="#f2fff0" stroke="#7ed957" stroke-width="5"/>
+    <ellipse cx="50" cy="80" rx="20" ry="6" fill="#cfeec0"/>
     <path d="M50 79V52" stroke="#3fbf80" stroke-width="5" stroke-linecap="round"/>
     <path class="lf l1" d="M50 58C35 58 26 48 26 35c15 0 24 9 24 23z" fill="#82e6b0"/>
     <path class="lf l2" d="M50 51c13 0 23-9 23-22-14 0-23 9-23 22z" fill="#5ad49a"/>
-    <circle cx="36" cy="66" r="4" fill="#ffb3d1"/><circle cx="64" cy="66" r="4" fill="#ffb3d1"/>
-    <path d="M78 20v14a4 3 0 1 1-2-3V20z" fill="#ff8fbf"/></svg>`;
+    <path d="M78 18v15a4.5 3.5 0 1 1-2.4-3.3V18l9 3v4z" fill="#2fb4e8"/><circle cx="24" cy="24" r="3" fill="#ffd84a"/><circle cx="30" cy="15" r="2" fill="#ffd84a"/></svg>`;
   if(r===1) return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs>
     <linearGradient id="${u}a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8eeaff"/><stop offset="1" stop-color="#2d6dff"/></linearGradient></defs>
     <path d="M50 5l37 13v30c0 25-17 40-37 47C30 88 13 73 13 48V18z" fill="url(#${u}a)" stroke="#e3f9ff" stroke-width="4"/>
@@ -1437,7 +1436,7 @@ function rankEmblem(r){
     <circle cx="18" cy="40" r="5" fill="#fff"/><circle cx="50" cy="24" r="6" fill="#fff"/><circle cx="82" cy="40" r="5" fill="#fff"/>
     <circle cx="33" cy="66" r="3.5" fill="#ff5fa2" stroke="#fff" stroke-width="1.5"/><circle cx="67" cy="66" r="3.5" fill="#38d6ff" stroke="#fff" stroke-width="1.5"/></svg>`;
 }
-const SPARK = {0:["♡","♪","♡"], 1:["✦","✦"], 2:["✦","✧","✦","✧","✦"], 3:["✦","✧","✦","✧","✦","✧","✦","✧","✦"]};
+const SPARK = {0:["♪","✦","♫"], 1:["✦","✦"], 2:["✦","✧","✦","✧","✦"], 3:["✦","✧","✦","✧","✦","✧","✦","✧","✦"]};
 /* info: student (name, num, rank) ; stats: {total, done, tasks} */
 /* ---- moving particles behind the card (one shared loop for every .pf-fx canvas) ---- */
 const FX = (()=>{
@@ -1447,7 +1446,7 @@ const FX = (()=>{
   const RAINBOW=["#ff5fa2","#ffd24a","#5dffb0","#38d6ff","#b98bff"];
   function spawn(f){
     const W=f.w, H=f.h, r=f.r;
-    if(r===0) return {k:Math.random()<.5?"heart":"bub", x:rnd(0,W), y:H+10, vx:rnd(-.15,.15), vy:rnd(-.35,-.7), s:rnd(4,9), a:0, life:rnd(260,420), t:0, c:Math.random()<.5?"#ff9cc6":"#8fe8be", w:rnd(0,6.28)};
+    if(r===0) return {k:Math.random()<.5?"note":"bub", x:rnd(0,W), y:H+10, vx:rnd(-.15,.15), vy:rnd(-.35,-.7), s:rnd(4,9), a:0, life:rnd(260,420), t:0, c:["#6fd14a","#2fb4e8","#f5c400"][(Math.random()*3)|0], w:rnd(0,6.28)};
     if(r===1) return Math.random()<.04
       ? {k:"comet", x:rnd(-40,W*.5), y:rnd(-10,H*.4), vx:rnd(4,6), vy:rnd(1.2,2), s:2, life:80, t:0, c:"#bdf2ff"}
       : {k:"mote", x:rnd(0,W), y:rnd(H*.3,H+10), vx:rnd(-.2,.2), vy:rnd(-.25,-.6), s:rnd(1,2.6), life:rnd(200,380), t:0, c:Math.random()<.7?"#8eeaff":"#ffffff", w:rnd(0,6.28)};
@@ -1462,6 +1461,7 @@ const FX = (()=>{
   }
   const RATE=[.35,.9,1.6,3.2];
   function star4(x,c,y,s){ c.beginPath(); c.moveTo(x,y-s); c.quadraticCurveTo(x,y,x+s,y); c.quadraticCurveTo(x,y,x,y+s); c.quadraticCurveTo(x,y,x-s,y); c.quadraticCurveTo(x,y,x,y-s); c.fill(); }
+  function note(c,x,y,s){ c.beginPath(); c.ellipse(x,y,s*.55,s*.4,-.4,0,6.28); c.fill(); c.fillRect(x+s*.4,y-s*1.6,s*.16,s*1.6); c.beginPath(); c.moveTo(x+s*.56,y-s*1.6); c.quadraticCurveTo(x+s*1.2,y-s*1.2,x+s*.9,y-s*.6); c.lineWidth=s*.16; c.stroke(); }
   function heart(c,x,y,s){ c.beginPath(); c.moveTo(x,y+s*.35); c.bezierCurveTo(x-s,y-s*.35,x-s*.45,y-s,x,y-s*.45); c.bezierCurveTo(x+s*.45,y-s,x+s,y-s*.35,x,y+s*.35); c.fill(); }
   function step(f, dt){
     const c=f.ctx, W=f.w, H=f.h; c.clearRect(0,0,W,H);
@@ -1477,7 +1477,7 @@ const FX = (()=>{
         g.addColorStop(0,"rgba(255,255,255,"+fade+")"); g.addColorStop(1,"rgba(255,255,255,0)"); c.globalAlpha=1; c.strokeStyle=g; c.lineWidth=p.s; c.lineCap="round";
         c.beginPath(); c.moveTo(p.x,p.y); c.lineTo(p.x-p.vx*14,p.y-p.vy*14); c.stroke(); continue; }
       p.w+=.05*dt; p.x+=(p.vx+Math.sin(p.w)*.25)*dt; p.y+=p.vy*dt;
-      if(p.k==="heart"){ c.globalAlpha=fade*.8; heart(c,p.x,p.y,p.s); }
+      if(p.k==="note"){ c.globalAlpha=fade*.85; note(c,p.x,p.y,p.s*.8); }
       else if(p.k==="bub"){ c.globalAlpha=fade*.7; c.lineWidth=1.5; c.beginPath(); c.arc(p.x,p.y,p.s*.8,0,6.28); c.stroke(); c.globalAlpha=fade*.5; c.beginPath(); c.arc(p.x-p.s*.3,p.y-p.s*.3,p.s*.2,0,6.28); c.fill(); }
       else { const tw=.55+.45*Math.sin(p.w*3); c.globalAlpha=fade*tw; c.shadowBlur=8; c.shadowColor=p.c; c.beginPath(); c.arc(p.x,p.y,p.s,0,6.28); c.fill(); c.shadowBlur=0; }
     }
