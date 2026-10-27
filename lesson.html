@@ -925,6 +925,8 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .rankup.rk3{background:radial-gradient(circle at 50% 40%,rgba(80,40,160,.55),rgba(2,0,6,.98) 62%)}
 .rankup.rk3 .ru-n{background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0) 48%,rgba(0,0,0,.4) 54%,transparent),linear-gradient(90deg,var(--rb,#ff2a3d,#ff8a1a,#ffe14a,#2dff8a,#1ac8ff,#6a4dff,#d040ff));-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 14px rgba(140,100,255,.8))}
 .rankup.rk3 .ru-em .pf-halo{background:radial-gradient(circle,rgba(150,110,255,.55),rgba(30,0,60,.4) 45%,transparent 68%)}
+.login .lock-ico{font-size:2.6rem;line-height:1;margin:4px 0 -4px}
+#t-lock input{font-size:1rem!important;letter-spacing:0!important;text-align:left}
 
 </style>
 </head>
@@ -1010,8 +1012,8 @@ const DIR = location.origin + location.pathname.replace(/[^/]*$/,"");
 let TK=null, SK=null;
 if(PAGE==="t"){
   // teacher-only page: opens only with the teacher key (#t=...)
-  TK = okKey(H.get("t")) ? H.get("t") : null;
-  if(TK) lsSet("mc_tk",TK);
+  TK = okKey(H.get("t")) ? H.get("t") : (okKey(lsGet("mc_tk")) ? lsGet("mc_tk") : null);   // once opened on this device, sensei.html alone is enough
+  if(TK){ lsSet("mc_tk",TK); if(H.get("t")) try{ history.replaceState(null,"",location.pathname); }catch(e){} }   // hide the key from the address bar
 } else {
   // student-only page: never shows anything for teachers
   if(okKey(H.get("t"))) location.replace(DIR+"sensei.html#t="+H.get("t"));   // old teacher bookmark -> move to the teacher page
@@ -2332,7 +2334,7 @@ async function tRefresh(force){
   try{ const [st, tk]=await Promise.all([rpc("mc_t_state",{tk:TK}), rpc("mc_t_tasks",{tk:TK})]);
     T.students=st.students||[]; if(st.today) T.today=st.today; T.tasks=tk.tasks||[]; T.review=tk.review||[];
     setNote("先生用ページ ・ このリンクは生徒に渡さないでね"); if(force || (!window.__party && !busyNow())) tRender(); }
-  catch(e){ setNote(e.message==="bad_key"?"先生用のリンクがちがいます。":"つながりません。電波のいいところで開き直してください。"); }
+  catch(e){ if(e.message==="bad_key"){ lsSet("mc_tk",""); tLock("保存されていた先生用リンクが古いようです。新しいリンクを貼り付けてください。"); return; } setNote("つながりません。電波のいいところで開き直してください。"); }
 }
 async function tLoadStudent(){ if(!T.sel) return;
   try{ const [r, as]=await Promise.all([rpc("mc_t_student",{tk:TK, sid:T.sel}), rpc("mc_t_student_assign",{tk:TK, sid:T.sel})]);
@@ -2690,10 +2692,20 @@ if(MODE==="s"){
   soundButtons(document.getElementById("bar"));
   tRender(); tRefresh(true); setTimeout(tCleanup, 3000);
   setInterval(()=>{ if(document.visibilityState==="visible" && !window.__party){ if(T.sel) tLoadStudent(); else if(T.task) tLoadTask(); tRefresh(); } }, 20000);
-} else {
-  const app=document.getElementById("app"); const box=el("section","card login");
-  box.innerHTML=`<div class="login-ico">🔒</div><h2>先生用ページ</h2><p class="rw-note">このページは<b>先生用リンク</b>から開いてください。</p>`;
-  app.append(box); document.getElementById("note").textContent="";
+} else tLock();
+function tLock(msg){
+  const app=document.getElementById("app"); app.innerHTML=""; document.getElementById("note").textContent="";
+  const box=el("section","card login"); box.id="t-lock";
+  box.innerHTML=`<div class="lock-ico">🔒</div><h2>先生用ページ</h2><p class="rw-note">最初の1回だけ、<b>先生用リンク</b>をここに貼り付けてください。<br>次からはこのページを開くだけで入れます。</p>
+    <form id="lock-form"><input id="lock-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="先生用リンクを貼り付け"><button type="submit" class="press" id="lock-btn">入る</button></form><p class="rw-note" id="lock-msg"></p>`;
+  if(msg) box.querySelector("#lock-msg").textContent=msg;
+  box.querySelector("form").onsubmit=async e=>{ e.preventDefault(); const raw=box.querySelector("#lock-in").value.trim();
+    const m=raw.match(/[#&?]t=([A-Za-z0-9_-]{20,})/); const k=m?m[1]:raw; const out=box.querySelector("#lock-msg");
+    if(!okKey(k)){ out.textContent="先生用リンクではないみたいです。"; return; }
+    out.textContent="確認中…";
+    try{ await rpc("mc_t_state",{tk:k}); lsSet("mc_tk",k); location.replace(location.pathname); }
+    catch(err){ out.textContent = err.message==="bad_key" ? "先生用リンクがちがいます。" : "つながりません。電波のいいところでもう一度。"; } };
+  app.append(box);
 }
 
 </script>
