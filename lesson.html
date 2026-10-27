@@ -988,6 +988,54 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .rk3 .pf-tx:has(.pf-gp) .pf-rk::after{content:none}
 .has-g .pf-stk.s0,.rk1.has-g .pf-stk.s0,.rk2.has-g .pf-stk.s0,.rk3.has-g .pf-stk.s0{right:4px;top:54px;bottom:auto;font-size:1.3rem;z-index:4}
 
+/* ===== flip card: teacher's message on the back ===== */
+.pf-flip{position:relative;margin-bottom:12px;transition:transform .23s cubic-bezier(.4,0,.6,1);transform:perspective(1100px) rotateY(0)}
+.pf-flip.fl-out{transform:perspective(1100px) rotateY(90deg) scale(.96)}
+.pf-flip.fl-pre{transform:perspective(1100px) rotateY(-90deg) scale(.96);transition:none}
+.pf-flip>.pf-back{display:none}
+.pf-flip.is-back>.prof{display:none}
+.pf-flip.is-back>.pf-back{display:block}
+.pf-flip.is-back>.pf-flipbtn{display:none}
+.pf-flipbtn{position:absolute;right:16px;bottom:-13px;z-index:6;border:none;border-radius:999px;padding:7px 13px;font-weight:800;font-size:.8rem;cursor:pointer;
+  background:#fff;color:#3a2160;box-shadow:0 3px 0 rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.3);touch-action:manipulation}
+.pf-flipbtn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.pf-flipbtn.new{background:linear-gradient(90deg,#ff5fa2,#ff9a3c);color:#fff;animation:fbnew 1.6s ease-in-out infinite}
+@keyframes fbnew{50%{transform:translateY(-3px) scale(1.05)}}
+.pf-back{border-radius:22px;padding:3px;cursor:pointer;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#bff08a,#7fd6c8);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.pf-back .pb-in{position:relative;height:100%;min-height:inherit;box-sizing:border-box;border-radius:19px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:10px;
+  background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(80,120,60,.14) 31px 32px),linear-gradient(180deg,#fffef6,#f6fbe9);color:#2a3320}
+.pf-back{min-height:inherit}
+.pb-h{display:flex;align-items:center;gap:8px;font-size:1rem}
+.pb-h b{font-family:var(--display);font-weight:400;letter-spacing:.04em}
+.pb-ico{font-size:1.5rem;animation:hover1 3s ease-in-out infinite}
+.pb-to{font-weight:800;font-size:.95rem;opacity:.85}
+.pb-msg{flex:1;font-size:1.12rem;line-height:2;white-space:pre-wrap;word-break:break-word;overflow:auto;max-height:340px}
+.pb-msg.none{opacity:.55;font-size:.95rem}
+.pb-date{align-self:flex-end;font-size:.8rem;opacity:.7}
+.pb-f{display:flex;align-items:center;gap:8px;font-size:.7rem;opacity:.85}
+.pb-f small{flex:1}
+.pb-bar{width:48px;height:5px;border-radius:3px;background:rgba(0,0,0,.12);overflow:hidden}
+.pb-bar i{display:block;height:100%;background:currentColor;transform-origin:left;animation:pbbar 9s linear forwards}
+@keyframes pbbar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.pb-back{border:none;border-radius:999px;padding:6px 12px;font-weight:800;font-size:.78rem;background:rgba(0,0,0,.08);color:inherit;cursor:pointer}
+/* Middle: steel */
+.pf-back.rk1{background:linear-gradient(135deg,#dfe8f2,#6f8396 50%,#c9d5e1)}
+.pf-back.rk1 .pb-in{background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(140,170,200,.12) 31px 32px),linear-gradient(180deg,#1b2633,#0f1620);color:#e6eef7}
+/* Upper: black & gold */
+.pf-back.rk2{background:linear-gradient(135deg,#fff1b0,#b8860b 45%,#5a3a05 60%,#ffd97a)}
+.pf-back.rk2 .pb-in{background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(240,195,90,.12) 31px 32px),linear-gradient(180deg,#1a1206,#0b0804);color:#f6e2b0}
+.pf-back.rk2 .pb-h b{color:#f0c35a}
+/* Advance: obsidian + rainbow */
+.pf-back.rk3{background:conic-gradient(from 0deg,#ff2a3d,#ff8a1a,#ffe14a,#2dff8a,#1ac8ff,#6a4dff,#d040ff,#ff2a3d);box-shadow:0 0 26px rgba(140,100,255,.5),0 10px 30px rgba(0,0,0,.5)}
+.pf-back.rk3 .pb-in{background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(160,140,255,.1) 31px 32px),radial-gradient(70% 50% at 20% 0%,rgba(106,77,255,.25),transparent 70%),linear-gradient(180deg,#07040e,#000);color:#efe9ff}
+.pf-back.rk3 .pb-h b{background:linear-gradient(90deg,#ff5a6e,#ffb04a,#ffe98a,#6dffb0,#6ad8ff,#9a8dff,#e08aff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pf-back.rk1 .pb-back,.pf-back.rk2 .pb-back,.pf-back.rk3 .pb-back{background:rgba(255,255,255,.12)}
+.pf-back.rk1 .pb-bar,.pf-back.rk2 .pb-bar,.pf-back.rk3 .pb-bar{background:rgba(255,255,255,.15)}
+.msged textarea{width:100%;box-sizing:border-box;font-size:1rem;line-height:1.6;resize:vertical}
+.msged .actions{display:flex;align-items:center;gap:8px;margin-top:8px}.msged .msg-cnt{flex:1;opacity:.6;font-size:.75rem}
+@media (prefers-reduced-motion: reduce){ .pf-flip{transition:none} .pf-flipbtn.new{animation:none} }
+
 </style>
 </head>
 <body>
@@ -2066,7 +2114,41 @@ function profileEl(info, stats, opts){
   card.addEventListener("pointermove",mv); card.addEventListener("pointerleave",lv2); card.addEventListener("touchmove",mv,{passive:true}); card.addEventListener("touchend",lv2);
   card.addEventListener("click",e=>{ card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop"); FX.burst(cv); TAP(card, r, e, cv); });
   FX.attach(cv, r, {fx: P.fx||""});
-  return card;
+  return flipWrap(card, info, r, forT);
+}
+/* the card can be turned over: the back shows the teacher's message; it turns itself back after a while untouched */
+const FLIP_MS=9000;
+function msgSeenKey(info){ return "mc_msgseen_"+(typeof SK!=="undefined"&&SK?SK:(info.num||"")); }
+function flipWrap(card, info, r, forT){
+  const wrap=el("div","pf-flip"); wrap.append(card);
+  const msg=(info.t_msg||"").trim(), at=info.t_msg_at||"";
+  const unread = !forT && msg && lsGet(msgSeenKey(info))!==at;
+  const fb=el("button","pf-flipbtn"+(unread?" new":""), unread?"💌 先生からメッセージ！":"💌 うら"); fb.type="button"; fb.id="flip-btn";
+  fb.setAttribute("aria-label","カードを裏返す");
+  const back=el("section","pf-back rk"+r); back.id="pf-back"; back.setAttribute("aria-label","先生からのメッセージ");
+  const d = at ? new Date(at) : null;
+  back.innerHTML=`<div class="pb-in"><div class="pb-h"><span class="pb-ico">💌</span><b>先生からのメッセージ</b></div>
+    <div class="pb-to"></div><div class="pb-msg"></div><div class="pb-date"></div>
+    <div class="pb-f"><span class="pb-bar"><i></i></span><small>さわらないと おもてに もどるよ</small><button type="button" class="pb-back" id="flip-back">↩ おもて</button></div></div>`;
+  back.querySelector(".pb-to").textContent = ((info.prof&&info.prof.nick)||info.name||"") + (info.name?" さんへ":"");
+  const mEl=back.querySelector(".pb-msg");
+  if(msg) mEl.textContent=msg; else { mEl.classList.add("none"); mEl.textContent = forT ? "まだメッセージはありません（下の「カードの裏のメッセージ」で書けます）" : "まだメッセージはないよ。レッスンがんばってね！"; }
+  if(d && !isNaN(d)) back.querySelector(".pb-date").textContent=`${d.getMonth()+1}月${d.getDate()}日`;
+  wrap.append(back, fb);
+  let timer=null, busy=false;
+  const arm=()=>{ clearTimeout(timer); timer=setTimeout(()=>turn(false), FLIP_MS); const bar=back.querySelector(".pb-bar i"); bar.style.animation="none"; void bar.offsetWidth; bar.style.animation=""; };
+  const turn=(toBack)=>{ if(busy || wrap.classList.contains("is-back")===toBack) return; busy=true; clearTimeout(timer);
+    if(toBack) back.style.minHeight=card.offsetHeight+"px";
+    wrap.classList.add("fl-out");
+    setTimeout(()=>{ wrap.classList.toggle("is-back", toBack); window.__flipped = toBack;
+      wrap.classList.remove("fl-out"); wrap.classList.add("fl-pre"); void wrap.offsetWidth; wrap.classList.remove("fl-pre");
+      setTimeout(()=>{ busy=false; },240);
+      if(toBack){ arm(); if(msg && !forT){ lsSet(msgSeenKey(info), at); fb.classList.remove("new"); fb.textContent="💌 うら"; } } }, 230); };
+  fb.addEventListener("click",e=>{ e.stopPropagation(); turn(true); });
+  fb.addEventListener("pointerdown",e=>e.stopPropagation());
+  back.addEventListener("click",()=>turn(false));
+  ["pointerdown","touchstart","wheel","scroll"].forEach(ev=>back.addEventListener(ev,()=>{ if(wrap.classList.contains("is-back")) arm(); },{passive:true, capture:true}));
+  return wrap;
 }
 function profileStats(info, stamps, assign){
   const c=cardAll(info, stamps), ri=roundInfo(c);
@@ -2145,7 +2227,7 @@ const TAP = (()=>{
 })();
 
 // something is being watched / typed / sent -> don't redraw
-function busyNow(){ if(busyTyping() || window.__gEditing) return true;
+function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
   if([...document.querySelectorAll(".keep")].some(x=>x.value)) return true;
   if(document.querySelector(".sheet")) return true; return false; }
@@ -2683,6 +2765,7 @@ function tStudent(app){
   const stamps=(T.detail&&T.detail.stamps)||[];
   app.append(profileEl(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
   app.append(gStepper(s));
+  app.append(msgEditor(s));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
   who.append(hh); box.append(who);
@@ -2780,6 +2863,22 @@ function gStepper(s){
   plus.onclick=()=>{ g = g==null ? G_BAND[tab][0] : Math.min(G_MAX, g+1); tab=gRank(g); draw(); save(800); };
   const top=el("div","gtop"), mid=el("div","gmid"); mid.append(lab, sub); top.append(minus, mid, plus);
   box.append(el("span","gk","クラス"), top, tabs, grid); draw(); return box;
+}
+
+/* teacher: the message on the back of the student's card */
+function msgEditor(s){
+  const box=el("section","card msged"); box.id="msg-ed";
+  box.append(el("h3","sech","💌 カードの裏のメッセージ"));
+  const ta=el("textarea","keep"); ta.id="msg-in"; ta.maxLength=300; ta.rows=3; ta.placeholder="例：今日の音階、すごくきれいだったよ！この調子！"; ta.value=s.t_msg||"";
+  const cnt=el("small","msg-cnt"); const upd=()=>{ cnt.textContent=ta.value.length+" / 300"; }; ta.oninput=upd; upd();
+  const row=el("div","actions"); const sv=el("button","save","保存"); sv.id="msg-save"; const del=el("button","btn small","消す"); del.id="msg-del";
+  const send=async(val)=>{ try{ const r=await rpc("mc_t_msg",{tk:TK, sid:s.id, p_msg:val}); s.t_msg=r.t_msg; s.t_msg_at=r.t_msg_at; if(!r.t_msg) ta.value="";
+      toast(r.t_msg?"メッセージを保存しました（生徒のカードの裏に出ます）":"メッセージを消しました"); ta.blur(); tRender(); }
+    catch(e){ toast(e.message==="too_long"?"300文字までです":"保存できませんでした（"+e.message+"）"); } };
+  sv.onclick=()=>send(ta.value); del.onclick=()=>{ if(!del.dataset.ok){ del.dataset.ok=1; del.textContent="消す？"; return; } send(""); };
+  row.append(cnt, del, sv);
+  if(s.t_msg_at){ const d=new Date(s.t_msg_at); box.append(el("p","rw-note",`最後に書いた日：${d.getMonth()+1}月${d.getDate()}日 ・ カード右下の「💌」で裏が見られます`)); }
+  box.append(ta, row); return box;
 }
 
 /* ================= boot ================= */
