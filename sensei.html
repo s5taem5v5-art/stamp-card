@@ -1148,6 +1148,32 @@ body.no-scroll{overflow:hidden}
 .peers .pe-arw:disabled{opacity:.3}
 .peers .pe-pos{font-variant-numeric:tabular-nums;font-weight:700;min-width:64px;text-align:center}
 .peers .pf-swipe{text-align:center;font-size:.75rem;opacity:.6;margin:0}
+/* ---- comments ---- */
+.cm-list{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.cm-list .cm{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:8px 12px}
+.cm-list .cm.mine{border-color:rgba(255,200,80,.5)}
+.cm-list .cm-h{display:flex;align-items:center;gap:8px;font-size:.78rem}
+.cm-list .cm-nk{font-size:.86rem;color:#ffd36b}
+.cm-list .cm-real{opacity:.7}
+.cm-list time{opacity:.6;font-size:.7rem;font-variant-numeric:tabular-nums}
+.cm-list .cm-del{margin-left:auto;border:0;background:rgba(255,255,255,.1);color:inherit;border-radius:99px;padding:4px 10px;font-size:.72rem;cursor:pointer}
+.cm-list .cm-del[data-ok]{background:#ff5470;color:#fff}
+.cm-list .cm-b{margin:4px 0 0;white-space:pre-wrap;word-break:break-word;line-height:1.5;font-size:.92rem}
+.cm-none{opacity:.65;font-size:.82rem;text-align:center;padding:6px}
+.cm-mine{margin-top:4px}
+.cm-mine summary{cursor:pointer;font-weight:800;font-size:.92rem;padding:6px 0;display:flex;align-items:center;gap:8px}
+.cm-mine .cm-new{background:#ff3d6e;color:#fff;font-size:.66rem;padding:2px 8px;border-radius:99px}
+.peers .pe-cmbox{padding:4px 16px 18px;max-width:452px;width:100%;margin:0 auto;box-sizing:border-box}
+.peers .pe-cmh{display:block;margin:8px 0 2px;font-size:1rem}
+.peers .pe-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px;align-items:stretch}
+.peers .pe-in{font:inherit;font-size:16px;border-radius:14px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;padding:10px 12px;resize:none;min-width:0}
+.peers .pe-send{min-height:auto;padding:0 18px;font-size:1rem}
+.peers .pe-who{grid-column:1/-1;opacity:.65;font-size:.72rem}
+.peers .pe-nonick{margin-top:10px;text-align:center;font-size:.85rem;line-height:1.6}
+.peers .pe-nonick .press{min-height:48px;font-size:.95rem;width:100%}
+.tcm .tcm-h{display:block;margin:10px 0 2px;font-size:.88rem}
+.peers .pe-in{height:64px;min-height:0;max-height:64px;box-sizing:border-box}
+.peers .pe-send{height:64px;align-self:start}
 
 </style>
 </head>
@@ -2586,8 +2612,52 @@ function shareCard(){
       toast(v?"公開したよ！":"公開をやめたよ"); stuRender(); const c=document.getElementById("share-card"); if(c) c.scrollIntoView({block:"center"}); }
     catch(e){ tg.disabled=false; toast("できませんでした。電波のいいところでもう一度ためしてね。"); } };
   row.append(tg); box.append(row);
+  box.append(myComments());
   return box;
 }
+/* comments: a list with the writer's nickname; "mine" ones (or all, on my own card) can be deleted */
+const cmTime=iso=>{ const d=new Date(iso); return isNaN(d)?"":(d.getMonth()+1)+"/"+d.getDate()+" "+d.getHours()+":"+String(d.getMinutes()).padStart(2,"0"); };
+function cmList(list, canDel, onDel){
+  const ul=el("ul","cm-list");
+  if(!list.length){ ul.append(el("li","cm-none","まだコメントはないよ")); return ul; }
+  list.forEach(c=>{ const li=el("li","cm"+(c.mine?" mine":"")); li.dataset.id=c.id;
+    const hd=el("div","cm-h"); hd.append(el("b","cm-nk",c.nick), el("time",null,cmTime(c.at)));
+    if(canDel(c)){ const x=el("button","cm-del","けす"); x.type="button"; x.onclick=async()=>{ if(!x.dataset.ok){ x.dataset.ok="1"; x.textContent="ほんとに？"; return; } x.disabled=true; try{ await onDel(c); li.remove(); }catch(e){ x.disabled=false; toast("けせませんでした"); } }; hd.append(x); }
+    li.append(hd, el("p","cm-b",c.body)); ul.append(li); });
+  return ul;
+}
+function myComments(){
+  const d=el("details","cm-mine"); d.id="my-comments"; const sm=el("summary",null,"💬 わたしのカードへのコメント"); d.append(sm);
+  const body=el("div"); d.append(body); d.open=!!Stu.cmOpen; d.addEventListener("toggle",()=>{ Stu.cmOpen=d.open; });
+  const sk=SK, seenK="mc_cmseen_"+sk;
+  rpc("mc_s_comments",{sk, p_to:null}).then(list=>{ if(sk!==SK) return; list=list||[];
+    if(!list.length && !Stu.info.share){ d.remove(); return; }
+    const top=list.reduce((m,c)=>Math.max(m,c.id),0), seen=+(lsGet(seenK)||0), nw=list.filter(c=>c.id>seen).length;
+    sm.textContent="💬 わたしのカードへのコメント（"+list.length+"）"; if(nw && seen && !d.open){ const b=el("span","cm-new","NEW "+nw); sm.append(b); } else if(d.open) lsSet(seenK,String(top));
+    if(!seen && top) lsSet(seenK,String(top));
+    d.addEventListener("toggle",()=>{ if(d.open){ lsSet(seenK,String(top)); const b=sm.querySelector(".cm-new"); if(b) b.remove(); } });
+    body.append(cmList([...list].reverse(), ()=>true, c=>rpc("mc_s_comment_del",{sk:SK, p_id:c.id})));
+  }).catch(()=>{ d.remove(); });
+  return d;
+}
+function peerComments(p, myNick, onCount){
+  const box=el("section","pe-cm"); const h=el("b","pe-cmh","💬 コメント"); box.append(h);
+  const listBox=el("div","pe-cml"); listBox.append(el("div","cm-none","よみこみ中…")); box.append(listBox);
+  const draw=list=>{ listBox.innerHTML=""; h.textContent="💬 コメント（"+list.length+"）"; listBox.append(cmList(list, c=>c.mine, async c=>{ await rpc("mc_s_comment_del",{sk:SK, p_id:c.id}); list.splice(list.indexOf(c),1); h.textContent="💬 コメント（"+list.length+"）"; onCount(list.length); })); };
+  let cur=[];
+  rpc("mc_s_comments",{sk:SK, p_to:p.id}).then(l=>{ cur=l||[]; draw(cur); }).catch(()=>{ listBox.innerHTML=""; listBox.append(el("div","cm-none","よみこめませんでした")); });
+  if(!myNick){ const n=el("div","pe-nonick"); n.append(el("p",null,"コメントを書くには、プロフィールで「ニックネーム」を決めてね。コメントはニックネームで出るよ。"));
+    const b=el("button","press","✏️ ニックネームを決める"); b.type="button"; b.onclick=()=>{ const o=document.getElementById("peers"); if(o) o.remove(); document.body.classList.remove("no-scroll"); openDeco(); }; n.append(b); box.append(n); return box; }
+  const f=el("form","pe-form"); const inp=el("textarea"); inp.maxLength=100; inp.rows=2; inp.placeholder=myNick+" として書く（100文字まで）"; inp.className="pe-in";
+  const send=el("button","press pe-send","送る"); send.type="submit"; const who=el("small","pe-who","名前は「"+myNick+"」で出るよ");
+  f.append(inp, send, who); box.append(f);
+  f.onsubmit=async e=>{ e.preventDefault(); const t=inp.value.trim(); if(!t){ inp.focus(); return; } send.disabled=true;
+    try{ const c=await rpc("mc_s_comment",{sk:SK, p_to:p.id, p_body:t}); cur.push(c); draw(cur); onCount(cur.length); inp.value=""; toast("コメントしたよ！"); const l=listBox.querySelector(".cm-list"); if(l) l.lastChild.scrollIntoView({block:"nearest"}); }
+    catch(err){ toast({no_nick:"ニックネームを決めてね", too_long:"100文字までだよ", too_many:"ちょっと書きすぎかも。少し待ってね", not_shared:"今はコメントできないよ（公開がオフかも）", empty:"なにか書いてね"}[err.message]||"送れませんでした。電波のいいところでもう一度ためしてね。"); }
+    send.disabled=false; };
+  return box;
+}
+
 async function openPeers(){
   const C=Stu.info.course&&COURSES[Stu.info.course];
   const o=el("div","peers"); o.id="peers"; o.setAttribute("role","dialog");
@@ -2607,11 +2677,15 @@ async function openPeers(){
     sl.append(w); car.append(sl); slides.push(sl); });
   const nav=el("div","pe-nav"); const pv=el("button","pe-arw","‹"), nx=el("button","pe-arw","›"); pv.type=nx.type="button"; pv.setAttribute("aria-label","まえ"); nx.setAttribute("aria-label","つぎ");
   const pos=el("span","pe-pos",""); nav.append(pv,pos,nx);
-  let cur=0; const show=()=>{ pos.textContent=(cur+1)+" / "+list.length; pv.disabled=cur<=0; nx.disabled=cur>=list.length-1; };
+  let cur=0; let show=()=>{ pos.textContent=(cur+1)+" / "+list.length; pv.disabled=cur<=0; nx.disabled=cur>=list.length-1; };
   const go=i=>{ cur=Math.max(0,Math.min(list.length-1,i)); car.scrollTo({left:cur*car.clientWidth, behavior:"smooth"}); show(); };
   pv.onclick=()=>go(cur-1); nx.onclick=()=>go(cur+1);
   let t=null; car.addEventListener("scroll",()=>{ clearTimeout(t); t=setTimeout(()=>{ cur=Math.round(car.scrollLeft/Math.max(1,car.clientWidth)); show(); },80); },{passive:true});
-  cnt.textContent=list.length+"人"; body.append(car, nav, el("p","pf-swipe","← 横にスワイプ →")); show();
+  const cmBox=el("div","pe-cmbox"); const cmCache={};
+  const loadCm=()=>{ const p=list[cur]; if(!p) return; if(cmBox.dataset.id===p.id) return; cmBox.dataset.id=p.id; cmBox.innerHTML="";
+    cmBox.append(peerComments(p, r.nick, n=>{ p.nc=n; })); };
+  const show0=show; show=()=>{ show0(); loadCm(); };
+  cnt.textContent=list.length+"人"; body.append(car, nav, el("p","pf-swipe","← 横にスワイプ →"), cmBox); show();
 }
 function stuTask(a){
   const it=el("div","task "+(STATUS[a.status]||["",""])[1]); it.dataset.id=a.id;
@@ -3077,6 +3151,7 @@ function tStudent(app){
   app.append(coursePicker(s));
   app.append(gStepper(s));
   app.append(msgEditor(s));
+  app.append(tComments(s));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
   who.append(hh); box.append(who);
@@ -3215,6 +3290,22 @@ function coursePicker(s){
 }
 
 /* teacher: the message on the back of the student's card */
+function tComments(s){
+  const d=el("details","sec tcm"); d.id="t-comments"; const sm=el("summary",null,"💬 生徒どうしのコメント"); d.append(sm); const body=el("div"); d.append(body); d.open=!!T.cmOpen; d.addEventListener("toggle",()=>{ T.cmOpen=d.open; });
+  rpc("mc_t_comments",{tk:TK, sid:s.id}).then(r=>{ const to=(r&&r.to)||[], fr=(r&&r.from)||[];
+    if(!to.length && !fr.length){ d.remove(); return; }
+    sm.textContent=`💬 生徒どうしのコメント（もらった ${to.length} ・ 書いた ${fr.length}）`;
+    const sec=(title, arr, who)=>{ body.append(el("b","tcm-h",title)); const ul=el("ul","cm-list");
+      if(!arr.length) ul.append(el("li","cm-none","なし"));
+      arr.forEach(c=>{ const li=el("li","cm"); const hd=el("div","cm-h"); hd.append(el("b","cm-nk",c.nick), el("small","cm-real",who(c)), el("time",null,cmTime(c.at)));
+        const x=el("button","cm-del","削除"); x.type="button"; x.onclick=async()=>{ if(!x.dataset.ok){ x.dataset.ok="1"; x.textContent="本当に削除"; return; } x.disabled=true; try{ await rpc("mc_t_comment_del",{tk:TK, p_id:c.id}); li.remove(); }catch(e){ x.disabled=false; toast("削除できませんでした"); } };
+        hd.append(x); li.append(hd, el("p","cm-b",c.body)); ul.append(li); });
+      body.append(ul); };
+    sec("このカードへのコメント", to, c=>"（"+(c.from||"")+(c.fnum!=null?" No."+c.fnum:"")+"）");
+    sec("この生徒が書いたコメント", fr, c=>"→ "+(c.to||"")+(c.tnum!=null?" No."+c.tnum:""));
+  }).catch(()=>d.remove());
+  return d;
+}
 function msgEditor(s){
   const box=el("section","card msged"); box.id="msg-ed";
   box.append(el("h3","sech","💌 カードの裏のメッセージ"));
