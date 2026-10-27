@@ -9,7 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="おんがくスタンプ">
 <meta name="robots" content="noindex">
-<link rel="apple-touch-icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="lesson.webmanifest">
 <link rel="icon" href="icon.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>音楽教室スタンプ</title>
@@ -1059,6 +1060,16 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 #t-lock .lock-alt form{margin-top:8px;display:flex;flex-direction:column;gap:8px}
 #t-lock .lock-alt input{font-size:.9rem!important;letter-spacing:0!important;padding:10px}
 .passf label{display:flex;flex-direction:column;gap:4px}
+
+/* ===== push notification card ===== */
+.pushc{display:flex;flex-direction:column;gap:10px;padding:14px 16px}
+.pushc .pc-h{display:flex;align-items:center;gap:8px;font-size:.92rem}
+.pushc .pc-ico{font-size:1.3rem}
+.pushc .pc-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pushc .pc-btn{width:100%}
+.pushc.is-on{padding:8px 14px;opacity:.85}
+.pushc .pc-on{font-weight:800;font-size:.85rem}
+.pushc .pc-guide ol{margin:4px 0 0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px;font-size:.85rem;line-height:1.5}
 
 </style>
 </head>
@@ -2348,6 +2359,7 @@ function stuRender(){
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(profileEl(Stu.info, profileStats(Stu.info, Stu.stamps, Stu.assign)));
   const db=el("button","deco-btn","✏️ プロフィールをデコる"); db.id="deco-btn"; db.onclick=openDeco; app.append(db);
+  app.append(pushCard());
   if(ok.length){ const n=el("div","notice big okn"); n.id="ok-notice"; n.innerHTML=`<span class="dot"></span><span>先生から OK が ${ok.length}こ 出たよ！スタンプを押そう！</span>`; app.append(n); }
   const who=el("div","who"); who.append(el("h2",null,"♪ スタンプカード"));
   const eb=el("button","edit-btn","デザイン"); eb.id="style-btn"; eb.onclick=()=>{ Stu.styling=true; Stu.draft={stamp_p:Stu.info.stamp_p, color:Stu.info.color|0}; stuRender(); };
@@ -2622,7 +2634,7 @@ function openViewer(list, idx, after){
   document.body.append(o); draw();
 }
 function tReview(app){
-  if(!T.review.length){ app.append(el("div","empty","チェック待ちの提出はありません 🎉")); return; }
+  if(!T.review.length){ app.append(el("div","empty","チェック待ちの提出はありません 🎉")); app.append(pushCard()); return; }
   // filter by task
   const byTask={}; T.review.forEach(a=>{ (byTask[a.task_id]=byTask[a.task_id]||{title:a.title,n:0}).n++; });
   if(T.rvTask && !byTask[T.rvTask]) T.rvTask=null;
@@ -2774,6 +2786,7 @@ function tStudents(app){
   gl.append(gb);
   if(T.qr){ const q=el("div","qr"); try{ const qr=qrcode(0,"M"); qr.addData(SHARED_URL); qr.make(); q.innerHTML=qr.createSvgTag({cellSize:4, margin:2, scalable:true}); }catch(e){ q.textContent="QRコードを作れませんでした"; q.style.color="#000"; } gl.append(q); }
   app.append(gl);
+  app.append(pushCard());
   app.append(passSec());
 }
 function openAdd(){
@@ -2945,6 +2958,54 @@ function passSec(){
   return d;
 }
 
+/* ================= push notifications ================= */
+const PUSH_FN="https://karlvjvqahtmeovvmffm.supabase.co/functions/v1/mc-push";
+const Push={reg:null};
+function pushEnv(){ const sup=("serviceWorker" in navigator)&&("PushManager" in window)&&("Notification" in window);
+  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  const sa=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;
+  return {sup, ios, sa}; }
+async function pushReg(){ if(Push.reg) return Push.reg; if(!("serviceWorker" in navigator)) return null;
+  try{ await navigator.serviceWorker.register("sw.js"); Push.reg=await navigator.serviceWorker.ready; return Push.reg; }catch(e){ return null; } }
+function b64u8(s){ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4) s+="="; const b=atob(s); return Uint8Array.from(b,c=>c.charCodeAt(0)); }
+async function pushPub(){ let k=await rpc("mc_push_pub",{}); if(!k){ try{ await fetch(PUSH_FN,{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}); }catch(e){} k=await rpc("mc_push_pub",{}); } return k; }
+async function pushSave(sub){ const j=sub.toJSON(); if(MODE==="t") await rpc("mc_t_push",{tk:TK, p_sub:j}); else await rpc("mc_s_push",{sk:SK, p_sub:j}); lsSet("mc_push_on_"+MODE,"1"); }
+async function pushOn(){ const reg=await pushReg(); if(!reg) throw new Error("no_sw");
+  const perm=await Notification.requestPermission(); if(perm!=="granted") throw new Error("denied");
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub){ const k=await pushPub(); if(!k) throw new Error("no_key"); sub=await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:b64u8(k)}); }
+  await pushSave(sub); }
+async function pushOff(){ const reg=await pushReg(); const sub=reg&&await reg.pushManager.getSubscription();
+  if(sub){ try{ await rpc("mc_push_off",{p_endpoint:sub.endpoint}); }catch(e){} try{ await sub.unsubscribe(); }catch(e){} } lsSet("mc_push_on_"+MODE,""); }
+async function pushSync(){ try{ const e=pushEnv(); if(!e.sup || Notification.permission!=="granted" || !lsGet("mc_push_on_"+MODE)) return;
+  const reg=await pushReg(); const sub=reg&&await reg.pushManager.getSubscription(); if(sub) await pushSave(sub); }catch(e){} }
+function pushCard(){
+  const box=el("section","card pushc"); box.id="push-card"; const forT=MODE==="t";
+  const draw=async()=>{ const e=pushEnv(); const parts=[];
+    const h=el("div","pc-h"); h.append(el("span","pc-ico","🔔"), el("b",null, forT?"提出があったら通知で知らせる":"先生からのOKやメッセージを通知で受け取る"));
+    if(e.ios && !e.sa){ box.replaceChildren(h, guideIOS(forT)); return; }
+    if(!e.sup){ box.replaceChildren(h, el("p","rw-note","このブラウザは通知に対応していません。iPhoneはSafari、AndroidはChromeで開いてね。")); return; }
+    if(Notification.permission==="denied"){ box.replaceChildren(h, el("p","rw-note", e.ios ? `通知がオフになっています。iPhoneの「設定」→「通知」→「${forT?"NACHA":"おんがくスタンプ"}」でオンにしてね。` : "通知がブロックされています。ブラウザの設定で通知を許可してね。")); return; }
+    let on=false; try{ const reg=await pushReg(); const sub=reg&&await reg.pushManager.getSubscription(); on=!!sub && Notification.permission==="granted" && !!lsGet("mc_push_on_"+MODE); }catch(err){}
+    const row=el("div","pc-row");
+    if(on){ box.classList.add("is-on"); row.append(el("span","pc-on","🔔 通知オン")); const off=el("button","btn small","オフにする"); off.id="push-off";
+      off.onclick=async()=>{ off.disabled=true; await pushOff(); toast("通知をオフにしました"); box.classList.remove("is-on"); draw(); }; row.append(off); box.replaceChildren(row); }
+    else { const b=el("button","press pc-btn","🔔 通知をオンにする"); b.id="push-on";
+      b.onclick=async()=>{ b.disabled=true; b.textContent="設定中…"; try{ await pushOn(); toast("通知をオンにしました！"); }catch(err){ toast(err.message==="denied"?"通知が許可されませんでした":"うまくいきませんでした（"+err.message+"）"); } draw(); };
+      row.append(b); box.replaceChildren(h, row); } };
+  draw(); return box;
+}
+function guideIOS(forT){ const d=el("div","pc-guide"); d.innerHTML=`<p class="rw-note">iPhoneで通知を受け取るには、まずこのページを<b>ホーム画面に追加</b>してね。</p>
+  <ol><li>画面下の<b>共有ボタン</b>（四角から↑が出ているマーク）を押す</li><li><b>「ホーム画面に追加」</b>を押す</li>
+  <li>ホーム画面にできた<b>「${forT?"NACHA":"おんがくスタンプ"}」</b>のアイコンから開く</li><li>${forT?"パスワードを入れて入り":"番号を入れて入り"}、もう一度ここの<b>「🔔 通知をオンにする」</b>を押す</li></ol>`; return d; }
+function pushBoot(){
+  if(!("serviceWorker" in navigator) || location.protocol!=="https:") return;
+  pushReg().then(()=>pushSync());
+  try{ if(navigator.clearAppBadge) navigator.clearAppBadge(); }catch(e){}
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"){ try{ if(navigator.clearAppBadge) navigator.clearAppBadge(); }catch(e){} } });
+  navigator.serviceWorker.addEventListener("message",ev=>{ if(ev.data&&ev.data.t==="refresh"){ if(MODE==="s"&&SK) stuRefresh(); else if(MODE==="t") tRefresh(); } });
+}
+
 /* ================= boot ================= */
 document.getElementById("today").textContent = (()=>{const d=new Date();return `今日は ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`})();
 setTimeout(()=>{ try{ prerenderStamps(); prerenderWheels(); }catch(e){} },400);
@@ -2957,6 +3018,7 @@ if(MODE==="s"){
   tRender(); tRefresh(true); setTimeout(tCleanup, 3000);
   setInterval(()=>{ if(document.visibilityState==="visible" && !window.__party){ if(T.sel) tLoadStudent(); else if(T.task) tLoadTask(); tRefresh(); } }, 20000);
 } else tLock();
+if(MODE==="s"||MODE==="t") pushBoot();
 function tLock(msg){
   const app=document.getElementById("app"); app.innerHTML=""; document.getElementById("note").textContent="";
   const box=el("section","card login"); box.id="t-lock";

@@ -1,0 +1,19 @@
+{
+  "id": "sensei",
+  "name": "NACHA 先生用",
+  "short_name": "NACHA",
+  "start_url": "sensei.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0a24",
+  "theme_color": "#0b0a24",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "sensei-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
