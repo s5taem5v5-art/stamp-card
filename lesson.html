@@ -952,6 +952,41 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .gstep .gk{writing-mode:horizontal-tb;letter-spacing:.05em;position:absolute;left:14px;top:8px;font-size:.68rem}
 .card.gstep{position:relative;padding-top:22px}
 .pf-gbar{margin-bottom:4px}
+/* grade picker: rank tabs + G grid */
+.card.gstep{flex-direction:column!important;align-items:stretch;gap:10px}
+.gstep .gtop{display:flex;align-items:center;gap:10px}
+.gstep .gtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.gstep .gtab{padding:9px 2px;border-radius:10px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:inherit;font-weight:800;font-size:.8rem;cursor:pointer;touch-action:manipulation}
+.gstep .gtab.on.rk0{background:#c084dc;border-color:#c084dc;color:#1a0b24}
+.gstep .gtab.on.rk1{background:#5cc8e0;border-color:#5cc8e0;color:#06222a}
+.gstep .gtab.on.rk2{background:#3ccf7c;border-color:#3ccf7c;color:#062614}
+.gstep .gtab.on.rk3{background:#d4f55a;border-color:#d4f55a;color:#1e2604}
+.gstep .ggrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.gstep .gcell{padding:10px 0;border-radius:10px;border:none;background:rgba(255,255,255,.08);color:inherit;font-family:var(--display);font-size:1rem;cursor:pointer;touch-action:manipulation}
+.gstep .gcell.on{background:#fff;color:#1a1033;box-shadow:0 0 0 2px var(--p0,#ffd24a),0 0 12px rgba(255,255,255,.5)}
+.gstep .gcell:active,.gstep .gtab:active{transform:scale(.94)}
+
+/* ===== big CLASS plate on the student card ===== */
+.pf-tx{position:relative}
+.pf-gp{position:absolute;right:-2px;top:-4px;z-index:3;display:flex;flex-direction:column;align-items:center;line-height:1;padding:5px 9px 6px;border-radius:12px;
+  background:#fff;color:#1a1033;box-shadow:0 3px 0 rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.25);transform:rotate(3deg)}
+.pf-gp small{font-size:.5rem;letter-spacing:.22em;font-weight:800;opacity:.7;margin-bottom:2px}
+.pf-gp b{font-family:var(--display);font-weight:400;display:flex;align-items:baseline}
+.pf-gp .gG{font-size:1rem;margin-right:1px}.pf-gp .gN{font-size:2rem}.pf-gp .gS{font-size:1.5rem;margin-left:1px}
+.rk0 .pf-gp{background:linear-gradient(180deg,#fff,#e8ffe0);color:#2c7a1a;border:2px solid #9be15d}
+.rk1 .pf-gp{background:linear-gradient(180deg,#f7fbff,#b9c8d8);color:#122030;border:2px solid #8fa3b8}
+.rk2 .pf-gp{background:linear-gradient(180deg,#fff3c4,#d9a23a 60%,#a86e12);color:#2a1702;border:2px solid #ffe08a;box-shadow:0 3px 0 rgba(0,0,0,.35),0 0 18px rgba(255,190,60,.55)}
+.rk3 .pf-gp{background:linear-gradient(#07040e,#07040e) padding-box,conic-gradient(var(--rb)) border-box;border:2.5px solid transparent;color:#fff;box-shadow:0 0 18px rgba(140,100,255,.7),0 0 34px rgba(255,42,61,.3)}
+.rk3 .pf-gp b{background:linear-gradient(90deg,#ff5a6e,#ffb04a,#ffe98a,#6dffb0,#6ad8ff,#9a8dff,#e08aff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rk3 .pf-gp small{color:#cfc6ff;opacity:1}
+/* make room so the rank name never runs under the plate */
+.pf-tx:has(.pf-gp) .pf-lv{padding-right:74px}
+.pf-tx:has(.pf-gp) .pf-lv{padding-right:80px}
+.rk3 .pf-tx:has(.pf-gp) .pf-name{font-size:1.62rem}
+.rk2 .pf-tx:has(.pf-gp) .pf-name{font-size:1.75rem}
+.pf-tx:has(.pf-gp) .pf-rk{white-space:nowrap}
+.rk3 .pf-tx:has(.pf-gp) .pf-rk::after{content:none}
+.has-g .pf-stk.s0,.rk1.has-g .pf-stk.s0,.rk2.has-g .pf-stk.s0,.rk3.has-g .pf-stk.s0{right:4px;top:54px;bottom:auto;font-size:1.3rem;z-index:4}
 
 </style>
 </head>
@@ -1975,10 +2010,12 @@ function profileEl(info, stats, opts){
   const stars=el("span","pf-stars"); for(let i=0;i<4;i++) stars.append(el("i",i<=r?"on":"",i<=r?"★":"☆"));
   const rkl=el("span","pf-rk","RANK"); rkl.append(stars);
   const lv=el("div","pf-lv"); lv.append(rkl, nm);
-  const who=el("div","pf-who"); if(gOk(info.grade)) who.append(el("span","pf-g",gLabel(info.grade))); if(info.num!=null) who.append(el("span","pf-no","No."+info.num));
+  const who=el("div","pf-who");  if(info.num!=null) who.append(el("span","pf-no","No."+info.num));
   const nick=(P.nick||"").trim();
   who.append(el("span","pf-nm", nick ? nick : (info.name||"")+(info.name?" さん":"")));
   if(nick && forT) who.append(el("span","pf-real","（"+(info.name||"")+"）"));
+  if(gOk(info.grade)){ card.classList.add("has-g"); const [gn,gs]=gParts(info.grade); const pl=el("div","pf-gp"); pl.append(el("small",null,"CLASS"));
+    const big=el("b"); big.append(el("span","gG","G"), el("span","gN",String(gn))); if(gs) big.append(el("span","gS",gs==="-"?"−":"+")); pl.append(big); tx.append(pl); }
   tx.append(lv, who);
   if(P.title) tx.append(el("span","pf-title","🎖 "+String(P.title).slice(0,20)));
   else tx.append(el("div","pf-tag",R.tag));
@@ -2721,23 +2758,28 @@ async function tCleanup(){
   }catch(e){}
 }
 
-/* teacher: quick − / + for the class grade (saves after a short pause, so several taps = one save) */
+/* teacher: class grade — pick a rank, then tap the G (− / + for fine steps). Saves after a short pause. */
 function gStepper(s){
   const box=el("section","card gstep"); box.id="g-step";
-  const has=gOk(s.grade); let g = has ? s.grade|0 : null, timer=null;
+  let g = gOk(s.grade) ? s.grade|0 : null, tab = g!=null ? gRank(g) : rankOf(s.rank), timer=null;
   const minus=el("button","gbtn","−"), plus=el("button","gbtn","＋"), lab=el("b","glab"), sub=el("small","gsub");
   minus.id="g-minus"; plus.id="g-plus";
-  const show=()=>{ lab.textContent = g==null ? "G未設定" : gLabel(g); sub.textContent = g==null ? "＋でG1から" : RANKS[gRank(g)].name+"（ランク自動）";
-    minus.disabled = g==null || g<=0; plus.disabled = g!=null && g>=G_MAX; };
-  const save=()=>{ clearTimeout(timer); window.__gEditing=true; timer=setTimeout(async()=>{
+  const tabs=el("div","gtabs"), grid=el("div","ggrid");
+  const draw=()=>{
+    lab.textContent = g==null ? "G未設定" : gLabel(g); sub.textContent = g==null ? "ランクを選んでGをタップ" : RANKS[gRank(g)].name+"（ランク自動）";
+    minus.disabled = g==null || g<=0; plus.disabled = g!=null && g>=G_MAX;
+    tabs.innerHTML=""; RANKS.forEach((R,i)=>{ const t=el("button","gtab rk"+i+(i===tab?" on":""),R.name); t.type="button"; t.dataset.r=i; t.onclick=()=>{ tab=i; draw(); }; tabs.append(t); });
+    grid.innerHTML=""; const [lo,hi]=G_BAND[tab];
+    for(let i=lo;i<=hi;i++){ const c=el("button","gcell"+(i===g?" on":""),gLabel(i).slice(1)); c.type="button"; c.dataset.g=i; c.onclick=()=>{ g=i; draw(); save(300); }; grid.append(c); } };
+  const save=(ms)=>{ clearTimeout(timer); window.__gEditing=true; timer=setTimeout(async()=>{
       try{ const r=await rpc("mc_t_grade",{tk:TK, sid:s.id, p_grade:g}); s.grade=r.grade; if(r.rank!=null) s.rank=r.rank;
         const li=(T.students||[]).find(x=>x.id===s.id); if(li){ li.grade=s.grade; li.rank=s.rank; }
         toast(gLabel(g)+" にしました"); window.__gEditing=false; tRender(); }
-      catch(e){ window.__gEditing=false; toast("保存できませんでした（"+e.message+"）"); } }, 800); };
-  minus.onclick=()=>{ if(g==null||g<=0) return; g--; show(); save(); };
-  plus.onclick=()=>{ g = g==null ? 0 : Math.min(G_MAX, g+1); show(); save(); };
-  const mid=el("div","gmid"); mid.append(lab, sub);
-  box.append(el("span","gk","クラス"), minus, mid, plus); show(); return box;
+      catch(e){ window.__gEditing=false; toast("保存できませんでした（"+e.message+"）"); } }, ms); };
+  minus.onclick=()=>{ if(g==null||g<=0) return; g--; tab=gRank(g); draw(); save(800); };
+  plus.onclick=()=>{ g = g==null ? G_BAND[tab][0] : Math.min(G_MAX, g+1); tab=gRank(g); draw(); save(800); };
+  const top=el("div","gtop"), mid=el("div","gmid"); mid.append(lab, sub); top.append(minus, mid, plus);
+  box.append(el("span","gk","クラス"), top, tabs, grid); draw(); return box;
 }
 
 /* ================= boot ================= */
