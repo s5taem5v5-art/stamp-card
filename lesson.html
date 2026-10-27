@@ -538,6 +538,18 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .rk3 .pf-mq{background:linear-gradient(90deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff,#b98bff,#ff5fa2);background-size:300% 100%;animation:holo 6s linear infinite;color:#1a0d3a}
 .rk3 .pf-mq span{animation-duration:9s}
 
+.pf-note{position:absolute;z-index:6;pointer-events:none;font-family:var(--display);font-size:1.5rem;line-height:1;transform:translate(-50%,-50%);
+  animation:noteup 1.3s cubic-bezier(.2,.8,.3,1) forwards;text-shadow:0 2px 0 rgba(0,0,0,.18),0 0 12px rgba(255,255,255,.8);white-space:nowrap}
+.pf-note.big{font-size:1.35rem;padding:6px 14px;border-radius:99px;animation:songdone 2.6s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes noteup{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}15%{opacity:1;transform:translate(-50%,-90%) scale(1.25)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),-330%) scale(.9) rotate(-8deg)}}
+@keyframes songdone{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}80%{opacity:1;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%) scale(.95)}}
+.rk0 .pf-note{color:#2fb4e8}.rk0 .pf-note.big{background:#fff;color:#2f8a2a;box-shadow:0 4px 0 #cdeebb}
+.rk1 .pf-note{color:#bdf2ff;text-shadow:0 0 12px #38d6ff,0 0 2px #fff}.rk1 .pf-note.big{background:#0d1b3d;border:2px solid #38d6ff}
+.rk2 .pf-note{color:#ffe27a;text-shadow:0 0 12px #ffb020,0 0 2px #fff}.rk2 .pf-note.big{background:#24124f;border:2px solid #ffc93c}
+.rk3 .pf-note{background:linear-gradient(90deg,#ff5fa2,#ffd24a,#5dffb0,#38d6ff,#b98bff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 0 6px rgba(255,255,255,.9))}
+.rk3 .pf-note.big{-webkit-background-clip:border-box;background-clip:border-box;color:#1a0d3a;filter:drop-shadow(0 0 12px rgba(255,255,255,.7))}
+.prof{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+
 /* small rank chips in the teacher's list */
 .rkc{font-size:.6rem;font-weight:800;padding:1px 7px;border-radius:99px;flex:none;letter-spacing:.03em}
 .rkc.rk0{background:#dff5d2;color:#2f8a2a}.rkc.rk1{background:#cdf3ff;color:#1f5bd8}
@@ -1529,7 +1541,7 @@ function profileEl(info, stats){
     card.style.setProperty("--rx",((.5-y)*10).toFixed(2)+"deg"); card.style.setProperty("--ry",((x-.5)*14).toFixed(2)+"deg"); card.classList.add("hov"); };
   const lv2=()=>{ card.classList.remove("hov"); };
   card.addEventListener("pointermove",mv); card.addEventListener("pointerleave",lv2); card.addEventListener("touchmove",mv,{passive:true}); card.addEventListener("touchend",lv2);
-  card.addEventListener("click",()=>{ card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop"); FX.burst(cv); try{ SFX.ping(); }catch(e){} });
+  card.addEventListener("click",e=>{ card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop"); FX.burst(cv); TAP(card, r, e, cv); });
   FX.attach(cv, r);
   return card;
 }
@@ -1547,6 +1559,61 @@ function rankUpShow(r, done){
   try{ SFX.unlock(); BGM.duck && BGM.duck(3); SFX.result(false); }catch(e){}
   setTimeout(close, 9000);
 }
+
+/* ---- tap the card to play: each tap = next note of the rank's song ---- */
+const SOLFA = ["ド","レ","ミ","ファ","ソ","ラ","シ","ド"];
+const C_MAJ = [0,2,4,5,7,9,11,12];
+const SONGS = [
+  {title:"きらきら星", base:72, notes:[0,0,4,4,5,5,4, 3,3,2,2,1,1,0, 4,4,3,3,2,2,1, 4,4,3,3,2,2,1, 0,0,4,4,5,5,4, 3,3,2,2,1,1,0]},
+  {title:"かえるの合唱", base:72, notes:[0,1,2,3,2,1,0, 2,3,4,5,4,3,2, 0,0,0,0, 0,0,1,1,2,2,3,3,2,1,0]},
+  {title:"よろこびの歌", base:72, notes:[2,2,3,4,4,3,2,1,0,0,1,2,2,1,1, 2,2,3,4,4,3,2,1,0,0,1,2,1,0,0]},
+  {title:"聖者の行進", base:72, notes:[0,2,3,4, 0,2,3,4, 0,2,3,4,2,0,2,1, 2,2,1,0,0,2,4,4,3, 2,3,4,2,0,1,0]}
+];
+const TAP = (()=>{
+  const st={rank:-1, i:0, last:0};
+  function voice(r, midi, t){
+    const c=SFX.core(); if(!c) return; const {ctx, comp, N}=c, f=N(midi);
+    const bus=ctx.createGain(); bus.gain.value=.9; bus.connect(comp);
+    const osc=(type,fr,v,att,dec,detune=0)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.value=fr; o.detune.value=detune;
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+att); g.gain.exponentialRampToValueAtTime(.0005,t+dec); o.connect(g); g.connect(bus); o.start(t); o.stop(t+dec+.05); return {o,g}; };
+    if(r===0){ // music box
+      osc("sine",f*2,.32,.003,.9); osc("sine",f*4,.08,.002,.35); osc("triangle",f*2,.06,.002,.5);
+    } else if(r===1){ // marimba
+      osc("sine",f,.42,.004,.55); osc("sine",f*4,.12,.002,.12); osc("sine",f*10,.03,.001,.04);
+    } else if(r===2){ // celesta bell: little FM + shimmer an octave up
+      const m=ctx.createOscillator(), mg=ctx.createGain(); m.frequency.value=f*3.5; mg.gain.setValueAtTime(f*1.8,t); mg.gain.exponentialRampToValueAtTime(1,t+1.2);
+      const car=osc("sine",f*2,.3,.003,1.6); m.connect(mg); mg.connect(car.o.frequency); m.start(t); m.stop(t+1.7);
+      osc("sine",f*4,.08,.003,1.0); osc("triangle",f,.08,.01,.8);
+    } else { // supersaw lead + harmony + sparkle
+      const lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.Q.value=6; lp.frequency.setValueAtTime(900,t); lp.frequency.exponentialRampToValueAtTime(5200,t+.06); lp.frequency.exponentialRampToValueAtTime(1400,t+.7); lp.connect(bus);
+      const lead=(fr,v)=>[-12,0,12].forEach(d=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type="sawtooth"; o.frequency.value=fr; o.detune.value=d;
+        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0005,t+.9); o.connect(g); g.connect(lp); o.start(t); o.stop(t+.95); });
+      lead(f,.15); lead(f/2,.07);
+      const deg=C_MAJ.indexOf(midi-72); if(deg>=0){ const h=deg>=2 ? 72+C_MAJ[deg-2] : 72+C_MAJ[deg+5]-12; lead(N(h),.06); }
+      [4,5,6].forEach(k=>osc("triangle",f*k,.04,.002,.18));
+      osc("sine",f*8,.035,.001,.25);
+    }
+  }
+  function floatLabel(card, x, y, txt, big){
+    const s=el("span","pf-note"+(big?" big":""),txt); s.style.left=x+"px"; s.style.top=y+"px"; s.style.setProperty("--dx",(Math.random()*40-20).toFixed(0)+"px");
+    card.append(s); setTimeout(()=>s.remove(), big?2600:1300);
+  }
+  return function(card, r, ev, cv){
+    const now=performance.now(), song=SONGS[r];
+    if(st.rank!==r || now-st.last>2500) st.i=0;
+    st.rank=r; st.last=now;
+    const deg=song.notes[st.i], midi=song.base+C_MAJ[deg];
+    if(SFX.on){ try{ SFX.unlock(); const c=SFX.core(); if(c){ voice(r, midi, c.ctx.currentTime+.005); } BGM.duck && BGM.duck(1.4); }catch(e){} }
+    const rc=card.getBoundingClientRect(); const p=ev && (ev.touches?ev.touches[0]:ev);
+    const x=p&&p.clientX!=null ? p.clientX-rc.left : rc.width/2, y=p&&p.clientY!=null ? p.clientY-rc.top : rc.height/2;
+    floatLabel(card, x, y, SOLFA[deg]);
+    st.i++;
+    if(st.i>=song.notes.length){ st.i=0; st.last=0;
+      setTimeout(()=>{ floatLabel(card, rc.width/2, rc.height*.45, "♪ "+song.title+" ♪", true); FX.burst(cv); FX.burst(cv);
+        if(SFX.on){ try{ const c=SFX.core(); if(c){ const t=c.ctx.currentTime+.02; [0,4,7].forEach((d,i)=>voice(r, song.base+d, t+i*.07)); voice(r, song.base+12, t+.24); } }catch(e){} }
+      }, 380); }
+  };
+})();
 
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping()) return true;
