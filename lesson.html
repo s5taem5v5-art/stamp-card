@@ -1102,6 +1102,19 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .gstep .gk2{font-weight:800}
 .pf-slide{width:100%;min-width:0;max-width:100%}.pf-slide>.pf-flip{min-width:0;max-width:100%}.pf-slide .prof{max-width:100%}
 
+/* ===== course cards (enrollments) ===== */
+.srow .nmw{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.srow .nmw .nm{flex:none;display:block}
+.srow .nsub{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.srow .nsub .rkc,.srow .nsub .cc,.srow .nsub .td{font-size:.62rem;padding:1px 7px}
+.srow .cc{font-weight:800;border-radius:99px;background:rgba(255,255,255,.12);white-space:nowrap}
+.srow .cc-vocal{background:rgba(255,120,180,.22);color:#ffd0e6}
+.srow .cc-guitar{background:rgba(255,190,80,.22);color:#ffe2b0}
+.cpick .cp-row.three{grid-template-columns:repeat(3,1fr)}
+.cpick .cp-btn.dis{opacity:.4}
+.cpick .cp-sibs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.cpick .cp-add{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+
 </style>
 </head>
 <body>
@@ -2255,22 +2268,23 @@ window.addEventListener("resize",()=>{ clearTimeout(_fitT); _fitT=setTimeout(()=
 /* courses: one card per course, swipe left/right to switch */
 const COURSES={ vocal:{ico:"🎤", jp:"ボーカル", en:"VOCAL"}, guitar:{ico:"🎸", jp:"ギター", en:"GUITAR"} };
 const COURSE_KEYS=Object.keys(COURSES);
-function courseList(info){ return (Array.isArray(info&&info.courses)?info.courses:[]).filter(c=>COURSES[c.course]); }
-function courseCards(info, stats, opts={}){
-  const cs=courseList(info);
-  if(!cs.length) return profileEl(info, stats, opts);
-  const one=c=>profileEl({...info, rank:c.rank, grade:c.grade, course:c.course}, stats, opts);
-  if(cs.length===1) return one(cs[0]);
+const courseTag = c => c && COURSES[c] ? COURSES[c].ico+" "+COURSES[c].jp : "";
+/* several cards side by side: swipe (or tap the tabs) to switch; onChange(i) when a new card settles */
+function cardCarousel(cards, start, onChange){
   const box=el("div","pf-courses"), nav=el("div","pf-cnav"), car=el("div","pf-car"), dots=el("div","pf-dots");
-  const key="mc_cslide_"+(typeof SK!=="undefined"&&SK&&!opts.teacher?SK:(info.id||info.num||""));
-  let cur=Math.max(0, Math.min(cs.length-1, +(lsGet(key)||0)||0));
-  const tabs=[], dd=[];
-  cs.forEach((c,i)=>{ const sl=el("div","pf-slide"); sl.append(one(c)); car.append(sl);
-    const C=COURSES[c.course]; const t=el("button","pf-ctab",C.ico+" "+C.jp); t.type="button"; t.dataset.course=c.course; t.onclick=()=>go(i,true); tabs.push(t); nav.append(t);
+  let cur=Math.max(0, Math.min(cards.length-1, start|0)); const tabs=[], dd=[];
+  cards.forEach((c,i)=>{ const sl=el("div","pf-slide"); sl.append(c.el); car.append(sl);
+    const C=COURSES[c.course]; const t=el("button","pf-ctab", C ? C.ico+" "+C.jp : "コースなし"); t.type="button"; t.dataset.course=c.course||""; t.onclick=()=>{ userAt=Date.now(); go(i,true); }; tabs.push(t); nav.append(t);
     const d=el("i"); dots.append(d); dd.push(d); });
-  const mark=i=>{ cur=i; tabs.forEach((t,j)=>t.classList.toggle("on",j===i)); dd.forEach((d,j)=>d.classList.toggle("on",j===i)); lsSet(key,String(i)); };
-  const go=(i,smooth)=>{ car.scrollTo({left:i*car.clientWidth, behavior:smooth?"smooth":"auto"}); mark(i); };
-  let st=null; car.addEventListener("scroll",()=>{ clearTimeout(st); st=setTimeout(()=>{ const i=Math.round(car.scrollLeft/Math.max(1,car.clientWidth)); if(i!==cur) mark(i); },60); },{passive:true});
+  const mark=i=>{ tabs.forEach((t,j)=>t.classList.toggle("on",j===i)); dd.forEach((d,j)=>d.classList.toggle("on",j===i)); };
+  const go=(i,smooth)=>{ car.scrollTo({left:i*car.clientWidth, behavior:smooth?"smooth":"auto"}); };
+  // only a swipe / tap by the person may switch the course (a resize or re-layout just snaps back)
+  let userAt=0; const touch=()=>{ userAt=Date.now(); };
+  ["pointerdown","touchstart","touchmove","wheel"].forEach(ev=>car.addEventListener(ev,touch,{passive:true}));
+  let st=null; car.addEventListener("scroll",()=>{ clearTimeout(st); st=setTimeout(()=>{ const i=Math.round(car.scrollLeft/Math.max(1,car.clientWidth));
+    if(Date.now()-userAt > 2500){ if(i!==cur) go(cur,false); return; }
+    mark(i); if(i!==cur){ cur=i; onChange && onChange(i); } },90); },{passive:true});
+  window.addEventListener("resize",()=>{ if(box.isConnected) go(cur,false); });
   mark(cur);
   let n=0; const fix=()=>{ if(box.isConnected && car.clientWidth){ go(cur,false); return; } if(n++<120) requestAnimationFrame(fix); }; requestAnimationFrame(fix);
   box.append(nav, car, dots, el("p","pf-swipe","← 横にスワイプでコースを切りかえ →"));
@@ -2278,7 +2292,7 @@ function courseCards(info, stats, opts={}){
 }
 /* the card can be turned over: the back shows the teacher's message; it turns itself back after a while untouched */
 const FLIP_MS=9000;
-function msgSeenKey(info){ return "mc_msgseen_"+(typeof SK!=="undefined"&&SK?SK:(info.num||"")); }
+function msgSeenKey(info){ return "mc_msgseen_"+(info.num||"")+"_"+(info.course||""); }
 function flipWrap(card, info, r, forT){
   const C = info.course && COURSES[info.course];
   const wrap=el("div","pf-flip"+(card._gp?" has-gp":"")+(C?" has-ct":"")); wrap.append(card);
@@ -2410,9 +2424,18 @@ function mediaEl(a){
 }
 
 /* ================= STUDENT ================= */
-const Stu = { info:null, stamps:[], assign:[], ym:nowYM(), styling:false, draft:null, playing:false, sending:null, reopen:{} };
+const Stu = { keys:[], sib:{}, info:null, stamps:[], assign:[], ym:nowYM(), styling:false, draft:null, playing:false, sending:null, reopen:{} };
 async function stuRefresh(force){
-  try{ const [st, as]=await Promise.all([rpc("mc_s_state",{sk:SK}), rpc("mc_s_assign",{sk:SK})]);
+  try{
+    // every course card of this student (a course added later shows up without signing in again)
+    let ks=null; try{ ks=await rpc("mc_s_keys",{sk:SK}); }catch(e){ if(e.message==="bad_key") throw e; }
+    if(Array.isArray(ks) && ks.length){ const before=(Stu.keys||[]).map(k=>k.sk).join(); Stu.keys=ks; lsSet("mc_sks",JSON.stringify(ks)); if(before && before!==ks.map(k=>k.sk).join()) pushSync(); }
+    if(!Stu.keys.length) Stu.keys=[{sk:SK, course:null}];
+    if(!Stu.keys.some(k=>k.sk===SK)){ SK=Stu.keys[0].sk; lsSet("mc_sk",SK); }
+    const res=await Promise.all(Stu.keys.map(k=>Promise.all([rpc("mc_s_state",{sk:k.sk}), rpc("mc_s_assign",{sk:k.sk})]).then(([st,as])=>({k,st,as})).catch(()=>null)));
+    res.forEach(r=>{ if(r) Stu.sib[r.k.sk]={st:r.st, as:r.as||[]}; });
+    const cur=Stu.sib[SK]; if(!cur) throw new Error("network");
+    const st=cur.st, as=cur.as;
     Stu.info=st; Stu.stamps=st.stamps||[]; Stu.assign=as||[]; lsSet("mc_cache_"+SK, JSON.stringify({st, as}));
     document.title=st.name+"さんのスタンプカード"; setNote("課題を出して、先生がOKしたら自分でスタンプを押せるよ。");
     if(force || (!Stu.styling && !window.__party && !Stu.playing && !Stu.sending && !busyNow())) stuRender();
@@ -2420,21 +2443,32 @@ async function stuRefresh(force){
   }catch(e){ if(e.message==="bad_key"){ stuLogout("番号が見つからなくなりました。もう一度入れてね。"); return; }
     setNote("つながりません。電波のいいところで開き直してください。"); }
 }
-function stuRankCheck(){
-  const cs=courseList(Stu.info);
-  const items = cs.length ? cs.map(c=>({k:"_"+c.course, r:rankOf(c.rank), g:c.grade, course:c.course})) : [{k:"", r:rankOf(Stu.info.rank), g:Stu.info.grade, course:null}];
-  let shown=false;
-  for(const it of items){
-    const k="mc_rank_"+SK+it.k, seen=lsGet(k);
-    if(seen===null || seen===""){ lsSet(k,String(it.r)); }
-    else if(it.r>+seen && !shown && !window.__party && !Stu.playing){ lsSet(k,String(it.r)); shown=true; rankUpShow(it.r, ()=>stuRender(), it.course); }
-    else if(it.r<+seen) lsSet(k,String(it.r));
-    // class (G) went up inside the same rank -> a small cheer
-    const gk="mc_g_"+SK+it.k, gs=lsGet(gk);
-    if(gOk(it.g)){ if(!shown && gs!==null && gs!=="" && it.g>+gs && it.r===+(lsGet(k)||0) && !window.__party){ const C=it.course&&COURSES[it.course]; toast("🎉 "+(C?C.ico+C.jp+"が ":"")+gLabel(it.g)+" に上がったよ！"); } lsSet(gk,String(it.g)); }
-  }
+// switch to another course card: everything below (stamps, tasks, message, profile) follows
+function stuSwitch(sk){
+  if(sk===SK || Stu.sending) return;
+  SK=sk; lsSet("mc_sk",SK); const d=Stu.sib[sk];
+  if(d){ Stu.info=d.st; Stu.stamps=d.st.stamps||[]; Stu.assign=d.as||[]; }
+  Stu.reopen={}; Stu.ym=nowYM(); Stu.styling=false; stuRender(); stuRankCheck();
 }
-function stuLogout(msg){ SK=null; lsSet("mc_sk",""); Stu.info=null; Stu.stamps=[]; Stu.assign=[]; stuLogin(msg); }
+function stuCards(){
+  const ks=(Stu.keys||[]).filter(k=>Stu.sib[k.sk] || k.sk===SK);
+  const one=(info,stamps,as)=>profileEl(info, profileStats(info, stamps, as));
+  if(ks.length<2) return one(Stu.info, Stu.stamps, Stu.assign);
+  const cards=ks.map(k=>{ if(k.sk===SK) return {el:one(Stu.info, Stu.stamps, Stu.assign), course:Stu.info.course};
+    const d=Stu.sib[k.sk]; return {el:one(d.st, d.st.stamps||[], d.as||[]), course:d.st.course}; });
+  return cardCarousel(cards, Math.max(0, ks.findIndex(k=>k.sk===SK)), i=>stuSwitch(ks[i].sk));
+}
+function stuRankCheck(){
+  const r=rankOf(Stu.info.rank), g=Stu.info.grade, C=Stu.info.course&&COURSES[Stu.info.course];
+  const k="mc_rank_"+SK, seen=lsGet(k); let shown=false;
+  if(seen===null || seen===""){ lsSet(k,String(r)); }
+  else if(r>+seen && !window.__party && !Stu.playing){ lsSet(k,String(r)); shown=true; rankUpShow(r, ()=>stuRender(), Stu.info.course); }
+  else if(r<+seen) lsSet(k,String(r));
+  // class (G) went up inside the same rank -> a small cheer
+  const gk="mc_g_"+SK, gs=lsGet(gk);
+  if(gOk(g)){ if(!shown && gs!==null && gs!=="" && g>+gs && r===+(lsGet(k)||0) && !window.__party) toast("🎉 "+(C?C.ico+C.jp+"が ":"")+gLabel(g)+" に上がったよ！"); lsSet(gk,String(g)); }
+}
+function stuLogout(msg){ SK=null; lsSet("mc_sk",""); lsSet("mc_sks",""); Stu.keys=[]; Stu.sib={}; Stu.info=null; Stu.stamps=[]; Stu.assign=[]; stuLogin(msg); }
 function stuLogin(msg){
   document.getElementById("h1").textContent="おんがくスタンプ"; document.title="おんがくスタンプ"; setNote("");
   const app=document.getElementById("app"); app.innerHTML="";
@@ -2447,12 +2481,13 @@ function stuLogin(msg){
     btn.disabled=true; box.querySelector("#login-msg").textContent="さがしています…";
     try{ const r=await rpc("mc_s_login",{p_num:n});
       if(!r||!r.ok){ box.querySelector("#login-msg").textContent="その番号は見つかりませんでした。先生に確認してね。"; btn.disabled=false; return; }
-      SK=r.sk; lsSet("mc_sk",SK); SFX.unlock(); stuStart(); }
+      SK=r.sk; lsSet("mc_sk",SK); Stu.keys=Array.isArray(r.keys)&&r.keys.length?r.keys:[{sk:r.sk,course:null}]; lsSet("mc_sks",JSON.stringify(Stu.keys)); SFX.unlock(); stuStart(); }
     catch(err){ box.querySelector("#login-msg").textContent="つながりません。電波のいいところでもう一度ためしてね。"; btn.disabled=false; } };
   app.append(box); setTimeout(()=>{ try{ inp.focus(); }catch(e){} },100);
 }
 let stuTimer=null;
 function stuStart(){
+  try{ const ks=JSON.parse(lsGet("mc_sks")||"null"); if(Array.isArray(ks) && ks.some(k=>k.sk===SK)) Stu.keys=ks; }catch(e){}
   try{ const c=JSON.parse(lsGet("mc_cache_"+SK)||"null"); if(c && c.st){ Stu.info=c.st; Stu.stamps=c.st.stamps||[]; Stu.assign=c.as||[]; stuRender(); } }catch(e){}
   stuRefresh(true); if(!stuTimer) stuTimer=setInterval(()=>{ if(SK && document.visibilityState==="visible" && !window.__party) stuRefresh(); }, 20000);
 }
@@ -2471,11 +2506,11 @@ function stuRender(){
   const card=cardAll(Stu.info, Stu.stamps), ok=Stu.assign.filter(a=>a.status==="approved");
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
-  app.append(courseCards(Stu.info, profileStats(Stu.info, Stu.stamps, Stu.assign)));
-  const db=el("button","deco-btn","✏️ プロフィールをデコる"); db.id="deco-btn"; db.onclick=openDeco; app.append(db);
+  app.append(stuCards());
+  const db=el("button","deco-btn","✏️ "+(Stu.info.course&&Stu.keys.length>1?courseTag(Stu.info.course)+"の":"")+"プロフィールをデコる"); db.id="deco-btn"; db.onclick=openDeco; app.append(db);
   app.append(pushCard());
   if(ok.length){ const n=el("div","notice big okn"); n.id="ok-notice"; n.innerHTML=`<span class="dot"></span><span>先生から OK が ${ok.length}こ 出たよ！スタンプを押そう！</span>`; app.append(n); }
-  const who=el("div","who"); who.append(el("h2",null,"♪ スタンプカード"));
+  const who=el("div","who"); who.append(el("h2",null,"♪ "+(Stu.info.course?courseTag(Stu.info.course)+"の":"")+"スタンプカード"));
   const eb=el("button","edit-btn","デザイン"); eb.id="style-btn"; eb.onclick=()=>{ Stu.styling=true; Stu.draft={stamp_p:Stu.info.stamp_p, color:Stu.info.color|0}; stuRender(); };
   who.append(eb); box.append(who);
   box.append(progressEl(card), rewardEl(card,false));
@@ -2662,7 +2697,8 @@ function stuStyle(box){
 /* ================= TEACHER ================= */
 const T = { view:lsGet("mc_view")||"review", students:[], tasks:[], review:[], q:"", sort:lsGet("mc_sort")||"num", sel:null, detail:null, sAssign:[], task:null, taskItems:null,
   busy:false, confirmDel:null, confirmStu:false, confirmTask:false, qr:false, ym:nowYM(), today:todayKey() };
-const stuName = sid => { const s=T.students.find(x=>x.id===sid); return s ? (s.num!=null?"No."+s.num+" ":"")+s.name : "（削除された生徒）"; };
+const nmC = s => s.name+(s.course&&COURSES[s.course]?" "+COURSES[s.course].ico:"");
+const stuName = sid => { const s=T.students.find(x=>x.id===sid); return s ? (s.num!=null?"No."+s.num+" ":"")+nmC(s) : "（削除された生徒）"; };
 async function tRefresh(force){
   try{ const [st, tk]=await Promise.all([rpc("mc_t_state",{tk:TK}), rpc("mc_t_tasks",{tk:TK})]);
     T.students=st.students||[]; if(st.today) T.today=st.today; T.tasks=tk.tasks||[]; T.review=tk.review||[];
@@ -2794,8 +2830,8 @@ function tTask(app){
   const cnt={}; items.forEach(i=>cnt[i.a.status]=(cnt[i.a.status]||0)+1);
   box.append(el("div","stats",Object.keys(T_STATUS).filter(k=>cnt[k]).map(k=>T_STATUS[k][0]+" "+cnt[k]).join(" ・ ")||"だれにも出していません"));
   const ul=el("div","list");
-  items.forEach(i=>{ const a=i.a, nm=(i.num!=null?"No."+i.num+" ":"")+i.name;
-    if(a.status==="submitted"){ const q=items.filter(x=>x.a.status==="submitted").map(x=>({a:x.a, name:(x.num!=null?"No."+x.num+" ":"")+x.name})); ul.append(reviewRow(a, nm, q, ()=>{ tLoadTask(); tRefresh(); })); return; }
+  items.forEach(i=>{ const a=i.a, nm=stuName(a.sid);
+    if(a.status==="submitted"){ const q=items.filter(x=>x.a.status==="submitted").map(x=>({a:x.a, name:stuName(x.a.sid)})); ul.append(reviewRow(a, nm, q, ()=>{ tLoadTask(); tRefresh(); })); return; }
     const r=el("div","srow static"); r.append(el("span","nm",nm), badge(T_STATUS,a.status));
     if(a.status!=="stamped"){ const x=el("button","btn small","はずす"); x.title="この生徒の課題からはずす"; x.onclick=async()=>{ if(!x.dataset.ok){ x.dataset.ok=1; x.textContent="はずす？"; return; }
       try{ await rpc("mc_t_unassign",{tk:TK, p_assign:a.id}); toast("はずしました"); tLoadTask(); tRefresh(); }catch(e){ toast("できませんでした（"+e.message+"）"); } }; r.append(x); }
@@ -2812,20 +2848,20 @@ function tTask(app){
   app.append(dz);
 }
 /* checkbox list of students; exclude = already assigned */
-function pickList(exclude, chosen){
+function pickList(exclude, chosen, only){
   const wrap=el("div","pick-wrap");
   const q=el("input"); q.type="search"; q.placeholder="名前・番号でさがす"; q.className="pk-q";
   const tools=el("div","btns"); const all=el("button","btn small","表示中をぜんぶ選ぶ"); all.type="button"; const none=el("button","btn small","選択をクリア"); none.type="button";
   const info=el("span","rw-note pk-n"); tools.append(all,none,info);
   const list=el("div","pk-list");
-  const arr=[...T.students].sort(numSort);
+  const arr=[...T.students].filter(s=>!only||only(s)).sort(numSort);
   const upd=()=>{ info.textContent=`${chosen.size}人 選択中`; };
   const draw=()=>{ list.innerHTML=""; const qq=q.value.trim().toLowerCase().replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248));
     arr.filter(s=>!qq || s.name.toLowerCase().includes(qq) || String(s.num||"")===qq.replace(/^0+(?=\d)/,"")).forEach(s=>{
-      const l=el("label","pk"); const cb=el("input"); cb.type="checkbox"; cb.value=s.id;
+      const l=el("label","pk"); const cb=el("input"); cb.type="checkbox"; cb.value=s.id; l.dataset.course=s.course||"";
       if(exclude.has(s.id)){ cb.disabled=true; cb.checked=true; l.classList.add("dis"); } else cb.checked=chosen.has(s.id);
       cb.onchange=()=>{ cb.checked?chosen.add(s.id):chosen.delete(s.id); upd(); };
-      l.append(cb, el("span","no",s.num!=null?"No."+s.num:"—"), el("span",null,s.name+(exclude.has(s.id)?"（出し済み）":""))); list.append(l); });
+      l.append(cb, el("span","no",s.num!=null?"No."+s.num:"—"), el("span",null,nmC(s)+(exclude.has(s.id)?"（出し済み）":""))); list.append(l); });
     if(!list.children.length) list.append(el("div","empty","見つかりません")); };
   q.oninput=draw;
   all.onclick=()=>{ list.querySelectorAll("input:not(:disabled)").forEach(cb=>{ cb.checked=true; chosen.add(cb.value); }); upd(); };
@@ -2848,19 +2884,22 @@ function openTask(presetSid){
     <label>課題の名前<input id="t-title" maxlength="60" placeholder="例：ブルグミュラー25番 アラベスク"></label>
     <label>くわしく（なくてもOK）<textarea id="t-detail" maxlength="400" style="min-height:80px" placeholder="例：右手だけで3回ひいた動画を送ってね"></textarea></label>
     <label>しめきり（なくてもOK）<input id="t-due" type="date"></label>
+    <div class="fl">コース<div class="seg small" id="t-course"><button type="button" data-c="">すべて</button><button type="button" data-c="vocal">🎤 ボーカル</button><button type="button" data-c="guitar">🎸 ギター</button></div></div>
     <div class="fl">だれに出す？<div class="seg small" id="t-who"><button type="button" data-w="all">全員</button><button type="button" data-w="pick">えらぶ</button></div></div>
     <div id="t-pick"></div><p class="rw-note" id="t-msg"></p>
     <div class="actions"><button type="button" id="t-cancel">やめる</button><button type="button" class="save" id="t-ok">出す</button></div>`;
-  let who=presetSid?"pick":"all";
-  const pk=p.querySelector("#t-pick"), wb=p.querySelectorAll("#t-who button");
-  const setWho=w=>{ who=w; wb.forEach(b=>b.setAttribute("aria-selected",b.dataset.w===w)); pk.innerHTML="";
-    if(w==="pick") pk.append(pickList(new Set(), chosen)); else pk.append(el("p","rw-note",`生徒 ${T.students.length}人 全員に出します`)); };
-  wb.forEach(b=>b.onclick=()=>setWho(b.dataset.w)); setWho(who);
+  let who=presetSid?"pick":"all", crs=presetSid?((T.students.find(x=>x.id===presetSid)||{}).course||""):"";
+  const pk=p.querySelector("#t-pick"), wb=p.querySelectorAll("#t-who button"), cbs=p.querySelectorAll("#t-course button");
+  const pool=()=>T.students.filter(s=>!crs || s.course===crs);
+  const setWho=w=>{ who=w; wb.forEach(b=>b.setAttribute("aria-selected",b.dataset.w===w)); cbs.forEach(b=>b.setAttribute("aria-selected",b.dataset.c===crs)); pk.innerHTML="";
+    if(w==="pick") pk.append(pickList(new Set(), chosen, s=>!crs || s.course===crs));
+    else pk.append(el("p","rw-note", crs ? `${courseTag(crs)}コースの ${pool().length}人 全員に出します` : `カード ${T.students.length}枚（全コース）全員に出します`)); };
+  wb.forEach(b=>b.onclick=()=>setWho(b.dataset.w)); cbs.forEach(b=>b.onclick=()=>{ crs=b.dataset.c; [...chosen].forEach(id=>{ const x=T.students.find(y=>y.id===id); if(crs && x && x.course!==crs) chosen.delete(id); }); setWho(who); }); setWho(who);
   const close=()=>{ o.remove(); tRender(); };
   p.querySelector("#t-cancel").onclick=close; o.onclick=e=>{ if(e.target===o) close(); };
   p.querySelector("#t-ok").onclick=async()=>{ const m=p.querySelector("#t-msg"); m.style.color="#ff8a9a";
     const title=p.querySelector("#t-title").value.trim(); if(!title){ m.textContent="課題の名前を入れてね"; return; }
-    const sids= who==="all" ? T.students.map(s=>s.id) : [...chosen]; if(!sids.length){ m.textContent="生徒をえらんでね"; return; }
+    const sids= who==="all" ? pool().map(s=>s.id) : [...chosen]; if(!sids.length){ m.textContent="生徒をえらんでね"; return; }
     const okb=p.querySelector("#t-ok"); okb.disabled=true;
     try{ const r=await rpc("mc_t_task_create",{tk:TK, p_title:title, p_detail:p.querySelector("#t-detail").value, p_due:p.querySelector("#t-due").value||null, p_sids:sids});
       o.remove(); toast(`「${title}」を ${r.n}人に出しました`); await tRefresh(true); if(T.sel) tLoadStudent(); }
@@ -2874,7 +2913,7 @@ function tStudents(app){
   const q=el("input"); q.id="q"; q.type="search"; q.placeholder="名前・番号でさがす"; q.value=T.q; q.oninput=()=>{ T.q=q.value; drawList(); };
   const add=el("button","btn primary","＋ 生徒を追加"); add.id="add-btn"; add.onclick=openAdd;
   tools.append(q,add); app.append(tools);
-  const stats=el("div","stats"); stats.innerHTML=`<span>生徒 ${T.students.length}人</span>`;
+  const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人`+(ppl!==T.students.length?`（カード ${T.students.length}枚）`:"")+`</span>`; }
   const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
   const list=el("div","list"); list.id="list"; app.append(list);
@@ -2891,7 +2930,10 @@ function tStudents(app){
     const subSet=new Set(T.review.map(a=>a.sid));
     arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; if(s.prof && s.prof.av){ r.append(el("span","srow-av",String(s.prof.av).slice(0,4))); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
-      r.append(el("span","nm",s.name)); { const cs=courseList(s); if(cs.length) cs.forEach(c=>r.append(el("span","rkc rk"+rankOf(c.rank), COURSES[c.course].ico+" "+RANKS[rankOf(c.rank)].name+(gOk(c.grade)?" "+gLabel(c.grade):"")))); else r.append(el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name+(gOk(s.grade)?" "+gLabel(s.grade):""))); } if(subSet.has(s.id)) r.append(el("span","td","提出あり"));
+      const nw=el("span","nmw"); nw.append(el("span","nm",s.name)); const sub=el("span","nsub");
+      if(s.course&&COURSES[s.course]) sub.append(el("span","cc cc-"+s.course, courseTag(s.course)));
+      sub.append(el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name+(gOk(s.grade)?" "+gLabel(s.grade):""))); if(subSet.has(s.id)) sub.append(el("span","td","提出あり"));
+      nw.append(sub); r.append(nw);
       const c=el("span","ct"); c.innerHTML=stuCount(s); r.append(c);
       r.onclick=()=>{ T.sel=s.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.confirmStu=false; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); };
       list.append(r); });
@@ -2940,9 +2982,9 @@ function tStudent(app){
   const back=el("button","btn small back","‹ 生徒一覧へ"); back.id="back"; back.onclick=()=>{ T.sel=null; T.detail=null; tRender(); tRefresh(); }; app.append(back);
   if(!s){ app.append(el("div","empty","読み込み中…")); return; }
   const stamps=(T.detail&&T.detail.stamps)||[];
-  app.append(courseCards(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
+  app.append(profileEl(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
   app.append(coursePicker(s));
-  { const cs=courseList(s); if(cs.length) cs.forEach(c=>app.append(gStepper(s, c.course))); else app.append(gStepper(s)); }
+  app.append(gStepper(s));
   app.append(msgEditor(s));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
@@ -2956,7 +2998,7 @@ function tStudent(app){
   const qa=el("button","btn small","＋ この生徒だけに課題を出す"); qa.id="stu-task"; qa.onclick=()=>openTask(s.id); as.append(qa);
   if(T.detail && !T.sAssign.length) as.append(el("div","empty","まだ課題がありません"));
   T.sAssign.forEach(a=>{
-    if(a.status==="submitted"){ const q=T.sAssign.filter(x=>x.status==="submitted").map(x=>({a:x, name:s.name})); as.append(reviewRow(a, s.name, q, ()=>{ tLoadStudent(); tRefresh(); })); return; }
+    if(a.status==="submitted"){ const q=T.sAssign.filter(x=>x.status==="submitted").map(x=>({a:x, name:nmC(s)})); as.append(reviewRow(a, nmC(s), q, ()=>{ tLoadStudent(); tRefresh(); })); return; }
     const r=el("div","srow static"); const nm=el("span","nm"); nm.append(el("b",null,a.title)); if(a.t_comment) nm.append(el("small",null,"先生：「"+a.t_comment+"」"));
     r.append(nm, badge(T_STATUS,a.status));
     if(a.status!=="stamped"){ const x=el("button","btn small","はずす"); x.onclick=async()=>{ if(!x.dataset.ok){ x.dataset.ok=1; x.textContent="はずす？"; return; }
@@ -3050,21 +3092,37 @@ function gStepper(s, course){
   box.append(head, s1, tabs, s2, grid, fine); draw(); return box;
 }
 
-/* teacher: which courses the student takes (vocal / guitar / both) */
+/* teacher: the course of this card, the other course cards of the same student, and adding a course */
 function coursePicker(s){
   const box=el("section","card cpick"); box.id="course-pick";
   box.append(el("h3","sech","📚 コース"));
-  const row=el("div","cp-row"); const sel=new Set(courseList(s).map(c=>c.course));
-  const save=async(next, note)=>{ try{ const r=await rpc("mc_t_courses",{tk:TK, sid:s.id, p_courses:[...next]}); s.courses=r; const li=(T.students||[]).find(x=>x.id===s.id); if(li) li.courses=r; toast(note); tRender(); }
-    catch(e){ toast("保存できませんでした（"+e.message+"）"); } };
-  COURSE_KEYS.forEach(k=>{ const C=COURSES[k]; const on=sel.has(k);
-    const b=el("button","cp-btn"+(on?" on":"")); b.type="button"; b.dataset.course=k; b.append(el("span","ci",C.ico), el("b",null,C.jp), el("small",null,on?"受講中":"なし"));
-    b.onclick=()=>{ const next=new Set(sel);
-      if(on){ if(!b.dataset.ok){ b.dataset.ok=1; b.querySelector("small").textContent="もう一度押すと外す"; b.classList.add("warn"); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.ok; b.classList.remove("warn"); b.querySelector("small").textContent="受講中"; } },3500); return; }
-        next.delete(k); save(next, C.jp+"コースを外しました"); }
-      else { next.add(k); save(next, C.jp+"コースを追加しました"); } };
+  const sibs=T.students.filter(x=>s.num!=null && x.num===s.num && x.id!==s.id);
+  const row=el("div","cp-row three");
+  [["",null,"なし","—"]].concat(COURSE_KEYS.map(k=>[k,k,COURSES[k].jp,COURSES[k].ico])).forEach(([key,val,jp,ico])=>{
+    const on=(s.course||null)===val, taken=val && sibs.some(x=>x.course===val);
+    const b=el("button","cp-btn"+(on?" on":"")+(taken?" dis":"")); b.type="button"; b.dataset.course=key; b.disabled=taken;
+    b.append(el("span","ci",ico), el("b",null,jp), el("small",null, on?"このカード":taken?"別のカードあり":""));
+    b.onclick=async()=>{ if(on) return; try{ const r=await rpc("mc_t_set_course",{tk:TK, sid:s.id, p_course:val});
+        if(r==="dup_course"){ toast("そのコースのカードはもうあります"); return; }
+        s.course=val; const li=T.students.find(x=>x.id===s.id); if(li) li.course=val; toast(val?COURSES[val].jp+"コースのカードにしました":"コースなしにしました"); tRender(); }
+      catch(e){ toast("保存できませんでした（"+e.message+"）"); } };
     row.append(b); });
-  box.append(row, el("p","rw-note", sel.size ? "コースごとにランクとGを下で決められます。外すとそのコースのレベルは消えます。" : "コースを選ぶと、コースごとにランクとGを決められます（今のレベルは最初に選んだコースに引きつがれます）。"));
+  box.append(el("p","gstep-t","このカードのコース"), row);
+  if(sibs.length){ const sr=el("div","cp-sibs"); sr.append(el("small",null,"同じ生徒の別コース："));
+    sibs.forEach(x=>{ const b=el("button","btn small",courseTag(x.course)||"コースなし"); b.onclick=()=>{ T.sel=x.id; T.detail=null; T.sAssign=[]; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); }; sr.append(b); });
+    box.append(sr); }
+  const free=COURSE_KEYS.filter(k=>k!==s.course && !sibs.some(x=>x.course===k));
+  if(s.course && s.num!=null && free.length){
+    const ar=el("div","cp-add");
+    free.forEach(k=>{ const b=el("button","btn small primary","＋ "+courseTag(k)+"コースも追加"); b.dataset.add=k;
+      b.onclick=async()=>{ b.disabled=true; try{ const r=await rpc("mc_t_add_course",{tk:TK, sid:s.id, p_course:k}); toast(COURSES[k].jp+"コースのカードを作りました"); await tRefresh(true); T.sel=r.id; T.detail=null; T.sAssign=[]; tRender(); tLoadStudent(); scrollTo(0,0); }
+        catch(e){ b.disabled=false; toast(e.message==="dup_course"?"そのコースのカードはもうあります":"作れませんでした（"+e.message+"）"); } };
+      ar.append(b); });
+    box.append(ar);
+  }
+  box.append(el("p","rw-note", !s.course ? "まずこのカードのコースを選んでね。選ぶと、もう一つのコースのカードも作れます。"
+    : s.num==null ? "番号がないと別コースのカードは作れません（下の「設定」で番号を入れてね）。"
+    : "コースごとにカードが分かれていて、スタンプ・課題・メッセージ・プロフィール・ランクとGはそれぞれ別です。生徒は同じ番号でログインして、横にスワイプして切りかえます。"));
   return box;
 }
 
@@ -3113,7 +3171,7 @@ async function pushReg(){ if(Push.reg) return Push.reg; if(!("serviceWorker" in 
   try{ await navigator.serviceWorker.register("sw.js"); Push.reg=await navigator.serviceWorker.ready; return Push.reg; }catch(e){ return null; } }
 function b64u8(s){ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4) s+="="; const b=atob(s); return Uint8Array.from(b,c=>c.charCodeAt(0)); }
 async function pushPub(){ let k=await rpc("mc_push_pub",{}); if(!k){ try{ await fetch(PUSH_FN,{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}); }catch(e){} k=await rpc("mc_push_pub",{}); } return k; }
-async function pushSave(sub){ const j=sub.toJSON(); if(MODE==="t") await rpc("mc_t_push",{tk:TK, p_sub:j}); else await rpc("mc_s_push",{sk:SK, p_sub:j}); lsSet("mc_push_on_"+MODE,"1"); }
+async function pushSave(sub){ const j=sub.toJSON(); if(MODE==="t") await rpc("mc_t_push",{tk:TK, p_sub:j}); else { const ks=(Stu.keys&&Stu.keys.length)?Stu.keys:[{sk:SK}]; for(const k of ks) await rpc("mc_s_push",{sk:k.sk, p_sub:j}); } lsSet("mc_push_on_"+MODE,"1"); }
 async function pushOn(){ const reg=await pushReg(); if(!reg) throw new Error("no_sw");
   const perm=await Notification.requestPermission(); if(perm!=="granted") throw new Error("denied");
   let sub=await reg.pushManager.getSubscription();
