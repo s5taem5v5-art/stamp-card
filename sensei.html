@@ -1114,6 +1114,12 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .cpick .cp-btn.dis{opacity:.4}
 .cpick .cp-sibs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
 .cpick .cp-add{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.srow.multi{align-items:flex-start}
+.srow.multi .no{margin-top:2px}
+.srow .nsub .cct{font-size:.62rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.ctabs{display:flex;gap:8px;justify-content:center;margin:2px 0 30px}
+.ctabs .ctab{flex:1;max-width:180px;border:2px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:inherit;border-radius:14px;padding:10px 6px;font-weight:800;font-size:.95rem;cursor:pointer}
+.ctabs .ctab.on{background:#fff;color:#2a1a4a;border-color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.3)}
 
 </style>
 </head>
@@ -2913,29 +2919,39 @@ function tStudents(app){
   const q=el("input"); q.id="q"; q.type="search"; q.placeholder="名前・番号でさがす"; q.value=T.q; q.oninput=()=>{ T.q=q.value; drawList(); };
   const add=el("button","btn primary","＋ 生徒を追加"); add.id="add-btn"; add.onclick=openAdd;
   tools.append(q,add); app.append(tools);
-  const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人`+(ppl!==T.students.length?`（カード ${T.students.length}枚）`:"")+`</span>`; }
+  const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人</span>`; }
   const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
   const list=el("div","list"); list.id="list"; app.append(list);
   function drawList(){
     list.innerHTML="";
     const qq=T.q.trim().toLowerCase().replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248));
-    let arr=T.students.filter(s=>!qq || s.name.toLowerCase().includes(qq) || String(s.num||"")===qq.replace(/^0+(?=\d)/,""));
-    if(T.sort==="num") arr.sort(numSort);
+    // one row per person: the course cards of the same number are shown together
+    const groups=new Map(); T.students.forEach(s=>{ const k=s.num!=null?"n"+s.num:"i"+s.id; if(!groups.has(k)) groups.set(k,[]); groups.get(k).push(s); });
+    const co=c=>{ const i=COURSE_KEYS.indexOf(c); return i<0?9:i; };
+    let arr=[...groups.values()].map(g=>g.sort((x,y)=>co(x.course)-co(y.course))).map(g=>({g, s:g[0], name:g[0].name, num:g[0].num, last:g.map(x=>x.last||"").sort().pop(), n:g.reduce((t,x)=>t+(x.np|0)+(x.ne|0),0)}))
+      .filter(p=>!qq || p.name.toLowerCase().includes(qq) || String(p.num||"")===qq.replace(/^0+(?=\d)/,""));
+    if(T.sort==="num") arr.sort((a,b)=>numSort(a.s,b.s));
     else if(T.sort==="name") arr.sort((a,b)=>a.name.localeCompare(b.name,"ja"));
     else if(T.sort==="recent") arr.sort((a,b)=>String(b.last||"").localeCompare(String(a.last||"")));
-    else arr.sort((a,b)=>(a.np+a.ne)-(b.np+b.ne));
+    else arr.sort((a,b)=>a.n-b.n);
     if(!T.students.length){ list.append(el("div","empty","まだ生徒がいません。「＋ 生徒を追加」から登録してね。")); return; }
     if(!arr.length){ list.append(el("div","empty","見つかりません")); return; }
     const subSet=new Set(T.review.map(a=>a.sid));
-    arr.forEach(s=>{ const r=el("button","srow"); r.dataset.id=s.id; if(s.prof && s.prof.av){ r.append(el("span","srow-av",String(s.prof.av).slice(0,4))); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
+    arr.forEach(p=>{ const s=p.s, multi=p.g.length>1; const r=el("button","srow"+(multi?" multi":"")); r.dataset.id=s.id;
+      const av=p.g.map(x=>x.prof&&x.prof.av).find(Boolean); if(av){ r.append(el("span","srow-av",String(av).slice(0,4))); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
-      const nw=el("span","nmw"); nw.append(el("span","nm",s.name)); const sub=el("span","nsub");
-      if(s.course&&COURSES[s.course]) sub.append(el("span","cc cc-"+s.course, courseTag(s.course)));
-      sub.append(el("span","rkc rk"+rankOf(s.rank), RANKS[rankOf(s.rank)].name+(gOk(s.grade)?" "+gLabel(s.grade):""))); if(subSet.has(s.id)) sub.append(el("span","td","提出あり"));
-      nw.append(sub); r.append(nw);
-      const c=el("span","ct"); c.innerHTML=stuCount(s); r.append(c);
-      r.onclick=()=>{ T.sel=s.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.confirmStu=false; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); };
+      const nw=el("span","nmw"); nw.append(el("span","nm",s.name));
+      p.g.forEach(x=>{ const sub=el("span","nsub");
+        if(x.course&&COURSES[x.course]) sub.append(el("span","cc cc-"+x.course, courseTag(x.course)));
+        sub.append(el("span","rkc rk"+rankOf(x.rank), RANKS[rankOf(x.rank)].name+(gOk(x.grade)?" "+gLabel(x.grade):"")));
+        if(multi){ const c=el("span","cct"); c.innerHTML=stuCount(x).replace(/<br>.*$/,""); sub.append(c); }
+        if(subSet.has(x.id)) sub.append(el("span","td","提出あり"));
+        nw.append(sub); });
+      r.append(nw);
+      if(!multi){ const c=el("span","ct"); c.innerHTML=stuCount(s); r.append(c); }
+      const open=(T.lastCourse && p.g.find(x=>x.course===T.lastCourse)) || p.g.find(x=>subSet.has(x.id)) || s;
+      r.onclick=()=>{ T.sel=open.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.confirmStu=false; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); };
       list.append(r); });
   }
   drawList();
@@ -2982,6 +2998,11 @@ function tStudent(app){
   const back=el("button","btn small back","‹ 生徒一覧へ"); back.id="back"; back.onclick=()=>{ T.sel=null; T.detail=null; tRender(); tRefresh(); }; app.append(back);
   if(!s){ app.append(el("div","empty","読み込み中…")); return; }
   const stamps=(T.detail&&T.detail.stamps)||[];
+  const sibs=T.students.filter(x=>s.num!=null && x.num===s.num).sort((x,y)=>COURSE_KEYS.indexOf(x.course)-COURSE_KEYS.indexOf(y.course));
+  if(sibs.length>1){ const tb=el("div","ctabs"); tb.id="course-tabs";
+    sibs.forEach(x=>{ const b=el("button","ctab"+(x.id===s.id?" on":""), courseTag(x.course)||"コースなし"); b.type="button"; b.dataset.course=x.course||"";
+      b.onclick=()=>{ if(x.id===s.id) return; T.lastCourse=x.course; T.sel=x.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.ym=nowYM(); tRender(); tLoadStudent(); }; tb.append(b); });
+    app.append(tb); }
   app.append(profileEl(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
   app.append(coursePicker(s));
   app.append(gStepper(s));
@@ -3108,21 +3129,18 @@ function coursePicker(s){
       catch(e){ toast("保存できませんでした（"+e.message+"）"); } };
     row.append(b); });
   box.append(el("p","gstep-t","このカードのコース"), row);
-  if(sibs.length){ const sr=el("div","cp-sibs"); sr.append(el("small",null,"同じ生徒の別コース："));
-    sibs.forEach(x=>{ const b=el("button","btn small",courseTag(x.course)||"コースなし"); b.onclick=()=>{ T.sel=x.id; T.detail=null; T.sAssign=[]; T.ym=nowYM(); tRender(); tLoadStudent(); scrollTo(0,0); }; sr.append(b); });
-    box.append(sr); }
   const free=COURSE_KEYS.filter(k=>k!==s.course && !sibs.some(x=>x.course===k));
   if(s.course && s.num!=null && free.length){
     const ar=el("div","cp-add");
     free.forEach(k=>{ const b=el("button","btn small primary","＋ "+courseTag(k)+"コースも追加"); b.dataset.add=k;
-      b.onclick=async()=>{ b.disabled=true; try{ const r=await rpc("mc_t_add_course",{tk:TK, sid:s.id, p_course:k}); toast(COURSES[k].jp+"コースのカードを作りました"); await tRefresh(true); T.sel=r.id; T.detail=null; T.sAssign=[]; tRender(); tLoadStudent(); scrollTo(0,0); }
+      b.onclick=async()=>{ b.disabled=true; try{ const r=await rpc("mc_t_add_course",{tk:TK, sid:s.id, p_course:k}); toast(COURSES[k].jp+"コースを追加しました"); T.lastCourse=k; await tRefresh(true); T.sel=r.id; T.detail=null; T.sAssign=[]; tRender(); tLoadStudent(); scrollTo(0,0); }
         catch(e){ b.disabled=false; toast(e.message==="dup_course"?"そのコースのカードはもうあります":"作れませんでした（"+e.message+"）"); } };
       ar.append(b); });
     box.append(ar);
   }
   box.append(el("p","rw-note", !s.course ? "まずこのカードのコースを選んでね。選ぶと、もう一つのコースのカードも作れます。"
     : s.num==null ? "番号がないと別コースのカードは作れません（下の「設定」で番号を入れてね）。"
-    : "コースごとにカードが分かれていて、スタンプ・課題・メッセージ・プロフィール・ランクとGはそれぞれ別です。生徒は同じ番号でログインして、横にスワイプして切りかえます。"));
+    : "コースごとに、スタンプ・課題・メッセージ・プロフィール・ランクとGが別々です。上のタブでコースを切りかえてね。生徒は同じ番号でログインして、横にスワイプして切りかえます。"));
   return box;
 }
 
