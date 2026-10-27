@@ -1035,6 +1035,15 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .msged textarea{width:100%;box-sizing:border-box;font-size:1rem;line-height:1.6;resize:vertical}
 .msged .actions{display:flex;align-items:center;gap:8px;margin-top:8px}.msged .msg-cnt{flex:1;opacity:.6;font-size:.75rem}
 @media (prefers-reduced-motion: reduce){ .pf-flip{transition:none} .pf-flipbtn.new{animation:none} }
+/* grade picker v2: rank first, then G */
+.card.gstep{flex-direction:column!important;align-items:stretch;gap:8px;padding:14px}
+.gstep .gtop2 .gmid{display:flex;flex-direction:column;align-items:center;gap:2px}
+.gstep .gk2{font-size:.7rem;opacity:.7;letter-spacing:.1em}
+.gstep .gstep-t{margin:6px 0 0;font-size:.78rem;font-weight:800;opacity:.8}
+.gstep .gtab{display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 2px}
+.gstep .gtab b{font-size:.85rem}.gstep .gtab small{font-size:.65rem;opacity:.75;font-weight:600}
+.gstep .gtab.cur:not(.on){border-color:rgba(255,255,255,.55)}
+.gstep .gfine{display:flex;justify-content:flex-end;gap:8px}
 
 </style>
 </head>
@@ -2841,28 +2850,31 @@ async function tCleanup(){
   }catch(e){}
 }
 
-/* teacher: class grade — pick a rank, then tap the G (− / + for fine steps). Saves after a short pause. */
+/* teacher: class grade — step 1: tap a rank, step 2: its G list appears, tap one (saves right away) */
 function gStepper(s){
   const box=el("section","card gstep"); box.id="g-step";
-  let g = gOk(s.grade) ? s.grade|0 : null, tab = g!=null ? gRank(g) : rankOf(s.rank), timer=null;
-  const minus=el("button","gbtn","−"), plus=el("button","gbtn","＋"), lab=el("b","glab"), sub=el("small","gsub");
-  minus.id="g-minus"; plus.id="g-plus";
-  const tabs=el("div","gtabs"), grid=el("div","ggrid");
-  const draw=()=>{
-    lab.textContent = g==null ? "G未設定" : gLabel(g); sub.textContent = g==null ? "ランクを選んでGをタップ" : RANKS[gRank(g)].name+"（ランク自動）";
-    minus.disabled = g==null || g<=0; plus.disabled = g!=null && g>=G_MAX;
-    tabs.innerHTML=""; RANKS.forEach((R,i)=>{ const t=el("button","gtab rk"+i+(i===tab?" on":""),R.name); t.type="button"; t.dataset.r=i; t.onclick=()=>{ tab=i; draw(); }; tabs.append(t); });
-    grid.innerHTML=""; const [lo,hi]=G_BAND[tab];
-    for(let i=lo;i<=hi;i++){ const c=el("button","gcell"+(i===g?" on":""),gLabel(i).slice(1)); c.type="button"; c.dataset.g=i; c.onclick=()=>{ g=i; draw(); save(300); }; grid.append(c); } };
+  let g = gOk(s.grade) ? s.grade|0 : null, tab = (window.__gOpen&&window.__gOpen.sid===s.id) ? window.__gOpen.tab : null, timer=null;
+  const keep=()=>{ window.__gOpen={sid:s.id, tab}; };
+  const head=el("div","gtop2"), lab=el("b","glab"), sub=el("small","gsub"); const hm=el("div","gmid"); hm.append(el("span","gk2","クラス"), lab, sub); head.append(hm);
+  const s1=el("p","gstep-t","① ランクを選ぶ"), tabs=el("div","gtabs"), s2=el("p","gstep-t","② Gを選ぶ"), grid=el("div","ggrid"), fine=el("div","gfine");
+  const minus=el("button","btn small","−1段"), plus=el("button","btn small","＋1段"); minus.id="g-minus"; plus.id="g-plus"; minus.type=plus.type="button";
+  fine.append(minus, plus);
   const save=(ms)=>{ clearTimeout(timer); window.__gEditing=true; timer=setTimeout(async()=>{
       try{ const r=await rpc("mc_t_grade",{tk:TK, sid:s.id, p_grade:g}); s.grade=r.grade; if(r.rank!=null) s.rank=r.rank;
         const li=(T.students||[]).find(x=>x.id===s.id); if(li){ li.grade=s.grade; li.rank=s.rank; }
-        toast(gLabel(g)+" にしました"); window.__gEditing=false; tRender(); }
+        toast(gLabel(g)+" にしました（"+RANKS[gRank(g)].name+"）"); window.__gEditing=false; tRender(); }
       catch(e){ window.__gEditing=false; toast("保存できませんでした（"+e.message+"）"); } }, ms); };
-  minus.onclick=()=>{ if(g==null||g<=0) return; g--; tab=gRank(g); draw(); save(800); };
-  plus.onclick=()=>{ g = g==null ? G_BAND[tab][0] : Math.min(G_MAX, g+1); tab=gRank(g); draw(); save(800); };
-  const top=el("div","gtop"), mid=el("div","gmid"); mid.append(lab, sub); top.append(minus, mid, plus);
-  box.append(el("span","gk","クラス"), top, tabs, grid); draw(); return box;
+  const draw=()=>{
+    lab.textContent = g==null ? "G未設定" : gLabel(g); sub.textContent = g==null ? "まずランクを選んでね" : RANKS[gRank(g)].name+"（ランクは自動で合います）";
+    tabs.innerHTML=""; RANKS.forEach((R,i)=>{ const t=el("button","gtab rk"+i+(i===tab?" on":"")+(g!=null&&gRank(g)===i?" cur":"")); t.type="button"; t.dataset.r=i;
+      t.append(el("b",null,R.name), el("small",null,"G"+gParts(G_BAND[i][0])[0]+"〜"+gParts(G_BAND[i][1])[0])); t.onclick=()=>{ tab = tab===i ? null : i; keep(); draw(); }; tabs.append(t); });
+    const open = tab!=null; s2.style.display=grid.style.display=fine.style.display = open ? "" : "none";
+    grid.innerHTML=""; if(open){ const [lo,hi]=G_BAND[tab];
+      for(let i=lo;i<=hi;i++){ const c=el("button","gcell"+(i===g?" on":""),gLabel(i).slice(1)); c.type="button"; c.dataset.g=i; c.onclick=()=>{ g=i; keep(); draw(); save(250); }; grid.append(c); } }
+    minus.disabled = g==null || g<=0; plus.disabled = g==null || g>=G_MAX; };
+  minus.onclick=()=>{ if(g==null||g<=0) return; g--; tab=gRank(g); keep(); draw(); save(800); };
+  plus.onclick=()=>{ if(g==null||g>=G_MAX) return; g++; tab=gRank(g); keep(); draw(); save(800); };
+  box.append(head, s1, tabs, s2, grid, fine); draw(); return box;
 }
 
 /* teacher: the message on the back of the student's card */
