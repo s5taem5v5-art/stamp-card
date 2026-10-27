@@ -400,8 +400,9 @@ function celebrate(card, after){
 const H = new URLSearchParams(location.hash.slice(1));
 const okKey = k => k && /^[A-Za-z0-9_-]{20,}$/.test(k);
 let TK = okKey(H.get("t")) ? H.get("t") : null, SK = okKey(H.get("s")) ? H.get("s") : null;
-if(TK){ lsSet("mc_tk",TK); lsSet("mc_mode","t"); } else if(SK){ lsSet("mc_sk",SK); lsSet("mc_mode","s"); }
-else { const m=lsGet("mc_mode"); if(m==="t" && okKey(lsGet("mc_tk"))) TK=lsGet("mc_tk"); else if(okKey(lsGet("mc_sk"))) SK=lsGet("mc_sk"); else if(okKey(lsGet("mc_tk"))) TK=lsGet("mc_tk"); }
+// the teacher page opens ONLY from the teacher link (#t=...); the plain link is always the student page
+if(TK){ lsSet("mc_tk",TK); } else if(SK){ lsSet("mc_sk",SK); }
+else if(okKey(lsGet("mc_sk"))) SK=lsGet("mc_sk");
 const MODE = TK ? "t" : "s";   // no key = student login screen
 const BASE = location.origin + location.pathname;
 const SHARED_URL = BASE;          // the one link for the class LINE group
@@ -1063,6 +1064,7 @@ function stuLogin(msg){
   box.innerHTML=`<div class="login-ico">${stampSVG("note")}</div><h2>ようこそ！</h2><p class="rw-note">カードに書いてある<b>番号</b>を入れてね</p>
     <form id="login-form"><input id="login-num" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="例：12"><button type="submit" class="press" id="login-btn">はじめる</button></form><p class="rw-note" id="login-msg"></p>`;
   if(msg) box.querySelector("#login-msg").textContent=msg;
+  if(okKey(lsGet("mc_tk"))){ const tl=el("a","link","先生用ページを開く"); tl.href=BASE+"#t="+lsGet("mc_tk"); tl.id="to-teacher"; tl.onclick=()=>setTimeout(()=>location.reload(),50); box.append(tl); }
   const f=box.querySelector("form"), inp=box.querySelector("input"), btn=box.querySelector("#login-btn");
   f.onsubmit=async e=>{ e.preventDefault(); const n=inp.value.trim(); if(!n){ inp.focus(); return; }
     btn.disabled=true; box.querySelector("#login-msg").textContent="さがしています…";
