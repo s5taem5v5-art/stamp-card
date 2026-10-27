@@ -979,14 +979,7 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .rk3 .pf-gp{background:linear-gradient(#07040e,#07040e) padding-box,conic-gradient(var(--rb)) border-box;border:2.5px solid transparent;color:#fff;box-shadow:0 0 18px rgba(140,100,255,.7),0 0 34px rgba(255,42,61,.3)}
 .rk3 .pf-gp b{background:linear-gradient(90deg,#ff5a6e,#ffb04a,#ffe98a,#6dffb0,#6ad8ff,#9a8dff,#e08aff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rk3 .pf-gp small{color:#cfc6ff;opacity:1}
-/* make room so the rank name never runs under the plate */
-.pf-tx:has(.pf-gp) .pf-lv{padding-right:74px}
-.pf-tx:has(.pf-gp) .pf-lv{padding-right:80px}
-.rk3 .pf-tx:has(.pf-gp) .pf-name{font-size:1.62rem}
-.rk2 .pf-tx:has(.pf-gp) .pf-name{font-size:1.75rem}
-.pf-tx:has(.pf-gp) .pf-rk{white-space:nowrap}
-.rk3 .pf-tx:has(.pf-gp) .pf-rk::after{content:none}
-.has-g .pf-stk.s0,.rk1.has-g .pf-stk.s0,.rk2.has-g .pf-stk.s0,.rk3.has-g .pf-stk.s0{right:4px;top:54px;bottom:auto;font-size:1.3rem;z-index:4}
+.pf-flip>.pf-stk.s0{right:2px;top:-40px;bottom:auto;font-size:1.3rem;z-index:4}
 
 /* ===== flip card: teacher's message on the back ===== */
 .pf-flip{position:relative;margin-bottom:12px;transition:transform .23s cubic-bezier(.4,0,.6,1);transform:perspective(1100px) rotateY(0)}
@@ -1044,6 +1037,22 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .gstep .gtab b{font-size:.85rem}.gstep .gtab small{font-size:.65rem;opacity:.75;font-weight:600}
 .gstep .gtab.cur:not(.on){border-color:rgba(255,255,255,.55)}
 .gstep .gfine{display:flex;justify-content:flex-end;gap:8px}
+
+/* CLASS plate = a tag hanging on the card's top edge (never covers the text) */
+.pf-flip.has-gp{margin-top:36px}
+.pf-flip>.pf-stk.s0{position:absolute;z-index:8}
+.pf-flip.is-back>.pf-stk{display:none}
+.pf-flip>.pf-gp{position:absolute;top:-32px;right:18px;z-index:7;flex-direction:row;align-items:center;gap:7px;padding:5px 12px 5px 10px;transform:rotate(-2deg);pointer-events:none}
+.pf-flip>.pf-gp small{margin:0;writing-mode:vertical-rl;font-size:.48rem;letter-spacing:.12em;line-height:1}
+.pf-flip>.pf-gp .gN{font-size:1.9rem}.pf-flip>.pf-gp .gG{font-size:.95rem}.pf-flip>.pf-gp .gS{font-size:1.4rem}
+.pf-gp.rk0{background:linear-gradient(180deg,#fff,#e8ffe0);color:#2c7a1a;border:2px solid #9be15d}
+.pf-gp.rk1{background:linear-gradient(180deg,#f7fbff,#b9c8d8);color:#122030;border:2px solid #8fa3b8}
+.pf-gp.rk2{background:linear-gradient(180deg,#fff3c4,#d9a23a 60%,#a86e12);color:#2a1702;border:2px solid #ffe08a;box-shadow:0 3px 0 rgba(0,0,0,.35),0 0 18px rgba(255,190,60,.55)}
+.pf-gp.rk3{--rb:#ff2a3d,#ff8a1a,#ffe14a,#2dff8a,#1ac8ff,#6a4dff,#d040ff,#ff2a3d;background:linear-gradient(#07040e,#07040e) padding-box,conic-gradient(var(--rb)) border-box;border:2.5px solid transparent;color:#fff;box-shadow:0 0 18px rgba(140,100,255,.7),0 0 34px rgba(255,42,61,.3)}
+.pf-gp.rk3 b{background:linear-gradient(90deg,#ff5a6e,#ffb04a,#ffe98a,#6dffb0,#6ad8ff,#9a8dff,#e08aff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pf-gp.rk3 small{color:#cfc6ff;opacity:1}
+.pf-flip.is-back>.pf-gp{display:none}
+.pf-flip.has-gp .pf-lv{flex-direction:column;align-items:flex-start;gap:0}
 
 </style>
 </head>
@@ -2072,7 +2081,7 @@ function profileEl(info, stats, opts){
   who.append(el("span","pf-nm", nick ? nick : (info.name||"")+(info.name?" さん":"")));
   if(nick && forT) who.append(el("span","pf-real","（"+(info.name||"")+"）"));
   if(gOk(info.grade)){ card.classList.add("has-g"); const [gn,gs]=gParts(info.grade); const pl=el("div","pf-gp"); pl.append(el("small",null,"CLASS"));
-    const big=el("b"); big.append(el("span","gG","G"), el("span","gN",String(gn))); if(gs) big.append(el("span","gS",gs==="-"?"−":"+")); pl.append(big); tx.append(pl); }
+    const big=el("b"); big.append(el("span","gG","G"), el("span","gN",String(gn))); if(gs) big.append(el("span","gS",gs==="-"?"−":"+")); pl.append(big); card._gp=pl; }
   tx.append(lv, who);
   if(P.title) tx.append(el("span","pf-title","🎖 "+String(P.title).slice(0,20)));
   else tx.append(el("div","pf-tag",R.tag));
@@ -2123,13 +2132,31 @@ function profileEl(info, stats, opts){
   card.addEventListener("pointermove",mv); card.addEventListener("pointerleave",lv2); card.addEventListener("touchmove",mv,{passive:true}); card.addEventListener("touchend",lv2);
   card.addEventListener("click",e=>{ card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop"); FX.burst(cv); TAP(card, r, e, cv); });
   FX.attach(cv, r, {fx: P.fx||""});
+  fitNameSoon(card);
   return flipWrap(card, info, r, forT);
 }
+/* the rank name (e.g. "Advance") must never run under the CLASS plate: shrink it until it fits */
+const _fitCards=new Set();
+function fitName(card){
+  const nm=card.querySelector(".pf-name"); if(!nm||!card.isConnected||!card.offsetWidth) return;
+  nm.style.fontSize=""; let fs=parseFloat(getComputedStyle(nm).fontSize), i=0;
+  const over=()=>{ const rg=document.createRange(); rg.selectNodeContents(nm); return rg.getBoundingClientRect().right > card.getBoundingClientRect().right-12; };
+  while(over() && fs>15 && i++<30){ fs-=1; nm.style.fontSize=fs+"px"; }
+}
+function fitNameSoon(card){
+  _fitCards.add(card); let n=0;
+  const tick=()=>{ if(card.isConnected){ fitName(card); return; } if(n++<120) requestAnimationFrame(tick); else _fitCards.delete(card); };
+  requestAnimationFrame(tick);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>fitName(card));
+  setTimeout(()=>fitName(card), 1500);
+}
+let _fitT=null;
+window.addEventListener("resize",()=>{ clearTimeout(_fitT); _fitT=setTimeout(()=>{ for(const c of _fitCards){ if(c.isConnected) fitName(c); else _fitCards.delete(c); } },150); });
 /* the card can be turned over: the back shows the teacher's message; it turns itself back after a while untouched */
 const FLIP_MS=9000;
 function msgSeenKey(info){ return "mc_msgseen_"+(typeof SK!=="undefined"&&SK?SK:(info.num||"")); }
 function flipWrap(card, info, r, forT){
-  const wrap=el("div","pf-flip"); wrap.append(card);
+  const wrap=el("div","pf-flip"+(card._gp?" has-gp":"")); wrap.append(card); if(card._gp){ card._gp.classList.add("rk"+r); wrap.append(card._gp); const s0=card.querySelector(".pf-stk.s0"); if(s0) wrap.append(s0); }
   const msg=(info.t_msg||"").trim(), at=info.t_msg_at||"";
   const unread = !forT && msg && lsGet(msgSeenKey(info))!==at;
   const fb=el("button","pf-flipbtn"+(unread?" new":""), unread?"💌 先生からメッセージ！":"💌 うら"); fb.type="button"; fb.id="flip-btn";
@@ -2513,7 +2540,7 @@ async function tLoadTask(){ if(!T.task) return;
 function tGo(view){ T.view=view; lsSet("mc_view",view); T.sel=null; T.detail=null; T.task=null; T.taskItems=null; T.confirmStu=false; T.confirmTask=false; tRender(); scrollTo(0,0); }
 function tRender(){
   const app=document.getElementById("app"); app.innerHTML="";
-  document.getElementById("h1").textContent="音楽教室スタンプ"; { const d=new Date(); document.getElementById("today").textContent=`先生用 ・ ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`; }
+  document.getElementById("h1").textContent="NACHA"; { const d=new Date(); document.getElementById("today").textContent=`先生用 ・ ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`; }
   const seg=el("div","seg"); seg.setAttribute("role","tablist");
   [["review","提出チェック"],["tasks","課題"],["students","生徒"]].forEach(([k,l])=>{ const b=el("button","segb"); b.id="v-"+k; b.setAttribute("role","tab"); b.setAttribute("aria-selected",T.view===k);
     b.textContent=l; if(k==="review" && T.review.length) b.append(el("span","cnt",String(T.review.length))); b.onclick=()=>tGo(k); seg.append(b); });
