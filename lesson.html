@@ -409,7 +409,7 @@ const sameYM = (a,b) => a.y===b.y && a.m===b.m;
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
 function md(k){ const [,m,d]=k.split("-"); return (+m)+"/"+(+d); }
 const rot = k => { let h=0; for(const c of String(k)) h=(h*31+c.charCodeAt(0))%31; return (h-15)+"deg"; };
-const midOf = g => (g>=4 ? Math.ceil(g/2) : 0);
+const midOf = g => 0;   // no midpoint reward on this card
 const roundInfo = p => { const g=Math.max(1,p.goal|0), n=p.stamps.length, done=Math.floor(n/g); return {total:n, goal:g, done, inRound:n-done*g, round:done+1, mid:midOf(g)}; };
 const okStamp = k => STAMPS[k] ? k : "star";
 const el = (tag, cls, txt) => { const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; };
@@ -1582,15 +1582,15 @@ function tStudent(app){
   // settings
   const st=el("details","sec"); st.id="settings"; st.innerHTML="<summary>設定（番号・名前・ゴール・ごほうび）</summary>";
   const f=el("form"); f.innerHTML=`<div class="row2 r12"><label>番号<input id="s-num" maxlength="12" inputmode="numeric"></label><label>名前<input id="s-name" maxlength="20"></label></div>
-    <label>ゴール（いくつでコンプリート）<select id="s-gp"></select></label>
+    <label>ごほうびまでのスタンプ数<input id="s-gp" type="number" inputmode="numeric" min="1" max="500" step="1"></label>
     <label>ごほうび<input id="s-rp" maxlength="40" placeholder="例：シールを1まい"></label>
     <div class="actions"><button type="submit" class="save" id="s-save">保存</button></div>`;
-  const opts=[3,5,8,10,12,15,20,25,30,40,50,100];
-  { const sel=f.querySelector("#s-gp"); const cur=s.goal_p; const vals=[...new Set([...opts,cur])].sort((a,b)=>a-b);
-    sel.innerHTML=vals.map(v=>`<option value="${v}">${v}こ</option>`).join(""); sel.value=String(cur); }
+  f.querySelector("#s-gp").value=String(s.goal_p);
   f.querySelector("#s-num").value=s.num??""; f.querySelector("#s-name").value=s.name; f.querySelector("#s-rp").value=s.reward_p||"";
   f.onsubmit=async e=>{ e.preventDefault();
-    try{ const r=await rpc("mc_t_update2",{tk:TK, sid:s.id, p_num:f.querySelector("#s-num").value, p_name:f.querySelector("#s-name").value, p_goal_p:+f.querySelector("#s-gp").value, p_goal_e:s.goal_e|0||5,
+    const g=+String(f.querySelector("#s-gp").value).replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248));
+    if(!Number.isInteger(g) || g<1 || g>500){ toast("スタンプ数は1〜500の数字で入れてね"); return; }
+    try{ const r=await rpc("mc_t_update2",{tk:TK, sid:s.id, p_num:f.querySelector("#s-num").value, p_name:f.querySelector("#s-name").value, p_goal_p:g, p_goal_e:s.goal_e|0||5,
       p_reward_p:f.querySelector("#s-rp").value, p_reward_e:s.reward_e||""});
       if(r==="dup_num"){ toast("その番号はほかの生徒が使っています"); return; }
       toast("保存しました"); st.open=false; await tLoadStudent(); tRender(); tRefresh(); }
