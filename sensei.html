@@ -1053,6 +1053,12 @@ textarea{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:2p
 .pf-gp.rk3 small{color:#cfc6ff;opacity:1}
 .pf-flip.is-back>.pf-gp{display:none}
 .pf-flip.has-gp .pf-lv{flex-direction:column;align-items:flex-start;gap:0}
+#t-lock #pass-in{font-size:1.2rem!important;letter-spacing:.08em!important;text-align:center}
+#t-lock .lock-alt{width:100%;max-width:300px;margin-top:6px;font-size:.8rem;opacity:.85}
+#t-lock .lock-alt summary{cursor:pointer;text-align:center}
+#t-lock .lock-alt form{margin-top:8px;display:flex;flex-direction:column;gap:8px}
+#t-lock .lock-alt input{font-size:.9rem!important;letter-spacing:0!important;padding:10px}
+.passf label{display:flex;flex-direction:column;gap:4px}
 
 </style>
 </head>
@@ -2528,7 +2534,7 @@ async function tRefresh(force){
   try{ const [st, tk]=await Promise.all([rpc("mc_t_state",{tk:TK}), rpc("mc_t_tasks",{tk:TK})]);
     T.students=st.students||[]; if(st.today) T.today=st.today; T.tasks=tk.tasks||[]; T.review=tk.review||[];
     setNote("先生用ページ ・ このリンクは生徒に渡さないでね"); if(force || (!window.__party && !busyNow())) tRender(); }
-  catch(e){ if(e.message==="bad_key"){ lsSet("mc_tk",""); tLock("保存されていた先生用リンクが古いようです。新しいリンクを貼り付けてください。"); return; } setNote("つながりません。電波のいいところで開き直してください。"); }
+  catch(e){ if(e.message==="bad_key"){ lsSet("mc_tk",""); tLock("もう一度パスワードを入れてください。"); return; } setNote("つながりません。電波のいいところで開き直してください。"); }
 }
 async function tLoadStudent(){ if(!T.sel) return;
   try{ const [r, as]=await Promise.all([rpc("mc_t_student",{tk:TK, sid:T.sel}), rpc("mc_t_student_assign",{tk:TK, sid:T.sel})]);
@@ -2768,6 +2774,7 @@ function tStudents(app){
   gl.append(gb);
   if(T.qr){ const q=el("div","qr"); try{ const qr=qrcode(0,"M"); qr.addData(SHARED_URL); qr.make(); q.innerHTML=qr.createSvgTag({cellSize:4, margin:2, scalable:true}); }catch(e){ q.textContent="QRコードを作れませんでした"; q.style.color="#000"; } gl.append(q); }
   app.append(gl);
+  app.append(passSec());
 }
 function openAdd(){
   const o=el("div","sheet"); o.id="add-sheet";
@@ -2920,6 +2927,24 @@ function msgEditor(s){
   box.append(ta, row); return box;
 }
 
+/* teacher: set / change the password used on the lock screen */
+function passSec(){
+  const d=el("details","sec"); d.id="passsec"; d.innerHTML="<summary>🔑 先生のパスワード</summary>";
+  const f=el("form","passf"); f.innerHTML=`<p class="rw-note" id="pass-state">確認中…</p>
+    <label>新しいパスワード（4文字以上）<input id="np1" class="keep" type="password" autocomplete="new-password" maxlength="64"></label>
+    <label>もう一度<input id="np2" class="keep" type="password" autocomplete="new-password" maxlength="64"></label>
+    <div class="actions"><button type="submit" class="save" id="pass-save">パスワードを決める</button></div>
+    <p class="rw-note">ほかのスマホやタブレットでも、<b>sensei.html</b> を開いてこのパスワードを入れるだけで先生用ページに入れます。生徒には教えないでね。</p>`;
+  d.append(f);
+  d.addEventListener("toggle",async()=>{ if(!d.open) return; try{ const has=await rpc("mc_t_has_pass",{tk:TK}); f.querySelector("#pass-state").textContent = has ? "✅ パスワードは設定ずみです（変えるときは下に新しいのを入れてね）" : "⚠ まだパスワードがありません"; }catch(e){ f.querySelector("#pass-state").textContent=""; } });
+  f.onsubmit=async e=>{ e.preventDefault(); const a=f.querySelector("#np1").value, b=f.querySelector("#np2").value;
+    if(a.length<4){ toast("4文字以上にしてね"); return; } if(a!==b){ toast("2つのパスワードがちがいます"); return; }
+    try{ await rpc("mc_t_set_pass",{tk:TK, p_pass:a}); f.querySelector("#np1").value=""; f.querySelector("#np2").value=""; toast("パスワードを決めました");
+      f.querySelector("#pass-state").textContent="✅ パスワードは設定ずみです"; }
+    catch(err){ toast("できませんでした（"+err.message+"）"); } };
+  return d;
+}
+
 /* ================= boot ================= */
 document.getElementById("today").textContent = (()=>{const d=new Date();return `今日は ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`})();
 setTimeout(()=>{ try{ prerenderStamps(); prerenderWheels(); }catch(e){} },400);
@@ -2935,16 +2960,27 @@ if(MODE==="s"){
 function tLock(msg){
   const app=document.getElementById("app"); app.innerHTML=""; document.getElementById("note").textContent="";
   const box=el("section","card login"); box.id="t-lock";
-  box.innerHTML=`<div class="lock-ico">🔒</div><h2>先生用ページ</h2><p class="rw-note">最初の1回だけ、<b>先生用リンク</b>をここに貼り付けてください。<br>次からはこのページを開くだけで入れます。</p>
-    <form id="lock-form"><input id="lock-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="先生用リンクを貼り付け"><button type="submit" class="press" id="lock-btn">入る</button></form><p class="rw-note" id="lock-msg"></p>`;
-  if(msg) box.querySelector("#lock-msg").textContent=msg;
-  box.querySelector("form").onsubmit=async e=>{ e.preventDefault(); const raw=box.querySelector("#lock-in").value.trim();
-    const m=raw.match(/[#&?]t=([A-Za-z0-9_-]{20,})/); const k=m?m[1]:raw; const out=box.querySelector("#lock-msg");
+  box.innerHTML=`<div class="lock-ico">🔒</div><h2>先生用ページ</h2><p class="rw-note">先生の<b>パスワード</b>を入れてください</p>
+    <form id="pass-form"><input id="pass-in" type="password" autocomplete="current-password" placeholder="パスワード"><button type="submit" class="press" id="pass-btn">入る</button></form><p class="rw-note" id="lock-msg"></p>
+    <details class="lock-alt"><summary>先生用リンクで入る</summary><form id="lock-form"><input id="lock-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="先生用リンクを貼り付け"><button type="submit" class="btn small" id="lock-btn">リンクで入る</button></form></details>`;
+  const out=box.querySelector("#lock-msg"); if(msg) out.textContent=msg;
+  const enter=k=>{ lsSet("mc_tk",k); location.replace(location.pathname); };
+  box.querySelector("#pass-form").onsubmit=async e=>{ e.preventDefault(); const pw=box.querySelector("#pass-in").value; if(!pw){ box.querySelector("#pass-in").focus(); return; }
+    out.textContent="確認中…";
+    try{ const r=await rpc("mc_t_login",{p_pass:pw});
+      if(r.ok && okKey(r.tk)) return enter(r.tk);
+      box.querySelector("#pass-in").value="";
+      out.textContent = r.err==="no_pass" ? "まだパスワードが決まっていません。先生用リンクで1回入って、「生徒」タブの下で決めてください。"
+        : r.err==="locked" ? `まちがいが続いたので、${Math.ceil((r.wait||300)/60)}分ほど待ってからもう一度どうぞ。`
+        : `パスワードがちがいます${r.left!=null?`（あと${r.left}回）`:""}`; }
+    catch(err){ out.textContent="つながりません。電波のいいところでもう一度。"; } };
+  box.querySelector("#lock-form").onsubmit=async e=>{ e.preventDefault(); const raw=box.querySelector("#lock-in").value.trim();
+    const m=raw.match(/[#&?]t=([A-Za-z0-9_-]{20,})/); const k=m?m[1]:raw;
     if(!okKey(k)){ out.textContent="先生用リンクではないみたいです。"; return; }
     out.textContent="確認中…";
-    try{ await rpc("mc_t_state",{tk:k}); lsSet("mc_tk",k); location.replace(location.pathname); }
+    try{ await rpc("mc_t_state",{tk:k}); enter(k); }
     catch(err){ out.textContent = err.message==="bad_key" ? "先生用リンクがちがいます。" : "つながりません。電波のいいところでもう一度。"; } };
-  app.append(box);
+  app.append(box); setTimeout(()=>{ try{ box.querySelector("#pass-in").focus(); }catch(e){} },300);
 }
 
 </script>
