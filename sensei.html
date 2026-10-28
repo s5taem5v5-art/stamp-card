@@ -1736,6 +1736,96 @@ body.no-scroll{overflow:hidden}
 .wd-open .wd-new{top:-6px;right:-4px;font-size:.7rem;height:22px;padding:0 8px}
 .wd-open:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(90,30,140,.6)}
 
+/* ===== recital countdown (only transform / opacity animate) ===== */
+.evc{position:relative;overflow:hidden;isolation:isolate;padding:30px 46px 16px;text-align:center;border:2px solid rgba(255,201,60,.45);
+  background:radial-gradient(120% 80% at 50% 0%,#4a1030 0%,#250a2e 55%,#140826 100%);box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.04)}
+.evc>*{position:relative;z-index:2}
+.evc .ev-cur,.evc .ev-val,.evc .ev-spot,.evc .ev-glow,.evc .ev-cf{position:absolute;z-index:0;pointer-events:none}
+.ev-cur{top:0;bottom:0;width:38px;background:repeating-linear-gradient(90deg,#7a0f2a 0 7px,#a3173a 7px 11px,#5c0a20 11px 14px);box-shadow:inset -6px 0 10px rgba(0,0,0,.45)}
+.ev-cur.l{left:0;border-radius:0 0 26px 0}
+.ev-cur.r{right:0;transform:scaleX(-1);border-radius:0 0 26px 0}
+.ev-val{left:0;right:0;top:0;height:20px;background:radial-gradient(circle at 50% 0,#b8183f 0 11px,transparent 12px) 0 0/24px 20px repeat-x;filter:drop-shadow(0 3px 2px rgba(0,0,0,.4))}
+.ev-val::after{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#c9932a,#ffe08a,#c9932a)}
+.ev-spot{left:10%;right:10%;top:0;bottom:0;background:linear-gradient(to bottom,rgba(255,236,190,.30),rgba(255,236,190,.08) 70%,transparent);
+  clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);animation:ev-spot 4s ease-in-out infinite;will-change:opacity}
+.ev-glow{left:15%;right:15%;bottom:-30px;height:70px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,201,60,.35),transparent)}
+@keyframes ev-spot{0%,100%{opacity:.55}50%{opacity:1}}
+.ev-cf{inset:0;width:100%;height:100%;z-index:5}
+.ev-top{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:2px}
+.ev-ic{width:54px;height:54px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45));animation:ev-bob 2.6s ease-in-out infinite;will-change:transform}
+@keyframes ev-bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-6px) rotate(4deg)}}
+.ev-tag{font-size:.72rem;font-weight:900;letter-spacing:.08em;padding:4px 10px;border-radius:99px;color:#3a1500;background:linear-gradient(135deg,#ffe8a3,#ffc93c);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.ev-ttl{font-weight:900;font-size:1.02rem;color:#ffe9c2;letter-spacing:.06em;text-shadow:0 2px 0 rgba(0,0,0,.35)}
+.ev-num{display:flex;align-items:baseline;justify-content:center;gap:4px;margin:2px 0 4px;font-family:var(--display)}
+.ev-pre,.ev-unit{font-size:1.15rem;color:#ffe9c2}
+.ev-roll{display:inline-block;height:4.4rem;line-height:4.4rem;overflow:hidden;vertical-align:bottom}
+.ev-col{display:flex;flex-direction:column;will-change:transform}
+.ev-col b{display:block;height:4.4rem;font-size:4.4rem;font-weight:400;letter-spacing:.02em;
+  background:linear-gradient(180deg,#fff6d0 0%,#ffd76a 45%,#e59a1c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(90,30,0,.55))}
+.ev-col.go{animation:ev-roll .9s cubic-bezier(.3,1.5,.5,1) .6s both}
+@keyframes ev-roll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+.ev-big{font-family:var(--display);font-size:2.1rem;line-height:1.2;margin:6px 0 2px;
+  background:linear-gradient(180deg,#fff6d0,#ffc93c 60%,#ff8a3a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(90,30,0,.5))}
+.ev-sub,.ev-live{font-weight:800;color:#ffe9c2;font-size:.95rem;min-height:1.2em}
+.ev-info{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px}
+.ev-it{display:inline-flex;align-items:center;gap:4px;font-size:.8rem;font-weight:800;color:#fff;padding:4px 10px 4px 6px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14)}
+.ev-it img{width:18px;height:18px}
+.ev-msg{margin:10px auto 0;max-width:340px;padding:9px 12px;border-radius:14px;background:rgba(255,248,230,.95);color:#4a2410;font-weight:700;font-size:.86rem;line-height:1.5;text-align:left}
+.ev-msg small{display:block;font-size:.66rem;font-weight:900;color:#b0662a;letter-spacing:.06em}
+.ev-more{display:flex;flex-direction:column;gap:4px;margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,233,194,.3)}
+.ev-o{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:.76rem;font-weight:700;color:#ffe9c2}
+.ev-o img{width:16px;height:16px}
+/* phases */
+.evc.ph-near .ev-tag{animation:ev-pulse 1.6s ease-in-out infinite;will-change:transform}
+.evc.ph-eve{border-color:#ffd76a}
+.evc.ph-eve .ev-tag,.evc.ph-day .ev-tag{color:#fff;background:linear-gradient(135deg,#ff4fb0,#ff8a3a)}
+.evc.ph-eve .ev-tag{animation:ev-pulse 1.1s ease-in-out infinite}
+.evc.ph-day{border:2px solid transparent;background:radial-gradient(120% 80% at 50% 0%,#5a1440 0%,#2a0c34 55%,#140826 100%) padding-box,linear-gradient(120deg,#ff2a3d,#ff8a1a,#ffe14a,#2dff8a,#1ac8ff,#6a4dff,#d040ff,#ff2a3d) border-box}
+.evc.ph-day .ev-spot{background:linear-gradient(to bottom,rgba(255,244,214,.45),rgba(255,236,190,.12) 70%,transparent)}
+.evc.ph-after{background:radial-gradient(120% 80% at 50% 0%,#3d1a4a 0%,#1f0f38 60%,#140826 100%);border-color:rgba(255,160,210,.45)}
+.evc.ph-after .ev-tag{background:linear-gradient(135deg,#ffd1e8,#ff9ccf)}
+@keyframes ev-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@media (prefers-reduced-motion:reduce){.evc *{animation:none!important}}
+@media (max-width:360px){.evc{padding:28px 40px 14px}.ev-cur{width:30px}.ev-col b,.ev-roll{height:3.8rem;line-height:3.8rem}.ev-col b{font-size:3.8rem}}
+/* teacher */
+.ev-btn{display:flex;align-items:center;gap:10px;width:100%;margin-bottom:10px;padding:9px 12px;border-radius:16px;cursor:pointer;font:inherit;text-align:left;color:#fff;
+  border:1.5px solid rgba(255,201,60,.45);background:linear-gradient(100deg,#5a1030,#2a0c3a 60%,#1a1048)}
+.ev-btn img{width:34px;height:34px;flex:none}
+.ev-bt{flex:1;min-width:0;display:flex;flex-direction:column}
+.ev-bt b{font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-bt small{font-size:.72rem;color:#ffe9c2;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-bd{font-style:normal;font-family:var(--display);font-size:1.05rem;color:#ffd76a;white-space:nowrap}
+.ev-h{font-size:1.05rem}
+.ev-list{display:flex;flex-direction:column;gap:8px}
+.ev-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel)}
+.ev-row.past{opacity:.55}
+.ev-row img{width:34px;height:34px;flex:none}
+.ev-rt{flex:1;min-width:0;display:flex;flex-direction:column}
+.ev-rt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-rt small{font-size:.72rem;color:var(--muted)}
+.ev-rd{font-weight:900;font-size:.8rem;color:var(--p2);white-space:nowrap}
+.ev-row .btn.small{padding:6px 8px;font-size:.75rem}
+.ev-del{color:#ff8fa8}
+.ev-icons{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.ev-icb{aspect-ratio:1;border-radius:12px;border:2px solid var(--line);background:rgba(255,255,255,.05);cursor:pointer;padding:5px;display:grid;place-items:center}
+.ev-icb img{width:100%;height:100%;object-fit:contain}
+.ev-icb.on{border-color:var(--p2);background:rgba(255,201,60,.15);transform:scale(1.06)}
+.ev-f{display:flex;flex-direction:column;gap:4px;font-size:.78rem;font-weight:800;color:var(--muted);min-width:0}
+.ev-f input{font:inherit;font-size:16px;font-weight:700;padding:9px 11px;border:2px solid var(--line);border-radius:12px;background:rgba(0,0,0,.3);color:var(--ink);width:100%;color-scheme:dark}
+.ev-f textarea{min-height:70px}
+.ev-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ev-sug,.ev-tg{display:flex;flex-wrap:wrap;gap:6px}
+.ev-sug{margin-top:-6px}
+.chip.on{border-color:var(--p2);background:rgba(255,201,60,.18);color:#fff}
+.ev-chk{display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:800}
+.ev-chk input{width:20px;height:20px}
+.ev-pvl{font-size:.72rem;font-weight:900;color:var(--muted);letter-spacing:.06em}
+.ev-pv .evc{margin:0}
+.ev-chk{flex-direction:row;justify-content:flex-start;text-align:left;color:var(--ink)}
+.ev-chk input{flex:none;margin:0}
+.ev-sheet .actions .save{background:linear-gradient(135deg,#ff5fb7,#8b6bff);border-color:transparent;color:#fff}
+
 </style>
 </head>
 <body>
@@ -4003,6 +4093,191 @@ function wardrobeBtn(){
   b.innerHTML=`<img src="${F3D("1f457")}" alt=""><span><b>きせかえ</b><small>アバター・スキン・フレーム・エフェクト</small></span>`+(n?`<em class="wd-new">NEW ${n}</em>`:"");
   b.onclick=()=>openWardrobe(); return b;
 }
+/* ================= EVENTS: recital countdown =================
+   teacher sets events (発表会・ライブ…); students see a big countdown card. smooth: only transform / opacity animate. */
+const EV_ICO = ["1f3b9","1f3a4","1f3b8","1f3bb","1f941","1f3ba","1f3bc","1f31f","1f3c6","1f384","1f383","1f490"];
+const EV_TARGET = { all:"みんな", base:"コースなし", vocal:"🎤 ボーカル", guitar:"🎸 ギター" };
+const EV_TITLES = ["発表会","ライブ","おさらい会","コンクール","クリスマス会"];
+const Ev = { list:[], today:null, off:0, timer:null };
+const evDate = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y, m-1, d); };
+const evDiff = (day, today) => Math.round((evDate(day) - evDate(today)) / 864e5);
+const evWd = s => "日月火水木金土"[evDate(s).getDay()];
+const evMD = s => { const d=evDate(s); return (d.getMonth()+1)+"月"+d.getDate()+"日（"+evWd(s)+"）"; };
+// Tokyo time now, following the server clock
+const evNow = () => new Date(Date.now() + Ev.off);
+
+function evPhase(d){ return d < 0 ? "after" : d === 0 ? "day" : d === 1 ? "eve" : d <= 7 ? "near" : "far"; }
+function evPick(list, today){
+  // the day after an event, its "おつかれさま" comes first (only for that one day)
+  return list.find(e => evDiff(e.day, today) === -1) || list.find(e => evDiff(e.day, today) >= 0) || null;
+}
+
+/* the countdown card. opts.preview: teacher's preview (no roll, no confetti, no timer) */
+function evCardEl(e, today, others, opts){
+  opts = opts || {};
+  const d = evDiff(e.day, today), ph = evPhase(d);
+  const box = el("section", "card evc ph-" + ph); if(!opts.preview) box.id = "ev-card";
+  box.innerHTML = '<i class="ev-cur l"></i><i class="ev-cur r"></i><i class="ev-val"></i><i class="ev-spot"></i><i class="ev-glow"></i>';
+  const top = el("div", "ev-top");
+  const ic = el("img", "ev-ic"); ic.src = F3D(e.ico || "1f3b9"); ic.alt = ""; top.append(ic);
+  const tag = el("span", "ev-tag", ph === "near" ? "いよいよ！" : ph === "eve" ? "あした本番！" : ph === "day" ? "本番の日" : ph === "after" ? "おつかれさま" : "カウントダウン");
+  top.append(tag); box.append(top);
+  const main = el("div", "ev-main");
+  if(ph === "day"){
+    main.append(el("div", "ev-ttl", "きょうは" + e.title + "！"));
+    main.append(el("div", "ev-big", "がんばってね！"));
+    const live = el("div", "ev-live"); live.id = opts.preview ? "" : "ev-live"; main.append(live);
+  } else if(ph === "after"){
+    main.append(el("div", "ev-ttl", e.title + ""));
+    main.append(el("div", "ev-big", "おつかれさま！"));
+    main.append(el("div", "ev-sub", "よくがんばったね 👏"));
+  } else {
+    main.append(el("div", "ev-ttl", e.title + "まで"));
+    const num = el("div", "ev-num"); const pre = el("span", "ev-pre", "あと"); const roll = el("span", "ev-roll"); const col = el("span", "ev-col");
+    const key = "mc_ev_seen_" + e.id, prev = opts.preview ? null : parseInt(lsGet(key) || "", 10);
+    if(prev > d && prev - d <= 99){ col.append(el("b", null, String(prev)), el("b", null, String(d))); col.classList.add("go"); }
+    else col.append(el("b", null, String(d)));
+    roll.append(col); num.append(pre, roll, el("span", "ev-unit", "日"));
+    main.append(num);
+    if(!opts.preview) lsSet(key, String(d));
+  }
+  box.append(main);
+  const info = el("div", "ev-info");
+  const it = (cp, t) => { if(!t) return; const s = el("span", "ev-it"); const im = el("img"); im.src = F3D(cp); im.alt = ""; s.append(im, el("span", null, t)); info.append(s); };
+  it("1f4c5", evMD(e.day)); it("23f0", e.tm ? e.tm + "〜" : null); it("1f4cd", e.place);
+  box.append(info);
+  if(e.msg){ const m = el("div", "ev-msg"); m.append(el("small", null, "先生から"), el("span", null, e.msg)); box.append(m); }
+  if(others && others.length){
+    const mo = el("div", "ev-more");
+    others.slice(0, 3).forEach(o => { const k = evDiff(o.day, today); const r = el("span", "ev-o"); const im = el("img"); im.src = F3D(o.ico || "1f3b9"); im.alt = "";
+      r.append(im, el("span", null, o.title + " " + (evDate(o.day).getMonth()+1) + "/" + evDate(o.day).getDate() + (k > 0 ? "（あと" + k + "日）" : k === 0 ? "（きょう）" : ""))); mo.append(r); });
+    box.append(mo);
+  }
+  if(ph === "day" && !opts.preview){
+    const cv = el("canvas", "ev-cf"); box.append(cv);
+    const ck = "mc_ev_cf_" + e.id + "_" + e.day;
+    if(!lsGet(ck)){ lsSet(ck, "1"); setTimeout(() => { if(document.contains(cv) && typeof gBurst === "function") gBurst(cv, 4, true); }, 450); }
+  }
+  return box;
+}
+
+// on the day: "本番まで あと 2時間15分" (only with a start time)
+function evTick(){
+  const live = document.getElementById("ev-live"); const e = Ev.cur;
+  if(!live || !e){ clearInterval(Ev.timer); Ev.timer = null; return; }
+  if(!e.tm){ live.textContent = ""; return; }
+  const [h, m] = e.tm.split(":").map(Number); const now = evNow();
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+  const mins = Math.ceil((start - now) / 6e4);
+  live.textContent = mins > 60 ? "本番まで あと " + Math.floor(mins / 60) + "時間" + (mins % 60 ? (mins % 60) + "分" : "")
+    : mins > 0 ? "本番まで あと " + mins + "分！" : mins > -180 ? "🎶 いま本番中！ 楽しんでね" : "おつかれさま！ 👏";
+}
+
+function evStudentCard(){
+  if(!Ev.today || !Ev.list.length) return null;
+  const cur = evPick(Ev.list, Ev.today); if(!cur) return null;
+  Ev.cur = cur;
+  const others = Ev.list.filter(x => x !== cur && evDiff(x.day, Ev.today) >= 0);
+  const c = evCardEl(cur, Ev.today, others);
+  if(evDiff(cur.day, Ev.today) === 0){ setTimeout(evTick, 0); if(!Ev.timer) Ev.timer = setInterval(evTick, 30000); }
+  return c;
+}
+
+async function evLoad(){
+  try{
+    const r = await rpc("mc_s_events", { sk: SK });
+    const before = JSON.stringify(Ev.list) + Ev.today;
+    Ev.list = r.events || []; Ev.today = r.today;
+    // server clock -> offset (the server sends Tokyo wall time; we keep it as a local Date with the same wall time)
+    if(r.now){ const [a, b] = r.now.split("T"); const [y, mo, dd] = a.split("-").map(Number); const [hh, mi, ss] = b.split(":").map(Number);
+      Ev.off = new Date(y, mo - 1, dd, hh, mi, ss) - Date.now(); }
+    return before !== JSON.stringify(Ev.list) + Ev.today;
+  }catch(e){ return false; }
+}
+
+/* ---------- teacher ---------- */
+const TEv = { list:[], today:null, loaded:false };
+async function tEvLoad(){
+  try{ const r = await rpc("mc_t_events", { tk: TK }); TEv.list = r.events || []; TEv.today = r.today; TEv.loaded = true; }catch(e){}
+  const b = document.getElementById("ev-btn"); if(b) evBtnLabel(b);
+}
+function evBtnLabel(b){
+  const n = TEv.today ? evPick(TEv.list, TEv.today) : null; const d = n ? evDiff(n.day, TEv.today) : null;
+  b.innerHTML = ""; const im = el("img"); im.src = F3D(n ? n.ico : "1f3a4"); im.alt = "";
+  const tx = el("span", "ev-bt");
+  if(n){ tx.append(el("b", null, n.title), el("small", null, evMD(n.day) + (n.tm ? " " + n.tm : ""))); }
+  else tx.append(el("b", null, "発表会・イベント"), el("small", null, "日付を入れると生徒にカウントダウンが出ます"));
+  b.append(im, tx, el("em", "ev-bd", n ? (d > 0 ? "あと" + d + "日" : d === 0 ? "きょう！" : "おつかれさま") : "＋ 設定"));
+}
+function evButton(){
+  const b = el("button", "ev-btn"); b.id = "ev-btn"; b.type = "button"; evBtnLabel(b);
+  b.onclick = () => openEvents();
+  if(!TEv.loaded) tEvLoad();
+  return b;
+}
+
+function openEvents(edit){
+  document.getElementById("ev-sheet")?.remove();
+  const o = el("div", "sheet ev-sheet"); o.id = "ev-sheet"; const p = el("div", "panel"); p.setAttribute("role", "dialog"); o.append(p);
+  const close = () => { o.remove(); tRender(); };
+  o.onclick = e => { if(e.target === o) close(); };
+  const today = TEv.today || todayKey();
+  if(edit === undefined){
+    p.append(el("b", "ev-h", "🎤 発表会・イベント"));
+    p.append(el("p", "rw-note", "日付を入れると、生徒のページにカウントダウンが出ます。1週間前・前日・当日の朝に通知も届きます（通知をオンにしている生徒のみ）。"));
+    const list = el("div", "ev-list");
+    const items = TEv.list.slice().sort((a, b) => a.day < b.day ? -1 : a.day > b.day ? 1 : 0);
+    if(!items.length) list.append(el("div", "empty", "まだ予定がありません"));
+    items.forEach(e => {
+      const d = evDiff(e.day, today); const r = el("div", "ev-row" + (d < 0 ? " past" : ""));
+      const im = el("img"); im.src = F3D(e.ico); im.alt = "";
+      const t = el("div", "ev-rt"); t.append(el("b", null, e.title), el("small", null, evMD(e.day) + (e.tm ? " " + e.tm : "") + " ・ " + EV_TARGET[e.target]));
+      const k = el("span", "ev-rd", d > 0 ? "あと" + d + "日" : d === 0 ? "きょう" : "終了");
+      const ed = el("button", "btn small", "編集"); ed.type = "button"; ed.onclick = () => openEvents(e);
+      const del = el("button", "btn small ev-del", "削除"); del.type = "button";
+      del.onclick = async () => { if(!del.dataset.ok){ del.dataset.ok = "1"; del.textContent = "本当に？"; return; }
+        try{ await rpc("mc_t_event_del", { tk: TK, p_id: e.id }); toast("削除しました"); await tEvLoad(); openEvents(); }catch(err){ toast("削除できませんでした"); } };
+      r.append(im, t, k, ed, del); list.append(r);
+    });
+    p.append(list);
+    const ac = el("div", "actions"); const c = el("button", null, "とじる"); c.type = "button"; c.onclick = close;
+    const add = el("button", "save", "＋ 新しい予定"); add.type = "button"; add.id = "ev-add"; add.onclick = () => openEvents(null);
+    ac.append(c, add); p.append(ac);
+    document.body.append(o); return;
+  }
+  // the form (new: edit === null)
+  const f = edit ? { ...edit } : { id:null, title:"発表会", day:"", tm:"", place:"", msg:"", target:"all", ico:"1f3b9" };
+  p.append(el("b", "ev-h", edit ? "予定を編集" : "新しい予定"));
+  const icr = el("div", "ev-icons"); EV_ICO.forEach(cp => { const b = el("button", "ev-icb" + (cp === f.ico ? " on" : "")); b.type = "button"; const im = el("img"); im.src = F3D(cp); im.alt = ""; b.append(im);
+    b.onclick = () => { f.ico = cp; icr.querySelectorAll(".ev-icb").forEach(x => x.classList.toggle("on", x === b)); pv(); }; icr.append(b); });
+  p.append(icr);
+  const fld = (label, input) => { const l = el("label", "ev-f"); l.append(el("span", null, label), input); p.append(l); return input; };
+  const ti = fld("名前", el("input")); ti.id = "ev-title"; ti.maxLength = 30; ti.value = f.title;
+  const sug = el("div", "ev-sug"); EV_TITLES.forEach(t => { const b = el("button", "chip", t); b.type = "button"; b.onclick = () => { ti.value = t; f.title = t; pv(); }; sug.append(b); }); p.insertBefore(sug, ti.parentNode.nextSibling);
+  const row = el("div", "ev-2"); p.append(row);
+  const dl = el("label", "ev-f"); const di = el("input"); di.type = "date"; di.id = "ev-day"; di.value = f.day; di.min = today; dl.append(el("span", null, "日にち"), di);
+  const tl = el("label", "ev-f"); const tmi = el("input"); tmi.type = "time"; tmi.id = "ev-tm"; tmi.value = f.tm || ""; tl.append(el("span", null, "開始（なくてもOK）"), tmi);
+  row.append(dl, tl);
+  const pl = fld("場所（なくてもOK）", el("input")); pl.id = "ev-place"; pl.maxLength = 40; pl.value = f.place || ""; pl.placeholder = "例：市民ホール 小ホール";
+  const tg = el("div", "ev-tg"); Object.entries(EV_TARGET).forEach(([k, v]) => { const b = el("button", "chip" + (k === f.target ? " on" : ""), v); b.type = "button"; b.dataset.t = k;
+    b.onclick = () => { f.target = k; tg.querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === b)); }; tg.append(b); });
+  const tgl = el("div", "ev-f"); tgl.append(el("span", null, "だれに見せる？"), tg); p.append(tgl);
+  const ms = fld("ひとこと（当日カードと通知に出ます）", el("textarea")); ms.id = "ev-msg"; ms.maxLength = 200; ms.value = f.msg || ""; ms.placeholder = "例：いままでの練習の成果を見せよう！"; ms.style.minHeight = "70px";
+  const nl = el("label", "ev-chk"); const nc = el("input"); nc.type = "checkbox"; nc.id = "ev-notify"; nc.checked = !edit; nl.append(nc, el("span", null, edit ? "変更を通知でお知らせする" : "生徒に通知でお知らせする")); p.append(nl);
+  p.append(el("span", "ev-pvl", "生徒にはこう見えます"));
+  const pvb = el("div", "ev-pv"); p.append(pvb);
+  function pv(){ f.title = ti.value.trim() || "発表会"; f.day = di.value; f.tm = tmi.value; f.place = pl.value.trim(); f.msg = ms.value.trim();
+    pvb.innerHTML = ""; if(!f.day){ pvb.append(el("div", "empty", "日にちを入れるとプレビューが出ます")); return; }
+    pvb.append(evCardEl({ ...f, id: 0 }, today, null, { preview: true })); }
+  [ti, di, tmi, pl, ms].forEach(x => x.addEventListener("input", pv)); pv();
+  const msg = el("p", "rw-note"); const ac = el("div", "actions"); const c = el("button", null, "もどる"); c.type = "button"; c.onclick = () => openEvents();
+  const ok = el("button", "save", "保存"); ok.type = "button"; ok.id = "ev-save"; ac.append(c, ok); p.append(msg, ac);
+  ok.onclick = async () => { pv(); if(!f.day){ msg.textContent = "日にちを入れてね"; return; } ok.disabled = true;
+    try{ const r = await rpc("mc_t_event_save", { tk: TK, p_id: f.id, p_title: f.title, p_day: f.day, p_tm: f.tm || null, p_place: f.place || null, p_msg: f.msg || null, p_target: f.target, p_ico: f.ico, p_notify: nc.checked });
+      toast(r.pushed ? "保存して " + r.pushed + "人にお知らせしました" : "保存しました"); await tEvLoad(); openEvents(); }
+    catch(e){ ok.disabled = false; msg.textContent = "保存できませんでした（" + ({ bad_day: "日にちを確かめてね", bad_time: "時刻を確かめてね", bad_title: "名前を入れてね", too_long: "文字が長すぎます" }[e.message] || e.message) + "）"; } };
+  document.body.append(o);
+}
 
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
@@ -4034,11 +4309,13 @@ async function stuRefresh(force){
     if(Array.isArray(ks) && ks.length){ const before=(Stu.keys||[]).map(k=>k.sk).join(); Stu.keys=ks; lsSet("mc_sks",JSON.stringify(ks)); if(before && before!==ks.map(k=>k.sk).join()) pushSync(); }
     if(!Stu.keys.length) Stu.keys=[{sk:SK, course:null}];
     if(!Stu.keys.some(k=>k.sk===SK)){ SK=Stu.keys[0].sk; lsSet("mc_sk",SK); }
+    const evp=evLoad();
     const res=await Promise.all(Stu.keys.map(k=>Promise.all([rpc("mc_s_state",{sk:k.sk}), rpc("mc_s_assign",{sk:k.sk})]).then(([st,as])=>({k,st,as})).catch(()=>null)));
     res.forEach(r=>{ if(r) Stu.sib[r.k.sk]={st:r.st, as:r.as||[]}; });
     const cur=Stu.sib[SK]; if(!cur) throw new Error("network");
     const st=cur.st, as=cur.as;
     Stu.info=st; Stu.stamps=st.stamps||[]; Stu.assign=as||[]; lsSet("mc_cache_"+SK, JSON.stringify({st, as}));
+    await evp;
     document.title=st.name+"さんのスタンプカード"; setNote("課題を出して、先生がOKしたら自分でスタンプを押せるよ。");
     if(force || (!Stu.styling && !window.__party && !Stu.playing && !Stu.sending && !busyNow())) stuRender();
     stuRankCheck();
@@ -4051,6 +4328,7 @@ function stuSwitch(sk){
   SK=sk; lsSet("mc_sk",SK); const d=Stu.sib[sk];
   if(d){ Stu.info=d.st; Stu.stamps=d.st.stamps||[]; Stu.assign=d.as||[]; }
   Stu.reopen={}; Stu.ym=nowYM(); Stu.styling=false; stuRender(); stuRankCheck();
+  evLoad().then(ch=>{ if(ch && !busyNow()) stuRender(); });
 }
 function stuCards(){
   const ks=(Stu.keys||[]).filter(k=>Stu.sib[k.sk] || k.sk===SK);
@@ -4109,6 +4387,7 @@ function stuRender(){
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(stuCards());
+  { const ec=evStudentCard(); if(ec) app.append(ec); }
   app.append(wardrobeBtn());
   app.append(gachaCard());
   app.append(shareCard());
@@ -4536,7 +4815,7 @@ function tStudents(app){
   const q=el("input"); q.id="q"; q.type="search"; q.placeholder="名前・番号でさがす"; q.value=T.q; q.oninput=()=>{ T.q=q.value; drawList(); };
   const add=el("button","btn primary","＋ 生徒を追加"); add.id="add-btn"; add.onclick=openAdd;
   const gv_=el("button","btn","🎟 チケット"); gv_.id="give-btn"; gv_.onclick=()=>openGive();
-  tools.append(q,gv_,add); app.append(tools);
+  tools.append(q,gv_,add); app.append(evButton(), tools);
   const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人</span>`; }
   const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
