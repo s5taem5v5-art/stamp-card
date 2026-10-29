@@ -2120,6 +2120,41 @@ button.ear-chip{cursor:pointer}
 .earc-row.ura{border-color:rgba(255,60,110,.45);background:linear-gradient(120deg,rgba(255,60,110,.12),rgba(20,6,30,.5))}
 .earc-row.ura .earc-bar i{background:linear-gradient(90deg,#ff3c6e,#8a1048)}
 .tear-r.ura b{color:#ff6b8f}
+/* ===== teacher: everyone's ear-training level ===== */
+.ea-open{display:flex;align-items:center;gap:10px;width:100%;margin:2px 0 10px;padding:9px 12px;border-radius:14px;cursor:pointer;font:inherit;font-weight:800;color:var(--ink);text-align:left;
+  border:1.5px solid rgba(56,214,255,.4);background:linear-gradient(120deg,rgba(56,214,255,.12),rgba(139,107,255,.14))}
+.ea-open img{width:28px;height:28px}
+.ea-open span{flex:1}
+.ea-open em{font-style:normal;font-size:1.3rem;color:var(--muted)}
+.earall .panel{max-width:620px}
+.ea-hd{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ea-hd b{font-size:1.05rem}
+.ea-body{display:flex;flex-direction:column;gap:10px}
+.ea-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ea-chip{display:flex;flex-direction:column;align-items:center;padding:7px 4px;border-radius:12px;background:rgba(255,255,255,.06);border:1.5px solid var(--line)}
+.ea-chip small{font-size:.62rem;color:var(--muted);font-weight:800;white-space:nowrap}
+.ea-chip b{font-size:.92rem}
+.ea-sort{align-self:flex-end;font:inherit;font-size:.82rem;font-weight:800;padding:6px 10px;border-radius:10px;border:1.5px solid var(--line);background:rgba(0,0,0,.3);color:var(--ink)}
+.ea-list{display:flex;flex-direction:column;gap:8px}
+.ea-row{display:flex;flex-direction:column;gap:5px;width:100%;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.ea-row:active{transform:scale(.99)}
+.ea-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ea-top .no{font-size:.72rem;font-weight:900;color:var(--p2)}
+.ea-nm{font-size:.98rem;margin-right:2px}
+.ea-top .rkc{font-size:.66rem}
+.ea-tr{display:grid;grid-template-columns:22px 34px 1fr;grid-template-areas:"ic lv bar" "ic lv lab";column-gap:8px;align-items:center}
+.ea-tr .ea-ic{grid-area:ic;font-size:1.05rem}
+.ea-tr .ea-lv{grid-area:lv;font-family:var(--display);font-weight:400;font-size:1rem;color:#7fe6ff}
+.ea-tr .ea-bar{grid-area:bar;height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.ea-tr .ea-bar i{display:block;height:100%;background:linear-gradient(90deg,#38d6ff,#8b6bff,#ff5fb7);transform-origin:left}
+.ea-tr small{grid-area:lab;font-size:.68rem;color:var(--muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ea-tr.zero .ea-lv{color:var(--muted)}
+.ea-tr.all .ea-lv{color:#ffc93c}
+.ea-tr.all .ea-bar i{background:linear-gradient(90deg,#ffc93c,#ff8a3a)}
+.ea-tr .ea-ura{grid-column:3;justify-self:end;margin-top:-16px;font-size:.62rem;font-weight:900;padding:1px 7px;border-radius:99px;color:#ffb3c6;background:rgba(255,60,110,.15);border:1px solid rgba(255,60,110,.4)}
+.ea-tr .ea-ura.all{color:#fff;background:linear-gradient(120deg,#ff3c6e,#8a1048)}
+.ea-last{font-size:.64rem;color:var(--muted);text-align:right}
+@media (max-width:380px){.ea-sum{grid-template-columns:1fr 1fr}}
 
 </style>
 </head>
@@ -5229,6 +5264,65 @@ function tEar(s){
   return box;
 }
 
+/* ---------- teacher: everyone's level in one list ---------- */
+async function openEarAll(){
+  document.getElementById("earall")?.remove();
+  const o = el("div", "sheet earall"); o.id = "earall"; const p = el("div", "panel"); p.setAttribute("role", "dialog"); o.append(p);
+  const close = () => o.remove(); o.onclick = e => { if(e.target === o) close(); };
+  const hd = el("div", "ea-hd"); hd.append(el("b", null, "🎧 みんなの耳トレレベル")); const x = el("button", "ear-x", "×"); x.type = "button"; x.setAttribute("aria-label", "とじる"); x.onclick = close; hd.append(x); p.append(hd);
+  const body = el("div", "ea-body"); body.append(el("div", "empty", "よみこみ中…")); p.append(body);
+  document.body.append(o);
+  let rows; try{ rows = await rpc("mc_t_ear_all", { tk: TK }); }catch(e){ body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした（" + e.message + "）")); return; }
+  const prog = new Map((rows || []).map(r => [r.pk, r]));
+  // one row per person (the course cards of one number together)
+  const groups = new Map(); T.students.forEach(s => { const k = s.num != null ? "n" + s.num : "i" + s.id; if(!groups.has(k)) groups.set(k, []); groups.get(k).push(s); });
+  const co = c => { const i = COURSE_KEYS.indexOf(c); return i < 0 ? 9 : i; };
+  const ppl = [...groups.entries()].map(([k, g]) => { g.sort((a, b) => co(a.course) - co(b.course)); const r = prog.get(k) || {}; return { k, g, s:g[0], p:r.p|0, gt:r.g|0, pu:r.pu|0, gu:r.gu|0, last:r.last || "" }; });
+  const PM = EAR_TRACKS.piano.levels.length, GM = EAR_TRACKS.guitar.levels.length, UM = EAR_TRACKS.piano_ura.levels.length;
+  let sort = lsGet("mc_ea_sort") || "num";
+  function draw(){
+    body.innerHTML = "";
+    const started = ppl.filter(x => x.p || x.gt).length;
+    const sum = el("div", "ea-sum");
+    [["始めた人", started + " / " + ppl.length], ["🎹 全クリア", ppl.filter(x => x.p >= PM).length + "人"], ["🎸 全クリア", ppl.filter(x => x.gt >= GM).length + "人"], ["🌑 裏に挑戦", ppl.filter(x => x.pu || x.gu || x.p >= PM || x.gt >= GM).length + "人"]]
+      .forEach(([a, b]) => { const c = el("div", "ea-chip"); c.append(el("small", null, a), el("b", null, b)); sum.append(c); });
+    body.append(sum);
+    const so = el("select", "ea-sort"); so.id = "ea-sort";
+    so.innerHTML = '<option value="num">番号順</option><option value="piano">ピアノが進んでいる順</option><option value="guitar">ギターが進んでいる順</option><option value="recent">最近やった順</option><option value="none">まだの人を上に</option>';
+    so.value = sort; so.onchange = () => { sort = so.value; lsSet("mc_ea_sort", sort); draw(); }; body.append(so);
+    const arr = ppl.slice();
+    if(sort === "piano") arr.sort((a, b) => (b.p + b.pu) - (a.p + a.pu) || numSort(a.s, b.s));
+    else if(sort === "guitar") arr.sort((a, b) => (b.gt + b.gu) - (a.gt + a.gu) || numSort(a.s, b.s));
+    else if(sort === "recent") arr.sort((a, b) => String(b.last).localeCompare(String(a.last)) || numSort(a.s, b.s));
+    else if(sort === "none") arr.sort((a, b) => (a.p + a.gt) - (b.p + b.gt) || numSort(a.s, b.s));
+    else arr.sort((a, b) => numSort(a.s, b.s));
+    if(!arr.length){ body.append(el("div", "empty", "まだ生徒がいません")); return; }
+    const list = el("div", "ea-list"); list.id = "ea-list";
+    arr.forEach(x => {
+      const r = el("button", "ea-row"); r.type = "button"; r.dataset.pk = x.k;
+      const top = el("div", "ea-top"); top.append(el("span", "no", x.s.num != null ? "No." + x.s.num : "—"), el("b", "ea-nm", x.s.name));
+      x.g.forEach(c => top.append(el("span", "rkc rk" + rankOf(c.rank), (c.course && COURSES[c.course] ? COURSES[c.course].ico + " " : "") + RANKS[rankOf(c.rank)].name + (gOk(c.grade) ? " " + gLabel(c.grade) : ""))));
+      r.append(top);
+      const tr = (ico, n, max, u, key) => {
+        const w = el("div", "ea-tr" + (n >= max ? " all" : "") + (!n ? " zero" : ""));
+        const bar = el("span", "ea-bar"); const f = el("i"); f.style.transform = "scaleX(" + (n / max) + ")"; bar.append(f);
+        const L = EAR_TRACKS[key].levels;
+        const lab = n >= max ? "🏆 全クリア" : n ? "Lv" + (n + 1) + " " + L[n].n + " に挑戦中" : "まだ";
+        w.append(el("span", "ea-ic", ico), el("b", "ea-lv", n ? "Lv" + n : "—"), bar, el("small", null, lab));
+        if(n >= max) w.append(el("span", "ea-ura" + (u >= UM ? " all" : ""), "🌑 裏 " + u + "/" + UM));
+        return w;
+      };
+      r.append(tr("🎹", x.p, PM, x.pu, "piano"), tr("🎸", x.gt, GM, x.gu, "guitar"));
+      if(x.last) r.append(el("small", "ea-last", "最後にクリア：" + x.last.slice(5).replace("-", "/")));
+      r.onclick = () => { close(); const open = x.s; T.sel = open.id; T.detail = null; T.sAssign = []; T.confirmDel = null; T.confirmStu = false; T.ym = nowYM(); tRender(); tLoadStudent(); setTimeout(() => document.getElementById("t-ear")?.scrollIntoView({ block:"center" }), 900); };
+      list.append(r);
+    });
+    body.append(list);
+    body.append(el("p", "rw-note", "「Lv」はクリアしたレベルの数。押すとその子のページが開きます。"));
+  }
+  draw();
+}
+
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
@@ -5769,6 +5863,7 @@ function tStudents(app){
   const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人</span>`; }
   const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
+  { const eb=el("button","ea-open"); eb.type="button"; eb.id="earall-btn"; const im=el("img"); im.src=F3D("1f3a7"); im.alt=""; eb.append(im, el("span",null,"みんなの耳トレレベルを見る"), el("em",null,"›")); eb.onclick=()=>openEarAll(); app.append(eb); }
   const list=el("div","list"); list.id="list"; app.append(list);
   function drawList(){
     list.innerHTML="";
