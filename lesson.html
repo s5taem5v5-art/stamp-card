@@ -2649,7 +2649,7 @@ const SFX = (()=>{
 
 /* ---------- looping BGM: upbeat chiptune on the 王道進行 (IV-V-iii-vi) ---------- */
 const BGM = (()=>{
-  let on=true, playing=false, timer=null, bus=null, ctx=null, N=null, step=0, nextT=0, nbuf=null;
+  let hold=false, on=true, playing=false, timer=null, bus=null, ctx=null, N=null, step=0, nextT=0, nbuf=null;
   try{ const v=localStorage.getItem("mc_bgm_"+MODE); on = v===null ? MODE==="s" : v!=="0"; }catch(e){}
   const BPM=148, S=60/BPM/4, VOL=.2, BARS=8;
   // chord per bar: [bass root, triad]
@@ -2704,7 +2704,7 @@ const BGM = (()=>{
     while(nextT < ctx.currentTime+.18){ schedStep(step,nextT); step=(step+1)%(16*BARS); nextT+=S; }
   }
   function start(){
-    if(playing || !on) return;
+    if(playing || !on || hold) return;
     const c=SFX.core(); if(!c) return; ctx=c.ctx; N=c.N;
     if(!bus){ bus=ctx.createGain(); bus.gain.value=VOL; bus.connect(c.comp); }
     bus.gain.cancelScheduledValues(ctx.currentTime); bus.gain.setValueAtTime(0,ctx.currentTime); bus.gain.linearRampToValueAtTime(VOL,ctx.currentTime+.6);
@@ -2719,10 +2719,12 @@ const BGM = (()=>{
   addEventListener("pointerdown",kick0,{passive:true}); addEventListener("keydown",kick0);
   document.addEventListener("visibilitychange",()=>{
     if(document.visibilityState==="hidden"){ const was=playing; stop(); BGM._resume=was; }
-    else if(BGM._resume && on){ start(); } });
+    else if(BGM._resume && on && !hold){ start(); } });
   return {
     get on(){ return on; }, get playing(){ return playing; },
     toggle(){ on=!on; try{ localStorage.setItem("mc_bgm_"+MODE,on?"1":"0"); }catch(e){} on?start():stop(); },
+    hold(v){ hold=!!v; if(hold) stop(); else if(on && document.visibilityState==="visible") start(); },
+    get held(){ return hold; },
     duck(sec){ if(!playing||!bus) return; const t=ctx.currentTime; bus.gain.cancelScheduledValues(t);
       bus.gain.setValueAtTime(bus.gain.value,t); bus.gain.linearRampToValueAtTime(VOL*.15,t+.08);
       bus.gain.setValueAtTime(VOL*.15,t+sec); bus.gain.linearRampToValueAtTime(VOL,t+sec+1.2); },
@@ -4934,9 +4936,11 @@ function openEar(tr){
   document.getElementById("ear")?.remove();
   const o = el("div", "ear-ov"); o.id = "ear"; o.setAttribute("role", "dialog");
   document.body.append(o); earMap(o);
+  // no BGM while training the ear (it comes back on close)
+  try{ BGM.hold(true); }catch(err){}
   requestAnimationFrame(() => o.classList.add("in"));
 }
-function earClose(){ earStop(); const o = document.getElementById("ear"); if(o){ o.remove(); } if(typeof stuRender === "function" && Stu.info && !busyNow()) stuRender(); }
+function earClose(){ earStop(); const o = document.getElementById("ear"); if(o){ o.remove(); } try{ BGM.hold(false); }catch(err){} if(typeof stuRender === "function" && Stu.info && !busyNow()) stuRender(); }
 function earHead(o, title, onBack){
   const h = el("div", "ear-hd"); const b = el("button", "ear-x", onBack ? "‹" : "×"); b.type = "button"; b.setAttribute("aria-label", onBack ? "もどる" : "とじる");
   b.onclick = onBack || earClose; h.append(b, el("b", null, title)); o.append(h); return h;
