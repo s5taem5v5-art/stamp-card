@@ -1799,7 +1799,7 @@ body.no-scroll{overflow:hidden}
 .ev-h{font-size:1.05rem}
 .ev-list{display:flex;flex-direction:column;gap:8px}
 .ev-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel)}
-.ev-row.past{opacity:.55}
+.ev-row.past>*:not(.fb-open){opacity:.55}
 .ev-row img{width:34px;height:34px;flex:none}
 .ev-rt{flex:1;min-width:0;display:flex;flex-direction:column}
 .ev-rt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1825,6 +1825,85 @@ body.no-scroll{overflow:hidden}
 .ev-chk{flex-direction:row;justify-content:flex-start;text-align:left;color:var(--ink)}
 .ev-chk input{flex:none;margin:0}
 .ev-sheet .actions .save{background:linear-gradient(135deg,#ff5fb7,#8b6bff);border-color:transparent;color:#fff}
+
+/* ===== feedback (only transform / opacity animate) ===== */
+.ev-row.w-fb{flex-wrap:wrap}
+.fb-open{flex-basis:100%;font:inherit;font-weight:800;font-size:.85rem;padding:9px;border-radius:12px;cursor:pointer;color:#fff;border:0;
+  background:linear-gradient(120deg,#ff7aa8,#ffb35c)}
+.fb-open.done{background:rgba(255,255,255,.08);border:1.5px solid var(--line);color:var(--ink)}
+.fb-hd{display:flex;align-items:center;gap:10px}
+.fb-hd img{width:42px;height:42px}
+.fb-hd div{display:flex;flex-direction:column}
+.fb-hd small{font-size:.75rem;color:var(--muted)}
+.fb-sheet textarea{min-height:70px}
+.fb-ph{display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:800;color:var(--muted)}
+.fb-cnt{color:var(--p2)}
+.fb-list{display:flex;flex-direction:column;gap:8px}
+.fb-row{padding:10px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);display:flex;flex-direction:column;gap:6px}
+.fb-row.has{border-color:rgba(255,179,92,.7)}
+.fb-who{display:flex;align-items:center;gap:6px}
+.fb-who small{font-size:.9rem}
+.fb-row textarea.fb-ta{min-height:58px;font-size:16px}
+.fb-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.fb-chips::-webkit-scrollbar{display:none}
+.fb-chips .chip{flex:none;font-size:.72rem}
+/* student: letters */
+.fbs .fb-item{border-radius:14px;background:rgba(255,255,255,.04);border:1.5px solid var(--line);margin-top:8px;overflow:hidden}
+.fbs summary{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;list-style:none}
+.fbs summary::-webkit-details-marker{display:none}
+.fbs summary img{width:34px;height:34px;flex:none}
+.fb-st{flex:1;display:flex;flex-direction:column}
+.fb-st small{font-size:.72rem;color:var(--muted)}
+.fbs summary .wd-new{position:static;font-style:normal}
+.fb-letter{margin:0 10px 12px;padding:14px 16px;border-radius:12px;color:#4a2b14;
+  background:repeating-linear-gradient(transparent 0 27px,rgba(196,140,90,.22) 27px 28px),linear-gradient(#fffaf0,#fdf1dc);
+  box-shadow:0 4px 12px rgba(0,0,0,.25);font-family:var(--body)}
+.fb-letter small{display:block;font-size:.7rem;font-weight:900;color:#c0703a;letter-spacing:.06em}
+.fb-letter p{margin:2px 0 0;white-space:pre-wrap;line-height:28px;font-weight:700;font-size:.95rem}
+.fb-mine p{font-size:1.02rem}
+.fb-allm{margin-top:10px}
+.fb-mine+.fb-allm{padding-top:8px;border-top:1px dashed rgba(196,140,90,.5)}
+.fb-sign{text-align:right;font-family:var(--mincho);font-weight:700;font-size:.85rem;margin-top:6px;color:#8a5a34}
+.fb-letter.big{margin:0;max-height:52vh;overflow:auto}
+/* the envelope */
+.fb-pop{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;
+  background:rgba(8,5,26,.93);opacity:0;transition:opacity .3s}
+.fb-pop.in{opacity:1}
+.fb-pop.out{opacity:0}
+.fb-from{color:#ffe9c2;font-weight:900;font-size:1.05rem;letter-spacing:.04em;transition:opacity .3s}
+.fb-stage{position:relative;width:280px;height:190px;perspective:900px;cursor:pointer;transition:transform .5s cubic-bezier(.5,0,.7,.4) .9s,opacity .4s .9s}
+.fb-pop.in .fb-stage{animation:fb-wob 1.6s ease-in-out .4s infinite}
+.fb-pop.open .fb-stage{animation:none;transform:translateY(60px) scale(.9);opacity:0}
+@keyframes fb-wob{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-4deg)}80%{transform:rotate(4deg)}90%{transform:rotate(-2deg)}}
+.fb-env{position:absolute;inset:0}
+.fb-env i{position:absolute;display:block}
+.fb-back{inset:0;border-radius:10px;background:#e9b98a}
+.fb-front{inset:0;border-radius:10px;z-index:3;background:linear-gradient(#ffd9a8,#f4c08a);clip-path:polygon(0 34%,50% 68%,100% 34%,100% 100%,0 100%);box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.fb-flap{left:0;right:0;top:0;height:62%;z-index:4;background:linear-gradient(#ffcf96,#f0b070);clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;transition:transform .4s ease-in,opacity .15s .3s}
+.fb-pop.open .fb-flap{transform:rotateX(180deg);opacity:0}
+.fb-seal{left:50%;top:48%;width:44px;height:44px;margin:-22px 0 0 -22px;z-index:5;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ff8a9c,#d81f45 70%);box-shadow:0 2px 4px rgba(0,0,0,.35);transition:opacity .2s,transform .2s}
+.fb-seal::after{content:"♥";position:absolute;inset:0;display:grid;place-items:center;color:#ffe3e8;font-size:20px;font-style:normal}
+.fb-pop.open .fb-seal{opacity:0;transform:scale(.5)}
+.fb-paper{left:7%;right:7%;top:8%;bottom:6%;z-index:2;border-radius:8px;background:#fffaf0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  transition:transform .55s cubic-bezier(.3,1.4,.5,1) .3s}
+.fb-pop.open .fb-paper{transform:translateY(-62%)}
+.fb-pic{width:40px;height:40px}
+.fb-pt{font-weight:900;color:#7a4a24;font-size:.85rem}
+.fb-hint{color:#ffe9c2;font-weight:800;font-size:.85rem;animation:fb-blink 1.4s ease-in-out infinite;transition:opacity .2s}
+@keyframes fb-blink{0%,100%{opacity:.45}50%{opacity:1}}
+.fb-pop.open .fb-hint{animation:none;opacity:0}
+.fb-full{position:absolute;left:16px;right:16px;top:50%;max-width:440px;margin:0 auto;transform:translateY(-44%) scale(.85);opacity:0;pointer-events:none;
+  transition:transform .5s cubic-bezier(.3,1.4,.5,1) 1.1s,opacity .35s 1.1s}
+.fb-pop.open .fb-full{transform:translateY(-50%) scale(1);opacity:1;pointer-events:auto}
+.fb-pop.open .fb-from{opacity:0}
+.fb-fh{display:flex;align-items:center;justify-content:center;gap:8px;color:#ffe9c2;margin-bottom:10px}
+.fb-fh img{width:44px;height:44px}
+.fb-close{position:absolute;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);font:inherit;font-weight:900;padding:12px 40px;border-radius:99px;border:0;cursor:pointer;
+  color:#fff;background:linear-gradient(120deg,#ff5fb7,#8b6bff);opacity:0;pointer-events:none;transition:opacity .3s 1.5s}
+.fb-pop.open .fb-close{opacity:1;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){.fb-pop *{animation:none!important;transition-duration:.01s!important;transition-delay:0s!important}}
 
 </style>
 </head>
@@ -4098,7 +4177,7 @@ function wardrobeBtn(){
 const EV_ICO = ["1f3b9","1f3a4","1f3b8","1f3bb","1f941","1f3ba","1f3bc","1f31f","1f3c6","1f384","1f383","1f490"];
 const EV_TARGET = { all:"みんな", base:"コースなし", vocal:"🎤 ボーカル", guitar:"🎸 ギター" };
 const EV_TITLES = ["発表会","ライブ","おさらい会","コンクール","クリスマス会"];
-const Ev = { list:[], today:null, off:0, timer:null };
+const Ev = { list:[], fb:[], today:null, off:0, timer:null };
 const evDate = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y, m-1, d); };
 const evDiff = (day, today) => Math.round((evDate(day) - evDate(today)) / 864e5);
 const evWd = s => "日月火水木金土"[evDate(s).getDay()];
@@ -4186,12 +4265,12 @@ function evStudentCard(){
 async function evLoad(){
   try{
     const r = await rpc("mc_s_events", { sk: SK });
-    const before = JSON.stringify(Ev.list) + Ev.today;
-    Ev.list = r.events || []; Ev.today = r.today;
+    const before = JSON.stringify(Ev.list) + JSON.stringify(Ev.fb) + Ev.today;
+    Ev.list = r.events || []; Ev.fb = r.fb || []; Ev.today = r.today;
     // server clock -> offset (the server sends Tokyo wall time; we keep it as a local Date with the same wall time)
     if(r.now){ const [a, b] = r.now.split("T"); const [y, mo, dd] = a.split("-").map(Number); const [hh, mi, ss] = b.split(":").map(Number);
       Ev.off = new Date(y, mo - 1, dd, hh, mi, ss) - Date.now(); }
-    return before !== JSON.stringify(Ev.list) + Ev.today;
+    return before !== JSON.stringify(Ev.list) + JSON.stringify(Ev.fb) + Ev.today;
   }catch(e){ return false; }
 }
 
@@ -4238,6 +4317,7 @@ function openEvents(edit){
       del.onclick = async () => { if(!del.dataset.ok){ del.dataset.ok = "1"; del.textContent = "本当に？"; return; }
         try{ await rpc("mc_t_event_del", { tk: TK, p_id: e.id }); toast("削除しました"); await tEvLoad(); openEvents(); }catch(err){ toast("削除できませんでした"); } };
       r.append(im, t, k, ed, del); list.append(r);
+      if(d <= 0){ const fb = el("button", "fb-open" + (e.fb ? " done" : ""), e.fb ? "📮 フィードバック送信済み ・ 見直す" : "📮 フィードバックを書く"); fb.type = "button"; fb.onclick = () => openFeedback(e); r.append(fb); r.classList.add("w-fb"); }
     });
     p.append(list);
     const ac = el("div", "actions"); const c = el("button", null, "とじる"); c.type = "button"; c.onclick = close;
@@ -4278,12 +4358,117 @@ function openEvents(edit){
     catch(e){ ok.disabled = false; msg.textContent = "保存できませんでした（" + ({ bad_day: "日にちを確かめてね", bad_time: "時刻を確かめてね", bad_title: "名前を入れてね", too_long: "文字が長すぎます" }[e.message] || e.message) + "）"; } };
   document.body.append(o);
 }
+/* ================= FEEDBACK after an event =================
+   teacher: one message for everyone + one for each person. student: letters (envelope pop the first time). */
+const FB_CHIPS = ["堂々としてたね！","音がとってもきれいだった！","リズムばっちり！","気持ちが伝わってきたよ","練習の成果が出てたね！","表情がすてきだった！","次は〇〇をがんばろう"];
+const fbSeenKey = f => "mc_fb_seen_" + f.id + "_" + (f.at || "");
+const fbUnseen = () => (Ev.fb || []).filter(f => !lsGet(fbSeenKey(f)));
+
+/* ---------- teacher ---------- */
+async function openFeedback(ev){
+  document.getElementById("ev-sheet")?.remove(); document.getElementById("fb-sheet")?.remove();
+  const o = el("div", "sheet fb-sheet"); o.id = "fb-sheet"; const p = el("div", "panel"); p.setAttribute("role", "dialog"); o.append(p);
+  const back = () => { o.remove(); openEvents(); };
+  o.onclick = e => { if(e.target === o) back(); };
+  p.append(el("div", "empty", "よみこみ中…")); document.body.append(o);
+  let d; try{ d = await rpc("mc_t_ev_fb_get", { tk: TK, p_id: ev.id }); }catch(e){ p.innerHTML = ""; p.append(el("p", "rw-note", "開けませんでした（" + e.message + "）")); const c = el("button", "btn", "もどる"); c.onclick = back; p.append(c); return; }
+  p.innerHTML = "";
+  const hd = el("div", "fb-hd"); const im = el("img"); im.src = F3D(ev.ico); im.alt = "";
+  const ht = el("div"); ht.append(el("b", null, "📮 " + ev.title + "のフィードバック"), el("small", null, evMD(ev.day) + (d.at ? " ・ 送信済み" : "")));
+  hd.append(im, ht); p.append(hd);
+  // everyone
+  const allL = el("label", "ev-f"); const all = el("textarea"); all.id = "fb-all"; all.maxLength = 500; all.value = d.all || ""; all.placeholder = "例：みんな本当によくがんばったね！会場がとってもあったかい雰囲気でした。";
+  allL.append(el("span", null, "👥 みんなへ"), all); p.append(allL);
+  // each person
+  const people = d.people || []; const vals = new Map(people.map(x => [x.pk, x.msg || ""]));
+  const cnt = el("span", "fb-cnt"); const upd = () => { cnt.textContent = [...vals.values()].filter(v => v.trim()).length + " / " + people.length + "人"; };
+  const ph = el("div", "fb-ph"); ph.append(el("span", null, "🧑 一人ひとりへ"), cnt); p.append(ph);
+  const list = el("div", "fb-list"); p.append(list);
+  if(!people.length) list.append(el("div", "empty", "この予定の対象の生徒がいません"));
+  people.forEach(x => {
+    const r = el("div", "fb-row"); r.dataset.pk = x.pk;
+    const top = el("div", "fb-who"); top.append(el("b", null, (x.num != null ? "No." + x.num + " " : "") + x.name));
+    if(x.course && COURSES[x.course]) top.append(el("small", null, COURSES[x.course].ico));
+    const ta = el("textarea", "fb-ta"); ta.maxLength = 500; ta.value = vals.get(x.pk); ta.placeholder = x.name + "さんへ（なくてもOK）"; ta.rows = 2;
+    ta.oninput = () => { vals.set(x.pk, ta.value); r.classList.toggle("has", !!ta.value.trim()); upd(); };
+    r.classList.toggle("has", !!ta.value.trim());
+    const chips = el("div", "fb-chips"); FB_CHIPS.forEach(c => { const b = el("button", "chip", c); b.type = "button";
+      b.onclick = () => { ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + c; ta.dispatchEvent(new Event("input")); ta.focus(); }; chips.append(b); });
+    r.append(top, ta, chips); list.append(r);
+  });
+  upd();
+  // extras
+  const tk = el("label", "ev-chk"); const tc = el("input"); tc.type = "checkbox"; tc.id = "fb-ticket"; tk.append(tc, el("span", null, "がんばったで賞：ガチャチケット1枚もいっしょに配る")); p.append(tk);
+  const nl = el("label", "ev-chk"); const nc = el("input"); nc.type = "checkbox"; nc.id = "fb-notify"; nc.checked = true; nl.append(nc, el("span", null, "通知でお知らせする")); p.append(nl);
+  const msg = el("p", "rw-note"); const ac = el("div", "actions"); const c = el("button", null, "もどる"); c.type = "button"; c.onclick = back;
+  const ok = el("button", "save", d.at ? "更新して送る" : "送る"); ok.type = "button"; ok.id = "fb-send"; ac.append(c, ok); p.append(msg, ac);
+  ok.onclick = async () => {
+    const items = people.map(x => ({ pk: x.pk, msg: (vals.get(x.pk) || "").trim() }));
+    if(!all.value.trim() && !items.some(i => i.msg)){ msg.textContent = "「みんなへ」か、だれか一人に書いてね"; return; }
+    ok.disabled = true;
+    try{
+      const r = await rpc("mc_t_ev_fb_save", { tk: TK, p_id: ev.id, p_all: all.value.trim() || null, p_items: items, p_notify: nc.checked });
+      let gave = 0;
+      if(tc.checked){ const sids = people.filter(x => all.value.trim() || (vals.get(x.pk) || "").trim()).map(x => x.sid);
+        if(sids.length){ try{ gave = await rpc("mc_t_give", { tk: TK, sids, p_n: 1, p_msg: ev.title + "がんばったで賞！" }); }catch(e){} } }
+      o.remove(); toast("📮 フィードバックを送りました" + (r.pushed ? "（通知 " + r.pushed + "人）" : "") + (gave ? " ・ 🎟 " + gave + "人" : ""));
+      await tEvLoad(); openEvents();
+    }catch(e){ ok.disabled = false; msg.textContent = "送れませんでした（" + (e.message === "too_long" ? "文字が長すぎます" : e.message) + "）"; }
+  };
+}
+
+/* ---------- student ---------- */
+function fbLetter(f, big){
+  const l = el("div", "fb-letter" + (big ? " big" : ""));
+  if(f.mine){ const a = el("div", "fb-mine"); a.append(el("small", null, (Stu.info && Stu.info.name ? Stu.info.name + "さんへ" : "あなたへ")), el("p", null, f.mine)); l.append(a); }
+  if(f.all){ const b = el("div", "fb-allm"); b.append(el("small", null, "みんなへ"), el("p", null, f.all)); l.append(b); }
+  l.append(el("div", "fb-sign", "先生より"));
+  return l;
+}
+function fbSection(){
+  const list = Ev.fb || []; if(!list.length) return null;
+  const box = el("section", "card fbs"); box.id = "fb-sec";
+  const h = el("h3", "sech"); h.textContent = "📮 先生からのフィードバック"; box.append(h);
+  list.slice(0, 5).forEach((f, i) => {
+    const d = el("details", "fb-item"); if(i === 0) d.open = true;
+    const s = el("summary"); const im = el("img"); im.src = F3D(f.ico || "1f3b9"); im.alt = "";
+    const t = el("span", "fb-st"); t.append(el("b", null, f.title), el("small", null, evMD(f.day)));
+    s.append(im, t); if(!lsGet(fbSeenKey(f))) s.append(el("em", "wd-new", "NEW"));
+    d.append(s, fbLetter(f)); box.append(d);
+  });
+  return box;
+}
+// the first time: an envelope that opens into the letter
+function fbPop(){
+  if(document.getElementById("fb-pop")) return;
+  const f = fbUnseen()[0]; if(!f || MODE === "t") return;
+  // wait for the gift / gacha / dressing room to close, then come
+  if(document.querySelector("#gift,#gacha,#zukan,#wd,.sheet") || Stu.styling){ clearTimeout(fbPop.t); fbPop.t = setTimeout(fbPop, 1500); return; }
+  const o = el("div", "fb-pop"); o.id = "fb-pop";
+  const st = el("div", "fb-stage");
+  const env = el("div", "fb-env"); env.innerHTML = '<i class="fb-back"></i><i class="fb-flap"></i><i class="fb-front"></i><i class="fb-seal"></i>';
+  // a sheet peeks out of the envelope, then the full letter comes forward
+  const paper = el("div", "fb-paper"); const im = el("img", "fb-pic"); im.src = F3D(f.ico || "1f3b9"); im.alt = "";
+  paper.append(im, el("div", "fb-pt", f.title));
+  env.insertBefore(paper, env.querySelector(".fb-front"));
+  const full = el("div", "fb-full"); const fh = el("div", "fb-fh"); const im2 = el("img"); im2.src = F3D(f.ico || "1f3b9"); im2.alt = "";
+  fh.append(im2, el("b", null, f.title + "のフィードバック")); full.append(fh, fbLetter(f, true));
+  const hint = el("div", "fb-hint", "タップしてひらこう！");
+  st.append(env); o.append(el("div", "fb-from", "📮 先生からお手紙がとどいたよ"), st, hint, full);
+  const close = el("button", "fb-close", "とじる"); close.type = "button"; o.append(close);
+  let opened = false;
+  const open = () => { if(opened) return; opened = true; o.classList.add("open"); try{ if(typeof GSFX === "object" && GSFX.up) GSFX.up(); }catch(e){} };
+  st.onclick = open;
+  close.onclick = () => { fbUnseen().forEach(x => { if(x.id === f.id) lsSet(fbSeenKey(x), "1"); }); o.classList.add("out"); setTimeout(() => { o.remove(); const s = document.getElementById("fb-sec"); if(s){ const n = fbSection(); if(n) s.replaceWith(n); } setTimeout(fbPop, 300); }, 260); };
+  document.body.append(o);
+  requestAnimationFrame(() => o.classList.add("in"));
+}
 
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
   if([...document.querySelectorAll(".keep")].some(x=>x.value)) return true;
-  if(document.querySelector(".sheet,#gacha,#zukan,#gift")) return true; return false; }
+  if(document.querySelector(".sheet,#gacha,#zukan,#gift,#fb-pop")) return true; return false; }
 function badge(map, st){ const [t,c]=map[st]||[st,""]; return el("span","st "+c, t); }
 function dueText(due){ if(!due) return ""; const t=todayKey(); const [,m,d]=due.split("-");
   return (due<t?"⚠ ":"")+"しめきり "+(+m)+"/"+(+d)+(due===t?"（今日）":""); }
@@ -4387,7 +4572,7 @@ function stuRender(){
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(stuCards());
-  { const ec=evStudentCard(); if(ec) app.append(ec); }
+  { const ec=evStudentCard(); if(ec) app.append(ec); const fs=fbSection(); if(fs) app.append(fs); }
   app.append(wardrobeBtn());
   app.append(gachaCard());
   app.append(shareCard());
@@ -4419,7 +4604,7 @@ function stuRender(){
     done.forEach(a=>{ const li=el("li","hrow"); li.innerHTML=stampSVG(card.stamp); const n=el("span","hn",a.title); if(a.t_comment) n.append(el("small",null,"先生：「"+a.t_comment+"」"));
       li.append(n, el("time",null,fmtDate(a.stamped_at))); ul.append(li); });
     d.append(ul); app.append(d); }
-  setTimeout(giftPop, 500);
+  setTimeout(giftPop, 500); setTimeout(fbPop, 1100);
   const lo=el("button","link","べつの番号で入りなおす"); lo.id="logout"; lo.style.alignSelf="center"; lo.onclick=()=>{ if(lo.dataset.ok){ stuLogout(); } else { lo.dataset.ok="1"; lo.textContent="もう一度押すと入りなおせます"; } }; app.append(lo);
 }
 /* sharing: a student who shares this course card can see the others of the same course who share theirs */
