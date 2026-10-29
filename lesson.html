@@ -2077,6 +2077,49 @@ button.ear-chip{cursor:pointer}
 .tear-n{font-weight:900;color:var(--p2)}
 .tear-r small{font-size:.72rem;color:var(--muted);text-align:right}
 @media (prefers-reduced-motion:reduce){.ear-ov *{animation:none!important}}
+/* ===== the hidden stage (裏ステージ) ===== */
+.ear-door{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border-radius:18px;font:inherit;text-align:left;cursor:pointer;color:#cfc6e6;
+  border:1.5px dashed rgba(180,160,220,.35);background:rgba(0,0,0,.25)}
+.ear-door .ear-dot{background:#120a1e;border-color:#3a2a55}
+.ear-door.open{color:#fff;border:1.5px solid #b0204a;background:linear-gradient(120deg,#2a0614,#140620 60%,#05030c);box-shadow:0 0 0 1px rgba(255,60,110,.25),0 8px 24px rgba(176,32,74,.35)}
+.ear-door.open .ear-dot{background:radial-gradient(circle,#3a0a1e,#0a0410);border-color:#ff3c6e}
+.ear-door.open .ear-dot::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:3px solid #ff3c6e;animation:ear-pulse 1.8s ease-out infinite;will-change:transform,opacity}
+.ear-door .ear-nt small{color:#b9a8d6}
+.ear-ov.ura{background:radial-gradient(120% 70% at 50% 0%,#3a0618,#12040e 55%,#05020a)}
+.ear-ov.ura .ear-hd{background:linear-gradient(#2a0414 70%,rgba(42,4,20,0))}
+.ear-ura-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin:2px auto 14px}
+.ear-moon{width:72px;height:72px;filter:drop-shadow(0 0 18px rgba(255,60,110,.55));animation:ear-bob 3s ease-in-out infinite}
+.ear-ura-hero b{font-family:var(--display);font-weight:400;font-size:1.7rem;letter-spacing:.12em;color:#ff6b8f;text-shadow:0 0 18px rgba(255,60,110,.6)}
+.ear-ura-hero small{font-size:.78rem;font-weight:700;color:#d9c3d0;max-width:320px}
+.ear-book.ura{color:#f3d9e2;background:linear-gradient(#1c0a14,#120610);border:1.5px solid #5a1430;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.ear-book.ura .ear-stp{border-color:rgba(255,107,143,.35);color:rgba(255,107,143,.6);font-size:.8rem}
+.ear-book.ura .ear-stp.got{border:3px solid #ff3c6e;color:#ff3c6e;background:radial-gradient(circle,rgba(255,60,110,.22),transparent 70%)}
+.ear-book.ura .ear-stp small{background:#1c0a14}
+.ear-book.ura .ear-ttl{color:#e59ab0}
+.ear-book.ura .ear-ttl.got{color:#ff6b8f}
+.ear-ov.ura .ear-node{border-color:rgba(255,107,143,.22);background:rgba(255,255,255,.035)}
+.ear-ov.ura .ear-node.cur{border-color:#ff3c6e;background:linear-gradient(120deg,rgba(255,60,110,.18),rgba(90,20,60,.25))}
+.ear-ov.ura .ear-node.cur .ear-dot{border-color:#ff3c6e;background:linear-gradient(135deg,#ff3c6e,#5a1048)}
+.ear-ov.ura .ear-node.cur .ear-dot::after{border-color:#ff3c6e}
+.ear-ov.ura .ear-node.done .ear-dot{border-color:#ff3c6e;background:radial-gradient(circle,#3a0a1e,#12040e)}
+.ear-ov.ura .ear-dot b{font-size:1rem;font-family:inherit;font-weight:900}
+.ear-ov.ura .ear-intro,.ear-ov.ura .ear-res{background:rgba(30,6,18,.85);border-color:#5a1430}
+.ear-ov.ura .ear-play{background:radial-gradient(circle at 35% 30%,#ff8fab,#c0204e 60%,#4a0820);box-shadow:0 8px 0 rgba(60,4,20,.9),0 14px 30px rgba(255,60,110,.4)}
+.ear-ov.ura .ear-play .ear-ring{border-color:rgba(255,143,171,.8)}
+.ear-ov.ura .ear-go{background:linear-gradient(120deg,#ff3c6e,#8a1048 60%,#3a0a40);box-shadow:0 6px 0 rgba(60,4,20,.9)}
+.ear-ov.ura .ear-cb b{font-size:1.05rem}
+.ear-ov.ura .ear-cbs{grid-template-columns:repeat(3,1fr)}
+.ear-ov.ura .ear-cbs.n4{grid-template-columns:1fr 1fr}
+.ear-ov.ura .ear-dots i.now{border-color:#ff3c6e}
+.ear-desc{display:block;font-size:.78rem!important;color:#ffd0dc!important;font-weight:800}
+.ear-unlock{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px;border-radius:18px;margin-top:4px;
+  background:linear-gradient(135deg,#2a0614,#0c0412);border:1.5px solid #b0204a;animation:ear-in .5s cubic-bezier(.2,1.3,.4,1) 1s both}
+.ear-unlock b{color:#ff6b8f;font-size:1.1rem}
+.ear-unlock small{font-size:.75rem;color:#d9c3d0}
+.ear-go.ura{background:linear-gradient(120deg,#ff3c6e,#8a1048 60%,#3a0a40);box-shadow:0 6px 0 rgba(60,4,20,.9)}
+.earc-row.ura{border-color:rgba(255,60,110,.45);background:linear-gradient(120deg,rgba(255,60,110,.12),rgba(20,6,30,.5))}
+.earc-row.ura .earc-bar i{background:linear-gradient(90deg,#ff3c6e,#8a1048)}
+.tear-r.ura b{color:#ff6b8f}
 
 </style>
 </head>
@@ -4641,12 +4684,31 @@ function fbPop(){
 const EAR_JP = ["ド","ド♯","レ","レ♯","ミ","ファ","ファ♯","ソ","ソ♯","ラ","ラ♯","シ"];
 const EAR_EN = ["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
 const EAR_PC = { C:0, "C#":1, Db:1, D:2, "D#":3, Eb:3, E:4, F:5, "F#":6, Gb:6, G:7, "G#":8, Ab:8, A:9, "A#":10, Bb:10, B:11 };
-const EAR_Q = { "":[0,4,7], m:[0,3,7], "7":[0,4,7,10] };
+const EAR_Q = { "":[0,4,7], m:[0,3,7], "7":[0,4,7,10],
+  // the hidden stage: chords you rarely meet
+  aug:[0,4,8], dim:[0,3,6], sus4:[0,5,7], sus2:[0,2,7], "6":[0,4,7,9], m6:[0,3,7,9], add9:[0,4,7,14], "69":[0,4,7,9,14],
+  dim7:[0,3,6,9], m7b5:[0,3,6,10], mM7:[0,3,7,11], "7sus4":[0,5,7,10], "7#5":[0,4,8,10],
+  "7b9":[0,4,7,10,13], "7#9":[0,4,7,10,15], "M7#11":[0,4,7,11,18], "13":[0,4,10,14,21], m9:[0,3,7,10,14], M9:[0,4,7,11,14] };
+// one line about how each rare chord sounds
+const EAR_DESC = { "":"ふつうの明るいドミソ（くらべる用）", aug:"ふわっと浮いた、夢の中みたいなひびき", dim:"ぎゅっとちぢこまった、不安なひびき", sus4:"どこにも着地しない、宙ぶらりんのひびき",
+  sus2:"すきとおった、からっぽの空みたいなひびき", "6":"なつかしい、昭和の歌謡曲みたいなひびき", m6:"ミステリアスで、ちょっとおしゃれなひびき",
+  add9:"キラッと光る、ポップスでよく使うひびき", "69":"ジャズのエンディングでよく鳴る、ひろがるひびき", dim7:"ホラー映画のピンチの場面のひびき",
+  m7b5:"切なくて、ぐらぐらゆれるひびき", mM7:"スパイ映画やミステリーのひびき", "7sus4":"ゴスペルやフュージョンの、ためのひびき",
+  "7#5":"ゆがんで、次へ急ぎたくなるひびき", "7b9":"スパニッシュでドラマチックなひびき", "7#9":"ジミ・ヘンドリックスの、ギラギラしたひびき",
+  "M7#11":"宇宙っぽい、ふしぎに明るいひびき", "13":"ジャズの、ぶあつくてリッチなひびき", m9:"夜のカフェみたいな、しっとりしたひびき", M9:"朝日みたいな、やさしく広がるひびき" };
+// how a chord name is written on the screen (b → ♭, # → ♯)
+const earChordLabel = name => { const m = /^([A-G][#b]?)(.*)$/.exec(name); return m[1].replace("b", "♭").replace("#", "♯") + m[2].replace("69", "6/9").replace(/b/g, "♭").replace(/#/g, "♯"); };
 const earNoteJP = m => EAR_JP[((m % 12) + 12) % 12];
 const earNoteEN = m => EAR_EN[((m % 12) + 12) % 12];
-function earChord(name){ const mt = /^([A-G][#b]?)(m|7)?$/.exec(name); if(!mt) return null; return { root: EAR_PC[mt[1]], q: mt[2] || "" }; }
+function earChord(name){ const mt = /^([A-G][#b]?)(.*)$/.exec(name); if(!mt || !EAR_Q[mt[2]]) return null; return { root: EAR_PC[mt[1]], q: mt[2] }; }
 // "ドミソ" style names of a chord's tones
-function earChordJP(name){ const c = earChord(name); return EAR_Q[c.q].map(i => EAR_JP[(c.root + i) % 12]).join(""); }
+const EAR_JP_FLAT = ["ド","レ♭","レ","ミ♭","ミ","ファ","ソ♭","ソ","ラ♭","ラ","シ♭","シ"];
+function earChordJP(name){
+  const c = earChord(name), root = /^[A-G]([#b]?)/.exec(name)[1];
+  // flat names for flat roots and for minor / diminished / ♭ chords (unless the root itself is ♯)
+  const flat = root === "b" || (root !== "#" && /^(m|dim)|b/.test(c.q));
+  return EAR_Q[c.q].map(i => (flat ? EAR_JP_FLAT : EAR_JP)[(c.root + i) % 12]).join(EAR_Q[c.q].length > 3 ? "・" : "");
+}
 // piano: root between F3 and E4, a bass note an octave down
 function earPianoVoicing(name){ const c = earChord(name); let r = 48 + c.root; if(r < 53) r += 12; return [r - 12].concat(EAR_Q[c.q].map(i => r + i)); }
 // guitar: real open-chord shapes (frets from the 6th string; null = not played)
@@ -4654,7 +4716,13 @@ const EAR_OPEN = [40, 45, 50, 55, 59, 64];
 const EAR_GTR = {
   C:[null,3,2,0,1,0], D:[null,null,0,2,3,2], E:[0,2,2,1,0,0], F:[1,3,3,2,1,1], G:[3,2,0,0,0,3], A:[null,0,2,2,2,0],
   Am:[null,0,2,2,1,0], Dm:[null,null,0,2,3,1], Em:[0,2,2,0,0,0], Bm:[null,2,4,4,3,2],
-  G7:[3,2,0,0,0,1], C7:[null,3,2,3,1,0], D7:[null,null,0,2,1,2], E7:[0,2,0,1,0,0], A7:[null,0,2,0,2,0]
+  G7:[3,2,0,0,0,1], C7:[null,3,2,3,1,0], D7:[null,null,0,2,1,2], E7:[0,2,0,1,0,0], A7:[null,0,2,0,2,0],
+  // the hidden stage
+  Esus4:[0,2,2,2,0,0], Asus4:[null,0,2,2,3,0], Asus2:[null,0,2,2,0,0], Dsus4:[null,null,0,2,3,3], Dsus2:[null,null,0,2,3,0],
+  Caug:[null,3,2,1,1,0], Bdim7:[null,2,3,1,3,1], Bm7b5:[null,2,3,2,3,null], AmM7:[null,0,2,1,1,0],
+  C6:[null,3,2,2,1,0], Am6:[null,0,2,2,1,2], Cadd9:[null,3,2,0,3,0], C69:[null,3,2,2,3,3],
+  A7sus4:[null,0,2,0,3,0], E7b9:[0,2,0,1,3,1], "E7#9":[0,7,6,7,8,null], "FM7#11":[1,null,3,2,0,0],
+  G13:[3,null,3,4,5,null], Am9:[null,0,5,5,0,0], CM9:[null,3,2,4,3,null]
 };
 const EAR_BARRE = { F:1, Bm:2 };
 const earGuitarVoicing = name => EAR_GTR[name].map((f, i) => f == null ? null : EAR_OPEN[i] + f).filter(x => x != null);
@@ -4686,6 +4754,21 @@ const EAR_TRACKS = {
     { n:"ファイナル", kind:"chord", set:["C","D","E","F","G","A","Am","Dm","Em","G7","E7","A7"], ref:"C", st:"1f451", tip:"オープンコード総まとめ。ラストステージ！" }
   ]}
 };
+/* the hidden stage (裏ステージ): opens after the whole track is cleared */
+EAR_TRACKS.piano_ura = { name:"裏ピアノ", ico:"1f319", inst:"piano", title:"g_ti_ear_up", parent:"piano", ura:true, levels:[
+  { n:"浮く・沈む・宙ぶらりん", kind:"chord", set:["C","Caug","Cdim","Csus4","Csus2"], ref:"C", st:"1f47b", tip:"ぜんぶ「ド」からのコード。ひびきのキャラのちがいを聞き分けよう" },
+  { n:"4和音のなぞ", kind:"chord", set:["Cdim7","Cm7b5","CmM7","C7sus4","C7#5"], ref:"C", st:"1f52e", tip:"ジャズやミステリーで出てくる、ふしぎな4つの音" },
+  { n:"6と9の世界", kind:"chord", set:["C6","Cm6","Cadd9","C69","CM9","Cm9"], ref:"C", st:"1f30c", tip:"6や9の音が入ると、ひびきが一気におしゃれに" },
+  { n:"テンションの嵐", kind:"chord", set:["C7b9","C7#9","CM7#11","C13"], ref:"C", st:"26a1", tip:"ジャズマンが大好きな、とがったテンションコード" },
+  { n:"裏ファイナル", kind:"chord", set:["Caug","F#dim7","Bbsus2","Ebm7b5","AmM7","D7#9","GM7#11","E13","Ab69","Dbadd9","Bm9","F7b9"], ref:"C", st:"1f480", tip:"根音もバラバラ。Cのコードのあとに鳴る、裏の和音を当てろ！" }
+]};
+EAR_TRACKS.guitar_ura = { name:"裏ギター", ico:"1f319", inst:"guitar", title:"g_ti_ear_ug", parent:"guitar", ura:true, levels:[
+  { n:"サスペンデッド", kind:"chord", set:["Esus4","Asus4","Asus2","Dsus4","Dsus2"], ref:null, st:"1f47b", tip:"3度の音がない、どっちつかずのコード" },
+  { n:"増と減", kind:"chord", set:["Caug","Bdim7","Bm7b5","AmM7"], ref:null, st:"1f52e", tip:"ギターで出会うと「なにこれ？」となるコードたち" },
+  { n:"6とadd9", kind:"chord", set:["C6","Am6","Cadd9","C69"], ref:null, st:"1f30c", tip:"ひと押さえ足すだけで、ひびきががらっと変わる" },
+  { n:"スパイス", kind:"chord", set:["A7sus4","E7b9","E7#9","FM7#11"], ref:null, st:"26a1", tip:"E7♯9はジミ・ヘンドリックスの代名詞のコード" },
+  { n:"裏ファイナル", kind:"chord", set:["G13","Am9","CM9","E7#9","Caug","Bdim7","Asus2","FM7#11","C69","AmM7","Bm7b5","E7b9"], ref:null, st:"1f480", tip:"珍しいコード総まとめ。ここをぬけたら本物の耳！" }
+]};
 const EAR_N = 15;
 
 // the questions of one round: every choice shows up at least once when it can, no same answer twice in a row
@@ -4804,17 +4887,23 @@ function earBlip(ok){
 const EAR_TITLES = [
   { id:"g_ti_ear_p", r:3, cat:"title", v:"ピアノ耳マスター", n:"しょうごう", sp:"耳トレ ピアノを全クリア" },
   { id:"g_ti_ear_g", r:3, cat:"title", v:"ギター耳マスター", n:"しょうごう", sp:"耳トレ ギターを全クリア" },
-  { id:"g_ti_ear_all", r:4, cat:"title", v:"音感マスター", n:"しょうごう", sp:"耳トレ ピアノもギターも全クリア" }
+  { id:"g_ti_ear_all", r:4, cat:"title", v:"音感マスター", n:"しょうごう", sp:"耳トレ ピアノもギターも全クリア" },
+  { id:"g_ti_ear_up", r:4, cat:"title", v:"禁断の和音使い", n:"しょうごう", sp:"裏ステージ ピアノを全クリア" },
+  { id:"g_ti_ear_ug", r:4, cat:"title", v:"裏コードの錬金術師", n:"しょうごう", sp:"裏ステージ ギターを全クリア" }
 ];
 EAR_TITLES.forEach(t => { GITEM[t.id] = t; });
 const Ear = { prog:{ piano:{}, guitar:{} }, tab: lsGet("mc_ear_tab") || "piano" };
 const earDone = tr => Object.keys(Ear.prog[tr] || {}).length;
 const earMax = tr => EAR_TRACKS[tr].levels.length;
 const earAll = tr => earDone(tr) >= earMax(tr);
-const earUnlocked = (tr, lv) => lv === 1 || !!(Ear.prog[tr] || {})[lv - 1] || earAll(tr);
-async function earFetch(){ try{ const r = await rpc("mc_s_ear", { sk: SK }); if(r) Ear.prog = { piano: r.piano || {}, guitar: r.guitar || {} }; }catch(e){} }
+const earUraOpen = tr => !EAR_TRACKS[tr].parent || earAll(EAR_TRACKS[tr].parent);
+const earUnlocked = (tr, lv) => earUraOpen(tr) && (lv === 1 || !!(Ear.prog[tr] || {})[lv - 1] || earAll(tr));
+const earSetProg = r => { if(!r) return; const p = {}; Object.keys(EAR_TRACKS).forEach(k => { p[k] = r[k] || {}; }); Ear.prog = p; };
+async function earFetch(){ try{ earSetProg(await rpc("mc_s_ear", { sk: SK })); }catch(e){} }
+const earMainOf = tr => EAR_TRACKS[tr].parent || tr;
 const earImg = (cp, cls) => { const i = el("img", cls || null); i.src = F3D(cp); i.alt = ""; return i; };
-const earLvName = (tr, lv) => "Lv" + lv + " " + EAR_TRACKS[tr].levels[lv - 1].n;
+const earTag = tr => EAR_TRACKS[tr].ura ? "裏" : "Lv";
+const earLvName = (tr, lv) => earTag(tr) + lv + " " + EAR_TRACKS[tr].levels[lv - 1].n;
 
 /* ---------- the card on the student page ---------- */
 function earCard(){
@@ -4829,6 +4918,12 @@ function earCard(){
     const nm = el("span", "earc-nm"); nm.append(el("b", null, T.name), el("small", null, d >= m ? "🏆 全クリア！" : "つぎ：" + earLvName(tr, d + 1)));
     r.append(earImg(T.ico), nm, bar, el("span", "earc-lv", d + "/" + m));
     r.onclick = () => openEar(tr); box.append(r);
+    const u = tr + "_ura";
+    if(earAll(tr)){ const U = EAR_TRACKS[u], ud = earDone(u), um = earMax(u);
+      const ur = el("button", "earc-row ura"); ur.type = "button"; ur.dataset.track = u;
+      const ub = el("span", "earc-bar"); const uf = el("i"); uf.style.transform = "scaleX(" + (ud / um) + ")"; ub.append(uf);
+      const un = el("span", "earc-nm"); un.append(el("b", null, "🌑 " + U.name), el("small", null, ud >= um ? "💀 裏も全クリア！" : "つぎ：" + earLvName(u, ud + 1)));
+      ur.append(earImg("1f311"), un, ub, el("span", "earc-lv", ud + "/" + um)); ur.onclick = () => openEar(u); box.append(ur); }
   });
   return box;
 }
@@ -4848,6 +4943,10 @@ function earHead(o, title, onBack){
 }
 function earMap(o){
   earStop(); o.innerHTML = ""; o.scrollTop = 0;
+  if(EAR_TRACKS[Ear.tab] && EAR_TRACKS[Ear.tab].ura && !earUraOpen(Ear.tab)) Ear.tab = EAR_TRACKS[Ear.tab].parent;
+  if(!EAR_TRACKS[Ear.tab]) Ear.tab = "piano";
+  const ura = !!EAR_TRACKS[Ear.tab].ura; o.classList.toggle("ura", ura);
+  if(ura){ earUraMap(o); return; }
   earHead(o, "🎧 耳トレ");
   const tabs = el("div", "ear-tabs");
   ["piano", "guitar"].forEach(tr => { const b = el("button", "ear-tab" + (Ear.tab === tr ? " on" : "")); b.type = "button"; b.dataset.track = tr;
@@ -4882,8 +4981,43 @@ function earMap(o){
   const fc = el("span", "ear-dot"); fc.append(earImg(earAll(tr) ? "1f308" : "1f512")); const ft = el("span", "ear-nt");
   ft.append(el("b", null, "フリーモード"), el("small", null, earAll(tr) ? "好きな音・コードをえらんで練習" : "全レベルをクリアするとあくよ"));
   fm.append(fc, ft); fm.onclick = () => earAll(tr) ? earFree(o, tr) : toast("全レベルをクリアするとあくよ"); path.append(fm);
+  // the door to the hidden stage
+  const u = tr + "_ura", open = earAll(tr);
+  const door = el("button", "ear-door" + (open ? " open" : "")); door.type = "button"; door.id = "ear-ura";
+  const dd = el("span", "ear-dot"); dd.append(earImg(open ? "1f311" : "1f512"));
+  const dt = el("span", "ear-nt"); dt.append(el("b", null, open ? "🌑 裏ステージ" : "？？？"), el("small", null, open ? "珍しいコードだけが出る、もうひとつの世界（" + earDone(u) + "/" + earMax(u) + "）" : "全レベルをクリアすると、なにかが起きる…"));
+  door.append(dd, dt); door.onclick = () => { if(!open){ toast("全レベルをクリアすると…？"); return; } Ear.tab = u; lsSet("mc_ear_tab", u); earMap(o); };
+  path.append(door);
   o.append(path);
   o.append(el("p", "ear-cr", "音：tonejs-instruments（MIT）・音が出ないときはマナーモードを解除してね"));
+  setTimeout(() => { const c = o.querySelector(".ear-node.cur"); if(c && c.offsetTop > innerHeight * .6) o.scrollTo({ top: c.offsetTop - innerHeight * .4, behavior: "smooth" }); }, 60);
+}
+
+/* ---------- the hidden stage ---------- */
+function earUraMap(o){
+  const tr = Ear.tab, T = EAR_TRACKS[tr], main = T.parent;
+  earHead(o, "🌑 " + T.name, () => { Ear.tab = main; lsSet("mc_ear_tab", main); earMap(o); });
+  const hero = el("div", "ear-ura-hero"); hero.append(earImg("1f311", "ear-moon"), el("b", null, "裏ステージ"), el("small", null, "ふだんの曲ではめったに出会わない、珍しいコードの世界。ぜんぶ聞き分けられたら本物の耳！"));
+  o.append(hero);
+  const book = el("div", "ear-book ura"); book.append(el("div", "ear-bt", "💀 " + T.name + "の裏手帳"));
+  const grid = el("div", "ear-stamps");
+  T.levels.forEach((L, i) => { const d = (Ear.prog[tr] || {})[i + 1]; const s = el("div", "ear-stp" + (d ? " got" : ""));
+    if(d){ s.append(earImg(L.st), el("small", null, "裏" + (i + 1))); } else s.append(el("span", null, "裏" + (i + 1))); grid.append(s); });
+  book.append(grid);
+  const tt = GITEM[T.title];
+  book.append(el("div", "ear-ttl" + (earAll(tr) ? " got" : ""), earAll(tr) ? "👑 称号「" + tt.v + "」ゲット！" : "裏を全部クリアで称号「" + tt.v + "」"));
+  o.append(book);
+  const path = el("div", "ear-path");
+  T.levels.forEach((L, i) => {
+    const lv = i + 1, d = (Ear.prog[tr] || {})[lv], un = earUnlocked(tr, lv), cur = !d && un;
+    const n = el("button", "ear-node" + (d ? " done" : "") + (cur ? " cur" : "") + (!un ? " lock" : "") + (i % 2 ? " r" : "")); n.type = "button"; n.dataset.lv = lv;
+    const c = el("span", "ear-dot"); if(d) c.append(earImg(L.st)); else if(!un) c.append(earImg("1f512")); else c.append(el("b", null, "裏" + lv));
+    const tx = el("span", "ear-nt"); tx.append(el("b", null, "裏" + lv + " " + L.n), el("small", null, d ? "クリア " + d.slice(5).replace("-", "/") : un ? L.set.slice(0, 4).map(earChordLabel).join(" ・ ") + (L.set.length > 4 ? " …" : "") : "前の裏ステージをクリアするとあくよ"));
+    n.append(c, tx);
+    n.onclick = () => { if(!un){ toast("裏" + (lv - 1) + "をクリアするとあくよ"); return; } earIntro(o, tr, lv); };
+    path.append(n);
+  });
+  o.append(path);
   setTimeout(() => { const c = o.querySelector(".ear-node.cur"); if(c && c.offsetTop > innerHeight * .6) o.scrollTo({ top: c.offsetTop - innerHeight * .4, behavior: "smooth" }); }, 60);
 }
 
@@ -4891,13 +5025,13 @@ function earMap(o){
 function earChoiceLabel(q){ return q.t === "note" ? earNoteJP(q.a) : q.t === "chord" ? q.a : q.a === "M" ? "明るい" : "暗い"; }
 function earIntro(o, tr, lv, free){
   o.innerHTML = ""; o.scrollTop = 0; const L = free || EAR_TRACKS[tr].levels[lv - 1];
-  earHead(o, free ? "フリーモード" : "Lv" + lv, () => earMap(o));
+  earHead(o, free ? "フリーモード" : (EAR_TRACKS[tr].ura ? "裏" : "Lv") + lv, () => earMap(o));
   const card = el("div", "ear-intro");
   card.append(earImg(L.st || EAR_TRACKS[tr].ico, "ear-iic"), el("h2", null, free ? "フリーモード" : L.n), el("p", "ear-tip", L.tip || ""));
   const ch = el("div", "ear-chips");
-  const items = L.kind === "note" ? L.set.map(m => earNoteJP(m)) : L.kind === "chord" ? L.set : L.kind === "mm" ? ["😊 明るい（メジャー）", "😢 暗い（マイナー）"] : L.set.map(m => earNoteJP(m)).concat(L.chords);
+  const items = L.kind === "note" ? L.set.map(m => earNoteJP(m)) : L.kind === "chord" ? L.set.map(earChordLabel) : L.kind === "mm" ? ["😊 明るい（メジャー）", "😢 暗い（マイナー）"] : L.set.map(m => earNoteJP(m)).concat(L.chords.map(earChordLabel));
   [...new Set(items)].forEach(t => ch.append(el("span", "ear-chip", t))); card.append(ch);
-  const ref = typeof L.ref === "number" ? "基準の「" + earNoteJP(L.ref) + "」" : L.ref ? "基準の「" + L.ref + "」のコード" : null;
+  const ref = typeof L.ref === "number" ? "基準の「" + earNoteJP(L.ref) + "」" : L.ref ? "基準の「" + earChordLabel(L.ref) + "」のコード" : null;
   card.append(el("p", "ear-how", (ref ? "🎵 " + ref + "のあとに鳴る" + (L.kind === "note" ? "音" : L.kind === "mix" ? "音や和音" : "和音") + "を当てよう。\n" : "🎵 鳴った和音のひびきを当てよう。\n") + (free ? "全" + EAR_N + "問（練習なのでスタンプはなし）" : "全" + EAR_N + "問・ぜんぶ正解でクリア！")));
   const msg = el("p", "ear-load"); const go = el("button", "ear-go", "スタート"); go.type = "button"; go.id = "ear-start";
   go.onclick = async () => {
@@ -4929,23 +5063,26 @@ function earKeyboard(lo, hi, opt){
 /* ---------- guitar chord chart ---------- */
 function earGtrSVG(name){
   const f = EAR_GTR[name]; if(!f) return "";
-  const W = 96, H = 124, x0 = 16, dx = 13, y0 = 22, dy = 20, b = EAR_BARRE[name];
+  const W = 104, H = 124, x0 = 22, dx = 13, y0 = 22, dy = 20, b = EAR_BARRE[name];
+  // a shape up the neck is drawn from its lowest fret, with the fret number beside it
+  const top = Math.max(...f.filter(v => v != null)), low = Math.min(...f.filter(v => v)), base = top > 4 ? low : 1, sh = base - 1;
   let s = `<svg class="ear-gd" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true"><rect x="${x0}" y="${y0}" width="${dx * 5}" height="${dy * 4}" fill="none" stroke="currentColor" stroke-width="1.2"/>`;
-  s += `<rect x="${x0 - 1}" y="${y0 - 3}" width="${dx * 5 + 2}" height="4" fill="currentColor"/>`;
+  if(base === 1) s += `<rect x="${x0 - 1}" y="${y0 - 3}" width="${dx * 5 + 2}" height="4" fill="currentColor"/>`;
+  else s += `<text x="${x0 - 6}" y="${y0 + dy * .5 + 4}" text-anchor="end" font-size="10" font-weight="800" fill="currentColor">${base}fr</text>`;
   for(let i = 1; i < 5; i++) s += `<line x1="${x0}" x2="${x0 + dx * 5}" y1="${y0 + i * dy}" y2="${y0 + i * dy}" stroke="currentColor" stroke-width="1"/>`;
   for(let i = 1; i < 5; i++) s += `<line y1="${y0}" y2="${y0 + dy * 4}" x1="${x0 + i * dx}" x2="${x0 + i * dx}" stroke="currentColor" stroke-width="1"/>`;
   if(b) s += `<rect x="${x0 - 4}" y="${y0 + (b - .5) * dy - 6}" width="${dx * 5 + 8}" height="12" rx="6" fill="#ff7aa8"/>`;
   f.forEach((v, i) => { const x = x0 + i * dx;
     if(v == null) s += `<text x="${x}" y="${y0 - 8}" text-anchor="middle" font-size="11" fill="currentColor">×</text>`;
     else if(v === 0) s += `<circle cx="${x}" cy="${y0 - 11}" r="3.6" fill="none" stroke="currentColor" stroke-width="1.4"/>`;
-    else if(v !== b) s += `<circle cx="${x}" cy="${y0 + (v - .5) * dy}" r="5.6" fill="#ff7aa8"/>`; });
-  return s + `<text x="${W / 2}" y="${H - 3}" text-anchor="middle" font-size="13" font-weight="900" fill="currentColor">${name}</text></svg>`;
+    else if(v !== b) s += `<circle cx="${x}" cy="${y0 + (v - sh - .5) * dy}" r="5.6" fill="#ff7aa8"/>`; });
+  return s + `<text x="${x0 + dx * 2.5}" y="${H - 3}" text-anchor="middle" font-size="13" font-weight="900" fill="currentColor">${earChordLabel(name)}</text></svg>`;
 }
 // what the answer looks like: chord shape on the keyboard / guitar chart
 function earShape(tr, name){
   const w = el("div", "ear-shape");
   if(EAR_TRACKS[tr].inst === "guitar") w.innerHTML = earGtrSVG(name);
-  else { const v = earPianoVoicing(name).slice(1); const lo = v[0] < 60 ? 48 : 60; w.append(earKeyboard(lo, lo + 24, { mini:true, hl:v })); }
+  else { const v = earPianoVoicing(name).slice(1); const lo = Math.floor(v[0] / 12) * 12, hi = Math.max(lo + 24, Math.ceil((v[v.length - 1] + 1) / 12) * 12); w.append(earKeyboard(lo, hi, { mini:true, hl:v })); }
   return w;
 }
 
@@ -4954,7 +5091,7 @@ function earGame(o, tr, lv, L, free){
   const inst = EAR_TRACKS[tr].inst, round = earMakeRound(L);
   const G = { i:0, ok:0, miss:[], busy:false, answered:false };
   o.innerHTML = ""; o.scrollTop = 0; o.classList.add("playing");
-  const h = earHead(o, free ? "フリーモード" : "Lv" + lv + " " + L.n, () => { if(G.i > 0 && !h.dataset.ok){ h.dataset.ok = "1"; toast("もう一度おすとやめます"); setTimeout(() => delete h.dataset.ok, 2500); return; } o.classList.remove("playing"); earMap(o); });
+  const h = earHead(o, free ? "フリーモード" : earTag(tr) + lv + " " + L.n, () => { if(G.i > 0 && !h.dataset.ok){ h.dataset.ok = "1"; toast("もう一度おすとやめます"); setTimeout(() => delete h.dataset.ok, 2500); return; } o.classList.remove("playing"); earMap(o); });
   const dots = el("div", "ear-dots"); round.forEach(() => dots.append(el("i"))); o.append(dots);
   const stage = el("div", "ear-stage"); o.append(stage);
   const play = el("button", "ear-play"); play.type = "button"; play.id = "ear-play"; play.innerHTML = '<i class="ear-ring"></i><b>▶</b><small>もう一回きく</small>';
@@ -4970,7 +5107,7 @@ function earGame(o, tr, lv, L, free){
     play.classList.add("on"); await earPlaySeq(inst, ss); play.classList.remove("on");
   }
   play.onclick = () => hear(false); refB.onclick = () => hear(true);
-  function label(qq){ return qq.t === "note" ? earNoteJP(qq.a) + "（" + earNoteEN(qq.a) + "）" : qq.t === "chord" ? qq.a + "（" + earChordJP(qq.a) + "）" : earMMName(qq) + "（" + (qq.a === "M" ? "明るい・メジャー" : "暗い・マイナー") + "）"; }
+  function label(qq){ return qq.t === "note" ? earNoteJP(qq.a) + "（" + earNoteEN(qq.a) + "）" : qq.t === "chord" ? earChordLabel(qq.a) + "（" + earChordJP(qq.a) + "）" : earMMName(qq) + "（" + (qq.a === "M" ? "明るい・メジャー" : "暗い・マイナー") + "）"; }
   function show(){
     const qq = q(); G.answered = false; fb.innerHTML = ""; fb.className = "ear-fb"; ans.innerHTML = "";
     dots.children[G.i].classList.add("now");
@@ -4981,7 +5118,7 @@ function earGame(o, tr, lv, L, free){
       const kb = earKeyboard(lo, hi, { enabled:new Set(L.set), onKey:(m, k) => answer(m, k) }); kb.id = "ear-kb"; ans.append(kb);
     } else if(qq.t === "chord"){
       const set = L.kind === "mix" ? L.chords : L.set;
-      const g = el("div", "ear-cbs" + (set.length > 6 ? " many" : set.length === 2 ? " n2" : set.length === 4 ? " n4" : "")); set.forEach(c => { const b = el("button", "ear-cb"); b.type = "button"; b.dataset.a = c; b.append(el("b", null, c), el("small", null, earChordJP(c))); b.onclick = () => answer(c, b); g.append(b); }); ans.append(g);
+      const g = el("div", "ear-cbs" + (set.length > 6 ? " many" : set.length === 2 ? " n2" : set.length === 4 ? " n4" : "")); set.forEach(c => { const b = el("button", "ear-cb"); b.type = "button"; b.dataset.a = c; b.append(el("b", null, earChordLabel(c)), el("small", null, earChordJP(c))); b.onclick = () => answer(c, b); g.append(b); }); ans.append(g);
     } else {
       const g = el("div", "ear-cbs mm"); [["M", "😊", "明るい", "メジャー"], ["m", "😢", "暗い", "マイナー"]].forEach(([a, e, j, en]) => { const b = el("button", "ear-cb"); b.type = "button"; b.dataset.a = a; b.append(el("b", null, e + " " + j), el("small", null, en)); b.onclick = () => answer(a, b); g.append(b); }); ans.append(g);
     }
@@ -4999,7 +5136,7 @@ function earGame(o, tr, lv, L, free){
     if(ok) G.ok++; else { G.miss.push(qq); warn.hidden = false; }
     fb.className = "ear-fb " + (ok ? "ok" : "ng");
     fb.append(el("b", null, ok ? "せいかい！" : "ざんねん… 正解は"), el("span", null, label(qq)));
-    if(qq.t === "chord") fb.append(earShape(tr, qq.a));
+    if(qq.t === "chord"){ const cq = earChord(qq.a).q; if(EAR_TRACKS[tr].ura && EAR_DESC[cq]) fb.append(el("small", "ear-desc", "💡 " + EAR_DESC[cq])); fb.append(earShape(tr, qq.a)); }
     else if(qq.t === "mm"){ fb.append(el("small", null, "メジャーは「ドミソ」、マイナーは真ん中の音が半音ひくい「ドミ♭ソ」のひびき")); }
     const row = el("div", "ear-fbr");
     if(!ok){ const cmp = el("button", "ear-sm", "🔁 聞きくらべ"); cmp.type = "button";
@@ -5014,25 +5151,30 @@ function earGame(o, tr, lv, L, free){
   function next(){ earStop(); G.i++; if(G.i >= round.length) return result(); show(); }
   async function result(){
     o.classList.remove("playing"); o.innerHTML = ""; o.scrollTop = 0;
-    earHead(o, free ? "フリーモード" : "Lv" + lv + " " + L.n, () => earMap(o));
+    earHead(o, free ? "フリーモード" : earTag(tr) + lv + " " + L.n, () => earMap(o));
     const perfect = G.ok === round.length;
     const r = el("div", "ear-res" + (perfect ? " perfect" : "")); o.append(r);
     const cv = el("canvas", "ear-cf"); r.append(cv);
     r.append(el("div", "ear-score", G.ok + " / " + round.length));
     let res = null;
     if(perfect && !free){
-      try{ res = await rpc("mc_s_ear_clear", { sk: SK, p_track: tr, p_lv: lv }); if(res && res.ear) Ear.prog = { piano: res.ear.piano || {}, guitar: res.ear.guitar || {} };
+      try{ res = await rpc("mc_s_ear_clear", { sk: SK, p_track: tr, p_lv: lv }); if(res && res.ear) earSetProg(res.ear);
         if(res && res.gacha) gSet(res.gacha); }catch(e){ r.append(el("p", "ear-err", "記録できませんでした（" + e.message + "）。電波のいいところでもう一度クリアしてね")); }
       // the stamp comes down onto the book
-      const st = el("div", "ear-bigst"); st.append(earImg(L.st), el("b", null, "CLEAR"), el("small", null, "Lv" + lv));
-      r.append(st, el("h2", null, "Lv" + lv + " クリア！"), el("p", "ear-rs", res && res.new ? "耳トレスタンプをゲットしたよ！" : "スタンプはもう持ってるよ。さすが！"));
+      const st = el("div", "ear-bigst"); st.append(earImg(L.st), el("b", null, "CLEAR"), el("small", null, earTag(tr) + lv));
+      r.append(st, el("h2", null, earTag(tr) + lv + " クリア！"), el("p", "ear-rs", res && res.new ? "耳トレスタンプをゲットしたよ！" : "スタンプはもう持ってるよ。さすが！"));
       setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, 3, true); }, 520);
       if(res && res.titles && res.titles.length){ res.titles.forEach(id => { const t = GITEM[id]; const tb = el("div", "ear-title"); tb.append(el("small", null, "称号ゲット！"), el("b", null, "👑 " + (t ? t.v : id)));
           const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { earClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"title", item:id }); }; tb.append(w); r.append(tb); });
       }
+      // the last level of a main track opens the door
+      if(!EAR_TRACKS[tr].ura && earAll(tr) && lv === earMax(tr)){
+        const u = tr + "_ura"; const d = el("div", "ear-unlock"); d.append(earImg("1f311", "ear-moon"), el("b", null, "裏ステージが開いた…！"), el("small", null, "珍しいコードだけが出る、もうひとつの世界"));
+        const go = el("button", "ear-go ura", "🌑 裏ステージへ"); go.type = "button"; go.id = "ear-to-ura"; go.onclick = () => { Ear.tab = u; lsSet("mc_ear_tab", u); earMap(o); }; d.append(go); r.append(d);
+      }
     } else if(perfect){ r.append(el("h2", null, "パーフェクト！"), el("p", "ear-rs", "すごい！ 耳がばっちりだね")); setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, 2, true); }, 300); }
     else { r.append(el("h2", null, G.ok >= round.length - 2 ? "おしい！" : "もう少し！"), el("p", "ear-rs", free ? "練習あるのみ！" : "ぜんぶ正解でクリア。まちがえた音をもう一度聞いてみよう"));
-      const ml = el("div", "ear-miss"); [...new Map(G.miss.map(m => [JSON.stringify(m), m])).values()].forEach(m => { const b = el("button", "ear-chip play"); b.type = "button"; b.textContent = "🔊 " + (m.t === "note" ? earNoteJP(m.a) : m.t === "chord" ? m.a : earMMName(m)); b.onclick = () => earPlaySeq(inst, seqOf(m)); ml.append(b); }); r.append(ml); }
+      const ml = el("div", "ear-miss"); [...new Map(G.miss.map(m => [JSON.stringify(m), m])).values()].forEach(m => { const b = el("button", "ear-chip play"); b.type = "button"; b.textContent = "🔊 " + (m.t === "note" ? earNoteJP(m.a) : m.t === "chord" ? earChordLabel(m.a) : earMMName(m)); b.onclick = () => earPlaySeq(inst, seqOf(m)); ml.append(b); }); r.append(ml); }
     const ac = el("div", "ear-acts");
     const again = el("button", "ear-sm", perfect ? "もう一回あそぶ" : "もう一回チャレンジ"); again.type = "button"; again.onclick = () => earGame(o, tr, lv, L, free);
     ac.append(again);
@@ -5075,9 +5217,10 @@ function tEar(s){
   const box = el("section", "card tear"); box.id = "t-ear"; box.append(el("h3", "sech", "🎧 耳トレ"));
   const body = el("div", "tear-b"); body.append(el("div", "empty", "よみこみ中…")); box.append(body);
   rpc("mc_t_ear", { tk: TK, sid: s.id }).then(r => { body.innerHTML = "";
-    ["piano", "guitar"].forEach(tr => { const p = (r && r[tr]) || {}, T = EAR_TRACKS[tr], d = Object.keys(p).length, m = T.levels.length;
+    ["piano", "piano_ura", "guitar", "guitar_ura"].forEach(tr => { const p = (r && r[tr]) || {}, T = EAR_TRACKS[tr], d = Object.keys(p).length, m = T.levels.length;
+      if(T.ura && !d) return;
       const last = Object.keys(p).map(Number).sort((a, b) => b - a)[0];
-      const row = el("div", "tear-r"); row.append(earImg(T.ico), el("b", null, T.name), el("span", "tear-n", d + " / " + m), el("small", null, d >= m ? "🏆 全クリア" : last ? "Lv" + last + " " + T.levels[last - 1].n + " まで（" + p[last].slice(5).replace("-", "/") + "）" : "まだ"));
+      const row = el("div", "tear-r" + (T.ura ? " ura" : "")); row.append(earImg(T.ura ? "1f311" : T.ico), el("b", null, T.name), el("span", "tear-n", d + " / " + m), el("small", null, d >= m ? "🏆 全クリア" : last ? earTag(tr) + last + " " + T.levels[last - 1].n + " まで（" + p[last].slice(5).replace("-", "/") + "）" : "まだ"));
       body.append(row); }); }).catch(() => { body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした")); });
   return box;
 }
