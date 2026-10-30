@@ -2120,6 +2120,90 @@ button.ear-chip{cursor:pointer}
 .earc-row.ura{border-color:rgba(255,60,110,.45);background:linear-gradient(120deg,rgba(255,60,110,.12),rgba(20,6,30,.5))}
 .earc-row.ura .earc-bar i{background:linear-gradient(90deg,#ff3c6e,#8a1048)}
 .tear-r.ura b{color:#ff6b8f}
+/* ===== teacher: everyone's ear-training level ===== */
+.ea-open{display:flex;align-items:center;gap:10px;width:100%;margin:2px 0 10px;padding:9px 12px;border-radius:14px;cursor:pointer;font:inherit;font-weight:800;color:var(--ink);text-align:left;
+  border:1.5px solid rgba(56,214,255,.4);background:linear-gradient(120deg,rgba(56,214,255,.12),rgba(139,107,255,.14))}
+.ea-open img{width:28px;height:28px}
+.ea-open span{flex:1}
+.ea-open em{font-style:normal;font-size:1.3rem;color:var(--muted)}
+.earall .panel{max-width:620px}
+.ea-hd{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ea-hd b{font-size:1.05rem}
+.ea-body{display:flex;flex-direction:column;gap:10px}
+.ea-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ea-chip{display:flex;flex-direction:column;align-items:center;padding:7px 4px;border-radius:12px;background:rgba(255,255,255,.06);border:1.5px solid var(--line)}
+.ea-chip small{font-size:.62rem;color:var(--muted);font-weight:800;white-space:nowrap}
+.ea-chip b{font-size:.92rem}
+.ea-sort{align-self:flex-end;font:inherit;font-size:.82rem;font-weight:800;padding:6px 10px;border-radius:10px;border:1.5px solid var(--line);background:rgba(0,0,0,.3);color:var(--ink)}
+.ea-list{display:flex;flex-direction:column;gap:8px}
+.ea-row{display:flex;flex-direction:column;gap:5px;width:100%;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.ea-row:active{transform:scale(.99)}
+.ea-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ea-top .no{font-size:.72rem;font-weight:900;color:var(--p2)}
+.ea-nm{font-size:.98rem;margin-right:2px}
+.ea-top .rkc{font-size:.66rem}
+.ea-tr{display:grid;grid-template-columns:22px 34px 1fr;grid-template-areas:"ic lv bar" "ic lv lab";column-gap:8px;align-items:center}
+.ea-tr .ea-ic{grid-area:ic;font-size:1.05rem}
+.ea-tr .ea-lv{grid-area:lv;font-family:var(--display);font-weight:400;font-size:1rem;color:#7fe6ff}
+.ea-tr .ea-bar{grid-area:bar;height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.ea-tr .ea-bar i{display:block;height:100%;background:linear-gradient(90deg,#38d6ff,#8b6bff,#ff5fb7);transform-origin:left}
+.ea-tr small{grid-area:lab;font-size:.68rem;color:var(--muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ea-tr.zero .ea-lv{color:var(--muted)}
+.ea-tr.all .ea-lv{color:#ffc93c}
+.ea-tr.all .ea-bar i{background:linear-gradient(90deg,#ffc93c,#ff8a3a)}
+.ea-tr .ea-ura{grid-column:3;justify-self:end;margin-top:-16px;font-size:.62rem;font-weight:900;padding:1px 7px;border-radius:99px;color:#ffb3c6;background:rgba(255,60,110,.15);border:1px solid rgba(255,60,110,.4)}
+.ea-tr .ea-ura.all{color:#fff;background:linear-gradient(120deg,#ff3c6e,#8a1048)}
+.ea-last{font-size:.64rem;color:var(--muted);text-align:right}
+@media (max-width:380px){.ea-sum{grid-template-columns:1fr 1fr}}
+
+/* ===== SECRET rarity (above UR): black, gold and prism. only transform / opacity animate ===== */
+.rr5{--rc:#ffe27a}
+.rb5{background:linear-gradient(90deg,#1a1205,#3a2a08 30%,#1a1205);color:#ffe27a;border:1px solid #ffe27a;text-shadow:0 0 4px rgba(255,226,122,.8)}
+.ga-tile.rr5{box-shadow:0 0 14px #ffe27a,0 0 30px rgba(255,79,216,.6)}
+.zk-it.rr5:not(.no){box-shadow:0 0 14px #ffe27a}
+.zk-h.rr5{color:#ffe27a}
+.gi.q.sec{color:#ffe27a;text-shadow:0 0 10px rgba(255,226,122,.9);font-size:1.6rem}
+.wd-it.rr5{border-color:#ffe27a;box-shadow:0 0 0 1px rgba(255,226,122,.4),0 0 14px rgba(255,226,122,.45)}
+.ga-card.rr5,.gr-front.rr5{background-image:linear-gradient(180deg,#17110a,#000),conic-gradient(from 0deg,#ffe27a,#fff,#ff4fd8,#3ad6ff,#ffe27a,#b8860b,#ffe27a)}
+.ga-card.rr5 .ga-rar,.gr-front.rr5 .gr-rar{font-size:2.5rem;letter-spacing:.06em;background:linear-gradient(90deg,#b8860b,#ffe27a,#fff,#ffe27a,#b8860b);background-size:100% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.gr-front.rr5 .gr-rarjp{color:#ffe27a}
+.gr-cut.sec{background:linear-gradient(90deg,transparent,rgba(0,0,0,.92) 15%,rgba(0,0,0,.92) 85%,transparent)}
+.gr-cut.sec b{background:linear-gradient(90deg,#b8860b,#ffe27a,#fff,#ffe27a,#b8860b);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.3em}
+.gr-cut.sec span{color:#ffe27a;letter-spacing:.2em}
+/* the avatar with a picture */
+.st-secret .bg{background:#000}
+/* the person is alive: the whole body breathes and sways, and the head and both hands are separate soft-edged layers that move on their own.
+   always moving (also in small tiles), only transform animates */
+.av2.st-secret .bg .pp{position:absolute;inset:0;display:block;transform-origin:50% 80%;will-change:transform;animation:sec-body 3.4s ease-in-out infinite}
+.av2.st-secret .bg .ph{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;border-radius:50%;display:block;vertical-align:top;transform:scale(1.07)}
+.av2.st-secret .bg .ph.hd,.av2.st-secret .bg .ph.hl,.av2.st-secret .bg .ph.hr{border-radius:0;will-change:transform}
+/* head: nods on the beat and tilts side to side */
+.av2.st-secret .bg .ph.hd{-webkit-mask-image:radial-gradient(ellipse 23% 25% at 51% 30%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 23% 25% at 51% 30%,#000 62%,transparent 100%);
+  transform-origin:51% 48%;animation:sec-head 1.7s ease-in-out infinite}
+/* hands (rock signs): pump up to the beat, the right one a little later */
+.av2.st-secret .bg .ph.hl{-webkit-mask-image:radial-gradient(ellipse 16% 18% at 24% 52%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 16% 18% at 24% 52%,#000 60%,transparent 100%);
+  transform-origin:30% 68%;animation:sec-hl .85s ease-in-out infinite}
+.av2.st-secret .bg .ph.hr{-webkit-mask-image:radial-gradient(ellipse 15% 18% at 82% 54%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 15% 18% at 82% 54%,#000 60%,transparent 100%);
+  transform-origin:78% 70%;animation:sec-hr .85s ease-in-out -.2s infinite}
+@keyframes sec-body{0%,100%{transform:scale(1) translateY(0) rotate(0)}25%{transform:scale(1.015) translateY(-1%) rotate(-1.2deg)}50%{transform:scale(1.025) translateY(-1.6%) rotate(0)}75%{transform:scale(1.015) translateY(-1%) rotate(1.2deg)}}
+@keyframes sec-head{
+  0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}
+  15%{transform:scale(1.07) translate(-.6%,2%) rotate(-4deg)}
+  40%{transform:scale(1.07) translate(0,-.6%) rotate(0)}
+  65%{transform:scale(1.07) translate(.6%,2%) rotate(4deg)}
+  90%{transform:scale(1.07) translate(0,-.4%) rotate(0)}}
+@keyframes sec-hl{0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}35%{transform:scale(1.07) translate(-.8%,-3.2%) rotate(-6deg)}}
+@keyframes sec-hr{0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}35%{transform:scale(1.07) translate(.8%,-3.2%) rotate(6deg)}}
+.st-secret .bg::after{content:"";position:absolute;inset:-10%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.55) 48%,rgba(255,240,180,.25) 52%,transparent 60%);
+  transform:translateX(-120%);animation:sec-shine 3.2s ease-in-out infinite;will-change:transform}
+@keyframes sec-shine{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+.st-secret .rg{padding:5.5%;background:conic-gradient(#ffe27a,#fff,#ff4fd8,#ffe27a,#3ad6ff,#fff,#b8860b,#ffe27a);animation:av-spin 2.6s linear infinite}
+.st-secret .aura{inset:-9%;border-radius:50%;z-index:-1;background:radial-gradient(closest-side,rgba(255,226,122,.75),rgba(255,79,216,.35) 60%,transparent);animation:sec-aura 1.7s ease-in-out infinite;will-change:transform,opacity}
+@keyframes sec-aura{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.06)}}
+.st-secret .tw{background:#fff6c8}
+.still .st-secret .aura,.still .st-secret .bg::after{animation:none}
+@media (prefers-reduced-motion:reduce){.st-secret .aura,.st-secret .bg::after,.st-secret .rg{animation:none}}
+.gr5 .gr-stars i{color:#ffe27a!important;text-shadow:0 0 10px #ffe27a,0 0 22px rgba(255,180,40,.8)!important}
 
 </style>
 </head>
@@ -3011,8 +3095,11 @@ const RAR = [
   {k:"R",   jp:"レア",         c:"#4fb3ff", rate:30},
   {k:"SR",  jp:"スーパーレア", c:"#b46bff", rate:17},
   {k:"SSR", jp:"超激レア",     c:"#ffc93a", rate:6.5},
-  {k:"UR",  jp:"伝説",         c:"#ff4fd8", rate:1.5}
+  {k:"UR",  jp:"伝説",         c:"#ff4fd8", rate:1.5},
+  {k:"SECRET", jp:"シークレット", c:"#ffe27a", rate:0.5}
 ];
+// css classes of a rarity: SECRET (5) also wears the UR (4) look, then adds its own
+const rk = (p, r) => r >= 5 ? p + "4 " + p + "5" : p + r;
 const GACHA = [
   {id:"g_av_turtle", r:0, cat:"av", v:{ch:"1f422", st:"mint"}, n:"カメ"},
   {id:"g_av_hedge", r:0, cat:"av", v:{ch:"1f994", st:"cream"}, n:"ハリネズミ"},
@@ -3043,6 +3130,7 @@ const GACHA = [
   {id:"g_av2_genie", r:3, cat:"av", v:{ch:"1f9de", st:"holo"}, n:"ランプの魔人"},
   {id:"g_av_unicorn", r:4, cat:"av", v:{ch:"1f984", st:"diamond"}, n:"ダイヤモンドユニコーン"},
   {id:"g_av2_ryu", r:4, cat:"av", v:{ch:"1f432", st:"diamond"}, n:"ダイヤモンド神龍"},
+  {id:"g_av_secret", r:5, cat:"av", v:{img:"av_secret.webp", st:"secret"}, n:"MAKASERO!!"},
   // ---- N ----
   {id:"g_st_cherry", r:0, cat:"st", v:"1f352", n:"さくらんぼ"},
   {id:"g_st_bear",   r:0, cat:"st", v:"1f9f8", n:"くまのぬいぐるみ"},
@@ -3278,6 +3366,7 @@ const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bea
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
 function avHTML(s){
+  if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp">${["", " hd", " hl", " hr"].map(c => `<img class="ph${c}" src="${s.img}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
   if(!s||!s.ch) return "";
   const st=s.st||"pastel";
   const deco = st==="gold"||st==="royal"||st==="diamond" ? '<i class="st1"></i><i class="st2"></i><i class="st3"></i><i class="st4"></i>' : "";
@@ -3889,7 +3978,7 @@ const emo2cp = s => [...String(s)].map(c=>c.codePointAt(0).toString(16)).filter(
 function stkImg(v){ const g=GITEM[v]; const cp = g ? g.v : emo2cp(v); const im=el("img"); im.alt=""; im.loading="lazy"; im.decoding="async"; im.src=F3D(cp);
   im.onerror=()=>{ if(!im.dataset.r){ im.dataset.r=1; im.src=F3D(cp+"-fe0f"); } else { const s=el("span",null,g?"":String(v)); im.replaceWith(s); } }; return im; }
 
-const rarBadge = r => el("i","rb rb"+r, RAR[r].k);
+const rarBadge = r => el("i","rb "+rk("rb",r), RAR[r].k);
 // a small picture of an item (for the gacha result, the collection and the deco screen)
 function gIcon(it, big){
   const w=el("span","gi gi-"+it.cat+(big?" big":""));
@@ -3925,15 +4014,16 @@ function openZukan(){
   const o=el("div","zukan"); o.id="zukan"; o.setAttribute("role","dialog");
   const hd=el("div","ga-top"); hd.append(el("b",null,"📖 ずかん"), el("span","ga-t",gCount()+" / "+GACHA.length)); const x=el("button","ga-x","×"); x.type="button"; x.setAttribute("aria-label","とじる"); x.onclick=()=>o.remove(); hd.append(x); o.append(hd);
   const body=el("div","zk-body"); o.append(body);
-  for(let r=4;r>=0;r--){ const items=GACHA.filter(g=>g.r===r); const have=items.filter(g=>gOwned(g.id)).length;
-    const h=el("div","zk-h rr"+r); h.append(rarBadge(r), el("span",null,RAR[r].jp+"　"+have+"/"+items.length)); body.append(h);
+  for(let r=RAR.length-1;r>=0;r--){ const items=GACHA.filter(g=>g.r===r); const have=items.filter(g=>gOwned(g.id)).length;
+    const h=el("div","zk-h "+rk("rr",r)); h.append(rarBadge(r), el("span",null,RAR[r].jp+"　"+have+"/"+items.length)); body.append(h);
     const gr_=el("div","zk-grid");
-    items.forEach(it=>{ const own=gOwned(it.id), n=(G().owned||{})[it.id]|0; const t=el("button","zk-it rr"+r+(own?"":" no")); t.type="button";
+    items.forEach(it=>{ const own=gOwned(it.id), n=(G().owned||{})[it.id]|0; const t=el("button","zk-it "+rk("rr",r)+(own?"":" no")); t.type="button";
       if(own){ t.append(gIcon(it), el("small",null,it.n)); if(n>1) t.append(el("em","zk-n","×"+n)); t.onclick=()=>zkCard(it); }
+      else if(r>=5){ t.append(el("span","gi q sec","？"), el("small",null,"？？？")); t.onclick=()=>toast("…ガチャのいちばん奥に、なにかがいるらしい"); }
       else { t.append(el("span","gi q","？"), el("small",null,CAT_JP[it.cat])); t.onclick=()=>toast("まだ持ってないよ。ガチャで出るかも！"); }
       gr_.append(t); });
     body.append(gr_); }
-  function zkCard(it){ const m=el("div","ga-rev rr"+it.r); const c=el("div","ga-card rr"+it.r);
+  function zkCard(it){ const m=el("div","ga-rev "+rk("rr",it.r)); const c=el("div","ga-card "+rk("rr",it.r));
     c.append(el("div","ga-rar",RAR[it.r].k), gIcon(it,true), el("b","ga-nm",it.n), el("small","ga-cat",CAT_JP[it.cat]));
     const ac=el("div","ga-cact"); const wear=el("button","ga-btn gold","👗 きせかえ"); wear.type="button"; wear.onclick=()=>{ const g=document.getElementById("gacha"); if(g){ g.remove(); } o.remove(); document.body.classList.remove("no-scroll"); window.__party=false; openWardrobe({item:it.id}); };
     const ok=el("button","ga-btn","とじる"); ok.type="button"; ok.onclick=()=>m.remove(); ac.append(wear,ok); c.append(ac); m.append(c); o.append(m); }
@@ -3994,7 +4084,7 @@ const GSFX = (()=>{
     rumble(){ const c=C(); if(!c) return; duck(7); const t=c.ctx.currentTime+.01; tone(c,48,t,2,"sawtooth",.2,36); tone(c,51,t,2,"sawtooth",.15,37); noise(c,t,1.8,.3,500,60); tone(c,N(48),t+.2,1.8,"sawtooth",.05,N(84)); },
     boom(){ const c=C(); if(!c) return; const t=c.ctx.currentTime+.01; tone(c,90,t,.8,"sine",.6,30); noise(c,t,.9,.5,4000,80); },
     fanfare(r){ const c=C(); if(!c) return; duck(r>=3?6:3); const t=c.ctx.currentTime+.02;
-      const seqs=[[72,76,79],[72,76,79,84],[72,76,79,84,88],[67,72,76,79,84,88,91],[60,67,72,76,79,84,88,91,96]];
+      const seqs=[[72,76,79],[72,76,79,84],[72,76,79,84,88],[67,72,76,79,84,88,91],[60,67,72,76,79,84,88,91,96],[48,55,60,64,67,72,76,79,84,88,91,96,100]];
       seqs[r].forEach((n,i)=>{ tone(c,N(n),t+i*.06,.45+(r>=3?.6:0),"square",.07); tone(c,N(n+12),t+i*.06,.3,"triangle",.05); });
       const L=t+seqs[r].length*.06;
       if(r>=2){ [0,4,7,12].forEach(k=>{ tone(c,N(72+k),L,1.1,"sawtooth",.035); tone(c,N(72+k)*1.007,L,1.1,"sawtooth",.03); }); noise(c,L,.6,.15,9000,1500); }
@@ -4008,7 +4098,7 @@ const GSFX = (()=>{
 /* ---- confetti / sparkles ---- */
 function gBurst(cv, r, big){
   if(!cv) return; const ctx=cv.getContext("2d"), d=Math.min(2,devicePixelRatio||1), W=cv.clientWidth, H=cv.clientHeight; if(!W) return; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
-  const cols=[["#ffffff","#cfd8e6","#ffd6e8"],["#4fb3ff","#a8dcff","#fff"],["#b46bff","#e0c2ff","#fff","#ff9cf0"],["#ffc93a","#fff3b0","#ff9a1a","#fff"],["#ff4d4d","#ffa53a","#ffe14a","#3dff8a","#3ad6ff","#7a5cff","#ff4fd8","#fff"]][r];
+  const cols=[["#ffffff","#cfd8e6","#ffd6e8"],["#4fb3ff","#a8dcff","#fff"],["#b46bff","#e0c2ff","#fff","#ff9cf0"],["#ffc93a","#fff3b0","#ff9a1a","#fff"],["#ff4d4d","#ffa53a","#ffe14a","#3dff8a","#3ad6ff","#7a5cff","#ff4fd8","#fff"],["#ffe27a","#fff6c8","#ffb21a","#ffffff","#ff4fd8","#3ad6ff","#1a1a1a"]][Math.min(r,5)];
   const n=big?(r>=3?260:r>=2?160:90):40, cx=W/2, cy=H*.42;
   const ps=Array.from({length:n},()=>{ const a=Math.random()*6.28, sp=(r>=3?9:6)+Math.random()*(r>=3?10:7); return {x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,s:3+Math.random()*6,a:Math.random()*6,va:(Math.random()-.5)*.5,c:cols[(Math.random()*cols.length)|0],l:0,L:70+Math.random()*80,k:Math.random()<.25?"star":"rect"}; });
   const star=(x,y,s)=>{ ctx.beginPath(); for(let i=0;i<5;i++){ const a=i*1.2566-1.57, b=a+.628; ctx.lineTo(x+Math.cos(a)*s,y+Math.sin(a)*s); ctx.lineTo(x+Math.cos(b)*s*.45,y+Math.sin(b)*s*.45); } ctx.fill(); };
@@ -4073,11 +4163,11 @@ function domeSim(cv){
 
 /* a capsule element (shown rarity can be lower than the real one: it upgrades while opening) */
 function capEl(show, small){
-  const c=el("button","cap cr"+show+(small?" sm":"")); c.type="button";
+  const c=el("button","cap "+rk("cr",show)+(small?" sm":"")); c.type="button";
   if(show===0){ const p=CAP_COL[(Math.random()*CAP_COL.length)|0]; c.style.setProperty("--c1",p[0]); c.style.setProperty("--c2",p[1]); }
   c.innerHTML='<i class="ct"></i><i class="cb"></i><i class="cs"></i><i class="ck"></i><i class="cg"></i>'; c.setAttribute("aria-label","カプセル"); return c;
 }
-function capShow(c, r){ c.classList.remove("cr0","cr1","cr2","cr3","cr4"); c.classList.add("cr"+r); if(r>0){ c.style.removeProperty("--c1"); c.style.removeProperty("--c2"); } }
+function capShow(c, r){ c.classList.remove("cr0","cr1","cr2","cr3","cr4","cr5"); c.classList.add(...rk("cr",r).split(" ")); if(r>0){ c.style.removeProperty("--c1"); c.style.removeProperty("--c2"); } }
 // what the capsule looks like first: sometimes one step lower, then it "upgrades" (UR always arrives as gold)
 const shownOf = r => r>=4 ? 3 : (r>=2 && Math.random()<.45 ? r-1 : r);
 
@@ -4191,7 +4281,7 @@ function openGacha(){
   async function upgrade(c, x){
     if(x.r>=4){ // legend: blackout, rumble, rainbow
       o.classList.add("blackout"); lights("ltoff"); GSFX.rumble(); c.classList.add("quake"); buzz([60,40,60,40,200]); await gWait(1400);
-      flash(); capShow(c,4); x.show=4; lights("lt4 hot"); c.classList.remove("quake"); c.classList.add("promote"); o.classList.add("shk2"); GSFX.boom(); await gWait(900); o.classList.remove("shk2");
+      flash(); capShow(c,x.r); x.show=x.r; lights("lt4 hot"); c.classList.remove("quake"); c.classList.add("promote"); o.classList.add("shk2"); GSFX.boom(); await gWait(900); o.classList.remove("shk2");
     } else {
       c.classList.add("quake"); GSFX.crack(); await gWait(450); flash(.6); capShow(c,x.r); x.show=x.r; c.classList.remove("quake"); c.classList.add("promote"); GSFX.up(); lights("lt"+Math.min(x.r,4)+(x.r>=3?" hot":""));
       const b=el("div","ga-up","昇格!!"); tray.append(b); setTimeout(()=>b.remove(),1100); await gWait(700);
@@ -4206,17 +4296,17 @@ function openGacha(){
   /* the big result: stars, card flip, rarity, NEW */
   function revealOne(x){ return new Promise(done=>{
     const it=GITEM[x.id]; if(!it){ done(); return; }
-    o.classList.add("rv","rv"+x.r);
-    const m=el("div","gr gr"+x.r);
+    o.classList.add("rv",...rk("rv",x.r).split(" "));
+    const m=el("div","gr "+rk("gr",x.r));
     m.innerHTML=`<div class="gr-rays"></div><div class="gr-stars"></div>`;
-    const cut = x.r>=4 ? el("div","gr-cut") : null; if(cut){ cut.innerHTML="<b>LEGEND</b><span>伝説のアイテム</span>"; m.append(cut); }
+    const cut = x.r>=4 ? el("div","gr-cut"+(x.r>=5?" sec":"")) : null; if(cut){ cut.innerHTML=x.r>=5?"<b>SECRET</b><span>だれも見たことのない、シークレットレア</span>":"<b>LEGEND</b><span>伝説のアイテム</span>"; m.append(cut); }
     const card=el("div","gr-card"); const inner=el("div","gr-in"); const back=el("div","gr-back"); back.innerHTML='<b>?</b>';
-    const front=el("div","gr-front rr"+x.r); front.append(el("div","gr-rar",RAR[x.r].k), el("div","gr-rarjp",RAR[x.r].jp), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat]));
+    const front=el("div","gr-front "+rk("rr",x.r)); front.append(el("div","gr-rar",RAR[x.r].k), el("div","gr-rarjp",RAR[x.r].jp), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat]));
     inner.append(back, front); card.append(inner); m.append(card);
     const tag=el("div","gr-tag"); m.append(tag);
     const btns=el("div","gr-btns"); m.append(btns); o.append(m);
     (async()=>{
-      if(cut){ await gWait(1500); }
+      if(cut){ await gWait(x.r>=5?2600:1500); }
       const st=m.querySelector(".gr-stars");
       for(let i=0;i<=x.r;i++){ const s=el("i",null,"★"); st.append(s); GSFX.star(i); await gWait(x.r>=3?260:170); }
       card.classList.add("in"); await gWait(350); inner.classList.add("flip"); await gWait(420);
@@ -4245,7 +4335,7 @@ function openGacha(){
     const openOne=async(i, fast)=>{ if(isOpen[i]) return; isOpen[i]=true; const c=caps[i], x=res[i];
       if(x.show<x.r && !fast){ showing=true; await upgrade(c,x); }
       c.classList.add("open"); GSFX.pop(); gBurst(cv, x.r, x.r>=3);
-      const t=el("span","ga-tile rr"+x.r); t.append(gIcon(GITEM[x.id]), rarBadge(x.r)); if(!x.dup) t.append(el("em","nw","NEW"));
+      const t=el("span","ga-tile "+rk("rr",x.r)); t.append(gIcon(GITEM[x.id]), rarBadge(x.r)); if(!x.dup) t.append(el("em","nw","NEW"));
       await gWait(fast?0:160); c.replaceWith(t); caps[i]=t; t.onclick=()=>{ if(!showing) zoom(x); };
       if(x.r>=3 && !fast){ showing=true; await revealMini(x); }
       showing=false; opened++; if(opened===res.length) done(); };
@@ -4255,14 +4345,14 @@ function openGacha(){
     function done(){ act.innerHTML=""; const nw=res.filter(x=>!x.dup).length, sh=res.reduce((s,x)=>s+(x.sh|0),0);
       msg.innerHTML=`NEW <b>${nw}</b>こ`+(sh?` ・ 💠 +${sh}`:"")+`<br><small>タップでくわしく見られるよ</small>`;
       const back=el("button","ga-btn","もどる"); back.type="button"; back.onclick=()=>{ tray.innerHTML=""; o.classList.remove("blackout"); idle(); }; act.append(back); }
-    function revealMini(x){ return new Promise(res_=>{ const it=GITEM[x.id]; const m=el("div","gr gr"+x.r+" mini"); m.innerHTML='<div class="gr-rays"></div>';
-      if(x.r>=4){ const cut=el("div","gr-cut"); cut.innerHTML="<b>LEGEND</b><span>伝説のアイテム</span>"; m.append(cut); }
-      const f=el("div","gr-front rr"+x.r+" solo slam"); f.append(el("div","gr-rar",RAR[x.r].k), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat])); if(!x.dup) f.append(el("div","gr-tag nw","NEW!"));
+    function revealMini(x){ return new Promise(res_=>{ const it=GITEM[x.id]; const m=el("div","gr "+rk("gr",x.r)+" mini"); m.innerHTML='<div class="gr-rays"></div>';
+      if(x.r>=4){ const cut=el("div","gr-cut"+(x.r>=5?" sec":"")); cut.innerHTML=x.r>=5?"<b>SECRET</b><span>シークレットレア</span>":"<b>LEGEND</b><span>伝説のアイテム</span>"; m.append(cut); }
+      const f=el("div","gr-front "+rk("rr",x.r)+" solo slam"); f.append(el("div","gr-rar",RAR[x.r].k), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat])); if(!x.dup) f.append(el("div","gr-tag nw","NEW!"));
       const ok=el("button","ga-btn","OK"); ok.type="button"; const b=el("div","gr-btns in"); b.append(ok); m.append(f,b); o.append(m);
       GSFX.fanfare(x.r); gBurst(cv,x.r,true); o.classList.add("shk2"); setTimeout(()=>o.classList.remove("shk2"),600);
       ok.onclick=()=>{ m.remove(); lights(""); o.classList.remove("blackout"); res_(); }; }); }
-    function zoom(x){ const it=GITEM[x.id]; const m=el("div","gr gr"+x.r+" mini"); m.innerHTML='<div class="gr-rays"></div>';
-      const f=el("div","gr-front rr"+x.r+" solo"); f.append(el("div","gr-rar",RAR[x.r].k), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat]));
+    function zoom(x){ const it=GITEM[x.id]; const m=el("div","gr "+rk("gr",x.r)+" mini"); m.innerHTML='<div class="gr-rays"></div>';
+      const f=el("div","gr-front "+rk("rr",x.r)+" solo"); f.append(el("div","gr-rar",RAR[x.r].k), gIcon(it,true), el("b","gr-nm",it.n), el("small","gr-cat",CAT_JP[it.cat]));
       const wear=el("button","ga-btn gold","👗 きせかえ"); wear.type="button"; wear.onclick=()=>toWd(it.id);
       const ok=el("button","ga-btn","とじる"); ok.type="button"; ok.onclick=()=>m.remove(); const b=el("div","gr-btns in"); b.append(wear,ok); m.append(f,b); o.append(m); }
   }
@@ -4341,7 +4431,7 @@ function openWardrobe(opt){
     setTimeout(()=>{ if(o.isConnected){ wdMarkSeen(own.filter(c=>c.g).map(c=>c.g.id)); } }, 1200);
   }
   function tile(c, lk, seen){
-    const b=el("button","wd-it"+(isOn(tab,c.v)?" on":"")+(lk?" lock":"")+(c.g?" rr"+c.g.r:"")); b.type="button";
+    const b=el("button","wd-it"+(isOn(tab,c.v)?" on":"")+(lk?" lock":"")+(c.g?" "+rk("rr",c.g.r):"")); b.type="button";
     b.append(c.ic); if(c.label) b.append(el("small","wd-l",c.label)); if(c.sub) b.append(el("span","wd-sub",c.sub));
     if(c.g) b.append(rarBadge(c.g.r)); if(c.g && !lk && !seen.has(c.g.id)) b.append(el("em","wd-nw","NEW"));
     if(lk) b.append(el("span","wd-lk", c.g ? "🎰" : "🔒"+c.n));
@@ -5229,6 +5319,65 @@ function tEar(s){
   return box;
 }
 
+/* ---------- teacher: everyone's level in one list ---------- */
+async function openEarAll(){
+  document.getElementById("earall")?.remove();
+  const o = el("div", "sheet earall"); o.id = "earall"; const p = el("div", "panel"); p.setAttribute("role", "dialog"); o.append(p);
+  const close = () => o.remove(); o.onclick = e => { if(e.target === o) close(); };
+  const hd = el("div", "ea-hd"); hd.append(el("b", null, "🎧 みんなの耳トレレベル")); const x = el("button", "ear-x", "×"); x.type = "button"; x.setAttribute("aria-label", "とじる"); x.onclick = close; hd.append(x); p.append(hd);
+  const body = el("div", "ea-body"); body.append(el("div", "empty", "よみこみ中…")); p.append(body);
+  document.body.append(o);
+  let rows; try{ rows = await rpc("mc_t_ear_all", { tk: TK }); }catch(e){ body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした（" + e.message + "）")); return; }
+  const prog = new Map((rows || []).map(r => [r.pk, r]));
+  // one row per person (the course cards of one number together)
+  const groups = new Map(); T.students.forEach(s => { const k = s.num != null ? "n" + s.num : "i" + s.id; if(!groups.has(k)) groups.set(k, []); groups.get(k).push(s); });
+  const co = c => { const i = COURSE_KEYS.indexOf(c); return i < 0 ? 9 : i; };
+  const ppl = [...groups.entries()].map(([k, g]) => { g.sort((a, b) => co(a.course) - co(b.course)); const r = prog.get(k) || {}; return { k, g, s:g[0], p:r.p|0, gt:r.g|0, pu:r.pu|0, gu:r.gu|0, last:r.last || "" }; });
+  const PM = EAR_TRACKS.piano.levels.length, GM = EAR_TRACKS.guitar.levels.length, UM = EAR_TRACKS.piano_ura.levels.length;
+  let sort = lsGet("mc_ea_sort") || "num";
+  function draw(){
+    body.innerHTML = "";
+    const started = ppl.filter(x => x.p || x.gt).length;
+    const sum = el("div", "ea-sum");
+    [["始めた人", started + " / " + ppl.length], ["🎹 全クリア", ppl.filter(x => x.p >= PM).length + "人"], ["🎸 全クリア", ppl.filter(x => x.gt >= GM).length + "人"], ["🌑 裏に挑戦", ppl.filter(x => x.pu || x.gu || x.p >= PM || x.gt >= GM).length + "人"]]
+      .forEach(([a, b]) => { const c = el("div", "ea-chip"); c.append(el("small", null, a), el("b", null, b)); sum.append(c); });
+    body.append(sum);
+    const so = el("select", "ea-sort"); so.id = "ea-sort";
+    so.innerHTML = '<option value="num">番号順</option><option value="piano">ピアノが進んでいる順</option><option value="guitar">ギターが進んでいる順</option><option value="recent">最近やった順</option><option value="none">まだの人を上に</option>';
+    so.value = sort; so.onchange = () => { sort = so.value; lsSet("mc_ea_sort", sort); draw(); }; body.append(so);
+    const arr = ppl.slice();
+    if(sort === "piano") arr.sort((a, b) => (b.p + b.pu) - (a.p + a.pu) || numSort(a.s, b.s));
+    else if(sort === "guitar") arr.sort((a, b) => (b.gt + b.gu) - (a.gt + a.gu) || numSort(a.s, b.s));
+    else if(sort === "recent") arr.sort((a, b) => String(b.last).localeCompare(String(a.last)) || numSort(a.s, b.s));
+    else if(sort === "none") arr.sort((a, b) => (a.p + a.gt) - (b.p + b.gt) || numSort(a.s, b.s));
+    else arr.sort((a, b) => numSort(a.s, b.s));
+    if(!arr.length){ body.append(el("div", "empty", "まだ生徒がいません")); return; }
+    const list = el("div", "ea-list"); list.id = "ea-list";
+    arr.forEach(x => {
+      const r = el("button", "ea-row"); r.type = "button"; r.dataset.pk = x.k;
+      const top = el("div", "ea-top"); top.append(el("span", "no", x.s.num != null ? "No." + x.s.num : "—"), el("b", "ea-nm", x.s.name));
+      x.g.forEach(c => top.append(el("span", "rkc rk" + rankOf(c.rank), (c.course && COURSES[c.course] ? COURSES[c.course].ico + " " : "") + RANKS[rankOf(c.rank)].name + (gOk(c.grade) ? " " + gLabel(c.grade) : ""))));
+      r.append(top);
+      const tr = (ico, n, max, u, key) => {
+        const w = el("div", "ea-tr" + (n >= max ? " all" : "") + (!n ? " zero" : ""));
+        const bar = el("span", "ea-bar"); const f = el("i"); f.style.transform = "scaleX(" + (n / max) + ")"; bar.append(f);
+        const L = EAR_TRACKS[key].levels;
+        const lab = n >= max ? "🏆 全クリア" : n ? "Lv" + (n + 1) + " " + L[n].n + " に挑戦中" : "まだ";
+        w.append(el("span", "ea-ic", ico), el("b", "ea-lv", n ? "Lv" + n : "—"), bar, el("small", null, lab));
+        if(n >= max) w.append(el("span", "ea-ura" + (u >= UM ? " all" : ""), "🌑 裏 " + u + "/" + UM));
+        return w;
+      };
+      r.append(tr("🎹", x.p, PM, x.pu, "piano"), tr("🎸", x.gt, GM, x.gu, "guitar"));
+      if(x.last) r.append(el("small", "ea-last", "最後にクリア：" + x.last.slice(5).replace("-", "/")));
+      r.onclick = () => { close(); const open = x.s; T.sel = open.id; T.detail = null; T.sAssign = []; T.confirmDel = null; T.confirmStu = false; T.ym = nowYM(); tRender(); tLoadStudent(); setTimeout(() => document.getElementById("t-ear")?.scrollIntoView({ block:"center" }), 900); };
+      list.append(r);
+    });
+    body.append(list);
+    body.append(el("p", "rw-note", "「Lv」はクリアしたレベルの数。押すとその子のページが開きます。"));
+  }
+  draw();
+}
+
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
@@ -5769,6 +5918,7 @@ function tStudents(app){
   const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人</span>`; }
   const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
+  { const eb=el("button","ea-open"); eb.type="button"; eb.id="earall-btn"; const im=el("img"); im.src=F3D("1f3a7"); im.alt=""; eb.append(im, el("span",null,"みんなの耳トレレベルを見る"), el("em",null,"›")); eb.onclick=()=>openEarAll(); app.append(eb); }
   const list=el("div","list"); list.id="list"; app.append(list);
   function drawList(){
     list.innerHTML="";
