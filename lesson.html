@@ -2172,16 +2172,28 @@ button.ear-chip{cursor:pointer}
 .gr-cut.sec span{color:#ffe27a;letter-spacing:.2em}
 /* the avatar with a picture */
 .st-secret .bg{background:#000}
-.av2.st-secret .bg .ph{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;border-radius:50%;display:block;vertical-align:top;transform-origin:50% 62%;will-change:transform;
-  animation:sec-groove 1.7s ease-in-out infinite}
-/* the person grooves to the beat: a little nod, sway and bounce */
-@keyframes sec-groove{
-  0%{transform:scale(1.07) translateY(0) rotate(0)}
-  18%{transform:scale(1.09) translateY(-2.5%) rotate(-2deg)}
-  36%{transform:scale(1.07) translateY(.5%) rotate(0)}
-  54%{transform:scale(1.09) translateY(-2.5%) rotate(2deg)}
-  72%{transform:scale(1.07) translateY(.5%) rotate(0)}
-  100%{transform:scale(1.07) translateY(0) rotate(0)}}
+/* the person is alive: the whole body breathes and sways, and the head and both hands are separate soft-edged layers that move on their own.
+   always moving (also in small tiles), only transform animates */
+.av2.st-secret .bg .pp{position:absolute;inset:0;display:block;transform-origin:50% 80%;will-change:transform;animation:sec-body 3.4s ease-in-out infinite}
+.av2.st-secret .bg .ph{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;border-radius:50%;display:block;vertical-align:top;transform:scale(1.07)}
+.av2.st-secret .bg .ph.hd,.av2.st-secret .bg .ph.hl,.av2.st-secret .bg .ph.hr{border-radius:0;will-change:transform}
+/* head: nods on the beat and tilts side to side */
+.av2.st-secret .bg .ph.hd{-webkit-mask-image:radial-gradient(ellipse 23% 25% at 51% 30%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 23% 25% at 51% 30%,#000 62%,transparent 100%);
+  transform-origin:51% 48%;animation:sec-head 1.7s ease-in-out infinite}
+/* hands (rock signs): pump up to the beat, the right one a little later */
+.av2.st-secret .bg .ph.hl{-webkit-mask-image:radial-gradient(ellipse 16% 18% at 24% 52%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 16% 18% at 24% 52%,#000 60%,transparent 100%);
+  transform-origin:30% 68%;animation:sec-hl .85s ease-in-out infinite}
+.av2.st-secret .bg .ph.hr{-webkit-mask-image:radial-gradient(ellipse 15% 18% at 82% 54%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 15% 18% at 82% 54%,#000 60%,transparent 100%);
+  transform-origin:78% 70%;animation:sec-hr .85s ease-in-out -.2s infinite}
+@keyframes sec-body{0%,100%{transform:scale(1) translateY(0) rotate(0)}25%{transform:scale(1.015) translateY(-1%) rotate(-1.2deg)}50%{transform:scale(1.025) translateY(-1.6%) rotate(0)}75%{transform:scale(1.015) translateY(-1%) rotate(1.2deg)}}
+@keyframes sec-head{
+  0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}
+  15%{transform:scale(1.07) translate(-.6%,2%) rotate(-4deg)}
+  40%{transform:scale(1.07) translate(0,-.6%) rotate(0)}
+  65%{transform:scale(1.07) translate(.6%,2%) rotate(4deg)}
+  90%{transform:scale(1.07) translate(0,-.4%) rotate(0)}}
+@keyframes sec-hl{0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}35%{transform:scale(1.07) translate(-.8%,-3.2%) rotate(-6deg)}}
+@keyframes sec-hr{0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}35%{transform:scale(1.07) translate(.8%,-3.2%) rotate(6deg)}}
 .st-secret .bg::after{content:"";position:absolute;inset:-10%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.55) 48%,rgba(255,240,180,.25) 52%,transparent 60%);
   transform:translateX(-120%);animation:sec-shine 3.2s ease-in-out infinite;will-change:transform}
 @keyframes sec-shine{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
@@ -2189,8 +2201,8 @@ button.ear-chip{cursor:pointer}
 .st-secret .aura{inset:-9%;border-radius:50%;z-index:-1;background:radial-gradient(closest-side,rgba(255,226,122,.75),rgba(255,79,216,.35) 60%,transparent);animation:sec-aura 1.7s ease-in-out infinite;will-change:transform,opacity}
 @keyframes sec-aura{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.06)}}
 .st-secret .tw{background:#fff6c8}
-.still .st-secret .ph,.still .st-secret .aura,.still .st-secret .bg::after{animation:none}
-@media (prefers-reduced-motion:reduce){.st-secret .ph,.st-secret .aura,.st-secret .bg::after,.st-secret .rg{animation:none}}
+.still .st-secret .aura,.still .st-secret .bg::after{animation:none}
+@media (prefers-reduced-motion:reduce){.st-secret .aura,.st-secret .bg::after,.st-secret .rg{animation:none}}
 .gr5 .gr-stars i{color:#ffe27a!important;text-shadow:0 0 10px #ffe27a,0 0 22px rgba(255,180,40,.8)!important}
 
 </style>
@@ -3354,7 +3366,7 @@ const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bea
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
 function avHTML(s){
-  if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><img class="ph" src="${s.img}" alt="" loading="lazy" decoding="async"></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
+  if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp">${["", " hd", " hl", " hr"].map(c => `<img class="ph${c}" src="${s.img}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
   if(!s||!s.ch) return "";
   const st=s.st||"pastel";
   const deco = st==="gold"||st==="royal"||st==="diamond" ? '<i class="st1"></i><i class="st2"></i><i class="st3"></i><i class="st4"></i>' : "";
