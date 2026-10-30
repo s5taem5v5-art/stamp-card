@@ -1575,6 +1575,21 @@ body.no-scroll{overflow:hidden}
 .dk-grid.avs .gi-av{width:62px;height:62px}
 .dk-gw .avst{font-size:.55rem;font-weight:800;opacity:.75}
 
+/* big avatar view */
+.avz{position:fixed;inset:0;z-index:9000;display:grid;place-items:center;padding:16px;background:rgba(6,2,18,.86);animation:avz-in .2s ease-out both}
+.avz.out{animation:avz-out .18s ease-in both}
+.avz-box{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;color:#fff;animation:avz-pop .45s cubic-bezier(.2,1.5,.4,1) both}
+.avz-av{width:min(76vw,340px);height:min(76vw,340px);filter:drop-shadow(0 12px 30px rgba(0,0,0,.55))}
+.avz-av .av2{width:100%;height:100%}
+.avz-nm{font-size:1.4rem;font-weight:900;letter-spacing:.04em;text-shadow:0 2px 0 rgba(0,0,0,.4)}
+.avz-box.rr5 .avz-nm{color:#ffe27a;text-shadow:0 0 12px rgba(255,226,122,.7)}
+.avz-who{font-size:.85rem;font-weight:800;opacity:.8}
+.avz-hint{font-size:.72rem;opacity:.5;margin-top:6px}
+.avz .rb{font-size:.8rem;padding:3px 12px;border-radius:99px;font-style:normal;font-weight:900}
+@keyframes avz-in{from{opacity:0}to{opacity:1}}
+@keyframes avz-out{to{opacity:0}}
+@keyframes avz-pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+
 /* ===================== DECO ENGINE (transform/opacity-only motion) ===================== */
 .prof.sk .pf-in{background:var(--skbg)!important}
 .pf-in>.pf-skin{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;border-radius:inherit;
@@ -2172,28 +2187,25 @@ button.ear-chip{cursor:pointer}
 .gr-cut.sec span{color:#ffe27a;letter-spacing:.2em}
 /* the avatar with a picture */
 .st-secret .bg{background:#000}
-/* the person is alive: the whole body breathes and sways, and the head and both hands are separate soft-edged layers that move on their own.
-   always moving (also in small tiles), only transform animates */
+/* the person is alive: the whole body breathes and sways, and the head and both hands are separate pictures
+   (soft edges baked into the files, so no css masks: cheap even inside the gacha card). always moving, only transform animates */
 .av2.st-secret .bg .pp{position:absolute;inset:0;display:block;transform-origin:50% 80%;will-change:transform;animation:sec-body 3.4s ease-in-out infinite}
-.av2.st-secret .bg .ph{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;border-radius:50%;display:block;vertical-align:top;transform:scale(1.07)}
-.av2.st-secret .bg .ph.hd,.av2.st-secret .bg .ph.hl,.av2.st-secret .bg .ph.hr{border-radius:0;will-change:transform}
+.av2.st-secret .bg .ph{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;border-radius:50%;display:block;vertical-align:top}
+.av2.st-secret .bg .pt{position:absolute;display:block;max-width:none;will-change:transform}
 /* head: nods on the beat and tilts side to side */
-.av2.st-secret .bg .ph.hd{-webkit-mask-image:radial-gradient(ellipse 23% 25% at 51% 30%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 23% 25% at 51% 30%,#000 62%,transparent 100%);
-  transform-origin:51% 48%;animation:sec-head 1.7s ease-in-out infinite}
+.av2.st-secret .bg .pt.hd{left:27.92%;top:5%;width:46.25%!important;height:50%!important;transform-origin:49.9% 86%;animation:sec-head 1.7s ease-in-out infinite}
 /* hands (rock signs): pump up to the beat, the right one a little later */
-.av2.st-secret .bg .ph.hl{-webkit-mask-image:radial-gradient(ellipse 16% 18% at 24% 52%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 16% 18% at 24% 52%,#000 60%,transparent 100%);
-  transform-origin:30% 68%;animation:sec-hl .85s ease-in-out infinite}
-.av2.st-secret .bg .ph.hr{-webkit-mask-image:radial-gradient(ellipse 15% 18% at 82% 54%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 15% 18% at 82% 54%,#000 60%,transparent 100%);
-  transform-origin:78% 70%;animation:sec-hr .85s ease-in-out -.2s infinite}
-@keyframes sec-body{0%,100%{transform:scale(1) translateY(0) rotate(0)}25%{transform:scale(1.015) translateY(-1%) rotate(-1.2deg)}50%{transform:scale(1.025) translateY(-1.6%) rotate(0)}75%{transform:scale(1.015) translateY(-1%) rotate(1.2deg)}}
+.av2.st-secret .bg .pt.hl{left:7.92%;top:34.17%;width:32.08%!important;height:35.83%!important;transform-origin:68.8% 94.4%;animation:sec-hl .85s ease-in-out infinite}
+.av2.st-secret .bg .pt.hr{left:67.08%;top:35.83%;width:30%!important;height:36.25%!important;transform-origin:36.4% 94.3%;animation:sec-hr .85s ease-in-out -.2s infinite}
+@keyframes sec-body{0%,100%{transform:scale(1.07) translateY(0) rotate(0)}25%{transform:scale(1.086) translateY(-1%) rotate(-1.2deg)}50%{transform:scale(1.097) translateY(-1.6%) rotate(0)}75%{transform:scale(1.086) translateY(-1%) rotate(1.2deg)}}
 @keyframes sec-head{
-  0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}
-  15%{transform:scale(1.07) translate(-.6%,2%) rotate(-4deg)}
-  40%{transform:scale(1.07) translate(0,-.6%) rotate(0)}
-  65%{transform:scale(1.07) translate(.6%,2%) rotate(4deg)}
-  90%{transform:scale(1.07) translate(0,-.4%) rotate(0)}}
-@keyframes sec-hl{0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}35%{transform:scale(1.07) translate(-.8%,-3.2%) rotate(-6deg)}}
-@keyframes sec-hr{0%,100%{transform:scale(1.07) translate(0,0) rotate(0)}35%{transform:scale(1.07) translate(.8%,-3.2%) rotate(6deg)}}
+  0%,100%{transform:translate(0,0) rotate(0)}
+  15%{transform:translate(-1.3%,4%) rotate(-4deg)}
+  40%{transform:translate(0,-1.2%) rotate(0)}
+  65%{transform:translate(1.3%,4%) rotate(4deg)}
+  90%{transform:translate(0,-.8%) rotate(0)}}
+@keyframes sec-hl{0%,100%{transform:translate(0,0) rotate(0)}35%{transform:translate(-2.5%,-9%) rotate(-6deg)}}
+@keyframes sec-hr{0%,100%{transform:translate(0,0) rotate(0)}35%{transform:translate(2.6%,-8.8%) rotate(6deg)}}
 .st-secret .bg::after{content:"";position:absolute;inset:-10%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.55) 48%,rgba(255,240,180,.25) 52%,transparent 60%);
   transform:translateX(-120%);animation:sec-shine 3.2s ease-in-out infinite;will-change:transform}
 @keyframes sec-shine{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
@@ -2204,6 +2216,15 @@ button.ear-chip{cursor:pointer}
 .still .st-secret .aura,.still .st-secret .bg::after{animation:none}
 @media (prefers-reduced-motion:reduce){.st-secret .aura,.st-secret .bg::after,.st-secret .rg{animation:none}}
 .gr5 .gr-stars i{color:#ffe27a!important;text-shadow:0 0 10px #ffe27a,0 0 22px rgba(255,180,40,.8)!important}
+/* inside the gacha card: no repainting background animations behind the moving picture */
+.gr-front.rr5{animation:none}
+.gr-front.rr5.solo{animation:ga-pop .6s cubic-bezier(.2,1.5,.4,1)}
+.gr-front.rr5 .gr-rar,.gr-front.rr5.slam .gr-rar{animation:none;filter:drop-shadow(0 0 8px rgba(255,226,122,.8))}
+.gr-front.rr5.slam .gr-rar{animation:slam .5s cubic-bezier(.2,1.6,.4,1)}
+/* after the card has turned, drop the 3d (identical look, much lighter) */
+.gr-in.flat{transform:none;transition:none}
+.gr-in.flat .gr-back{display:none}
+.gr-in.flat .gr-front{transform:none}
 
 </style>
 </head>
@@ -3366,7 +3387,7 @@ const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bea
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
 function avHTML(s){
-  if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp">${["", " hd", " hl", " hr"].map(c => `<img class="ph${c}" src="${s.img}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
+  if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp"><img class="ph" src="${s.img}" alt="" decoding="async">${["hd", "hl", "hr"].map(c => `<img class="pt ${c}" src="${s.img.replace(/\.webp$/, "_" + c + ".webp")}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
   if(!s||!s.ch) return "";
   const st=s.st||"pastel";
   const deco = st==="gold"||st==="royal"||st==="diamond" ? '<i class="st1"></i><i class="st2"></i><i class="st3"></i><i class="st4"></i>' : "";
@@ -3377,6 +3398,23 @@ function avHTML(s){
 // kept name for older callers
 const avatarSVG = avHTML;
 function avEl(v, cls){ const s=avSpec(v); if(!s) return null; const e=el("span", cls||"av"); e.innerHTML=avHTML(s); return e; }
+// tap an avatar to see it big. who = whose avatar (nickname), shown under it
+function avZoom(v, who){
+  const s=avSpec(v); if(!s) return; const k=avKey(v); document.getElementById("av-zoom")?.remove();
+  const g=GITEM[k], f=AV_FREE.find(x=>x[0]===k);
+  const o=el("div","avz"); o.id="av-zoom"; o.setAttribute("role","dialog"); o.setAttribute("aria-label","アバター");
+  const box=el("div","avz-box"+(g?" "+rk("rr",g.r):""));
+  const big=el("div","avz-av"); big.innerHTML=avHTML(s);
+  box.append(big);
+  if(g && typeof rarBadge==="function") box.append(rarBadge(g.r));
+  box.append(el("b","avz-nm", g ? g.n : (f ? f[2] : "")));
+  if(who) box.append(el("small","avz-who", who));
+  box.append(el("span","avz-hint","タップでとじる"));
+  o.append(box); o.onclick=()=>{ o.classList.add("out"); setTimeout(()=>o.remove(),180); };
+  document.body.append(o);
+}
+// the avatar on a profile card opens the big view
+function avTap(e, v, who){ e.addEventListener("click",ev=>{ ev.stopPropagation(); avZoom(v, who); }); e.style.cursor="zoom-in"; e.setAttribute("role","button"); e.setAttribute("aria-label","アバターを大きく見る"); return e; }
 
 /* ================= profile card + ranks ================= */
 const RANKS = [
@@ -3574,7 +3612,7 @@ function profileEl(info, stats, opts){
   const sp=el("div","pf-sp"); SPARK[r].forEach((c,i)=>{ const s=el("i",null,c); s.style.setProperty("--i",i); s.style.left=(2+(i*13+5)%24)+"%"; s.style.top=(3+(i*17+7)%34)+"%"; sp.append(s); });
   const em=el("div","pf-em"); em.innerHTML=`${r>=2?'<span class="pf-rays"></span>':""}<span class="pf-halo"></span>${wreathSVG(r)}${rankEmblem(r)}${r>=2?'<span class="pf-orb"><i></i><i></i><i></i></span>':""}`;
   if(r===3){ const fl=el("span","pf-flames"); fl.innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="rbf" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".18" stop-color="#ff8a1a"/><stop offset=".34" stop-color="#ffe14a"/><stop offset=".5" stop-color="#2dff8a"/><stop offset=".66" stop-color="#1ac8ff"/><stop offset=".82" stop-color="#6a4dff"/><stop offset="1" stop-color="#d040ff"/></linearGradient></defs><path class="f1" d="M50 96C26 92 18 70 28 52c4 10 10 12 12 6-2-16 6-30 18-40-2 14 6 22 14 30 6 6 10 14 8 24-2 16-14 24-30 24z"/><path class="f2" d="M50 96c-14-2-20-14-14-28 4 6 8 6 8 2 0-10 6-18 12-22 0 10 6 14 10 22 4 12-2 26-16 26z"/><path class="f3" d="M50 96c-7-1-10-8-7-15 2 3 4 3 4 1 0-6 3-10 6-12 0 6 3 8 5 12 2 7-1 14-8 14z"/></svg>'; em.prepend(fl); em.append(el("span","pf-shock")); }
-  if(P.av){ const av=avEl(P.av, "pf-av"+(gr(P.av)>=0?" gr"+gr(P.av):"")); if(av) em.append(av); }
+  if(P.av){ const av=avEl(P.av, "pf-av"+(gr(P.av)>=0?" gr"+gr(P.av):"")); if(av) em.append(avTap(av, P.av, (P.nick||"").trim()||info.name||"")); }
   const tx=el("div","pf-tx");
   const nm=el("b","pf-name"); [...R.name].forEach((ch,i)=>{ const s=el("span",null,ch); s.style.setProperty("--d",i); nm.append(s); }); nm.setAttribute("data-t",R.name);
   const stars=el("span","pf-stars"); for(let i=0;i<4;i++) stars.append(el("i",i<=r?"on":"",i<=r?"★":"☆"));
@@ -4309,7 +4347,7 @@ function openGacha(){
       if(cut){ await gWait(x.r>=5?2600:1500); }
       const st=m.querySelector(".gr-stars");
       for(let i=0;i<=x.r;i++){ const s=el("i",null,"★"); st.append(s); GSFX.star(i); await gWait(x.r>=3?260:170); }
-      card.classList.add("in"); await gWait(350); inner.classList.add("flip"); await gWait(420);
+      card.classList.add("in"); await gWait(350); inner.classList.add("flip"); await gWait(420); setTimeout(()=>inner.classList.add("flat"), 200);
       GSFX.fanfare(x.r); if(x.r>=3){ o.classList.add("shk2"); setTimeout(()=>o.classList.remove("shk2"),600); buzz([50,40,120]); }
       gBurst(cv, x.r, true); front.classList.add("slam");
       await gWait(450);
@@ -4317,7 +4355,7 @@ function openGacha(){
       else { tag.className="gr-tag dup"; tag.textContent="もってた！ 💠 +0"; let k=0; const T=setInterval(()=>{ k++; tag.textContent="もってた！ 💠 +"+k; GSFX.shard(); if(k>=(x.sh|0)) clearInterval(T); }, Math.max(30, 500/(x.sh||1))); }
       await gWait(300);
       const wear=el("button","ga-btn gold","👗 きせかえ"); wear.type="button"; wear.onclick=()=>{ m.remove(); done(); toWd(it.id); };
-      const ok=el("button","ga-btn","OK"); ok.type="button"; ok.onclick=()=>{ m.remove(); o.classList.remove("rv","rv0","rv1","rv2","rv3","rv4","blackout"); lights(""); tray.innerHTML=""; done(); idle(); };
+      const ok=el("button","ga-btn","OK"); ok.type="button"; ok.onclick=()=>{ m.remove(); o.classList.remove("rv","rv0","rv1","rv2","rv3","rv4","rv5","blackout"); lights(""); tray.innerHTML=""; done(); idle(); };
       btns.append(wear, ok); btns.classList.add("in");
     })();
   }); }
