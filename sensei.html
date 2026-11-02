@@ -2293,7 +2293,7 @@ button.ear-chip{cursor:pointer}
 .rh-bob{animation:rh-bob 2s ease-in-out infinite;will-change:transform}
 @keyframes rh-bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
 /* intro */
-.rh-iboss{width:96px;height:96px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45))}
+.rh-iboss{width:136px;height:136px;margin:10px 0 6px}
 .rh-rh{margin:0;font-weight:900;color:#ffd0a8}
 .rh-sample{width:100%;color:#fff;background:rgba(255,255,255,.06);border-radius:14px;padding:4px 6px}
 .rh-sample .rh-bar{width:100%;height:80px;display:block}
@@ -2324,7 +2324,7 @@ button.ear-chip{cursor:pointer}
 .rh-bshadow{position:absolute;bottom:42px;width:110px;height:18px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent);animation:rh-shadow 1.8s ease-in-out infinite}
 @keyframes rh-shadow{0%,100%{transform:scale(1)}50%{transform:scale(.85)}}
 .rh-bwrap{position:relative;will-change:transform}
-.rh-bimg{width:138px;height:138px;display:block;filter:drop-shadow(0 10px 18px rgba(0,0,0,.5));animation:rh-bob 1.8s ease-in-out infinite;will-change:transform}
+.rh-bimg{width:146px;height:146px;margin-top:10px;display:block;animation:rh-bob 1.8s ease-in-out infinite;will-change:transform}
 .rh-bflash{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,0));opacity:0;pointer-events:none}
 .rh-bflash.on{animation:rh-flash .22s ease-out}
 @keyframes rh-flash{0%{opacity:.95}100%{opacity:0}}
@@ -2339,7 +2339,11 @@ button.ear-chip{cursor:pointer}
 .rh-boss.angry::before{content:"💢";position:absolute;top:0;right:16%;font-size:1.7rem;z-index:2;animation:rh-bob .5s ease-in-out infinite}
 .rh-boss.laugh .rh-bimg{animation:rh-laugh .25s ease-in-out infinite}
 @keyframes rh-laugh{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.rh-bname{font-size:.85rem;letter-spacing:.06em}
+.rh-bname{display:flex;align-items:center;gap:6px;padding:3px 12px 3px 4px;border-radius:99px;font-size:.88rem;letter-spacing:.06em;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.4);
+  background:linear-gradient(90deg,var(--c1),var(--c2));box-shadow:0 3px 10px color-mix(in srgb,var(--c1) 50%,transparent),inset 0 1px 0 rgba(255,255,255,.45)}
+.rh-bname small{font-size:.6rem;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:99px;background:rgba(0,0,0,.45)}
+.rh-bname.t4{background:linear-gradient(90deg,#b8860b,#ffe27a,#fff,#ffe27a,#b8860b);color:#3a2400;text-shadow:none}
+.rh-bname.t4 small{background:#1a1205;color:#ffe27a}
 .rh-hp{position:relative;width:min(220px,72%);height:13px;border-radius:99px;background:rgba(0,0,0,.4);overflow:hidden;border:1.5px solid rgba(255,255,255,.25)}
 .rh-hp i{position:absolute;inset:0;transform-origin:left}
 .rh-hpg{background:rgba(255,255,255,.75);transition:transform .45s ease-out}
@@ -2445,14 +2449,52 @@ button.ear-chip{cursor:pointer}
 .rh-rank.rC b{color:#9fb0c4;text-shadow:0 4px 0 #2a3440}
 .rh-rk{position:absolute;bottom:-6px;left:-6px;font-style:normal;font-family:var(--display);font-size:.9rem;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#1a0c2a;border:2px solid currentColor}
 .rh-rk.rS{color:#ffd34d}.rh-rk.rA{color:#ff6b9a}.rh-rk.rB{color:#5ab0ff}.rh-rk.rC{color:#9fb0c4}
-.rh-rboss{width:96px;height:96px}
-.rh-rboss.beaten{transform:rotate(-12deg);opacity:.85}
+.rh-rboss{width:120px;height:120px;margin:6px 0}
+.rh-rboss.beaten .rhb-img{transform:rotate(-14deg)}
+.rh-rboss.beaten{opacity:.9}
 .rh-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%}
 .rh-stats div{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:12px;background:rgba(255,255,255,.07)}
 .rh-stats small{font-size:.6rem;color:var(--muted);font-weight:900}
 .rh-stats b{font-size:1.1rem}
 .ear-ov.ura.rh-ov{background:radial-gradient(120% 60% at 50% 0%,#2a0a20,#07020f 70%)}
 @media (prefers-reduced-motion:reduce){.rh-bob,.rh-bimg,.rh-cal.need,.rh-bshadow,.rh-ov.angry::after,.rh-ov.fever::after{animation:none}}
+
+/* ===== the boss, drawn like a rare item ===== */
+.rhb{position:relative;display:inline-block;isolation:isolate;--c1:#ff8a3c;--c2:#ff3d6e}
+.rhb>i{position:absolute;border-radius:50%;pointer-events:none}
+.rhb-img{position:absolute;left:10%;top:10%;width:80%;height:80%;z-index:3;filter:drop-shadow(0 8px 12px rgba(0,0,0,.55)) drop-shadow(0 0 10px color-mix(in srgb,var(--c1) 70%,transparent))}
+.rhb-aura{inset:-16%;z-index:0;background:radial-gradient(closest-side,color-mix(in srgb,var(--c1) 85%,transparent),color-mix(in srgb,var(--c2) 45%,transparent) 55%,transparent);animation:rhb-aura 1.6s ease-in-out infinite;will-change:transform,opacity}
+@keyframes rhb-aura{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+.rhb-rays{inset:-34%;z-index:0;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--c1) 55%,transparent) 0deg 7deg,transparent 7deg 20deg);
+  -webkit-mask:radial-gradient(closest-side,#000 20%,transparent 72%);mask:radial-gradient(closest-side,#000 20%,transparent 72%);animation:rhb-spin 14s linear infinite;will-change:transform}
+.rhb-ring{inset:-2%;z-index:2;background:conic-gradient(from 0deg,var(--c1),#fff,var(--c2),var(--c1),#fff,var(--c2),var(--c1));
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));animation:rhb-spin 3s linear infinite;will-change:transform;opacity:.95}
+.rhb-ring2{inset:-11%;z-index:1;border:2px dashed color-mix(in srgb,var(--c2) 80%,#fff);opacity:.75;animation:rhb-spin 7s linear infinite reverse;will-change:transform}
+.rhb.t4 .rhb-ring{background:conic-gradient(#ffe27a,#fff,#ff4fd8,#ffe27a,#3ad6ff,#fff,#b8860b,#ffe27a);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px));mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px));animation-duration:2.2s}
+.rhb.t4 .rhb-ring2{border:2px solid transparent;border-top-color:#ffe27a;border-bottom-color:#3ad6ff;border-style:solid;opacity:1}
+.rhb.t4 .rhb-aura{background:radial-gradient(closest-side,rgba(255,226,122,.85),color-mix(in srgb,var(--c1) 60%,transparent) 50%,rgba(255,79,216,.25) 70%,transparent)}
+@keyframes rhb-spin{to{transform:rotate(360deg)}}
+.rhb-tw{z-index:4;width:14%;height:14%;border-radius:0!important;background:#fff;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);opacity:0;animation:rhb-tw 1.8s ease-in-out infinite;will-change:transform,opacity}
+.rhb-tw.s0{left:2%;top:6%}.rhb-tw.s1{right:0;top:30%;animation-delay:.45s}.rhb-tw.s2{left:10%;bottom:4%;animation-delay:.9s}.rhb-tw.s3{right:12%;bottom:-2%;animation-delay:1.35s}
+@keyframes rhb-tw{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+.rhb-orbit{inset:-14%;z-index:4;animation:rhb-spin 2.4s linear infinite;will-change:transform}
+.rhb-orbit::before,.rhb-orbit::after{content:"";position:absolute;width:12%;height:12%;border-radius:50%;background:radial-gradient(circle,#fff,#ffe27a 45%,transparent 70%);box-shadow:0 0 10px #ffe27a}
+.rhb-orbit::before{left:44%;top:-4%}
+.rhb-orbit::after{left:44%;bottom:-4%;background:radial-gradient(circle,#fff,#3ad6ff 45%,transparent 70%);box-shadow:0 0 10px #3ad6ff}
+/* small ones (map, book): keep the glow, drop the busy parts */
+.rhb.mini{width:100%;height:100%}
+.ear-dot .rhb.mini{position:absolute;inset:4%;width:92%;height:92%}
+.rhb.mini .rhb-rays,.rhb.mini .rhb-ring2,.rhb.mini .rhb-tw,.rhb.mini .rhb-orbit{display:none}
+.rhb.mini .rhb-ring{-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px))}
+.rhb.mini .rhb-aura{inset:-8%}
+.rh-zi .rhb.mini{width:40px;height:40px}
+.rh-zi .sil{width:38px;height:38px}
+/* the battle */
+.rh-boss.angry .rhb{--c1:#ff1f4b;--c2:#ff7a00}
+.rh-boss.angry .rhb-aura{animation-duration:.6s}
+.rh-boss.angry .rhb-ring{animation-duration:1.1s}
+.rh-ov.fever .rhb-rays{animation-duration:4s}
+@media (prefers-reduced-motion:reduce){.rhb-aura,.rhb-rays,.rhb-ring,.rhb-ring2,.rhb-tw,.rhb-orbit{animation:none}}
 
 </style>
 </head>
@@ -5756,20 +5798,20 @@ function rhParse(bar){
 }
 const RH_LEVELS = {
   rhythm: { name:"リズムバトル", title:"g_ti_rh_y", levels:[
-    { n:"四分音符", boss:"ゴースト", ic:"1f47b", bpm:76, bar:4, A:["q q q q"], B:["q q q q"], tip:"「タン・タン・タン・タン」。まずは拍にぴったり合わせよう" },
-    { n:"休符", boss:"コウモリ", ic:"1f987", bpm:80, bar:4, A:["q q q qr","q qr q q","q q qr q"], B:["qr q qr q","q qr qr q","qr q q q"], tip:"休符はたたかない！ 心の中で「ウン」と数えよう" },
-    { n:"長い音", boss:"カメ", ic:"1f422", bpm:84, bar:4, A:["h h","h q q","q q h"], B:["w","h. q","q h q","qr q h"], tip:"二分音符は2拍、全音符は4拍。たたいたら、そのまま待つ" },
-    { n:"八分音符", boss:"ネズミ", ic:"1f42d", bpm:80, bar:4, A:["e e q e e q","q q e e q","e e e e q q"], B:["e e e e e e q","q e e e e q","e e q e e e e"], tip:"1拍に2つ。「タタ・タン」" },
-    { n:"うら拍", boss:"カエル", ic:"1f438", bpm:76, bar:4, A:["er e q er e q","q er e q q","er e er e q q"], B:["er e er e er e q","q er e er e q","er e e e er e q"], tip:"「ウン・タ」。拍の“あいだ”でたたく" },
-    { n:"付点のリズム", boss:"ヘビ", ic:"1f40d", bpm:80, bar:4, A:["q. e q q","q. e h","q q q. e"], B:["q. e q. e","h q. e","q. e e e q"], tip:"「ターンタ」。長い・短いをはっきり" },
-    { n:"スキップ", boss:"ウサギ", ic:"1f430", bpm:72, bar:4, A:["e. s e. s q q","q e. s q e. s"], B:["e. s e. s e. s e. s","e. s q e. s q"], tip:"「タッタ・タッタ」。はねるように" },
-    { n:"十六分音符", boss:"ハチ", ic:"1f41d", bpm:66, bar:4, A:["s s s s q q q","q s s s s q q","e e s s s s q q"], B:["s s s s s s s s q q","s s e s s e q q","e s s q s s e q"], tip:"1拍に4つ。「タカタカ」" },
-    { n:"三連符", boss:"オオカミ", ic:"1f43a", bpm:66, bar:4, A:["t t t q t t t q","q t t t q q","t t t t t t q q"], B:["t t t t t t t t t q","q t t t t t t q","t t t q t t t t t t"], tip:"1拍に3つ。「タタタ」と均等に" },
-    { n:"シンコペーション", boss:"ドラゴン", ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。ラスボス！" }
+    { n:"四分音符", boss:"ゴースト", col:["#b39dff","#f0abfc"], ic:"1f47b", bpm:76, bar:4, A:["q q q q"], B:["q q q q"], tip:"「タン・タン・タン・タン」。まずは拍にぴったり合わせよう" },
+    { n:"休符", boss:"コウモリ", col:["#ff4d6d","#7b2cbf"], ic:"1f987", bpm:80, bar:4, A:["q q q qr","q qr q q","q q qr q"], B:["qr q qr q","q qr qr q","qr q q q"], tip:"休符はたたかない！ 心の中で「ウン」と数えよう" },
+    { n:"長い音", boss:"カメ", col:["#3ddc84","#00b4d8"], ic:"1f422", bpm:84, bar:4, A:["h h","h q q","q q h"], B:["w","h. q","q h q","qr q h"], tip:"二分音符は2拍、全音符は4拍。たたいたら、そのまま待つ" },
+    { n:"八分音符", boss:"ネズミ", col:["#ffd166","#ff8fab"], ic:"1f42d", bpm:80, bar:4, A:["e e q e e q","q q e e q","e e e e q q"], B:["e e e e e e q","q e e e e q","e e q e e e e"], tip:"1拍に2つ。「タタ・タン」" },
+    { n:"うら拍", boss:"カエル", col:["#80ed99","#ffd60a"], ic:"1f438", bpm:76, bar:4, A:["er e q er e q","q er e q q","er e er e q q"], B:["er e er e er e q","q er e er e q","er e e e er e q"], tip:"「ウン・タ」。拍の“あいだ”でたたく" },
+    { n:"付点のリズム", boss:"ヘビ", col:["#9ef01a","#7209b7"], ic:"1f40d", bpm:80, bar:4, A:["q. e q q","q. e h","q q q. e"], B:["q. e q. e","h q. e","q. e e e q"], tip:"「ターンタ」。長い・短いをはっきり" },
+    { n:"スキップ", boss:"ウサギ", col:["#ffafcc","#a2d2ff"], ic:"1f430", bpm:72, bar:4, A:["e. s e. s q q","q e. s q e. s"], B:["e. s e. s e. s e. s","e. s q e. s q"], tip:"「タッタ・タッタ」。はねるように" },
+    { n:"十六分音符", boss:"ハチ", col:["#ffd000","#ff6d00"], ic:"1f41d", bpm:66, bar:4, A:["s s s s q q q","q s s s s q q","e e s s s s q q"], B:["s s s s s s s s q q","s s e s s e q q","e s s q s s e q"], tip:"1拍に4つ。「タカタカ」" },
+    { n:"三連符", boss:"オオカミ", col:["#4cc9f0","#7209b7"], ic:"1f43a", bpm:66, bar:4, A:["t t t q t t t q","q t t t q q","t t t t t t q q"], B:["t t t t t t t t t q","q t t t t t t q","t t t q t t t t t t"], tip:"1拍に3つ。「タタタ」と均等に" },
+    { n:"シンコペーション", boss:"ドラゴン", col:["#ff3d3d","#ffd34d"], ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。ラスボス！" }
   ]},
   rhythm_ura: { name:"裏ボス", title:"g_ti_rh_u", parent:"rhythm", ura:true, levels:[
-    { n:"5拍子", boss:"オニ", ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
-    { n:"7拍子", boss:"宇宙のまおう", ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
+    { n:"5拍子", boss:"オニ", col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
+    { n:"7拍子", boss:"宇宙のまおう", col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
   ]}
 };
 const RH_BARS_A = 4, RH_BARS_B = 4;
@@ -5854,6 +5896,20 @@ function rhBarSVG(bar, L){
 }
 const rhTimeSig = L => L.unit === "e" ? [L.bar * 2, 8] : [L.bar, 4];
 
+/* ---------- a boss drawn like a rare item: aura, spinning rings, rays, sparkles (stronger bosses get more) ---------- */
+function rhBoss(L, lv, cls){
+  const tier = L.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1, c = L.col || ["#ff8a3c", "#ff3d6e"];
+  const w = el("span", "rhb t" + tier + (cls ? " " + cls : "")); w.style.setProperty("--c1", c[0]); w.style.setProperty("--c2", c[1]);
+  w.append(el("i", "rhb-aura"));
+  if(tier >= 2) w.append(el("i", "rhb-rays"));
+  w.append(el("i", "rhb-ring"));
+  if(tier >= 3) w.append(el("i", "rhb-ring2"));
+  const im = earImg(L.ic, "rhb-img"); w.append(im);
+  for(let i = 0; i < (tier >= 3 ? 4 : tier >= 2 ? 2 : 0); i++) w.append(el("i", "rhb-tw s" + i));
+  if(tier >= 4) w.append(el("i", "rhb-orbit"));
+  return w;
+}
+
 /* ---------- the card on the student page ---------- */
 function rhCard(){
   const box = el("section", "card earc rhc"); box.id = "rh-card";
@@ -5898,7 +5954,7 @@ function rhMap(o){
   book.append(el("div", "rh-bt", (ura ? "💀 裏ボス図鑑" : "📖 ボス図鑑") + "　" + rhDone(tr) + "/" + rhMax(tr)));
   const grid = el("div", "rh-zk");
   T.levels.forEach((L, i) => { const lv = i + 1, d = (Rh.prog[tr] || {})[lv], b = rhBest(tr, lv);
-    const c = el("div", "rh-zi" + (d ? " got" : "") + (b && b.nm ? " gold" : "")); const im = earImg(L.ic); if(!d) im.classList.add("sil"); c.append(im, el("small", null, d ? L.boss : "？？？")); grid.append(c); });
+    const c = el("div", "rh-zi" + (d ? " got" : "") + (b && b.nm ? " gold" : "")); const im = d ? rhBoss(L, lv, "mini") : earImg(L.ic); if(!d) im.classList.add("sil"); c.append(im, el("small", null, d ? L.boss : "？？？")); grid.append(c); });
   book.append(grid);
   const tt = GITEM[T.title]; book.append(el("div", "rh-ttl" + (rhAll(tr) ? " got" : ""), rhAll(tr) ? "🏆 称号「" + tt.v + "」ゲット！" : (ura ? "裏ボスを全部たおすと" : "ボスを全部たおすと") + "称号「" + tt.v + "」"));
   book.append(el("div", "rh-note", "👑 ミスなしでたおすと金の「完全勝利」"));
@@ -5907,7 +5963,7 @@ function rhMap(o){
   const path = el("div", "ear-path rh-path");
   T.levels.forEach((L, i) => { const lv = i + 1, d = (Rh.prog[tr] || {})[lv], un = rhOpen(tr, lv), cur = !d && un, b = rhBest(tr, lv);
     const n = el("button", "ear-node rh-node" + (d ? " done" : "") + (cur ? " cur" : "") + (!un ? " lock" : "") + (i % 2 ? " r" : "")); n.type = "button"; n.dataset.lv = lv;
-    const c = el("span", "ear-dot"); const im = earImg(un ? L.ic : "1f512"); if(un && !d) im.classList.add("rh-bob"); c.append(im); if(b && b.nm) c.append(el("i", "rh-crown", "👑")); if(b && b.rk) c.append(el("i", "rh-rk r" + b.rk, b.rk));
+    const c = el("span", "ear-dot"); const im = un ? rhBoss(L, lv, "mini" + (!d ? " rh-bob" : "")) : earImg("1f512"); c.append(im); if(b && b.nm) c.append(el("i", "rh-crown", "👑")); if(b && b.rk) c.append(el("i", "rh-rk r" + b.rk, b.rk));
     const tx = el("span", "ear-nt"); tx.append(el("b", null, (ura ? "裏" : "Lv") + lv + " " + L.boss), el("small", null, un ? "🥁 " + L.n + (b ? " ・ ベスト " + (b.rk ? b.rk + "ランク " : "") + b.s + "点" : "") : "前のボスをたおすとあくよ"));
     n.append(c, tx); n.onclick = () => { if(!un){ toast("前のボスをたおすとあくよ"); return; } rhIntro(o, tr, lv); }; path.append(n); });
   o.append(path);
@@ -5945,7 +6001,7 @@ function rhIntro(o, tr, lv){
   rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; const T = RH_LEVELS[tr], L = T.levels[lv - 1];
   rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => rhMap(o));
   const card = el("div", "ear-intro rh-intro");
-  const bi = earImg(L.ic, "rh-iboss rh-bob"); card.append(bi, el("h2", null, L.boss + "があらわれた！"), el("p", "rh-rh", "🥁 " + L.n + " ・ ♩=" + L.bpm + " ・ " + rhTimeSig(L).join("/") + "拍子"), el("p", "ear-tip", L.tip));
+  const bi = rhBoss(L, lv, "rh-iboss"); card.append(bi, el("h2", null, L.boss + "があらわれた！"), el("p", "rh-rh", "🥁 " + L.n + " ・ ♩=" + L.bpm + " ・ " + rhTimeSig(L).join("/") + "拍子"), el("p", "ear-tip", L.tip));
   // a sample bar of this level
   const sm = rhBarSVG(rhParse(L.A[0]), L); const sw = el("div", "rh-sample"); sw.innerHTML = sm.svg; card.append(sw);
   const lis = el("button", "ear-sm", "🔊 お手本をきく"); lis.type = "button"; lis.onclick = () => rhDemo(L, rhParse(L.A[0])); card.append(lis);
@@ -5975,9 +6031,9 @@ function rhBattle(o, tr, lv){
   const h = rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => { if(!R.done && !h.dataset.ok){ h.dataset.ok = "1"; toast("もう一度おすとにげます"); setTimeout(() => delete h.dataset.ok, 2500); return; } rhStopRun(); o.classList.remove("playing", "angry", "fever"); rhMap(o); });
   // the field: the boss on the left, you on the right
   const field = el("div", "rh-field");
-  const boss = el("div", "rh-boss"); const bw = el("div", "rh-bwrap"); const bimg = earImg(L.ic, "rh-bimg"); const bflash = el("i", "rh-bflash"); const bshadow = el("i", "rh-bshadow");
+  const boss = el("div", "rh-boss"); const bw = el("div", "rh-bwrap"); const bimg = rhBoss(L, lv, "big rh-bimg"); const bflash = el("i", "rh-bflash"); const bshadow = el("i", "rh-bshadow");
   bw.append(bimg, bflash); boss.append(bshadow, bw);
-  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"); hpb.append(hpg, hpf); boss.append(el("b", "rh-bname", L.boss), hpb);
+  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"); hpb.append(hpg, hpf); const plate = el("b", "rh-bname t" + (T.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1)); plate.append(el("small", null, T.ura ? "裏BOSS" : "BOSS " + lv), document.createTextNode(L.boss)); plate.style.setProperty("--c1", (L.col || [])[0] || "#ff8a3c"); plate.style.setProperty("--c2", (L.col || [])[1] || "#ff3d6e"); boss.append(plate, hpb);
   const pop = el("div", "rh-pop"); boss.append(pop);
   const bub = el("div", "rh-bub"); boss.append(bub);
   const talk = (t, ms) => { bub.textContent = t; again(bub, "on"); clearTimeout(bub._t); bub._t = setTimeout(() => bub.classList.remove("on"), ms || 1600); };
@@ -6103,7 +6159,7 @@ async function rhResult(o, tr, lv, R, win, nm, score, rank){
   o.classList.remove("angry", "fever");
   const r = el("div", "ear-res rh-res" + (win ? " perfect" : "")); o.append(r);
   const cv = el("canvas", "ear-cf"); r.append(cv);
-  const bi = earImg(L.ic, "rh-rboss" + (win ? " beaten" : "")); r.append(bi);
+  const bi = rhBoss(L, lv, "rh-rboss" + (win ? " beaten" : "")); r.append(bi);
   r.append(el("h2", null, win ? (nm ? "👑 完全勝利！" : L.boss + "をたおした！") : (R.hearts <= 0 ? "やられた…" : "にげられた…")));
   const st = el("div", "rh-stats"); [["パーフェクト", R.p], ["グッド", R.g], ["ミス", R.m], ["最大コンボ", R.maxCombo]].forEach(([a, b]) => { const d = el("div"); d.append(el("small", null, a), el("b", null, String(b))); st.append(d); }); r.append(st);
   r.append(el("div", "ear-score", score + " 点"));
