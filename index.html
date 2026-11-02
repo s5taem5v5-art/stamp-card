@@ -237,6 +237,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   animation:pulse 2.4s ease-in-out infinite,slide 4s linear infinite}
 @keyframes pulse{50%{box-shadow:0 5px 0 color-mix(in srgb,var(--p3) 55%,#000),0 0 36px 2px var(--pc)}}
 .press:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--p3) 55%,#000)}
+.press.extra{font-size:1rem;padding:13px 12px;margin-top:-4px;background:linear-gradient(135deg,#ffb84d,#ff7a9c);box-shadow:0 5px 0 color-mix(in srgb,#ff7a9c 55%,#000)}
 .press:disabled{background:rgba(255,255,255,.08);color:var(--muted);box-shadow:none;cursor:default;transform:none;animation:none}
 .sub{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
 .link{font:inherit;background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
@@ -479,7 +480,10 @@ try{ const h=location.hash.slice(1); if(ids.includes(h)) current=h; }catch(e){}
 
 const fixType = p => { if(!(p.goal>=1)) p.goal=20; if(p.goal>365) p.goal=365; if(!STAMPS[p.stamp]) p.stamp="star"; if(!(p.color>=0&&p.color<3)) p.color=0; return p; };
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+const el2=(tag,txt)=>{ const e=document.createElement(tag); e.textContent=txt; return e; };
 function md(k){ const [,m,d]=k.split("-"); return (+m)+"/"+(+d); }
+// a missed day that may still be stamped (only this one day, and only until EXTRA_UNTIL)
+const EXTRA_DAY="2026-10-31", EXTRA_UNTIL="2026-11-30";
 const rot = k => { let h=0; for(const c of k) h=(h*31+c.charCodeAt(0))%31; return (h-15)+"deg"; };
 document.getElementById("today").textContent = (()=>{const d=new Date();return `今日は ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`})();
 
@@ -739,6 +743,23 @@ function renderCard(){
       const u=document.createElement("button"); u.className="link"; u.textContent="今日の分を取り消す";
       u.onclick=()=>{ const q=people[current]; q.stamps=q.stamps.filter(x=>x!==t); justStamped=null; const pid=current; mut(()=>rpc("sc_stamp",{k:ROOM,pid,on_:false})); render(); };
       sub.append(document.createElement("span"),u); card.append(sub); }
+    // the missed day (10/31): can still be stamped
+    if(t>EXTRA_DAY && t<=EXTRA_UNTIL){
+      const xd=EXTRA_DAY, xdone=p.stamps.includes(xd);
+      if(!xdone){
+        const xb=document.createElement("button"); xb.className="press extra"; xb.id="press-extra"; xb.textContent=md(xd)+" の分も押す";
+        xb.onclick=()=>{ const q=people[current]; if(q.stamps.includes(xd)) return; q.stamps=[...q.stamps,xd]; const pid=current; mut(()=>rpc("sc_stamp_day",{k:ROOM,pid,on_:true,p_day:xd}));
+          const rq=roundInfo(q); party(q, ()=>{ render();
+            if(rq.inRound===0 && rq.done>0) setTimeout(()=>monthResult(people[current], rq.done, ()=>render()), 900);
+            else if(rq.mid && rq.inRound===rq.mid) setTimeout(()=>monthResult(people[current], rq.round, ()=>render(), true), 900); }); };
+        card.append(xb);
+      } else {
+        const sub=document.createElement("div"); sub.className="sub";
+        const u=document.createElement("button"); u.className="link"; u.textContent=md(xd)+" の分を取り消す";
+        u.onclick=()=>{ const q=people[current]; q.stamps=q.stamps.filter(x=>x!==xd); const pid=current; mut(()=>rpc("sc_stamp_day",{k:ROOM,pid,on_:false,p_day:xd})); render(); };
+        sub.append(el2("span",md(xd)+" の分も押しました"),u); card.append(sub);
+      }
+    }
   } else {
     const info=document.createElement("p"); info.className="rw-note"; info.style.textAlign="center";
     info.textContent=`${ym.m}月は ${got.length}こ 押しました`; card.append(info);
