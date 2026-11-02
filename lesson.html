@@ -2263,6 +2263,197 @@ button.ear-chip{cursor:pointer}
 .gr-in.flat .gr-back{display:none}
 .gr-in.flat .gr-front{transform:none}
 
+/* ===== rhythm boss battle (only transform / opacity animate) ===== */
+.rhc{background:linear-gradient(135deg,rgba(255,138,60,.16),rgba(255,61,110,.14)),var(--panel);border-color:rgba(255,138,60,.4)}
+.rh-ov{background:radial-gradient(120% 60% at 50% 0%,#3a1430,#120a24 70%)}
+.rh-cal{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin-bottom:12px;padding:10px 14px;border-radius:16px;border:1.5px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.rh-cal b{font-size:.9rem}
+.rh-cal small{font-size:.72rem;color:var(--muted)}
+.rh-cal.need{border-color:#ffc93c;background:rgba(255,201,60,.14);animation:rh-glow 1.6s ease-in-out infinite}
+@keyframes rh-glow{0%,100%{opacity:1}50%{opacity:.7}}
+/* boss book */
+.rh-book{padding:12px;border-radius:18px;margin-bottom:14px;background:linear-gradient(#2a1438,#1a0c2a);border:1.5px solid rgba(255,138,60,.35)}
+.rh-bt{font-weight:900;font-size:.9rem;margin-bottom:8px}
+.rh-zk{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.rh-zi{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;background:rgba(255,255,255,.04);border:1.5px solid transparent}
+.rh-zi img{width:38px;height:38px}
+.rh-zi small{font-size:.56rem;font-weight:900;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.rh-zi.got{border-color:rgba(255,138,60,.45)}
+.rh-zi.got small{color:#ffd0a8}
+.rh-zi.gold{border-color:#ffd34d;background:rgba(255,211,77,.12)}
+.sil{filter:brightness(0) opacity(.45)}
+.rh-ttl{margin-top:10px;font-size:.8rem;font-weight:800;text-align:center;color:#ffb68a}
+.rh-ttl.got{color:#ffd34d;font-size:.9rem}
+.rh-note{margin-top:4px;font-size:.68rem;text-align:center;color:var(--muted)}
+.rh-node.cur{border-color:#ff8a3c;background:linear-gradient(120deg,rgba(255,138,60,.18),rgba(255,61,110,.16))}
+.rh-node.cur .ear-dot{border-color:#ff8a3c;background:linear-gradient(135deg,#ffb35c,#ff3d6e)}
+.rh-node.cur .ear-dot::after{border-color:#ff8a3c}
+.rh-node .ear-dot img{width:70%;height:70%}
+.rh-crown{position:absolute;top:-10px;right:-6px;font-style:normal;font-size:1rem}
+.rh-bob{animation:rh-bob 2s ease-in-out infinite;will-change:transform}
+@keyframes rh-bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
+/* intro */
+.rh-iboss{width:96px;height:96px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45))}
+.rh-rh{margin:0;font-weight:900;color:#ffd0a8}
+.rh-sample{width:100%;color:#fff;background:rgba(255,255,255,.06);border-radius:14px;padding:4px 6px}
+.rh-sample .rh-bar{width:100%;height:80px;display:block}
+/* calibration */
+.rh-cdots{display:flex;gap:8px;justify-content:center}
+.rh-cdots i{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.15)}
+.rh-cdots i.on{background:#ffc93c}
+/* battle */
+.ear-ov.playing.rh-ov{display:flex;flex-direction:column;padding-bottom:max(14px,calc(env(safe-area-inset-bottom,0px) + 8px));overflow:hidden}
+.rh-ov::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(70% 45% at 50% 30%,rgba(255,138,60,.22),transparent 70%);opacity:0}
+.rh-ov.beat::before{animation:rh-breath .45s ease-out}
+@keyframes rh-breath{0%{opacity:1}100%{opacity:0}}
+.rh-ov::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .4s}
+.rh-ov.angry::after{opacity:1;background:radial-gradient(circle at 50% 40%,transparent 50%,rgba(255,30,60,.35));animation:rh-alarm 1.2s ease-in-out infinite}
+.rh-ov.fever::after{opacity:1;background:conic-gradient(from 0deg at 50% 120%,rgba(255,61,110,.25),rgba(255,211,77,.25),rgba(61,255,138,.22),rgba(58,214,255,.25),rgba(160,90,255,.25),rgba(255,61,110,.25));animation:rh-feverbg .9s ease-in-out infinite}
+@keyframes rh-alarm{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes rh-feverbg{0%,100%{opacity:.6}50%{opacity:1}}
+.rh-ov.playing>*:not(.rh-banner):not(.ear-hd){position:relative;z-index:1}
+.rh-ov.playing>.ear-hd{z-index:4}
+.rh-field{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;min-height:188px;padding:4px 4px 0;isolation:isolate}
+.rh-field.hurt{animation:rh-shake .38s ease-out}
+@keyframes rh-shake{0%{transform:translate(0,0)}20%{transform:translate(-9px,4px)}40%{transform:translate(8px,-5px)}60%{transform:translate(-6px,3px)}80%{transform:translate(4px,-2px)}100%{transform:none}}
+.rh-cv{position:absolute;inset:-20px -16px;width:calc(100% + 32px);height:calc(100% + 40px);pointer-events:none;z-index:6}
+.rh-slash{position:absolute;inset:-8px -16px;pointer-events:none;z-index:5;opacity:0;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.95) 48%,rgba(255,40,70,.9) 50%,transparent 56%),radial-gradient(circle,transparent 35%,rgba(255,30,60,.55))}
+.rh-slash.on{animation:rh-slash .42s ease-out}
+@keyframes rh-slash{0%{opacity:1}100%{opacity:0}}
+.rh-boss{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.rh-bshadow{position:absolute;bottom:42px;width:110px;height:18px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent);animation:rh-shadow 1.8s ease-in-out infinite}
+@keyframes rh-shadow{0%,100%{transform:scale(1)}50%{transform:scale(.85)}}
+.rh-bwrap{position:relative;will-change:transform}
+.rh-bimg{width:138px;height:138px;display:block;filter:drop-shadow(0 10px 18px rgba(0,0,0,.5));animation:rh-bob 1.8s ease-in-out infinite;will-change:transform}
+.rh-bflash{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,0));opacity:0;pointer-events:none}
+.rh-bflash.on{animation:rh-flash .22s ease-out}
+@keyframes rh-flash{0%{opacity:.95}100%{opacity:0}}
+.rh-bwrap.hit{animation:rh-hit .26s ease-out}
+@keyframes rh-hit{0%{transform:translateX(0) scale(1)}30%{transform:translateX(-10px) scale(.9,.94) rotate(-6deg)}60%{transform:translateX(5px) scale(1.03)}100%{transform:none}}
+.rh-bwrap.atk{animation:rh-atk .38s cubic-bezier(.3,1.6,.5,1)}
+@keyframes rh-atk{0%{transform:none}40%{transform:translate(46px,18px) scale(1.22) rotate(10deg)}100%{transform:none}}
+.rh-bwrap.down{animation:rh-down 1.1s cubic-bezier(.5,0,.8,.4) forwards}
+@keyframes rh-down{0%{transform:none;opacity:1}25%{transform:scale(1.25) rotate(-12deg)}100%{transform:translate(-30px,-140px) scale(.1) rotate(540deg);opacity:0}}
+.rh-boss.angry .rh-bwrap{transform:scale(1.12)}
+.rh-boss.angry .rh-bimg{animation-duration:.6s}
+.rh-boss.angry::before{content:"💢";position:absolute;top:0;right:16%;font-size:1.7rem;z-index:2;animation:rh-bob .5s ease-in-out infinite}
+.rh-boss.laugh .rh-bimg{animation:rh-laugh .25s ease-in-out infinite}
+@keyframes rh-laugh{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.rh-bname{font-size:.85rem;letter-spacing:.06em}
+.rh-hp{position:relative;width:min(220px,72%);height:13px;border-radius:99px;background:rgba(0,0,0,.4);overflow:hidden;border:1.5px solid rgba(255,255,255,.25)}
+.rh-hp i{position:absolute;inset:0;transform-origin:left}
+.rh-hpg{background:rgba(255,255,255,.75);transition:transform .45s ease-out}
+.rh-hpf{background:linear-gradient(90deg,#ff3d6e,#ff8a3c,#ffd34d);transition:transform .12s ease-out}
+.rh-boss.angry .rh-hpf{background:linear-gradient(90deg,#ff1f4b,#ff3d6e)}
+.rh-pop{position:absolute;top:44%;left:58%;width:0;height:0;z-index:3}
+.rh-dmg{position:absolute;left:-24px;display:flex;flex-direction:column;align-items:center;line-height:1;white-space:nowrap;font-family:var(--display);font-size:1.5rem;color:#fff;text-shadow:0 2px 0 #c2185b,0 0 8px #ff3d6e;animation:rh-dmg .8s ease-out forwards;will-change:transform,opacity}
+.rh-dmg.big{font-size:1.9rem;color:#ffd34d;text-shadow:0 2px 0 #b8560b,0 0 12px #ff8a3c}
+.rh-dmg small{font-size:.5em;letter-spacing:.12em;color:#fff6c8}
+.rh-dmg.big.crit{font-size:2.1rem}
+@keyframes rh-dmg{0%{transform:translate(var(--x),0) scale(.5);opacity:0}18%{transform:translate(var(--x),-12px) scale(1.2);opacity:1}100%{transform:translate(calc(var(--x) + 14px),-44px) scale(.95);opacity:0}}
+.rh-me{display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-bottom:6px;min-width:104px}
+.rh-hearts{display:flex;gap:2px}
+.rh-hearts img{width:30px;height:30px;transition:opacity .25s,transform .25s}
+.rh-hearts img.lost{opacity:.15;transform:scale(.75)}
+.rh-hearts img.pop{animation:rh-hpop .45s ease-out}
+@keyframes rh-hpop{0%{transform:scale(1.6) rotate(-15deg);opacity:1}100%{transform:scale(.75);opacity:.15}}
+.rh-cbox{display:flex;flex-direction:column;align-items:flex-end;min-height:62px;line-height:1}
+.rh-cn{font-family:var(--display);font-size:2.4rem;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.35);will-change:transform}
+.rh-cn.bump{animation:rh-bump .18s ease-out}
+@keyframes rh-bump{0%{transform:scale(1.35)}100%{transform:none}}
+.rh-cl{font-size:.7rem;font-weight:900;letter-spacing:.12em;color:#ffd0a8}
+.rh-cbox.fire .rh-cn{color:#ffb35c;text-shadow:0 3px 0 #a33a00,0 0 14px rgba(255,138,60,.9)}
+.rh-cbox.fever .rh-cn{background:linear-gradient(90deg,#ff3d6e,#ffd34d,#3dff8a,#3ad6ff,#a05aff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 2px 0 rgba(0,0,0,.4))}
+.rh-cbox.fever .rh-cl{color:#fff}
+.rh-sheet{position:relative;margin-top:6px;padding:6px 8px 6px 34px;border-radius:18px;background:#fffaf0;color:#2a1a10;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.rh-sig{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:center;line-height:1;font-family:var(--display);font-size:1.15rem}
+.rh-bno{position:absolute;right:12px;top:4px;font-size:.66rem;font-weight:900;color:#a0683c}
+.rh-row{position:relative}
+.rh-row .rh-bar{display:block;width:100%;height:84px;overflow:visible}
+.rh-row.nxt{opacity:.4;border-top:1.5px dashed rgba(160,104,60,.35)}
+.rh-row.nxt .rh-bar{height:62px}
+.rh-cursor{position:absolute;left:0;top:4px;bottom:4px;width:4px;margin-left:-2px;border-radius:2px;background:#ff3d6e;box-shadow:0 0 10px #ff3d6e,0 0 2px #fff;opacity:0;will-change:transform}
+.rh-n{transition:fill .1s}
+.rh-n.perfect{fill:#ffb21a;stroke:#ffb21a}
+.rh-n.good{fill:#2fbf8f;stroke:#2fbf8f}
+.rh-n.miss{fill:#ff3d6e;stroke:#ff3d6e}
+.rh-burst{fill:none;stroke-width:3;transform-box:fill-box;transform-origin:center;animation:rh-nburst .4s ease-out forwards}
+.rh-burst.perfect{stroke:#ffb21a}
+.rh-burst.good{stroke:#2fbf8f}
+@keyframes rh-nburst{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.8);opacity:0}}
+.rh-count{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:3.2rem;color:#ff3d6e;pointer-events:none;opacity:0;text-shadow:0 3px 0 rgba(255,255,255,.9)}
+.rh-count.on{animation:rh-count .5s ease-out forwards}
+@keyframes rh-count{0%{transform:scale(2);opacity:0}25%{transform:scale(1);opacity:1}100%{transform:scale(.9);opacity:0}}
+.rh-judge{text-align:center;font-family:var(--display);font-size:1.4rem;min-height:1.5em;margin:6px 0 0;opacity:0}
+.rh-judge.show{animation:rh-judge .5s ease-out forwards}
+@keyframes rh-judge{0%{transform:scale(1.4);opacity:0}25%{transform:scale(1);opacity:1}75%{opacity:1}100%{opacity:0}}
+.rh-judge.perfect{color:#ffd34d;text-shadow:0 0 12px rgba(255,211,77,.7)}
+.rh-judge.good{color:#5be3b0}
+.rh-judge.miss{color:#ff6b8f}
+.rh-banner{position:fixed;left:0;right:0;top:38%;z-index:20;text-align:center;font-family:var(--display);font-size:1.7rem;color:#fff;padding:14px 10px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(0,0,0,.75) 15%,rgba(0,0,0,.75) 85%,transparent);animation:rh-banner 1.4s cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes rh-banner{0%{transform:translateX(100%) skewX(-12deg);opacity:0}15%{transform:translateX(0) skewX(-8deg);opacity:1}80%{transform:translateX(0) skewX(-8deg);opacity:1}100%{transform:translateX(-60%) skewX(-12deg);opacity:0}}
+.rh-banner.angry{color:#ff6b8f}
+.rh-banner.fire{color:#ffb35c}
+.rh-banner.fever{background:linear-gradient(90deg,transparent,rgba(160,40,255,.75) 15%,rgba(255,61,110,.75) 85%,transparent)}
+.rh-banner.ko{top:30%;font-size:2.6rem;color:#ffd34d;text-shadow:0 4px 0 #a33a00,0 0 20px rgba(255,211,77,.8)}
+.rh-banner.lose{color:#c9b8ff}
+.rh-bub{position:absolute;top:-4px;left:58%;z-index:4;max-width:150px;padding:6px 10px;border-radius:14px 14px 14px 4px;background:#fff;color:#2a1a10;font-size:.78rem;font-weight:900;white-space:nowrap;
+  box-shadow:0 4px 10px rgba(0,0,0,.35);opacity:0;transform:scale(.6);transform-origin:left bottom;transition:opacity .2s,transform .2s}
+.rh-bub.on{opacity:1;transform:none}
+/* the drum */
+.rh-pad{position:relative;font:inherit;font-family:var(--display);font-size:1.4rem;width:100%;padding:18px;border:0;border-radius:24px;cursor:pointer;color:#fff;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
+  background:linear-gradient(160deg,#3a1450,#1c0a30);box-shadow:inset 0 0 0 2px rgba(255,138,60,.35),0 6px 0 #0e0418;overflow:hidden}
+.rh-pad.big{flex:1;min-height:150px;margin-top:6px;padding:10px;display:grid;place-items:center}
+.rh-drum{position:relative;height:min(100%,62vw,230px);aspect-ratio:1;display:grid;place-items:center;will-change:transform}
+.rh-drum i{position:absolute;border-radius:50%;pointer-events:none}
+.rh-glow2{inset:-14%;background:radial-gradient(closest-side,rgba(255,138,60,.55),transparent);opacity:0}
+.rh-glow2.on{animation:rh-breath .4s ease-out}
+.rh-rim{inset:0;background:conic-gradient(#ffd34d,#ff8a3c,#ff3d6e,#c2185b,#ff8a3c,#ffd34d);box-shadow:0 8px 0 rgba(0,0,0,.45),0 0 24px rgba(255,138,60,.35)}
+.rh-skin{inset:7%;background:radial-gradient(circle at 40% 32%,#fffaf0,#f4dfc0 58%,#d9b98e);box-shadow:inset 0 -8px 16px rgba(120,70,20,.35),inset 0 4px 10px rgba(255,255,255,.7)}
+.rh-skin::after{content:"";position:absolute;inset:30%;border-radius:50%;border:3px solid rgba(194,24,91,.35)}
+.rh-app{inset:-2%;border:5px solid #ffd34d;box-shadow:0 0 14px #ffd34d;opacity:0;will-change:transform,opacity}
+.rh-ov.fever .rh-app{border-color:#fff}
+.rh-lab{position:relative;color:#7a2a10;font-size:1.25rem;letter-spacing:.08em;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.rh-drum.hit{animation:rh-dhit .14s ease-out}
+@keyframes rh-dhit{0%{transform:scale(.9)}100%{transform:none}}
+.rh-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.rh-fx i{position:absolute;pointer-events:none;font-style:normal}
+.rh-rip{width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid #fff;opacity:0;animation:rh-rip .5s ease-out forwards}
+.rh-rip.perfect{border-color:#ffd34d;box-shadow:0 0 18px #ffd34d}
+.rh-rip.good{border-color:#5be3b0}
+.rh-rip.miss{border-color:#ff3d6e}
+@keyframes rh-rip{0%{transform:scale(.3);opacity:1}100%{transform:scale(2.4);opacity:0}}
+.rh-spark{width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#ffd34d;color:#fff;font-size:1rem;line-height:10px;text-align:center;animation:rh-spark .6s cubic-bezier(.2,.8,.4,1) forwards}
+.rh-spark.good{background:#5be3b0}
+.rh-spark:not(:empty){background:none;width:auto;height:auto;font-size:1.3rem;color:#ffd34d;text-shadow:0 0 6px #ff8a3c}
+@keyframes rh-spark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+.rh-word{font-family:var(--display);font-size:1.3rem;white-space:nowrap;transform:translate(-50%,-50%);animation:rh-word .65s ease-out forwards}
+.rh-word.perfect{color:#ffd34d;text-shadow:0 2px 0 #a33a00}
+.rh-word.good{color:#5be3b0;text-shadow:0 2px 0 #0d5a40}
+.rh-word.miss{color:#ff6b8f;text-shadow:0 2px 0 #6a0a20}
+@keyframes rh-word{0%{transform:translate(-50%,-50%) scale(.6);opacity:0}20%{transform:translate(-50%,-110%) scale(1.15);opacity:1}100%{transform:translate(-50%,-220%) scale(1);opacity:0}}
+/* result */
+.rh-rank{display:flex;flex-direction:column;align-items:center;line-height:1;opacity:0;transform:scale(3) rotate(-20deg)}
+.rh-rank.on{animation:rh-rank .5s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes rh-rank{0%{opacity:0;transform:scale(3) rotate(-20deg)}100%{opacity:1;transform:scale(1) rotate(-8deg)}}
+.rh-rank small{font-size:.7rem;font-weight:900;letter-spacing:.2em;color:var(--muted)}
+.rh-rank b{font-family:var(--display);font-size:4.4rem;font-weight:400}
+.rh-rank.rS b{background:linear-gradient(180deg,#fff6c8,#ffd34d 50%,#ff8a3c);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 rgba(120,50,0,.6)) drop-shadow(0 0 14px rgba(255,211,77,.6))}
+.rh-rank.rA b{color:#ff6b9a;text-shadow:0 4px 0 #6a0a30}
+.rh-rank.rB b{color:#5ab0ff;text-shadow:0 4px 0 #0a3a6a}
+.rh-rank.rC b{color:#9fb0c4;text-shadow:0 4px 0 #2a3440}
+.rh-rk{position:absolute;bottom:-6px;left:-6px;font-style:normal;font-family:var(--display);font-size:.9rem;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#1a0c2a;border:2px solid currentColor}
+.rh-rk.rS{color:#ffd34d}.rh-rk.rA{color:#ff6b9a}.rh-rk.rB{color:#5ab0ff}.rh-rk.rC{color:#9fb0c4}
+.rh-rboss{width:96px;height:96px}
+.rh-rboss.beaten{transform:rotate(-12deg);opacity:.85}
+.rh-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%}
+.rh-stats div{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:12px;background:rgba(255,255,255,.07)}
+.rh-stats small{font-size:.6rem;color:var(--muted);font-weight:900}
+.rh-stats b{font-size:1.1rem}
+.ear-ov.ura.rh-ov{background:radial-gradient(120% 60% at 50% 0%,#2a0a20,#07020f 70%)}
+@media (prefers-reduced-motion:reduce){.rh-bob,.rh-bimg,.rh-cal.need,.rh-bshadow,.rh-ov.angry::after,.rh-ov.fever::after{animation:none}}
+
 </style>
 </head>
 <body>
@@ -5490,7 +5681,7 @@ async function openEarAll(){
   document.getElementById("earall")?.remove();
   const o = el("div", "sheet earall"); o.id = "earall"; const p = el("div", "panel"); p.setAttribute("role", "dialog"); o.append(p);
   const close = () => o.remove(); o.onclick = e => { if(e.target === o) close(); };
-  const hd = el("div", "ea-hd"); hd.append(el("b", null, "🎧 みんなの耳トレレベル")); const x = el("button", "ear-x", "×"); x.type = "button"; x.setAttribute("aria-label", "とじる"); x.onclick = close; hd.append(x); p.append(hd);
+  const hd = el("div", "ea-hd"); hd.append(el("b", null, "🎧 みんなの耳トレ・リズムバトル")); const x = el("button", "ear-x", "×"); x.type = "button"; x.setAttribute("aria-label", "とじる"); x.onclick = close; hd.append(x); p.append(hd);
   const body = el("div", "ea-body"); body.append(el("div", "empty", "よみこみ中…")); p.append(body);
   document.body.append(o);
   let rows; try{ rows = await rpc("mc_t_ear_all", { tk: TK }); }catch(e){ body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした（" + e.message + "）")); return; }
@@ -5498,7 +5689,7 @@ async function openEarAll(){
   // one row per person (the course cards of one number together)
   const groups = new Map(); T.students.forEach(s => { const k = s.num != null ? "n" + s.num : "i" + s.id; if(!groups.has(k)) groups.set(k, []); groups.get(k).push(s); });
   const co = c => { const i = COURSE_KEYS.indexOf(c); return i < 0 ? 9 : i; };
-  const ppl = [...groups.entries()].map(([k, g]) => { g.sort((a, b) => co(a.course) - co(b.course)); const r = prog.get(k) || {}; return { k, g, s:g[0], p:r.p|0, gt:r.g|0, pu:r.pu|0, gu:r.gu|0, last:r.last || "" }; });
+  const ppl = [...groups.entries()].map(([k, g]) => { g.sort((a, b) => co(a.course) - co(b.course)); const r = prog.get(k) || {}; return { k, g, s:g[0], p:r.p|0, gt:r.g|0, pu:r.pu|0, gu:r.gu|0, rh:r.r|0, ru:r.ru|0, last:r.last || "" }; });
   const PM = EAR_TRACKS.piano.levels.length, GM = EAR_TRACKS.guitar.levels.length, UM = EAR_TRACKS.piano_ura.levels.length, PB = earBase("piano");
   let sort = lsGet("mc_ea_sort") || "num";
   function draw(){
@@ -5509,11 +5700,12 @@ async function openEarAll(){
       .forEach(([a, b]) => { const c = el("div", "ea-chip"); c.append(el("small", null, a), el("b", null, b)); sum.append(c); });
     body.append(sum);
     const so = el("select", "ea-sort"); so.id = "ea-sort";
-    so.innerHTML = '<option value="num">番号順</option><option value="piano">ピアノが進んでいる順</option><option value="guitar">ギターが進んでいる順</option><option value="recent">最近やった順</option><option value="none">まだの人を上に</option>';
+    so.innerHTML = '<option value="num">番号順</option><option value="piano">ピアノが進んでいる順</option><option value="guitar">ギターが進んでいる順</option><option value="rhythm">リズムバトルが進んでいる順</option><option value="recent">最近やった順</option><option value="none">まだの人を上に</option>';
     so.value = sort; so.onchange = () => { sort = so.value; lsSet("mc_ea_sort", sort); draw(); }; body.append(so);
     const arr = ppl.slice();
     if(sort === "piano") arr.sort((a, b) => (b.p + b.pu) - (a.p + a.pu) || numSort(a.s, b.s));
     else if(sort === "guitar") arr.sort((a, b) => (b.gt + b.gu) - (a.gt + a.gu) || numSort(a.s, b.s));
+    else if(sort === "rhythm") arr.sort((a, b) => (b.rh + b.ru) - (a.rh + a.ru) || numSort(a.s, b.s));
     else if(sort === "recent") arr.sort((a, b) => String(b.last).localeCompare(String(a.last)) || numSort(a.s, b.s));
     else if(sort === "none") arr.sort((a, b) => (a.p + a.gt) - (b.p + b.gt) || numSort(a.s, b.s));
     else arr.sort((a, b) => numSort(a.s, b.s));
@@ -5534,6 +5726,11 @@ async function openEarAll(){
         return w;
       };
       r.append(tr("🎹", x.p, PM, x.pu, "piano"), tr("🎸", x.gt, GM, x.gu, "guitar"));
+      if(typeof RH_LEVELS !== "undefined"){ const RL = RH_LEVELS.rhythm.levels, RM = RL.length, w = el("div", "ea-tr" + (x.rh >= RM ? " all" : "") + (!x.rh ? " zero" : ""));
+        const bar = el("span", "ea-bar"); const f = el("i"); f.style.transform = "scaleX(" + (x.rh / RM) + ")"; bar.append(f);
+        w.append(el("span", "ea-ic", "🥁"), el("b", "ea-lv", x.rh ? "Lv" + x.rh : "—"), bar, el("small", null, x.rh >= RM ? "🏆 ボス全部たおした" : x.rh ? RL[x.rh].boss + " とたたかい中" : "まだ"));
+        if(x.rh >= RM) w.append(el("span", "ea-ura" + (x.ru >= RH_LEVELS.rhythm_ura.levels.length ? " all" : ""), "🌑 裏 " + x.ru + "/" + RH_LEVELS.rhythm_ura.levels.length));
+        r.append(w); }
       if(x.last) r.append(el("small", "ea-last", "最後にクリア：" + x.last.slice(5).replace("-", "/")));
       r.onclick = () => { close(); const open = x.s; T.sel = open.id; T.detail = null; T.sAssign = []; T.confirmDel = null; T.confirmStu = false; T.ym = nowYM(); tRender(); tLoadStudent(); setTimeout(() => document.getElementById("t-ear")?.scrollIntoView({ block:"center" }), 900); };
       list.append(r);
@@ -5543,12 +5740,412 @@ async function openEarAll(){
   }
   draw();
 }
+/* ================= RHYTHM BOSS BATTLE: bosses and rhythms ================= */
+/* a bar is a string of tokens (durations in quarter notes):
+   w=4 h=2 q=1 e=.5 s=.25 t=1/3 (triplet eighth) ; "." after = dotted ; "r" after = rest ; "~" after = tied to the next note (the next one is not tapped) */
+const RH_DUR = { w:4, h:2, q:1, e:.5, s:.25, t:1/3 };
+function rhParse(bar){
+  let pos = 0, tie = false; const out = [];
+  bar.trim().split(/\s+/).forEach(tok => {
+    const m = /^([whqest])(\.?)(r?)(~?)$/.exec(tok); if(!m) throw new Error("bad token " + tok);
+    const d = RH_DUR[m[1]] * (m[2] ? 1.5 : 1);
+    out.push({ k:m[1], dot:!!m[2], rest:!!m[3], tieNext:!!m[4], tied:tie, at:pos, d });
+    tie = !!m[4]; pos += d;
+  });
+  out.len = pos; return out;
+}
+const RH_LEVELS = {
+  rhythm: { name:"リズムバトル", title:"g_ti_rh_y", levels:[
+    { n:"四分音符", boss:"ゴースト", ic:"1f47b", bpm:76, bar:4, A:["q q q q"], B:["q q q q"], tip:"「タン・タン・タン・タン」。まずは拍にぴったり合わせよう" },
+    { n:"休符", boss:"コウモリ", ic:"1f987", bpm:80, bar:4, A:["q q q qr","q qr q q","q q qr q"], B:["qr q qr q","q qr qr q","qr q q q"], tip:"休符はたたかない！ 心の中で「ウン」と数えよう" },
+    { n:"長い音", boss:"カメ", ic:"1f422", bpm:84, bar:4, A:["h h","h q q","q q h"], B:["w","h. q","q h q","qr q h"], tip:"二分音符は2拍、全音符は4拍。たたいたら、そのまま待つ" },
+    { n:"八分音符", boss:"ネズミ", ic:"1f42d", bpm:80, bar:4, A:["e e q e e q","q q e e q","e e e e q q"], B:["e e e e e e q","q e e e e q","e e q e e e e"], tip:"1拍に2つ。「タタ・タン」" },
+    { n:"うら拍", boss:"カエル", ic:"1f438", bpm:76, bar:4, A:["er e q er e q","q er e q q","er e er e q q"], B:["er e er e er e q","q er e er e q","er e e e er e q"], tip:"「ウン・タ」。拍の“あいだ”でたたく" },
+    { n:"付点のリズム", boss:"ヘビ", ic:"1f40d", bpm:80, bar:4, A:["q. e q q","q. e h","q q q. e"], B:["q. e q. e","h q. e","q. e e e q"], tip:"「ターンタ」。長い・短いをはっきり" },
+    { n:"スキップ", boss:"ウサギ", ic:"1f430", bpm:72, bar:4, A:["e. s e. s q q","q e. s q e. s"], B:["e. s e. s e. s e. s","e. s q e. s q"], tip:"「タッタ・タッタ」。はねるように" },
+    { n:"十六分音符", boss:"ハチ", ic:"1f41d", bpm:66, bar:4, A:["s s s s q q q","q s s s s q q","e e s s s s q q"], B:["s s s s s s s s q q","s s e s s e q q","e s s q s s e q"], tip:"1拍に4つ。「タカタカ」" },
+    { n:"三連符", boss:"オオカミ", ic:"1f43a", bpm:66, bar:4, A:["t t t q t t t q","q t t t q q","t t t t t t q q"], B:["t t t t t t t t t q","q t t t t t t q","t t t q t t t t t t"], tip:"1拍に3つ。「タタタ」と均等に" },
+    { n:"シンコペーション", boss:"ドラゴン", ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。ラスボス！" }
+  ]},
+  rhythm_ura: { name:"裏ボス", title:"g_ti_rh_u", parent:"rhythm", ura:true, levels:[
+    { n:"5拍子", boss:"オニ", ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
+    { n:"7拍子", boss:"宇宙のまおう", ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
+  ]}
+};
+const RH_BARS_A = 4, RH_BARS_B = 4;
+// one battle: 4 calm bars then 4 angry bars (patterns picked at random, no same bar twice in a row)
+function rhMakeChart(L){
+  const pick = (pool, prev) => { const c = pool.filter(p => p !== prev); return (c.length ? c : pool)[(Math.random() * (c.length || pool.length)) | 0]; };
+  const bars = []; let prev = null;
+  for(let i = 0; i < RH_BARS_A; i++){ prev = pick(L.A, prev); bars.push(prev); }
+  for(let i = 0; i < RH_BARS_B; i++){ prev = pick(L.B, prev); bars.push(prev); }
+  return bars.map(b => rhParse(b));
+}
+/* ================= RHYTHM BOSS BATTLE: screens ================= */
+const RH_TITLES = [
+  { id:"g_ti_rh_y", r:3, cat:"title", v:"リズム勇者", n:"しょうごう", sp:"リズムバトルのボスを全部たおす" },
+  { id:"g_ti_rh_u", r:4, cat:"title", v:"変拍子の支配者", n:"しょうごう", sp:"リズムバトルの裏ボスを全部たおす" }
+];
+RH_TITLES.forEach(t => { GITEM[t.id] = t; });
+const Rh = { prog:{ rhythm:{}, rhythm_ura:{} }, best:{} };
+const RH_PERFECT = .055, RH_GOOD = .12;
+const rhDone = tr => Object.keys(Rh.prog[tr] || {}).length;
+const rhMax = tr => RH_LEVELS[tr].levels.length;
+const rhAll = tr => rhDone(tr) >= rhMax(tr);
+const rhOpen = (tr, lv) => (!RH_LEVELS[tr].parent || rhAll(RH_LEVELS[tr].parent)) && (lv === 1 || !!(Rh.prog[tr] || {})[lv - 1] || rhAll(tr));
+const rhBest = (tr, lv) => Rh.best[tr + ":" + lv] || null;
+const rhLat = () => { const v = parseFloat(lsGet("mc_rh_lat")); return isFinite(v) ? v : null; };
+async function rhFetch(){ try{ const r = await rpc("mc_s_rh", { sk: SK }); if(r){ Rh.prog = { rhythm:(r.prog && r.prog.rhythm) || {}, rhythm_ura:(r.prog && r.prog.rhythm_ura) || {} }; Rh.best = r.best || {}; } }catch(e){} }
+
+/* ---------- sounds (short synth hits; the context is the ear-training one) ---------- */
+function rhClick(t, accent){
+  const c = earCtx(); if(!c) return; const o = c.createOscillator(), g = c.createGain();
+  o.type = "square"; o.frequency.value = accent ? 1760 : 1175;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(accent ? .16 : .09, t + .002); g.gain.exponentialRampToValueAtTime(.0008, t + .06);
+  o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .08);
+}
+function rhDrum(kind){
+  const c = earCtx(); if(!c) return; const t = c.currentTime + .005; const o = c.createOscillator(), g = c.createGain();
+  if(kind === "miss"){ o.type = "sawtooth"; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(70, t + .2); g.gain.setValueAtTime(.1, t); g.gain.exponentialRampToValueAtTime(.0008, t + .25); }
+  else { o.type = "sine"; o.frequency.setValueAtTime(kind === "perfect" ? 190 : 150, t); o.frequency.exponentialRampToValueAtTime(48, t + .14); g.gain.setValueAtTime(kind === "perfect" ? .5 : .38, t); g.gain.exponentialRampToValueAtTime(.0008, t + .2); }
+  o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .3);
+}
+
+/* ---------- notation: one bar as an svg (x is proportional to time, so a cursor can run over it) ---------- */
+const RH_W = 340, RH_PAD = 22, RH_Y = 58, RH_TOP = 22;
+function rhX(at, len){ return RH_PAD + at / len * (RH_W - RH_PAD * 2); }
+function rhBarSVG(bar, L){
+  const len = bar.len, xs = [], parts = [];
+  const groupOf = at => { if(L.unit === "e" && L.accents){ let g = 0; L.accents.forEach((a, i) => { if(at >= a - 1e-6) g = i; }); return g; } return Math.floor(at + 1e-6); };
+  const beamable = n => !n.rest && (n.k === "e" || n.k === "s" || n.k === "t");
+  // the beam groups
+  const groups = []; let cur = null;
+  bar.forEach((n, i) => { if(beamable(n)){ const g = groupOf(n.at); if(cur && cur.g === g && cur.last === i - 1){ cur.ids.push(i); cur.last = i; } else { cur = { g, ids:[i], last:i }; groups.push(cur); } } else cur = null; });
+  const inBeam = new Set(); groups.forEach(G => { if(G.ids.length > 1) G.ids.forEach(i => inBeam.add(i)); });
+  parts.push(`<line x1="6" x2="${RH_W - 6}" y1="${RH_Y}" y2="${RH_Y}" stroke="currentColor" stroke-opacity=".35" stroke-width="1.4"/>`);
+  bar.forEach((n, i) => {
+    const x = rhX(n.at, len); xs.push(x);
+    if(n.rest){
+      if(n.k === "w") parts.push(`<rect x="${x - 7}" y="${RH_Y}" width="14" height="6" fill="currentColor"/>`);
+      else if(n.k === "h") parts.push(`<rect x="${x - 7}" y="${RH_Y - 6}" width="14" height="6" fill="currentColor"/>`);
+      else if(n.k === "q") parts.push(`<path d="M${x - 2} ${RH_Y - 20} l6 7 l-6 6 l6 7 q-9 -3 -4 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`);
+      else { const two = n.k === "s"; parts.push(`<circle cx="${x - 3}" cy="${RH_Y - 10}" r="2.8" fill="currentColor"/><path d="M${x - 3} ${RH_Y - 8} q5 1 7 -3 l-6 16" fill="none" stroke="currentColor" stroke-width="1.8"/>` + (two ? `<circle cx="${x - 5}" cy="${RH_Y - 3}" r="2.6" fill="currentColor"/>` : "")); }
+      if(n.dot) parts.push(`<circle cx="${x + 10}" cy="${RH_Y - 6}" r="2" fill="currentColor"/>`);
+      return;
+    }
+    const hollow = n.k === "h" || n.k === "w";
+    parts.push(`<ellipse class="rh-n" data-i="${i}" cx="${x}" cy="${RH_Y}" rx="7" ry="5.2" transform="rotate(-20 ${x} ${RH_Y})" fill="${hollow ? "none" : "currentColor"}" stroke="currentColor" stroke-width="${hollow ? 2.4 : 1}"/>`);
+    if(n.k !== "w") parts.push(`<line x1="${x + 6}" x2="${x + 6}" y1="${RH_Y - 2}" y2="${RH_TOP}" stroke="currentColor" stroke-width="1.8"/>`);
+    if(n.dot) parts.push(`<circle cx="${x + 12}" cy="${RH_Y - 2}" r="2.2" fill="currentColor"/>`);
+    if(!inBeam.has(i) && (n.k === "e" || n.k === "s" || n.k === "t")){ parts.push(`<path d="M${x + 6} ${RH_TOP} q9 7 4 20" fill="none" stroke="currentColor" stroke-width="2.4"/>`); if(n.k === "s") parts.push(`<path d="M${x + 6} ${RH_TOP + 7} q9 7 4 20" fill="none" stroke="currentColor" stroke-width="2.4"/>`); }
+    if(n.tieNext && bar[i + 1]) parts.push(`<path d="M${x + 4} ${RH_Y + 8} Q${(x + rhX(bar[i + 1].at, len)) / 2} ${RH_Y + 20} ${rhX(bar[i + 1].at, len) - 4} ${RH_Y + 8}" fill="none" stroke="currentColor" stroke-width="2"/>`);
+  });
+  // beams (and the second beam of sixteenths, and the 3 of triplets)
+  groups.filter(G => G.ids.length > 1).forEach(G => {
+    const a = xs[G.ids[0]] + 6, b = xs[G.ids[G.ids.length - 1]] + 6;
+    parts.push(`<rect x="${a - .9}" y="${RH_TOP - 1}" width="${b - a + 1.8}" height="5" fill="currentColor"/>`);
+    G.ids.forEach((i, j) => { if(bar[i].k !== "s") return; const nx = G.ids[j + 1], pv = G.ids[j - 1];
+      if(nx != null && bar[nx].k === "s") parts.push(`<rect x="${xs[i] + 5}" y="${RH_TOP + 6}" width="${xs[nx] - xs[i] + 2}" height="4.5" fill="currentColor"/>`);
+      else if(!(pv != null && bar[pv].k === "s")){ const toL = nx == null; parts.push(`<rect x="${toL ? xs[i] - 4 : xs[i] + 5}" y="${RH_TOP + 6}" width="10" height="4.5" fill="currentColor"/>`); } });
+    if(bar[G.ids[0]].k === "t") parts.push(`<text x="${(a + b) / 2}" y="${RH_TOP - 5}" text-anchor="middle" font-size="12" font-weight="900" fill="currentColor">3</text>`);
+  });
+  // single triplet groups that were not beamed still show the 3
+  return { svg:`<svg class="rh-bar" viewBox="0 0 ${RH_W} 90" preserveAspectRatio="none" aria-hidden="true">${parts.join("")}</svg>`, xs };
+}
+const rhTimeSig = L => L.unit === "e" ? [L.bar * 2, 8] : [L.bar, 4];
+
+/* ---------- the card on the student page ---------- */
+function rhCard(){
+  const box = el("section", "card earc rhc"); box.id = "rh-card";
+  const top = el("div", "earc-top"); const t = el("div", "earc-t"); t.append(el("b", null, "リズムバトル"), el("small", null, "リズムでボスをたおそう"));
+  const d = rhDone("rhythm"), m = rhMax("rhythm");
+  top.append(earImg("1f941", "earc-ic"), t, el("span", "earc-n", "⚔ " + d + "/" + m)); box.append(top);
+  const row = (tr) => { const T = RH_LEVELS[tr], dd = rhDone(tr), mm = rhMax(tr), nx = dd < mm ? T.levels[dd] : null;
+    const r = el("button", "earc-row" + (T.ura ? " ura" : "")); r.type = "button"; r.dataset.track = tr;
+    const bar = el("span", "earc-bar"); const fill = el("i"); fill.style.transform = "scaleX(" + (dd / mm) + ")"; bar.append(fill);
+    const nm = el("span", "earc-nm"); nm.append(el("b", null, T.ura ? "🌑 " + T.name : "ボス"), el("small", null, !nx ? "🏆 ぜんぶたおした！" : "つぎ：" + nx.boss + "（" + nx.n + "）"));
+    r.append(earImg(nx ? nx.ic : (T.ura ? "1f47e" : "1f409")), nm, bar, el("span", "earc-lv", dd + "/" + mm)); r.onclick = () => openRh(tr); return r; };
+  box.append(row("rhythm")); if(rhAll("rhythm")) box.append(row("rhythm_ura"));
+  return box;
+}
+
+/* ---------- overlay / map ---------- */
+const RhS = { tab:"rhythm" };
+function openRh(tr){
+  if(tr) RhS.tab = tr;
+  document.getElementById("rh")?.remove();
+  const o = el("div", "ear-ov rh-ov"); o.id = "rh"; o.setAttribute("role", "dialog");
+  document.body.append(o);
+  try{ BGM.hold(true); }catch(err){}
+  rhMap(o); requestAnimationFrame(() => o.classList.add("in"));
+}
+function rhClose(){ rhStopRun(); const o = document.getElementById("rh"); if(o) o.remove(); try{ BGM.hold(false); }catch(err){} if(typeof stuRender === "function" && Stu.info && !busyNow()) stuRender(); }
+function rhHead(o, title, onBack){
+  const h = el("div", "ear-hd"); const b = el("button", "ear-x", onBack ? "‹" : "×"); b.type = "button"; b.setAttribute("aria-label", onBack ? "もどる" : "とじる");
+  b.onclick = onBack || rhClose; h.append(b, el("b", null, title)); o.append(h); return h;
+}
+function rhMap(o){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0;
+  let tr = RhS.tab; if(RH_LEVELS[tr].parent && !rhAll(RH_LEVELS[tr].parent)) tr = RhS.tab = "rhythm";
+  const T = RH_LEVELS[tr], ura = !!T.ura; o.classList.toggle("ura", ura);
+  rhHead(o, ura ? "🌑 裏ボス" : "🥁 リズムバトル", ura ? () => { RhS.tab = "rhythm"; rhMap(o); } : null);
+  // timing
+  const lat = rhLat(); const cal = el("button", "rh-cal" + (lat == null ? " need" : "")); cal.type = "button"; cal.id = "rh-cal";
+  cal.append(el("b", null, lat == null ? "⏱ はじめに「タイミング合わせ」をしよう" : "⏱ タイミング合わせ済み"), el("small", null, lat == null ? "スマホごとの音のおくれを調べて、判定を公平にするよ（20秒）" : "ずれ " + Math.round(lat * 1000) + "ms ・ もう一度やる"));
+  cal.onclick = () => rhCalibrate(o, () => rhMap(o)); o.append(cal);
+  // boss book
+  const book = el("div", "rh-book" + (ura ? " ura" : ""));
+  book.append(el("div", "rh-bt", (ura ? "💀 裏ボス図鑑" : "📖 ボス図鑑") + "　" + rhDone(tr) + "/" + rhMax(tr)));
+  const grid = el("div", "rh-zk");
+  T.levels.forEach((L, i) => { const lv = i + 1, d = (Rh.prog[tr] || {})[lv], b = rhBest(tr, lv);
+    const c = el("div", "rh-zi" + (d ? " got" : "") + (b && b.nm ? " gold" : "")); const im = earImg(L.ic); if(!d) im.classList.add("sil"); c.append(im, el("small", null, d ? L.boss : "？？？")); grid.append(c); });
+  book.append(grid);
+  const tt = GITEM[T.title]; book.append(el("div", "rh-ttl" + (rhAll(tr) ? " got" : ""), rhAll(tr) ? "🏆 称号「" + tt.v + "」ゲット！" : (ura ? "裏ボスを全部たおすと" : "ボスを全部たおすと") + "称号「" + tt.v + "」"));
+  book.append(el("div", "rh-note", "👑 ミスなしでたおすと金の「完全勝利」"));
+  o.append(book);
+  // the path
+  const path = el("div", "ear-path rh-path");
+  T.levels.forEach((L, i) => { const lv = i + 1, d = (Rh.prog[tr] || {})[lv], un = rhOpen(tr, lv), cur = !d && un, b = rhBest(tr, lv);
+    const n = el("button", "ear-node rh-node" + (d ? " done" : "") + (cur ? " cur" : "") + (!un ? " lock" : "") + (i % 2 ? " r" : "")); n.type = "button"; n.dataset.lv = lv;
+    const c = el("span", "ear-dot"); const im = earImg(un ? L.ic : "1f512"); if(un && !d) im.classList.add("rh-bob"); c.append(im); if(b && b.nm) c.append(el("i", "rh-crown", "👑")); if(b && b.rk) c.append(el("i", "rh-rk r" + b.rk, b.rk));
+    const tx = el("span", "ear-nt"); tx.append(el("b", null, (ura ? "裏" : "Lv") + lv + " " + L.boss), el("small", null, un ? "🥁 " + L.n + (b ? " ・ ベスト " + (b.rk ? b.rk + "ランク " : "") + b.s + "点" : "") : "前のボスをたおすとあくよ"));
+    n.append(c, tx); n.onclick = () => { if(!un){ toast("前のボスをたおすとあくよ"); return; } rhIntro(o, tr, lv); }; path.append(n); });
+  o.append(path);
+  if(!ura){ const open = rhAll("rhythm"); const door = el("button", "ear-door" + (open ? " open" : "")); door.type = "button"; door.id = "rh-ura";
+    const dd = el("span", "ear-dot"); dd.append(earImg(open ? "1f311" : "1f512"));
+    const dt = el("span", "ear-nt"); dt.append(el("b", null, open ? "🌑 裏ボス" : "？？？"), el("small", null, open ? "5拍子と7拍子のボス（" + rhDone("rhythm_ura") + "/" + rhMax("rhythm_ura") + "）" : "ボスを全部たおすと、なにかが起きる…"));
+    door.append(dd, dt); door.onclick = () => { if(!open){ toast("ボスを全部たおすと…？"); return; } RhS.tab = "rhythm_ura"; rhMap(o); }; o.append(door); }
+  setTimeout(() => { const c = o.querySelector(".ear-node.cur"); if(c && c.offsetTop > innerHeight * .6) o.scrollTo({ top: c.offsetTop - innerHeight * .4, behavior: "smooth" }); }, 60);
+}
+
+/* ---------- timing calibration: tap along with 8 clicks ---------- */
+let RhRun = null;
+function rhStopRun(){ if(RhRun){ RhRun.stop = true; cancelAnimationFrame(RhRun.raf); if(RhRun.off) RhRun.off(); RhRun = null; } }
+function rhCalibrate(o, done){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; rhHead(o, "⏱ タイミング合わせ", done);
+  const box = el("div", "ear-intro rh-calbox");
+  box.append(el("h2", null, "「カッ」に合わせてタップ"), el("p", "ear-tip", "4回きいてから、8回タップしてね。スマホの音のおくれを調べて、判定を公平にするよ。イヤホンを使う子は、イヤホンをつけたままやってね。"));
+  const dots = el("div", "rh-cdots"); for(let i = 0; i < 8; i++) dots.append(el("i")); box.append(dots);
+  const pad = el("button", "rh-pad", "スタート"); pad.type = "button"; pad.id = "rh-calpad"; box.append(pad);
+  const msg = el("p", "ear-load"); box.append(msg); o.append(box);
+  let st = null;
+  pad.onpointerdown = e => { e.preventDefault();
+    const c = earCtx(); if(!c) return;
+    if(!st){ const spb = 60 / 96, t0 = c.currentTime + .4; st = { t0, spb, taps:[] }; for(let i = 0; i < 12; i++) rhClick(t0 + i * spb, i % 4 === 0); pad.textContent = "きいて…"; setTimeout(() => { if(st) pad.textContent = "タップ！"; }, (.4 + 4 * spb) * 1000); return; }
+    const now = c.currentTime; if(now < st.t0 + 3.5 * st.spb) return;
+    const k = Math.round((now - st.t0) / st.spb); const dt = now - (st.t0 + k * st.spb); if(k < 4 || k > 11) return;
+    st.taps.push(dt); rhDrum("good"); dots.children[Math.min(7, st.taps.length - 1)].classList.add("on");
+    if(st.taps.length >= 8){ const s = st.taps.slice().sort((a, b) => a - b); const med = (s[3] + s[4]) / 2; const v = Math.max(-.15, Math.min(.3, med));
+      lsSet("mc_rh_lat", String(v)); pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
+  };
+}
+
+/* ---------- before a battle ---------- */
+function rhIntro(o, tr, lv){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; const T = RH_LEVELS[tr], L = T.levels[lv - 1];
+  rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => rhMap(o));
+  const card = el("div", "ear-intro rh-intro");
+  const bi = earImg(L.ic, "rh-iboss rh-bob"); card.append(bi, el("h2", null, L.boss + "があらわれた！"), el("p", "rh-rh", "🥁 " + L.n + " ・ ♩=" + L.bpm + " ・ " + rhTimeSig(L).join("/") + "拍子"), el("p", "ear-tip", L.tip));
+  // a sample bar of this level
+  const sm = rhBarSVG(rhParse(L.A[0]), L); const sw = el("div", "rh-sample"); sw.innerHTML = sm.svg; card.append(sw);
+  const lis = el("button", "ear-sm", "🔊 お手本をきく"); lis.type = "button"; lis.onclick = () => rhDemo(L, rhParse(L.A[0])); card.append(lis);
+  card.append(el("p", "ear-how", "📜 ルール\nパーフェクト＝大ダメージ、グッド＝小ダメージ。ミスやよけいなタップでハートが減るよ（3つ）。10コンボで必殺技！ 後半はボスが怒ってリズムが難しくなる。"));
+  const go = el("button", "ear-go", "⚔ たたかう"); go.type = "button"; go.id = "rh-start";
+  go.onclick = () => { earCtx(); if(rhLat() == null){ toast("先に「タイミング合わせ」をしよう"); rhCalibrate(o, () => rhIntro(o, tr, lv)); return; } rhBattle(o, tr, lv); };
+  card.append(go); o.append(card);
+}
+function rhDemo(L, bar){ const c = earCtx(); if(!c) return; const spb = 60 / L.bpm, t0 = c.currentTime + .2;
+  const beats = rhClickTimes(L); beats.forEach(b => rhClick(t0 + b.at * spb, b.acc));
+  bar.forEach(n => { if(n.rest || n.tied) return; const t = t0 + n.at * spb; const os = c.createOscillator(), g = c.createGain(); os.type = "sine"; os.frequency.setValueAtTime(170, t); os.frequency.exponentialRampToValueAtTime(50, t + .13); g.gain.setValueAtTime(.45, t); g.gain.exponentialRampToValueAtTime(.0008, t + .18); os.connect(g); g.connect(EarA.out); os.start(t); os.stop(t + .25); }); }
+// metronome positions inside one bar
+function rhClickTimes(L){ if(L.unit === "e") return L.accents.map((a, i) => ({ at:a, acc:i === 0 })); return Array.from({ length:Math.round(L.bar) }, (_, i) => ({ at:i, acc:i === 0 })); }
+
+/* ---------- the battle ---------- */
+// little sparkle on top of a hit, and a rising chime for combo milestones
+function rhPing(f, t0, vol){ const c = earCtx(); if(!c) return; const t = c.currentTime + (t0 || 0) + .005; const o = c.createOscillator(), g = c.createGain(); o.type = "triangle"; o.frequency.value = f;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol || .07, t + .004); g.gain.exponentialRampToValueAtTime(.0008, t + .22); o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .25); }
+function rhChime(n){ [0, .07, .14, .21].slice(0, n).forEach((d, i) => rhPing([1047, 1319, 1568, 2093][i], d, .08)); }
+const rhRank = R => { const r = (R.p + R.g * .5) / Math.max(1, R.p + R.g + R.m); return R.m === 0 && r >= .9 ? "S" : r >= .8 ? "A" : r >= .6 ? "B" : "C"; };
+function rhBattle(o, tr, lv){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.add("playing"); o.classList.remove("angry", "fever");
+  const T = RH_LEVELS[tr], L = T.levels[lv - 1], chart = rhMakeChart(L), c = earCtx();
+  const spb = 60 / L.bpm, barSec = L.bar * spb, lat = rhLat() || 0;
+  const R = { hp:0, max:0, hearts:3, combo:0, maxCombo:0, p:0, g:0, m:0, done:false, angry:false, n:0 };
+  RhRun = { stop:false, raf:0 };
+  const h = rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => { if(!R.done && !h.dataset.ok){ h.dataset.ok = "1"; toast("もう一度おすとにげます"); setTimeout(() => delete h.dataset.ok, 2500); return; } rhStopRun(); o.classList.remove("playing", "angry", "fever"); rhMap(o); });
+  // the field: the boss on the left, you on the right
+  const field = el("div", "rh-field");
+  const boss = el("div", "rh-boss"); const bw = el("div", "rh-bwrap"); const bimg = earImg(L.ic, "rh-bimg"); const bflash = el("i", "rh-bflash"); const bshadow = el("i", "rh-bshadow");
+  bw.append(bimg, bflash); boss.append(bshadow, bw);
+  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"); hpb.append(hpg, hpf); boss.append(el("b", "rh-bname", L.boss), hpb);
+  const pop = el("div", "rh-pop"); boss.append(pop);
+  const bub = el("div", "rh-bub"); boss.append(bub);
+  const talk = (t, ms) => { bub.textContent = t; again(bub, "on"); clearTimeout(bub._t); bub._t = setTimeout(() => bub.classList.remove("on"), ms || 1600); };
+  const me = el("div", "rh-me"); const hearts = el("div", "rh-hearts"); for(let i = 0; i < 3; i++) hearts.append(earImg("2764-fe0f"));
+  const cbox = el("div", "rh-cbox"); const cn = el("b", "rh-cn"); const cl = el("small", "rh-cl"); cbox.append(cn, cl); me.append(hearts, cbox);
+  const slash = el("i", "rh-slash"); const cv = el("canvas", "rh-cv");
+  field.append(boss, me, slash, cv); o.append(field);
+  // the music sheet
+  const sheet = el("div", "rh-sheet"); const rowA = el("div", "rh-row cur"), rowB = el("div", "rh-row nxt"); const cur = el("i", "rh-cursor"); rowA.append(cur);
+  const sig = el("div", "rh-sig"); const ts = rhTimeSig(L); sig.innerHTML = "<b>" + ts[0] + "</b><b>" + ts[1] + "</b>";
+  const bno = el("span", "rh-bno"); const count = el("div", "rh-count"); sheet.append(sig, bno, rowA, rowB, count); o.append(sheet);
+  const judge = el("div", "rh-judge"); o.append(judge);
+  // the drum you hit
+  const pad = el("button", "rh-pad big"); pad.type = "button"; pad.id = "rh-pad"; pad.setAttribute("aria-label", "たたく");
+  const drum = el("span", "rh-drum"); const rim = el("i", "rh-rim"), skin = el("i", "rh-skin"), app = el("i", "rh-app"), glow = el("i", "rh-glow2");
+  const lab = el("b", "rh-lab", "たたく！"); drum.append(glow, rim, skin, app, lab); const fx = el("span", "rh-fx"); pad.append(drum, fx); o.append(pad);
+  // notes and their times
+  const t0 = c.currentTime + .5 + barSec; const notes = [];
+  chart.forEach((bar, bi) => bar.forEach((n, i) => { if(!n.rest && !n.tied) notes.push({ t:t0 + bi * barSec + n.at * spb, bi, i, j:null }); }));
+  R.n = notes.length; R.max = R.hp = Math.ceil(notes.length * 2.6);
+  // metronome: one count-in bar, then every bar
+  const clicks = rhClickTimes(L);
+  for(let bi = -1; bi < chart.length; bi++) clicks.forEach(k => rhClick(t0 + bi * barSec + k.at * spb, k.acc));
+  const countLabels = clicks.length === 4 ? ["3", "2", "1", "GO!"] : clicks.map((_, i) => i === clicks.length - 1 ? "GO!" : String(clicks.length - 1 - i));
+  let shown = -2, svgA = null, lastBeat = -99, lastCount = -1;
+  function drawRows(bi){
+    shown = bi;
+    const a = bi >= 0 && chart[bi] ? rhBarSVG(chart[bi], L) : null, b = chart[bi + 1] ? rhBarSVG(chart[bi + 1], L) : null;
+    rowA.querySelectorAll("svg").forEach(s => s.remove()); rowB.innerHTML = "";
+    if(a){ rowA.insertAdjacentHTML("afterbegin", a.svg); svgA = rowA.querySelector("svg"); notes.filter(n => n.bi === bi && n.j).forEach(n => mark(n)); } else { rowA.insertAdjacentHTML("afterbegin", '<svg class="rh-bar" viewBox="0 0 340 90"></svg>'); svgA = null; }
+    if(b) rowB.innerHTML = b.svg;
+    bno.textContent = bi >= 0 ? (bi + 1) + " / " + chart.length : "";
+    if(bi === RH_BARS_A && !R.angry){ R.angry = true; boss.classList.add("angry"); o.classList.add("angry"); banner("💢 怒りモード！", "angry"); talk(["本気を出すぞ！", "まだまだぁ！", "ゆるさん！"][(Math.random() * 3) | 0]); GSFX && GSFX.rumble && GSFX.rumble(); }
+  }
+  function mark(n){ if(n.bi !== shown || !svgA) return; const e = svgA.querySelector('.rh-n[data-i="' + n.i + '"]'); if(!e) return; e.setAttribute("class", "rh-n " + n.j);
+    if(n.j !== "miss"){ const cx = +e.getAttribute("cx"); svgA.insertAdjacentHTML("beforeend", `<circle class="rh-burst ${n.j}" cx="${cx}" cy="${RH_Y}" r="12"/>`); } }
+  function say(t, cls){ judge.textContent = t; judge.className = "rh-judge " + (cls || ""); void judge.offsetWidth; judge.classList.add("show"); }
+  function banner(t, cls){ const b = el("div", "rh-banner " + (cls || ""), t); o.append(b); setTimeout(() => b.remove(), 1400); }
+  function again(node, cls){ node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); }
+  function hud(){ hpf.style.transform = "scaleX(" + Math.max(0, R.hp / R.max) + ")"; setTimeout(() => { hpg.style.transform = "scaleX(" + Math.max(0, R.hp / R.max) + ")"; }, 260);
+    [...hearts.children].forEach((x, i) => x.classList.toggle("lost", i >= R.hearts));
+    cn.textContent = R.combo >= 2 ? R.combo : ""; cl.textContent = R.combo >= 2 ? (R.combo >= 20 ? "FEVER ×3" : R.combo >= 10 ? "必殺 ×2" : "COMBO") : "";
+    cbox.classList.toggle("fire", R.combo >= 10); cbox.classList.toggle("fever", R.combo >= 20); o.classList.toggle("fever", R.combo >= 20); if(R.combo >= 2) again(cn, "bump"); }
+  // effects at the finger: a ripple, sparks and a word
+  function burst(x, y, kind){
+    const rp = el("i", "rh-rip " + kind); rp.style.left = x + "px"; rp.style.top = y + "px"; fx.append(rp); setTimeout(() => rp.remove(), 520);
+    const n = kind === "perfect" ? 10 : kind === "good" ? 6 : 0;
+    for(let i = 0; i < n; i++){ const a = Math.PI * 2 * i / n + Math.random() * .5, d = 50 + Math.random() * 50; const s = el("i", "rh-spark " + kind, kind === "perfect" && i % 3 === 0 ? "♪" : "");
+      s.style.left = x + "px"; s.style.top = y + "px"; s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", Math.sin(a) * d + "px"); fx.append(s); setTimeout(() => s.remove(), 600); }
+    const w = el("i", "rh-word " + kind, kind === "perfect" ? "PERFECT" : kind === "good" ? "GOOD" : "MISS"); w.style.left = x + "px"; w.style.top = y + "px"; fx.append(w); setTimeout(() => w.remove(), 650);
+  }
+  function hurt(text){
+    if(R.m === 0 || Math.random() < .35) talk(["きかないぞ！", "ずれてるぞ〜", "スキあり！", "ふふん♪"][(Math.random() * 4) | 0], 900);
+    R.m++; R.combo = 0; R.hearts--; rhDrum("miss"); try{ buzz([40, 30, 60]); }catch(e){}
+    again(field, "hurt"); again(bw, "atk"); again(slash, "on"); say(text, "miss");
+    const lost = hearts.children[R.hearts]; if(lost) again(lost, "pop");
+  }
+  function hit(n, kind, x, y){
+    n.j = kind; mark(n);
+    if(kind === "miss"){ hurt("ミス！"); }
+    else { if(kind === "perfect") R.p++; else R.g++; R.combo++; R.maxCombo = Math.max(R.maxCombo, R.combo);
+      const mul = R.combo >= 20 ? 3 : R.combo >= 10 ? 2 : 1, dmg = (kind === "perfect" ? 2 : 1) * mul; R.hp -= dmg; rhDrum(kind); if(kind === "perfect") rhPing(R.combo >= 20 ? 2637 : 2093, 0, .05);
+      again(bw, "hit"); again(bflash, "on");
+      const d = el("span", "rh-dmg" + (mul > 1 ? " big" : "") + (kind === "perfect" ? " crit" : "")); if(kind === "perfect" && mul > 1) d.append(el("small", null, "CRITICAL")); d.append("-" + dmg); d.style.setProperty("--x", (Math.random() * 50 - 10) + "px"); pop.append(d); setTimeout(() => d.remove(), 800);
+      say(kind === "perfect" ? "パーフェクト！" : "グッド", kind);
+      if(R.combo === 10){ banner("🔥 必殺モード！ ダメージ×2", "fire"); rhChime(3); }
+      if(R.combo === 20){ banner("🌈 FEVER!! ダメージ×3", "fever"); rhChime(4); }
+      if(R.combo > 20 && R.combo % 10 === 0){ banner(R.combo + " COMBO!!", "fever"); rhChime(4); } }
+    if(x != null) burst(x, y, kind);
+    hud();
+    if(R.hp <= 0) finish(true); else if(R.hearts <= 0) finish(false);
+  }
+  function tap(x, y){
+    if(R.done) return; const now = c.currentTime - lat; if(now < t0 - barSec * .25) return;
+    if(x == null){ const r = pad.getBoundingClientRect(); x = r.width / 2; y = r.height / 2; }
+    again(drum, "hit");
+    let best = null, bd = 1e9; notes.forEach(n => { if(n.j) return; const d = Math.abs(n.t - now); if(d < bd){ bd = d; best = n; } });
+    if(best && bd <= RH_GOOD){ const k = bd <= RH_PERFECT ? "perfect" : "good"; hit(best, k, x, y); if(k === "good") say(now < best.t ? "グッド（はやい）" : "グッド（おそい）", "good"); return; }
+    // a tap with no note: right after a hit it is forgiven, otherwise it is a miss (no button mashing)
+    if(notes.some(n => n.j && n.j !== "miss" && now - n.t > -RH_GOOD && now - n.t < .16)) return;
+    burst(x, y, "miss"); hurt("よけいなタップ！"); hud();
+    if(R.hearts <= 0) finish(false);
+  }
+  pad.onpointerdown = e => { e.preventDefault(); const r = pad.getBoundingClientRect(); tap(e.clientX - r.left, e.clientY - r.top); };
+  const key = e => { if(e.code === "Space" || e.code === "Enter"){ e.preventDefault(); if(!e.repeat) tap(); } };
+  document.addEventListener("keydown", key); RhRun.off = () => document.removeEventListener("keydown", key);
+  RhRun.notes = notes; RhRun.tap = tap; RhRun.ctx = c; RhRun.R = R;   // (used by the automatic tests)
+  hud(); drawRows(-1); setTimeout(() => talk(["かかってこい！", "リズムでしょうぶだ！", "おまえにたおせるかな？"][(Math.random() * 3) | 0]), 250);
+  const end = t0 + chart.length * barSec, lead = Math.max(.45, Math.min(.8, spb));
+  function loop(){
+    if(!RhRun || RhRun.stop || R.done) return;
+    const at = c.currentTime, now = at - lat, bi = Math.floor((at - t0) / barSec);
+    if(bi !== shown && bi < chart.length) drawRows(bi);
+    if(bi >= 0){ const f = ((at - t0) - bi * barSec) / barSec; cur.style.transform = "translateX(" + ((RH_PAD + f * (RH_W - RH_PAD * 2)) / RH_W * rowA.clientWidth) + "px)"; cur.style.opacity = "1"; } else cur.style.opacity = "0";
+    // count-in: 3, 2, 1, GO!
+    if(at < t0 + .3){ const k = clicks.findIndex((q, i) => at >= t0 - barSec + q.at * spb && (i === clicks.length - 1 || at < t0 - barSec + clicks[i + 1].at * spb));
+      if(k >= 0 && k !== lastCount){ lastCount = k; count.textContent = countLabels[k]; again(count, "on"); } }
+    // every beat the drum and the room breathe
+    const beat = Math.floor((at - t0) / spb); if(beat !== lastBeat && at >= t0 - barSec){ lastBeat = beat; again(glow, "on"); again(o, "beat"); }
+    // the ring closing in on the next note
+    const nx = notes.find(n => !n.j);
+    if(nx){ const d = nx.t - now; if(d <= lead && d > -RH_GOOD){ const k = Math.max(0, d / lead); app.style.transform = "scale(" + (1 + k * 1.1) + ")"; app.style.opacity = String(1 - k * .7); } else app.style.opacity = "0"; } else app.style.opacity = "0";
+    notes.forEach(n => { if(!n.j && now - n.t > RH_GOOD) hit(n, "miss"); });
+    if(R.done) return;
+    if(at > end + .3){ finish(R.hp <= 0); return; }
+    RhRun.raf = requestAnimationFrame(loop);
+  }
+  RhRun.raf = requestAnimationFrame(loop);
+  function finish(win){
+    if(R.done) return; R.done = true; if(RhRun){ RhRun.off && RhRun.off(); } app.style.opacity = "0";
+    const nm = R.m === 0, score = R.p * 100 + R.g * 50 + R.maxCombo * 10 + R.hearts * 200, rank = win ? rhRank(R) : null;
+    if(win){ bw.classList.add("down"); banner(nm ? "👑 K.O.!! 完全勝利" : "K.O.!!", "ko"); try{ GSFX.boom(); }catch(e){} setTimeout(() => { try{ GSFX.fanfare(nm ? 4 : 3); }catch(e){} }, 350);
+      setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 200); }
+    else { banner(R.hearts <= 0 ? "やられた…" : "にげられた…", "lose"); boss.classList.add("laugh"); talk("フハハ！ またこい！", 2000); }
+    setTimeout(() => rhResult(o, tr, lv, R, win, nm, score, rank), win ? 1900 : 1300);
+  }
+}
+async function rhResult(o, tr, lv, R, win, nm, score, rank){
+  if(document.getElementById("rh") !== o) return;
+  rhStopRun(); o.classList.remove("playing"); o.innerHTML = ""; o.scrollTop = 0;
+  const T = RH_LEVELS[tr], L = T.levels[lv - 1];
+  rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => rhMap(o));
+  o.classList.remove("angry", "fever");
+  const r = el("div", "ear-res rh-res" + (win ? " perfect" : "")); o.append(r);
+  const cv = el("canvas", "ear-cf"); r.append(cv);
+  const bi = earImg(L.ic, "rh-rboss" + (win ? " beaten" : "")); r.append(bi);
+  r.append(el("h2", null, win ? (nm ? "👑 完全勝利！" : L.boss + "をたおした！") : (R.hearts <= 0 ? "やられた…" : "にげられた…")));
+  const st = el("div", "rh-stats"); [["パーフェクト", R.p], ["グッド", R.g], ["ミス", R.m], ["最大コンボ", R.maxCombo]].forEach(([a, b]) => { const d = el("div"); d.append(el("small", null, a), el("b", null, String(b))); st.append(d); }); r.append(st);
+  r.append(el("div", "ear-score", score + " 点"));
+  if(rank){ const rk = el("div", "rh-rank r" + rank); rk.append(el("small", null, "RANK"), el("b", null, rank)); r.prepend(rk); setTimeout(() => { rk.classList.add("on"); try{ GSFX.star(rank === "S" ? 3 : rank === "A" ? 2 : 1); }catch(e){} }, 500); }
+  let res = null;
+  if(win){
+    try{ res = await rpc("mc_s_ear_clear", { sk: SK, p_track: tr, p_lv: lv }); if(res && res.ear){ Rh.prog = { rhythm:res.ear.rhythm || {}, rhythm_ura:res.ear.rhythm_ura || {} }; } if(res && res.gacha) gSet(res.gacha);
+      const b = await rpc("mc_s_rh_score", { sk: SK, p_track: tr, p_lv: lv, p_score: score, p_nm: nm, p_rank: rank || "C" }); if(b) Rh.best = b; }
+    catch(e){ r.append(el("p", "ear-err", "記録できませんでした（" + e.message + "）。電波のいいところでもう一度たおしてね")); }
+    const sp = el("div", "ear-bigst"); sp.append(earImg(L.ic), el("b", null, nm ? "PERFECT" : "WIN"), el("small", null, (T.ura ? "裏" : "Lv") + lv)); r.append(sp);
+    r.append(el("p", "ear-rs", res && res.new ? "ボスのスタンプをゲットしたよ！" : "スタンプはもう持ってるよ。ベスト更新をねらおう！"));
+    setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 400);
+    if(res && res.titles && res.titles.length) res.titles.forEach(id => { const t = GITEM[id]; const tb = el("div", "ear-title"); tb.append(el("small", null, "称号ゲット！"), el("b", null, "👑 " + (t ? t.v : id)));
+      const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { rhClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"title", item:id }); }; tb.append(w); r.append(tb); });
+    if(!T.ura && lv === rhMax(tr) && rhAll(tr)){ const d = el("div", "ear-unlock"); d.append(earImg("1f311", "ear-moon"), el("b", null, "裏ボスがめざめた…！"), el("small", null, "5拍子と7拍子のボスが待っている"));
+      const go = el("button", "ear-go ura", "🌑 裏ボスへ"); go.type = "button"; go.onclick = () => { RhS.tab = "rhythm_ura"; rhMap(o); }; d.append(go); r.append(d); }
+  } else r.append(el("p", "ear-rs", R.hearts <= 0 ? "ミスは3回まで。お手本をきいて、もう一回！" : "時間内にたおせなかった。パーフェクトをふやすとダメージが大きいよ"));
+  const ac = el("div", "ear-acts");
+  const again = el("button", "ear-sm", "もう一回"); again.type = "button"; again.onclick = () => rhBattle(o, tr, lv); ac.append(again);
+  if(win && lv < rhMax(tr)){ const nx = el("button", "ear-go", "つぎのボスへ ▶"); nx.type = "button"; nx.id = "rh-next"; nx.onclick = () => rhIntro(o, tr, lv + 1); ac.append(nx); }
+  const mp = el("button", "ear-sm", "マップにもどる"); mp.type = "button"; mp.onclick = () => rhMap(o); ac.append(mp);
+  r.append(ac);
+}
+
+/* ---------- teacher: the student's page ---------- */
+function tRh(s){
+  const box = el("section", "card tear"); box.id = "t-rh"; box.append(el("h3", "sech", "🥁 リズムバトル"));
+  const body = el("div", "tear-b"); body.append(el("div", "empty", "よみこみ中…")); box.append(body);
+  rpc("mc_t_ear", { tk: TK, sid: s.id }).then(r => { body.innerHTML = "";
+    ["rhythm", "rhythm_ura"].forEach(tr => { const p = (r && r[tr]) || {}, T = RH_LEVELS[tr], d = Object.keys(p).length, m = T.levels.length; if(T.ura && !d) return;
+      const last = Object.keys(p).map(Number).sort((a, b) => b - a)[0];
+      const row = el("div", "tear-r" + (T.ura ? " ura" : "")); row.append(earImg(T.ura ? "1f311" : "1f941"), el("b", null, T.ura ? "裏ボス" : "ボス"), el("span", "tear-n", d + " / " + m),
+        el("small", null, d >= m ? "🏆 全部たおした" : last ? (T.ura ? "裏" : "Lv") + last + " " + T.levels[last - 1].boss + " まで（" + p[last].slice(5).replace("-", "/") + "）" : "まだ"));
+      body.append(row); }); }).catch(() => { body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした")); });
+  return box;
+}
 
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
   if([...document.querySelectorAll(".keep")].some(x=>x.value)) return true;
-  if(document.querySelector(".sheet,#gacha,#zukan,#gift,#fb-pop,#ear")) return true; return false; }
+  if(document.querySelector(".sheet,#gacha,#zukan,#gift,#fb-pop,#ear,#rh")) return true; return false; }
 function badge(map, st){ const [t,c]=map[st]||[st,""]; return el("span","st "+c, t); }
 function dueText(due){ if(!due) return ""; const t=todayKey(); const [,m,d]=due.split("-");
   return (due<t?"⚠ ":"")+"しめきり "+(+m)+"/"+(+d)+(due===t?"（今日）":""); }
@@ -5574,13 +6171,13 @@ async function stuRefresh(force){
     if(Array.isArray(ks) && ks.length){ const before=(Stu.keys||[]).map(k=>k.sk).join(); Stu.keys=ks; lsSet("mc_sks",JSON.stringify(ks)); if(before && before!==ks.map(k=>k.sk).join()) pushSync(); }
     if(!Stu.keys.length) Stu.keys=[{sk:SK, course:null}];
     if(!Stu.keys.some(k=>k.sk===SK)){ SK=Stu.keys[0].sk; lsSet("mc_sk",SK); }
-    const evp=evLoad(), earp=earFetch();
+    const evp=evLoad(), earp=earFetch(), rhp=rhFetch();
     const res=await Promise.all(Stu.keys.map(k=>Promise.all([rpc("mc_s_state",{sk:k.sk}), rpc("mc_s_assign",{sk:k.sk})]).then(([st,as])=>({k,st,as})).catch(()=>null)));
     res.forEach(r=>{ if(r) Stu.sib[r.k.sk]={st:r.st, as:r.as||[]}; });
     const cur=Stu.sib[SK]; if(!cur) throw new Error("network");
     const st=cur.st, as=cur.as;
     Stu.info=st; Stu.stamps=st.stamps||[]; Stu.assign=as||[]; lsSet("mc_cache_"+SK, JSON.stringify({st, as}));
-    await evp; await earp;
+    await evp; await earp; await rhp;
     document.title=st.name+"さんのスタンプカード"; setNote("課題を出して、先生がOKしたら自分でスタンプを押せるよ。");
     if(force || (!Stu.styling && !window.__party && !Stu.playing && !Stu.sending && !busyNow())) stuRender();
     stuRankCheck();
@@ -5652,7 +6249,7 @@ function stuRender(){
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(stuCards());
-  { const ec=evStudentCard(); if(ec) app.append(ec); const fs=fbSection(); if(fs) app.append(fs); app.append(earCard()); }
+  { const ec=evStudentCard(); if(ec) app.append(ec); const fs=fbSection(); if(fs) app.append(fs); app.append(earCard()); app.append(rhCard()); }
   app.append(wardrobeBtn());
   app.append(gachaCard());
   app.append(shareCard());
@@ -6084,7 +6681,7 @@ function tStudents(app){
   const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人</span>`; }
   const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
-  { const eb=el("button","ea-open"); eb.type="button"; eb.id="earall-btn"; const im=el("img"); im.src=F3D("1f3a7"); im.alt=""; eb.append(im, el("span",null,"みんなの耳トレレベルを見る"), el("em",null,"›")); eb.onclick=()=>openEarAll(); app.append(eb); }
+  { const eb=el("button","ea-open"); eb.type="button"; eb.id="earall-btn"; const im=el("img"); im.src=F3D("1f3a7"); im.alt=""; eb.append(im, el("span",null,"みんなの耳トレ・リズムバトルを見る"), el("em",null,"›")); eb.onclick=()=>openEarAll(); app.append(eb); }
   const list=el("div","list"); list.id="list"; app.append(list);
   function drawList(){
     list.innerHTML="";
@@ -6172,7 +6769,7 @@ function tStudent(app){
   app.append(gStepper(s));
   app.append(msgEditor(s));
   app.append(tGacha(s));
-  app.append(tEar(s));
+  app.append(tEar(s)); app.append(tRh(s));
   app.append(tComments(s));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
