@@ -2496,6 +2496,91 @@ button.ear-chip{cursor:pointer}
 .rh-ov.fever .rhb-rays{animation-duration:4s}
 @media (prefers-reduced-motion:reduce){.rhb-aura,.rhb-rays,.rhb-ring,.rhb-ring2,.rhb-tw,.rhb-orbit{animation:none}}
 
+/* ===== boss pictures (cards) and weak points ===== */
+.rh-ic{object-fit:cover;object-position:50% 32%;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.18)}
+.rhb.art .rhb-img{left:0;top:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c1) 60%,transparent))}
+.rhb.art:not(.mini) .rhb-ring,.rhb.art:not(.mini) .rhb-ring2{display:none}
+.rhb.art .rhb-aura{inset:-6% -14%}
+.rhb.art:not(.mini) .rhb-rays{inset:-22% -30%}
+.rhb>i.rhb-frame{inset:1.5% 2.5%;z-index:4;border-radius:14px;overflow:hidden;padding:3px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.rhb-frame::before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,var(--c1),#fff,var(--c2),transparent 40%,var(--c1),#fff,var(--c2),transparent 90%,var(--c1));animation:rhb-spin 3s linear infinite;will-change:transform}
+.rhb.t4 .rhb-frame::before{background:conic-gradient(#ffe27a,#fff,#ff4fd8,#ffe27a,#3ad6ff,#fff,#b8860b,#ffe27a);animation-duration:2.2s}
+.rhb.art.mini .rhb-frame{display:none}
+.rhb.art.mini .rhb-img{left:6%;top:6%;width:88%;height:88%;object-fit:cover;object-position:50% 32%;border-radius:50%}
+.rhb.art.mini .rhb-aura{inset:-8%}
+.rh-bimg.art{width:144px;height:188px}
+.rh-iboss.art{width:150px;height:200px;margin:14px 0 8px}
+.rh-rboss.art{width:105px;height:140px}
+.rh-rboss.beaten.art .rhb-img{transform:rotate(-8deg);filter:grayscale(.5) drop-shadow(0 8px 14px rgba(0,0,0,.6))}
+.rhb.gone{opacity:0;transition:opacity .05s}
+/* weak points */
+.rh-tg{position:absolute;left:10%;top:10%;width:80%;height:80%;z-index:6;pointer-events:none}
+.rhb.art .rh-tg{left:0;top:0;width:100%;height:100%}
+.rh-wk{position:absolute;width:0;height:0}
+.rh-wk>i,.rh-wk>svg{position:absolute;pointer-events:none}
+.wk-r{left:-15px;top:-15px;width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);box-shadow:0 0 6px rgba(0,0,0,.6);transform:scale(.6);opacity:.55;transition:transform .25s,opacity .25s}
+.wk-x{left:-21px;top:-21px;width:42px;height:42px;opacity:0;background:
+  linear-gradient(#ffe27a,#ffe27a) 50% 0/3px 9px no-repeat,linear-gradient(#ffe27a,#ffe27a) 50% 100%/3px 9px no-repeat,
+  linear-gradient(#ffe27a,#ffe27a) 0 50%/9px 3px no-repeat,linear-gradient(#ffe27a,#ffe27a) 100% 50%/9px 3px no-repeat;filter:drop-shadow(0 0 3px #000)}
+.rh-wk.cur .wk-r{transform:none;opacity:1;border:3px solid #ffe27a;box-shadow:0 0 12px #ffe27a,inset 0 0 8px rgba(255,226,122,.6),0 0 0 2px rgba(0,0,0,.45);animation:wk-pulse .7s ease-in-out infinite}
+.rh-wk.cur .wk-x{opacity:1;animation:rhb-spin 2.4s linear infinite}
+.rh-wk.core.cur .wk-r{border-color:#ff3d6e;box-shadow:0 0 14px #ff3d6e,inset 0 0 8px rgba(255,61,110,.6),0 0 0 2px rgba(0,0,0,.45)}
+@keyframes wk-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.rh-wk.hit .wk-r{animation:wk-hit .2s ease-out}
+@keyframes wk-hit{0%{transform:scale(.7)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+.wk-cr{left:-30px;top:-30px;width:60px;height:60px;overflow:visible;fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px #000) drop-shadow(0 0 4px var(--c1))}
+.wk-cr g{opacity:0;transition:opacity .15s}
+.rh-wk.c1 .k1,.rh-wk.c2 .k2,.rh-wk.br .k1,.rh-wk.br .k2{opacity:1}
+.wk-hole{left:-17px;top:-17px;width:34px;height:34px;border-radius:50%;background:radial-gradient(closest-side,#000 30%,rgba(20,0,20,.7) 60%,transparent);opacity:0;transform:scale(.3);transition:opacity .2s,transform .3s cubic-bezier(.2,1.6,.4,1)}
+.rh-wk.br .wk-hole{opacity:.85;transform:none}
+.rh-wk.br .wk-r,.rh-wk.br .wk-x{opacity:0;animation:none}
+.rh-wk.gd .wk-r{opacity:.9;transform:scale(.8);border:2px dashed #c9b8ff;animation:none}
+.rh-wk.gd::after{content:"🛡";position:absolute;left:-9px;top:-11px;font-size:16px}
+.rh-shard{left:-6px;top:-6px;width:12px;height:12px;background:var(--c1);clip-path:polygon(50% 0,100% 80%,10% 100%);animation:rh-shard .75s cubic-bezier(.2,.7,.5,1) forwards;will-change:transform,opacity}
+.rh-shard.w{background:#fff}
+@keyframes rh-shard{0%{transform:translate(0,0) rotate(0) scale(1.3);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.5);opacity:0}}
+.rh-bwrap.brk{animation:rh-brk .5s ease-out}
+@keyframes rh-brk{0%{transform:none}15%{transform:translate(-8px,3px) rotate(-5deg) scale(.95)}35%{transform:translate(7px,-3px) rotate(4deg)}55%{transform:translate(-5px,2px) rotate(-2deg)}75%{transform:translate(3px,0)}100%{transform:none}}
+/* K.O.: the card breaks in four */
+.rh-q{position:absolute;z-index:7;object-fit:contain;pointer-events:none;will-change:transform,opacity;animation:rh-q 1.25s cubic-bezier(.4,0,.7,.5) forwards}
+.rh-q.q0{clip-path:polygon(0 0,53% 0,47% 45%,0 55%);--qx:-70px;--qy:-60px;--qr:-50deg}
+.rh-q.q1{clip-path:polygon(53% 0,100% 0,100% 47%,47% 45%);--qx:80px;--qy:-70px;--qr:60deg}
+.rh-q.q2{clip-path:polygon(0 55%,47% 45%,56% 100%,0 100%);--qx:-80px;--qy:90px;--qr:-35deg}
+.rh-q.q3{clip-path:polygon(47% 45%,100% 47%,100% 100%,56% 100%);--qx:70px;--qy:100px;--qr:45deg}
+@keyframes rh-q{0%{transform:none;opacity:1}12%{transform:scale(1.04);opacity:1}22%{transform:translate(calc(var(--qx)*.06),calc(var(--qy)*.06));opacity:1}100%{transform:translate(var(--qx),var(--qy)) rotate(var(--qr)) scale(.7);opacity:0}}
+/* HP of the part you aim at, and the list of parts */
+.rh-hp{height:15px}
+.rh-hpl{position:absolute;inset:0;display:grid;place-items:center;font-size:.6rem;font-weight:900;letter-spacing:.06em;color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000;line-height:1}
+.rh-pp{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;max-width:100%;margin-top:1px}
+.rh-pp span{font-size:.56rem;font-weight:900;padding:1px 6px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--muted);border:1.5px solid transparent;white-space:nowrap}
+.rh-pp span.cur{color:#ffe27a;border-color:#ffe27a;background:rgba(255,226,122,.14)}
+.rh-pp span.core.cur{color:#ff8fab;border-color:#ff3d6e;background:rgba(255,61,110,.16)}
+.rh-pp span.br{text-decoration:line-through;opacity:.6}
+.rh-pp span.br::before{content:"💥"}
+.rh-pp span.gd::before{content:"🛡"}
+/* which part / rhythm on the sheet */
+.rh-sheet{padding-top:18px}
+.rh-tp{position:absolute;left:36px;top:4px;font-size:.66rem;font-weight:900;color:#c2185b;letter-spacing:.02em;white-space:nowrap}
+.rh-tp.on{animation:rh-tp .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes rh-tp{0%{transform:scale(1.5);opacity:0}100%{transform:none;opacity:1}}
+.rh-nx{position:absolute;right:10px;bottom:6px;font-size:.6rem;font-weight:900;padding:2px 8px;border-radius:99px;background:#ffe27a;color:#5a2a00;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;pointer-events:none}
+.rh-nx.on{opacity:1;transform:none}
+.rh-banner small{display:block;font-family:inherit;font-size:.9rem;font-weight:900;letter-spacing:.1em;opacity:.9;margin-top:2px}
+.rh-banner.tg{top:22%;color:#ffe27a;font-size:1.5rem}
+.rh-banner.brk{top:22%;font-size:2rem;color:#fff;text-shadow:0 3px 0 #a33a00,0 0 16px #ff8a3c;background:linear-gradient(90deg,transparent,rgba(255,90,0,.7) 15%,rgba(255,30,80,.7) 85%,transparent)}
+.rh-banner.gd{top:22%;font-size:1.05rem;color:#c9b8ff}
+/* intro: the route of weak points */
+.rh-route{width:100%;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.06);text-align:left}
+.rh-route>b{display:block;font-size:.78rem;color:#ffe27a;margin-bottom:4px}
+.rh-route ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.rh-route li{position:relative;display:flex;align-items:center;gap:5px;font-size:.78rem}
+.rh-route li+li::before{content:"▶";position:absolute;left:-12px;font-size:.55rem;color:var(--muted)}
+.rh-route li i{font-style:normal;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:.62rem;font-weight:900;background:#ffe27a;color:#3a2400}
+.rh-route li.core i{background:none;font-size:.9rem}
+.rh-route li small{font-size:.66rem;color:var(--muted)}
+.rh-brk{font-weight:900;color:#ffb35c;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){.rhb-frame::before,.rh-wk.cur .wk-r,.rh-wk.cur .wk-x{animation:none}}
+
 </style>
 </head>
 <body>
@@ -5798,30 +5883,43 @@ function rhParse(bar){
 }
 const RH_LEVELS = {
   rhythm: { name:"リズムバトル", title:"g_ti_rh_y", levels:[
-    { n:"四分音符", boss:"ゴースト", col:["#b39dff","#f0abfc"], ic:"1f47b", bpm:76, bar:4, A:["q q q q"], B:["q q q q"], tip:"「タン・タン・タン・タン」。まずは拍にぴったり合わせよう" },
-    { n:"休符", boss:"コウモリ", col:["#ff4d6d","#7b2cbf"], ic:"1f987", bpm:80, bar:4, A:["q q q qr","q qr q q","q q qr q"], B:["qr q qr q","q qr qr q","qr q q q"], tip:"休符はたたかない！ 心の中で「ウン」と数えよう" },
-    { n:"長い音", boss:"カメ", col:["#3ddc84","#00b4d8"], ic:"1f422", bpm:84, bar:4, A:["h h","h q q","q q h"], B:["w","h. q","q h q","qr q h"], tip:"二分音符は2拍、全音符は4拍。たたいたら、そのまま待つ" },
-    { n:"八分音符", boss:"ネズミ", col:["#ffd166","#ff8fab"], ic:"1f42d", bpm:80, bar:4, A:["e e q e e q","q q e e q","e e e e q q"], B:["e e e e e e q","q e e e e q","e e q e e e e"], tip:"1拍に2つ。「タタ・タン」" },
-    { n:"うら拍", boss:"カエル", col:["#80ed99","#ffd60a"], ic:"1f438", bpm:76, bar:4, A:["er e q er e q","q er e q q","er e er e q q"], B:["er e er e er e q","q er e er e q","er e e e er e q"], tip:"「ウン・タ」。拍の“あいだ”でたたく" },
-    { n:"付点のリズム", boss:"ヘビ", col:["#9ef01a","#7209b7"], ic:"1f40d", bpm:80, bar:4, A:["q. e q q","q. e h","q q q. e"], B:["q. e q. e","h q. e","q. e e e q"], tip:"「ターンタ」。長い・短いをはっきり" },
-    { n:"スキップ", boss:"ウサギ", col:["#ffafcc","#a2d2ff"], ic:"1f430", bpm:72, bar:4, A:["e. s e. s q q","q e. s q e. s"], B:["e. s e. s e. s e. s","e. s q e. s q"], tip:"「タッタ・タッタ」。はねるように" },
-    { n:"十六分音符", boss:"ハチ", col:["#ffd000","#ff6d00"], ic:"1f41d", bpm:66, bar:4, A:["s s s s q q q","q s s s s q q","e e s s s s q q"], B:["s s s s s s s s q q","s s e s s e q q","e s s q s s e q"], tip:"1拍に4つ。「タカタカ」" },
-    { n:"三連符", boss:"オオカミ", col:["#4cc9f0","#7209b7"], ic:"1f43a", bpm:66, bar:4, A:["t t t q t t t q","q t t t q q","t t t t t t q q"], B:["t t t t t t t t t q","q t t t t t t q","t t t q t t t t t t"], tip:"1拍に3つ。「タタタ」と均等に" },
-    { n:"シンコペーション", boss:"ドラゴン", col:["#ff3d3d","#ffd34d"], ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。ラスボス！" }
+    { n:"四分音符", boss:"グラル", art:"rhb1.webp", P:[["顔",.45,.5]], col:["#b39dff","#f0abfc"], ic:"1f47b", bpm:76, bar:4, A:["q q q q"], B:["q q q q"], tip:"「タン・タン・タン・タン」。まずは拍にぴったり合わせよう" },
+    { n:"休符", boss:"バルガ", art:"rhb2.webp", P:[["角",.36,.2,1],["本体",.5,.6]], col:["#ff4d6d","#7b2cbf"], ic:"1f987", bpm:80, bar:4, A:["q q q qr","q qr q q","q q qr q"], B:["qr q qr q","q qr qr q","qr q q q"], tip:"休符はたたかない！ 心の中で「ウン」と数えよう" },
+    { n:"長い音", boss:"ドゥーム", art:"rhb3.webp", P:[["剣",.3,.65,2],["兜",.5,.25]], col:["#3ddc84","#00b4d8"], ic:"1f422", bpm:84, bar:4, A:["h h","h q q","q q h"], B:["w","h. q","q h q","qr q h"], tip:"二分音符は2拍、全音符は4拍。たたいたら、そのまま待つ" },
+    { n:"八分音符", boss:"アラクネ", art:"rhb4.webp", P:[["脚",.2,.65,1],["糸",.8,.2,3],["目",.5,.43]], col:["#ffd166","#ff8fab"], ic:"1f42d", bpm:80, bar:4, A:["e e q e e q","q q e e q","e e e e q q"], B:["e e e e e e q","q e e e e q","e e q e e e e"], tip:"1拍に2つ。「タタ・タン」" },
+    { n:"うら拍", boss:"ゴルザ", art:"rhb5.webp", P:[["右こぶし",.75,.6,2],["角",.45,.13,4],["胸のコア",.46,.45]], col:["#80ed99","#ffd60a"], ic:"1f438", bpm:76, bar:4, A:["er e q er e q","q er e q q","er e er e q q"], B:["er e er e er e q","q er e er e q","er e e e er e q"], tip:"「ウン・タ」。拍の“あいだ”でたたく" },
+    { n:"付点のリズム", boss:"ヴァルド", art:"rhb6.webp", P:[["翼",.77,.23,4],["鱗",.5,.72,5],["頭",.21,.45]], col:["#9ef01a","#7209b7"], ic:"1f40d", bpm:80, bar:4, A:["q. e q q","q. e h","q q q. e"], B:["q. e q. e","h q. e","q. e e e q"], tip:"「ターンタ」。長い・短いをはっきり" },
+    { n:"スキップ", boss:"セラフィム", art:"rhb7.webp", P:[["左の翼",.2,.4,3],["右の翼",.8,.4,5],["光の輪",.5,.12,6],["本体",.5,.5]], col:["#ffafcc","#a2d2ff"], ic:"1f430", bpm:72, bar:4, A:["e. s e. s q q","q e. s q e. s"], B:["e. s e. s e. s e. s","e. s q e. s q"], tip:"「タッタ・タッタ」。はねるように" },
+    { n:"十六分音符", boss:"リヴァイア", art:"rhb8.webp", P:[["触手",.15,.72,4],["触手",.8,.55,6],["王冠",.41,.15,7],["口",.5,.42]], col:["#ffd000","#ff6d00"], ic:"1f41d", bpm:66, bar:4, A:["s s s s q q q","q s s s s q q","e e s s s s q q"], B:["s s s s s s s s q q","s s e s s e q q","e s s q s s e q"], tip:"1拍に4つ。「タカタカ」" },
+    { n:"三連符", boss:"アポカリプス", art:"rhb9.webp", P:[["左手",.13,.5,5],["右手",.85,.5,7],["光輪",.5,.2,8],["胸のコア",.5,.55]], col:["#4cc9f0","#7209b7"], ic:"1f43a", bpm:66, bar:4, A:["t t t q t t t q","q t t t q q","t t t t t t q q"], B:["t t t t t t t t t q","q t t t t t t q","t t t q t t t t t t"], tip:"1拍に3つ。「タタタ」と均等に" },
+    { n:"シンコペーション", boss:"ヒドラ", art:"rhb10.webp", P:[["左の首",.16,.33,6],["右の首",.85,.31,7],["中央の首",.5,.18,8],["鱗",.5,.72,9],["心臓",.5,.5]], col:["#ff3d3d","#ffd34d"], ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。5つの首をこわせ、ラスボス！" }
   ]},
   rhythm_ura: { name:"裏ボス", title:"g_ti_rh_u", parent:"rhythm", ura:true, levels:[
-    { n:"5拍子", boss:"オニ", col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
-    { n:"7拍子", boss:"宇宙のまおう", col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
+    { n:"5拍子", boss:"オニ", P:[["角",.5,.22,0],["本体",.5,.6]], col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
+    { n:"7拍子", boss:"宇宙のまおう", P:[["アンテナ",.5,.18,0],["本体",.5,.6]], col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
   ]}
 };
-const RH_BARS_A = 4, RH_BARS_B = 4;
-// one battle: 4 calm bars then 4 angry bars (patterns picked at random, no same bar twice in a row)
+/* a boss has 1-5 weak points ("parts"). each part is attacked with its own rhythm:
+   P:[name, x, y, topic] - x/y = where it is on the boss picture (0..1); topic = the level whose rhythms this part uses
+   (0 = this level's calm rhythms). the last part is the core: it uses this level's own rhythms and makes the boss angry. */
+function rhParts(L){
+  const P = L.P || [["本体", .5, .5]], base = RH_LEVELS.rhythm.levels;
+  return P.map((p, i) => { const core = i === P.length - 1, tp = p[3];
+    const src = core || tp === 0 || tp == null ? L : base[tp - 1];
+    return { nm:p[0], x:p[1], y:p[2], core, topic:src.n, pool:core ? null : (src === L ? L.A : src.A.concat(src.B)) }; });
+}
+// one battle: every part gets 2 bars of its rhythm; the core gets calm bars then angry bars
 function rhMakeChart(L){
   const pick = (pool, prev) => { const c = pool.filter(p => p !== prev); return (c.length ? c : pool)[(Math.random() * (c.length || pool.length)) | 0]; };
-  const bars = []; let prev = null;
-  for(let i = 0; i < RH_BARS_A; i++){ prev = pick(L.A, prev); bars.push(prev); }
-  for(let i = 0; i < RH_BARS_B; i++){ prev = pick(L.B, prev); bars.push(prev); }
-  return bars.map(b => rhParse(b));
+  const parts = rhParts(L), bars = []; let prev = null;
+  const add = (pool, pi, angry) => { prev = pick(pool, prev); const b = rhParse(prev); b.pi = pi; b.B = angry; bars.push(b); };
+  parts.forEach((p, pi) => {
+    if(!p.core){ for(let k = 0; k < 2; k++) add(p.pool, pi, false); return; }
+    const k = parts.length === 1 ? 3 : 2;
+    for(let j = 0; j < k; j++) add(L.A, pi, false);
+    for(let j = 0; j < k; j++) add(L.B, pi, true);
+  });
+  bars.parts = parts; return bars;
 }
 /* ================= RHYTHM BOSS BATTLE: screens ================= */
 const RH_TITLES = [
@@ -5904,12 +6002,15 @@ function rhBoss(L, lv, cls){
   if(tier >= 2) w.append(el("i", "rhb-rays"));
   w.append(el("i", "rhb-ring"));
   if(tier >= 3) w.append(el("i", "rhb-ring2"));
-  const im = earImg(L.ic, "rhb-img"); w.append(im);
+  if(L.art) w.classList.add("art");
+  const im = L.art ? el("img", "rhb-img") : earImg(L.ic, "rhb-img"); if(L.art){ im.src = L.art; im.alt = ""; im.decoding = "async"; } w.append(im);
   for(let i = 0; i < (tier >= 3 ? 4 : tier >= 2 ? 2 : 0); i++) w.append(el("i", "rhb-tw s" + i));
   if(tier >= 4) w.append(el("i", "rhb-orbit"));
   return w;
 }
 
+// a small round icon of a boss (its picture, or its emoji)
+function rhIc(L, cls){ if(!L.art) return earImg(L.ic, cls); const i = el("img", "rh-ic" + (cls ? " " + cls : "")); i.src = L.art; i.alt = ""; i.decoding = "async"; return i; }
 /* ---------- the card on the student page ---------- */
 function rhCard(){
   const box = el("section", "card earc rhc"); box.id = "rh-card";
@@ -5920,7 +6021,7 @@ function rhCard(){
     const r = el("button", "earc-row" + (T.ura ? " ura" : "")); r.type = "button"; r.dataset.track = tr;
     const bar = el("span", "earc-bar"); const fill = el("i"); fill.style.transform = "scaleX(" + (dd / mm) + ")"; bar.append(fill);
     const nm = el("span", "earc-nm"); nm.append(el("b", null, T.ura ? "🌑 " + T.name : "ボス"), el("small", null, !nx ? "🏆 ぜんぶたおした！" : "つぎ：" + nx.boss + "（" + nx.n + "）"));
-    r.append(earImg(nx ? nx.ic : (T.ura ? "1f47e" : "1f409")), nm, bar, el("span", "earc-lv", dd + "/" + mm)); r.onclick = () => openRh(tr); return r; };
+    r.append(nx ? rhIc(nx) : earImg(T.ura ? "1f47e" : "1f409"), nm, bar, el("span", "earc-lv", dd + "/" + mm)); r.onclick = () => openRh(tr); return r; };
   box.append(row("rhythm")); if(rhAll("rhythm")) box.append(row("rhythm_ura"));
   return box;
 }
@@ -5954,7 +6055,7 @@ function rhMap(o){
   book.append(el("div", "rh-bt", (ura ? "💀 裏ボス図鑑" : "📖 ボス図鑑") + "　" + rhDone(tr) + "/" + rhMax(tr)));
   const grid = el("div", "rh-zk");
   T.levels.forEach((L, i) => { const lv = i + 1, d = (Rh.prog[tr] || {})[lv], b = rhBest(tr, lv);
-    const c = el("div", "rh-zi" + (d ? " got" : "") + (b && b.nm ? " gold" : "")); const im = d ? rhBoss(L, lv, "mini") : earImg(L.ic); if(!d) im.classList.add("sil"); c.append(im, el("small", null, d ? L.boss : "？？？")); grid.append(c); });
+    const c = el("div", "rh-zi" + (d ? " got" : "") + (b && b.nm ? " gold" : "")); const im = d ? rhBoss(L, lv, "mini") : rhIc(L); if(!d) im.classList.add("sil"); c.append(im, el("small", null, d ? L.boss : "？？？")); grid.append(c); });
   book.append(grid);
   const tt = GITEM[T.title]; book.append(el("div", "rh-ttl" + (rhAll(tr) ? " got" : ""), rhAll(tr) ? "🏆 称号「" + tt.v + "」ゲット！" : (ura ? "裏ボスを全部たおすと" : "ボスを全部たおすと") + "称号「" + tt.v + "」"));
   book.append(el("div", "rh-note", "👑 ミスなしでたおすと金の「完全勝利」"));
@@ -6002,10 +6103,13 @@ function rhIntro(o, tr, lv){
   rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => rhMap(o));
   const card = el("div", "ear-intro rh-intro");
   const bi = rhBoss(L, lv, "rh-iboss"); card.append(bi, el("h2", null, L.boss + "があらわれた！"), el("p", "rh-rh", "🥁 " + L.n + " ・ ♩=" + L.bpm + " ・ " + rhTimeSig(L).join("/") + "拍子"), el("p", "ear-tip", L.tip));
+  // the weak points, in order, with their rhythms
+  const parts = rhParts(L), rt = el("div", "rh-route"); rt.append(el("b", null, parts.length > 1 ? "🎯 こわす場所 " + parts.length + "か所" : "🎯 ねらう場所"));
+  const ol = el("ol"); parts.forEach((p, i) => { const li = el("li", p.core ? "core" : null); li.append(el("i", null, p.core ? "💀" : String(i + 1)), el("b", null, p.nm), el("small", null, p.topic)); ol.append(li); }); rt.append(ol); card.append(rt);
   // a sample bar of this level
   const sm = rhBarSVG(rhParse(L.A[0]), L); const sw = el("div", "rh-sample"); sw.innerHTML = sm.svg; card.append(sw);
   const lis = el("button", "ear-sm", "🔊 お手本をきく"); lis.type = "button"; lis.onclick = () => rhDemo(L, rhParse(L.A[0])); card.append(lis);
-  card.append(el("p", "ear-how", "📜 ルール\nパーフェクト＝大ダメージ、グッド＝小ダメージ。ミスやよけいなタップでハートが減るよ（3つ）。10コンボで必殺技！ 後半はボスが怒ってリズムが難しくなる。"));
+  card.append(el("p", "ear-how", "📜 ルール\nねらう場所ごとにリズムが変わるよ。パーフェクト＝大ダメージ、グッド＝小ダメージ。こわしきれないとボスが守りをかためて、最後の" + parts[parts.length - 1].nm + "がかたくなる！ ミスやよけいなタップでハートが減るよ（3つ）。10コンボで必殺技！"));
   const go = el("button", "ear-go", "⚔ たたかう"); go.type = "button"; go.id = "rh-start";
   go.onclick = () => { earCtx(); if(rhLat() == null){ toast("先に「タイミング合わせ」をしよう"); rhCalibrate(o, () => rhIntro(o, tr, lv)); return; } rhBattle(o, tr, lv); };
   card.append(go); o.append(card);
@@ -6022,18 +6126,33 @@ function rhPing(f, t0, vol){ const c = earCtx(); if(!c) return; const t = c.curr
   g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol || .07, t + .004); g.gain.exponentialRampToValueAtTime(.0008, t + .22); o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .25); }
 function rhChime(n){ [0, .07, .14, .21].slice(0, n).forEach((d, i) => rhPing([1047, 1319, 1568, 2093][i], d, .08)); }
 const rhRank = R => { const r = (R.p + R.g * .5) / Math.max(1, R.p + R.g + R.m); return R.m === 0 && r >= .9 ? "S" : r >= .8 ? "A" : r >= .6 ? "B" : "C"; };
+// a crunch when a weak point breaks
+function rhCrash(){ const c = earCtx(); if(!c) return; const t = c.currentTime + .005;
+  const n = Math.floor(c.sampleRate * .35), buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0); for(let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.2);
+  const src = c.createBufferSource(); src.buffer = buf; const f = c.createBiquadFilter(); f.type = "bandpass"; f.Q.value = 1.2; f.frequency.setValueAtTime(3800, t); f.frequency.exponentialRampToValueAtTime(500, t + .3);
+  const g = c.createGain(); g.gain.value = .55; src.connect(f); f.connect(g); g.connect(EarA.out); src.start(t);
+  const o = c.createOscillator(), og = c.createGain(); o.type = "sine"; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(40, t + .25); og.gain.setValueAtTime(.5, t); og.gain.exponentialRampToValueAtTime(.0008, t + .3); o.connect(og); og.connect(EarA.out); o.start(t); o.stop(t + .32);
+  [0, .06, .12].forEach((dl, i) => rhPing([2637, 3136, 3951][i], .05 + dl, .05)); }
+// a crack drawn over a weak point (3 rays first, then all of them)
+const RH_CRACK = '<svg class="wk-cr" viewBox="-50 -50 100 100"><g class="k1"><polyline points="0,0 -8,-14 -6,-26 -16,-40"/><polyline points="0,0 15,-6 26,-2 40,-12"/><polyline points="0,0 4,16 -4,28 2,42"/></g><g class="k2"><polyline points="0,0 -16,4 -28,0 -42,8"/><polyline points="0,0 10,-18 22,-30"/><polyline points="0,0 14,12 24,26 36,30"/><polyline points="-8,-14 -20,-18"/><polyline points="4,16 16,22"/></g></svg>';
+const RH_PART_HP = .5, RH_CORE_HP = .7;
 function rhBattle(o, tr, lv){
   rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.add("playing"); o.classList.remove("angry", "fever");
   const T = RH_LEVELS[tr], L = T.levels[lv - 1], chart = rhMakeChart(L), c = earCtx();
   const spb = 60 / L.bpm, barSec = L.bar * spb, lat = rhLat() || 0;
-  const R = { hp:0, max:0, hearts:3, combo:0, maxCombo:0, p:0, g:0, m:0, done:false, angry:false, n:0 };
+  const parts = chart.parts.map(p => Object.assign({}, p, { hp:0, max:0, br:false, gd:false })), core = parts[parts.length - 1];
+  const R = { hp:0, max:0, hearts:3, combo:0, maxCombo:0, p:0, g:0, m:0, done:false, angry:false, n:0, br:0, np:parts.length - 1, parts };
   RhRun = { stop:false, raf:0 };
   const h = rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => { if(!R.done && !h.dataset.ok){ h.dataset.ok = "1"; toast("もう一度おすとにげます"); setTimeout(() => delete h.dataset.ok, 2500); return; } rhStopRun(); o.classList.remove("playing", "angry", "fever"); rhMap(o); });
   // the field: the boss on the left, you on the right
   const field = el("div", "rh-field");
   const boss = el("div", "rh-boss"); const bw = el("div", "rh-bwrap"); const bimg = rhBoss(L, lv, "big rh-bimg"); const bflash = el("i", "rh-bflash"); const bshadow = el("i", "rh-bshadow");
+  // weak points on the boss
+  const tg = el("div", "rh-tg"); const wk = parts.map(p => { const m = el("span", "rh-wk" + (p.core ? " core" : "")); m.style.left = p.x * 100 + "%"; m.style.top = p.y * 100 + "%"; m.innerHTML = RH_CRACK + '<i class="wk-hole"></i><i class="wk-r"></i><i class="wk-x"></i>'; tg.append(m); return m; });
+  bimg.append(tg);
   bw.append(bimg, bflash); boss.append(bshadow, bw);
-  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"); hpb.append(hpg, hpf); const plate = el("b", "rh-bname t" + (T.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1)); plate.append(el("small", null, T.ura ? "裏BOSS" : "BOSS " + lv), document.createTextNode(L.boss)); plate.style.setProperty("--c1", (L.col || [])[0] || "#ff8a3c"); plate.style.setProperty("--c2", (L.col || [])[1] || "#ff3d6e"); boss.append(plate, hpb);
+  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"), hpl = el("b", "rh-hpl"); hpb.append(hpg, hpf, hpl); const plate = el("b", "rh-bname t" + (T.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1)); plate.append(el("small", null, T.ura ? "裏BOSS" : "BOSS " + lv), document.createTextNode(L.boss)); plate.style.setProperty("--c1", (L.col || [])[0] || "#ff8a3c"); plate.style.setProperty("--c2", (L.col || [])[1] || "#ff3d6e"); boss.append(plate, hpb);
+  const pp = el("div", "rh-pp"); const pips = parts.map(p => { const x = el("span", p.core ? "core" : null, (p.core ? "💀" : "") + p.nm); pp.append(x); return x; }); if(parts.length > 1) boss.append(pp);
   const pop = el("div", "rh-pop"); boss.append(pop);
   const bub = el("div", "rh-bub"); boss.append(bub);
   const talk = (t, ms) => { bub.textContent = t; again(bub, "on"); clearTimeout(bub._t); bub._t = setTimeout(() => bub.classList.remove("on"), ms || 1600); };
@@ -6044,46 +6163,70 @@ function rhBattle(o, tr, lv){
   // the music sheet
   const sheet = el("div", "rh-sheet"); const rowA = el("div", "rh-row cur"), rowB = el("div", "rh-row nxt"); const cur = el("i", "rh-cursor"); rowA.append(cur);
   const sig = el("div", "rh-sig"); const ts = rhTimeSig(L); sig.innerHTML = "<b>" + ts[0] + "</b><b>" + ts[1] + "</b>";
-  const bno = el("span", "rh-bno"); const count = el("div", "rh-count"); sheet.append(sig, bno, rowA, rowB, count); o.append(sheet);
+  const bno = el("span", "rh-bno"); const tpl = el("span", "rh-tp"); const nxl = el("span", "rh-nx"); const count = el("div", "rh-count"); sheet.append(sig, bno, tpl, rowA, rowB, nxl, count); o.append(sheet);
   const judge = el("div", "rh-judge"); o.append(judge);
   // the drum you hit
   const pad = el("button", "rh-pad big"); pad.type = "button"; pad.id = "rh-pad"; pad.setAttribute("aria-label", "たたく");
   const drum = el("span", "rh-drum"); const rim = el("i", "rh-rim"), skin = el("i", "rh-skin"), app = el("i", "rh-app"), glow = el("i", "rh-glow2");
   const lab = el("b", "rh-lab", "たたく！"); drum.append(glow, rim, skin, app, lab); const fx = el("span", "rh-fx"); pad.append(drum, fx); o.append(pad);
-  // notes and their times
+  // notes and their times; every part gets HP from the notes aimed at it
   const t0 = c.currentTime + .5 + barSec; const notes = [];
-  chart.forEach((bar, bi) => bar.forEach((n, i) => { if(!n.rest && !n.tied) notes.push({ t:t0 + bi * barSec + n.at * spb, bi, i, j:null }); }));
-  R.n = notes.length; R.max = R.hp = Math.ceil(notes.length * 2.6);
+  chart.forEach((bar, bi) => bar.forEach((n, i) => { if(!n.rest && !n.tied) notes.push({ t:t0 + bi * barSec + n.at * spb, bi, i, pi:bar.pi, j:null }); }));
+  // HP = a share of the damage a perfect player would deal to that part (combos included), so every level feels the same
+  const pd = parts.map(() => 0); notes.forEach((n, i) => { const k = i + 1; pd[n.pi] += 2 * (k >= 20 ? 3 : k >= 10 ? 2 : 1); });
+  parts.forEach((p, pi) => { p.max = p.hp = Math.max(4, Math.ceil(pd[pi] * (p.core ? RH_CORE_HP : RH_PART_HP))); });
+  R.n = notes.length; const sync = () => { R.hp = parts.reduce((a, p) => a + (p.br || p.gd ? 0 : p.hp), 0); }; R.max = parts.reduce((a, p) => a + p.max, 0); sync();
   // metronome: one count-in bar, then every bar
   const clicks = rhClickTimes(L);
   for(let bi = -1; bi < chart.length; bi++) clicks.forEach(k => rhClick(t0 + bi * barSec + k.at * spb, k.acc));
   const countLabels = clicks.length === 4 ? ["3", "2", "1", "GO!"] : clicks.map((_, i) => i === clicks.length - 1 ? "GO!" : String(clicks.length - 1 - i));
-  let shown = -2, svgA = null, lastBeat = -99, lastCount = -1;
+  let shown = -2, svgA = null, lastBeat = -99, lastCount = -1, aim = -1;
+  const label = p => (p.core && parts.length > 1 ? "💀 " : "🎯 ") + p.nm + " ・ " + p.topic;
+  function target(pi){
+    if(pi === aim) return; const prev = parts[aim];
+    // the part we were hitting got away: its HP goes to the core
+    if(prev && !prev.br && !prev.core){ prev.gd = true; core.hp += prev.hp; core.max += prev.hp; wk[aim].classList.add("gd"); pips[aim].classList.add("gd"); banner("🛡 " + prev.nm + "はこわせなかった… " + core.nm + "がかたくなった！", "gd"); talk("きかんなぁ！", 1200); }
+    aim = pi; const p = parts[pi]; wk.forEach((m, i) => m.classList.toggle("cur", i === pi)); pips.forEach((x, i) => x.classList.toggle("cur", i === pi));
+    tpl.textContent = label(p); again(tpl, "on");
+    if(parts.length > 1) setTimeout(() => { if(!R.done) banner((p.core ? "💀 さいごは" : "🎯 ") + p.nm + "をねらえ！", "tg", "リズム：" + p.topic); }, prev ? 1450 : 0);
+    hud();
+  }
   function drawRows(bi){
     shown = bi;
     const a = bi >= 0 && chart[bi] ? rhBarSVG(chart[bi], L) : null, b = chart[bi + 1] ? rhBarSVG(chart[bi + 1], L) : null;
     rowA.querySelectorAll("svg").forEach(s => s.remove()); rowB.innerHTML = "";
     if(a){ rowA.insertAdjacentHTML("afterbegin", a.svg); svgA = rowA.querySelector("svg"); notes.filter(n => n.bi === bi && n.j).forEach(n => mark(n)); } else { rowA.insertAdjacentHTML("afterbegin", '<svg class="rh-bar" viewBox="0 0 340 90"></svg>'); svgA = null; }
     if(b) rowB.innerHTML = b.svg;
+    // tell what comes next when the next bar aims at another part
+    const nxp = chart[bi + 1] && (bi < 0 || chart[bi + 1].pi !== chart[bi].pi) ? parts[chart[bi + 1].pi] : null;
+    nxl.textContent = nxp && bi >= 0 ? "NEXT ▶ " + label(nxp) : ""; nxl.classList.toggle("on", !!(nxp && bi >= 0));
     bno.textContent = bi >= 0 ? (bi + 1) + " / " + chart.length : "";
-    if(bi === RH_BARS_A && !R.angry){ R.angry = true; boss.classList.add("angry"); o.classList.add("angry"); banner("💢 怒りモード！", "angry"); talk(["本気を出すぞ！", "まだまだぁ！", "ゆるさん！"][(Math.random() * 3) | 0]); GSFX && GSFX.rumble && GSFX.rumble(); }
+    if(bi >= 0 && chart[bi]) target(chart[bi].pi);
+    if(bi >= 0 && chart[bi] && chart[bi].B && !R.angry){ R.angry = true; boss.classList.add("angry"); o.classList.add("angry"); setTimeout(() => { if(!R.done) banner("💢 怒りモード！", "angry"); }, parts.length > 1 && chart[bi - 1] && chart[bi - 1].pi !== chart[bi].pi ? 1500 : 0); talk(["本気を出すぞ！", "まだまだぁ！", "ゆるさん！"][(Math.random() * 3) | 0]); GSFX && GSFX.rumble && GSFX.rumble(); }
   }
   function mark(n){ if(n.bi !== shown || !svgA) return; const e = svgA.querySelector('.rh-n[data-i="' + n.i + '"]'); if(!e) return; e.setAttribute("class", "rh-n " + n.j);
     if(n.j !== "miss"){ const cx = +e.getAttribute("cx"); svgA.insertAdjacentHTML("beforeend", `<circle class="rh-burst ${n.j}" cx="${cx}" cy="${RH_Y}" r="12"/>`); } }
   function say(t, cls){ judge.textContent = t; judge.className = "rh-judge " + (cls || ""); void judge.offsetWidth; judge.classList.add("show"); }
-  function banner(t, cls){ const b = el("div", "rh-banner " + (cls || ""), t); o.append(b); setTimeout(() => b.remove(), 1400); }
+  function banner(t, cls, sub){ o.querySelectorAll(".rh-banner").forEach(x => x.remove()); const b = el("div", "rh-banner " + (cls || ""), t); if(sub) b.append(el("small", null, sub)); o.append(b); setTimeout(() => b.remove(), 1400); }
   function again(node, cls){ node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); }
-  function hud(){ hpf.style.transform = "scaleX(" + Math.max(0, R.hp / R.max) + ")"; setTimeout(() => { hpg.style.transform = "scaleX(" + Math.max(0, R.hp / R.max) + ")"; }, 260);
+  function hud(){ const p = parts[Math.max(0, aim)], f = Math.max(0, p.hp / p.max);
+    hpf.style.transform = "scaleX(" + f + ")"; setTimeout(() => { hpg.style.transform = "scaleX(" + Math.max(0, p.hp / p.max) + ")"; }, 260); hpl.textContent = parts.length > 1 ? p.nm : "";
     [...hearts.children].forEach((x, i) => x.classList.toggle("lost", i >= R.hearts));
     cn.textContent = R.combo >= 2 ? R.combo : ""; cl.textContent = R.combo >= 2 ? (R.combo >= 20 ? "FEVER ×3" : R.combo >= 10 ? "必殺 ×2" : "COMBO") : "";
     cbox.classList.toggle("fire", R.combo >= 10); cbox.classList.toggle("fever", R.combo >= 20); o.classList.toggle("fever", R.combo >= 20); if(R.combo >= 2) again(cn, "bump"); }
-  // effects at the finger: a ripple, sparks and a word
-  function burst(x, y, kind){
-    const rp = el("i", "rh-rip " + kind); rp.style.left = x + "px"; rp.style.top = y + "px"; fx.append(rp); setTimeout(() => rp.remove(), 520);
-    const n = kind === "perfect" ? 10 : kind === "good" ? 6 : 0;
-    for(let i = 0; i < n; i++){ const a = Math.PI * 2 * i / n + Math.random() * .5, d = 50 + Math.random() * 50; const s = el("i", "rh-spark " + kind, kind === "perfect" && i % 3 === 0 ? "♪" : "");
-      s.style.left = x + "px"; s.style.top = y + "px"; s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", Math.sin(a) * d + "px"); fx.append(s); setTimeout(() => s.remove(), 600); }
-    const w = el("i", "rh-word " + kind, kind === "perfect" ? "PERFECT" : kind === "good" ? "GOOD" : "MISS"); w.style.left = x + "px"; w.style.top = y + "px"; fx.append(w); setTimeout(() => w.remove(), 650);
+  // cracks grow while a part loses HP; at 0 it shatters
+  function crack(pi){ const p = parts[pi], m = wk[pi], f = p.hp / p.max; m.classList.toggle("c1", f < .67); m.classList.toggle("c2", f < .34); }
+  function shatter(pi){
+    const p = parts[pi], m = wk[pi]; p.br = true; p.hp = 0; R.br++; m.classList.add("br"); m.classList.remove("cur"); pips[pi].classList.add("br"); rhCrash(); try{ buzz([20, 20, 50]); }catch(e){}
+    for(let i = 0; i < 9; i++){ const a = Math.PI * 2 * i / 9 + Math.random() * .4, d = 34 + Math.random() * 40; const s = el("i", "rh-shard" + (i % 3 ? "" : " w")); s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", (Math.sin(a) * d + 26) + "px"); s.style.setProperty("--r", ((Math.random() * 2 - 1) * 540) + "deg"); m.append(s); setTimeout(() => s.remove(), 750); }
+    again(bw, "brk"); again(bflash, "on");
+    if(!p.core){ banner("💥 " + p.nm + "を破壊！", "brk"); talk(["ぐわぁぁ！", "よくも" + p.nm + "を…！", "まだ終わらんぞ！"][(Math.random() * 3) | 0], 1200); }
+  }
+  // damage goes to the part the note aimed at (a broken part takes no more)
+  function deal(pi, dmg){
+    const p = parts[pi];
+    if(!p.br && !p.gd){ p.hp -= dmg; if(p.hp <= 0){ dmg = -p.hp; shatter(pi); } else { dmg = 0; crack(pi); } }
+    sync(); if(p.core && core.hp <= 0 && !core.br) shatter(parts.length - 1);
   }
   function hurt(text){
     if(R.m === 0 || Math.random() < .35) talk(["きかないぞ！", "ずれてるぞ〜", "スキあり！", "ふふん♪"][(Math.random() * 4) | 0], 900);
@@ -6095,8 +6238,8 @@ function rhBattle(o, tr, lv){
     n.j = kind; mark(n);
     if(kind === "miss"){ hurt("ミス！"); }
     else { if(kind === "perfect") R.p++; else R.g++; R.combo++; R.maxCombo = Math.max(R.maxCombo, R.combo);
-      const mul = R.combo >= 20 ? 3 : R.combo >= 10 ? 2 : 1, dmg = (kind === "perfect" ? 2 : 1) * mul; R.hp -= dmg; rhDrum(kind); if(kind === "perfect") rhPing(R.combo >= 20 ? 2637 : 2093, 0, .05);
-      again(bw, "hit"); again(bflash, "on");
+      const mul = R.combo >= 20 ? 3 : R.combo >= 10 ? 2 : 1, dmg = (kind === "perfect" ? 2 : 1) * mul; deal(n.pi, dmg); rhDrum(kind); if(kind === "perfect") rhPing(R.combo >= 20 ? 2637 : 2093, 0, .05);
+      again(bw, "hit"); again(bflash, "on"); const m = wk[n.pi]; if(m && !parts[n.pi].br) again(m, "hit");
       const d = el("span", "rh-dmg" + (mul > 1 ? " big" : "") + (kind === "perfect" ? " crit" : "")); if(kind === "perfect" && mul > 1) d.append(el("small", null, "CRITICAL")); d.append("-" + dmg); d.style.setProperty("--x", (Math.random() * 50 - 10) + "px"); pop.append(d); setTimeout(() => d.remove(), 800);
       say(kind === "perfect" ? "パーフェクト！" : "グッド", kind);
       if(R.combo === 10){ banner("🔥 必殺モード！ ダメージ×2", "fire"); rhChime(3); }
@@ -6104,7 +6247,15 @@ function rhBattle(o, tr, lv){
       if(R.combo > 20 && R.combo % 10 === 0){ banner(R.combo + " COMBO!!", "fever"); rhChime(4); } }
     if(x != null) burst(x, y, kind);
     hud();
-    if(R.hp <= 0) finish(true); else if(R.hearts <= 0) finish(false);
+    if(core.br) finish(true); else if(R.hearts <= 0) finish(false);
+  }
+  // effects at the finger: a ripple, sparks and a word
+  function burst(x, y, kind){
+    const rp = el("i", "rh-rip " + kind); rp.style.left = x + "px"; rp.style.top = y + "px"; fx.append(rp); setTimeout(() => rp.remove(), 520);
+    const n = kind === "perfect" ? 10 : kind === "good" ? 6 : 0;
+    for(let i = 0; i < n; i++){ const a = Math.PI * 2 * i / n + Math.random() * .5, d = 50 + Math.random() * 50; const s = el("i", "rh-spark " + kind, kind === "perfect" && i % 3 === 0 ? "♪" : "");
+      s.style.left = x + "px"; s.style.top = y + "px"; s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", Math.sin(a) * d + "px"); fx.append(s); setTimeout(() => s.remove(), 600); }
+    const w = el("i", "rh-word " + kind, kind === "perfect" ? "PERFECT" : kind === "good" ? "GOOD" : "MISS"); w.style.left = x + "px"; w.style.top = y + "px"; fx.append(w); setTimeout(() => w.remove(), 650);
   }
   function tap(x, y){
     if(R.done) return; const now = c.currentTime - lat; if(now < t0 - barSec * .25) return;
@@ -6121,7 +6272,7 @@ function rhBattle(o, tr, lv){
   const key = e => { if(e.code === "Space" || e.code === "Enter"){ e.preventDefault(); if(!e.repeat) tap(); } };
   document.addEventListener("keydown", key); RhRun.off = () => document.removeEventListener("keydown", key);
   RhRun.notes = notes; RhRun.tap = tap; RhRun.ctx = c; RhRun.R = R;   // (used by the automatic tests)
-  hud(); drawRows(-1); setTimeout(() => talk(["かかってこい！", "リズムでしょうぶだ！", "おまえにたおせるかな？"][(Math.random() * 3) | 0]), 250);
+  drawRows(-1); aim = -1; target(chart[0].pi); setTimeout(() => talk(["かかってこい！", "リズムでしょうぶだ！", "おまえにたおせるかな？"][(Math.random() * 3) | 0]), 250);
   const end = t0 + chart.length * barSec, lead = Math.max(.45, Math.min(.8, spb));
   function loop(){
     if(!RhRun || RhRun.stop || R.done) return;
@@ -6138,14 +6289,21 @@ function rhBattle(o, tr, lv){
     if(nx){ const d = nx.t - now; if(d <= lead && d > -RH_GOOD){ const k = Math.max(0, d / lead); app.style.transform = "scale(" + (1 + k * 1.1) + ")"; app.style.opacity = String(1 - k * .7); } else app.style.opacity = "0"; } else app.style.opacity = "0";
     notes.forEach(n => { if(!n.j && now - n.t > RH_GOOD) hit(n, "miss"); });
     if(R.done) return;
-    if(at > end + .3){ finish(R.hp <= 0); return; }
+    if(at > end + .3){ finish(core.br); return; }
     RhRun.raf = requestAnimationFrame(loop);
   }
   RhRun.raf = requestAnimationFrame(loop);
   function finish(win){
-    if(R.done) return; R.done = true; if(RhRun){ RhRun.off && RhRun.off(); } app.style.opacity = "0";
-    const nm = R.m === 0, score = R.p * 100 + R.g * 50 + R.maxCombo * 10 + R.hearts * 200, rank = win ? rhRank(R) : null;
-    if(win){ bw.classList.add("down"); banner(nm ? "👑 K.O.!! 完全勝利" : "K.O.!!", "ko"); try{ GSFX.boom(); }catch(e){} setTimeout(() => { try{ GSFX.fanfare(nm ? 4 : 3); }catch(e){} }, 350);
+    if(R.done) return; R.done = true; if(RhRun){ RhRun.off && RhRun.off(); } app.style.opacity = "0"; sync();
+    const nm = R.m === 0, score = R.p * 100 + R.g * 50 + R.maxCombo * 10 + R.hearts * 200 + R.br * 300, rank = win ? rhRank(R) : null;
+    if(win){
+      // the boss card breaks into four pieces and flies apart
+      const im = bimg.querySelector(".rhb-img");
+      if(L.art && im){ const W = bimg.offsetWidth, H = bimg.offsetHeight;
+        for(let q = 0; q < 4; q++){ const k = el("img", "rh-q q" + q); k.src = L.art; k.alt = ""; k.style.left = bimg.offsetLeft + "px"; k.style.top = bimg.offsetTop + "px"; k.style.width = W + "px"; k.style.height = H + "px"; bw.append(k); }
+        bimg.classList.add("gone"); }
+      else bw.classList.add("down");
+      banner(nm ? "👑 K.O.!! 完全勝利" : "K.O.!!", "ko"); try{ GSFX.boom(); }catch(e){} setTimeout(() => { try{ GSFX.fanfare(nm ? 4 : 3); }catch(e){} }, 350);
       setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 200); }
     else { banner(R.hearts <= 0 ? "やられた…" : "にげられた…", "lose"); boss.classList.add("laugh"); talk("フハハ！ またこい！", 2000); }
     setTimeout(() => rhResult(o, tr, lv, R, win, nm, score, rank), win ? 1900 : 1300);
@@ -6162,6 +6320,7 @@ async function rhResult(o, tr, lv, R, win, nm, score, rank){
   const bi = rhBoss(L, lv, "rh-rboss" + (win ? " beaten" : "")); r.append(bi);
   r.append(el("h2", null, win ? (nm ? "👑 完全勝利！" : L.boss + "をたおした！") : (R.hearts <= 0 ? "やられた…" : "にげられた…")));
   const st = el("div", "rh-stats"); [["パーフェクト", R.p], ["グッド", R.g], ["ミス", R.m], ["最大コンボ", R.maxCombo]].forEach(([a, b]) => { const d = el("div"); d.append(el("small", null, a), el("b", null, String(b))); st.append(d); }); r.append(st);
+  if(R.np > 0) r.append(el("div", "rh-brk", "💥 部位破壊 " + R.br + " / " + (R.np + 1) + (R.br > R.np ? " ・ ぜんぶこわした！" : "")));
   r.append(el("div", "ear-score", score + " 点"));
   if(rank){ const rk = el("div", "rh-rank r" + rank); rk.append(el("small", null, "RANK"), el("b", null, rank)); r.prepend(rk); setTimeout(() => { rk.classList.add("on"); try{ GSFX.star(rank === "S" ? 3 : rank === "A" ? 2 : 1); }catch(e){} }, 500); }
   let res = null;
@@ -6169,7 +6328,7 @@ async function rhResult(o, tr, lv, R, win, nm, score, rank){
     try{ res = await rpc("mc_s_ear_clear", { sk: SK, p_track: tr, p_lv: lv }); if(res && res.ear){ Rh.prog = { rhythm:res.ear.rhythm || {}, rhythm_ura:res.ear.rhythm_ura || {} }; } if(res && res.gacha) gSet(res.gacha);
       const b = await rpc("mc_s_rh_score", { sk: SK, p_track: tr, p_lv: lv, p_score: score, p_nm: nm, p_rank: rank || "C" }); if(b) Rh.best = b; }
     catch(e){ r.append(el("p", "ear-err", "記録できませんでした（" + e.message + "）。電波のいいところでもう一度たおしてね")); }
-    const sp = el("div", "ear-bigst"); sp.append(earImg(L.ic), el("b", null, nm ? "PERFECT" : "WIN"), el("small", null, (T.ura ? "裏" : "Lv") + lv)); r.append(sp);
+    const sp = el("div", "ear-bigst"); sp.append(rhIc(L), el("b", null, nm ? "PERFECT" : "WIN"), el("small", null, (T.ura ? "裏" : "Lv") + lv)); r.append(sp);
     r.append(el("p", "ear-rs", res && res.new ? "ボスのスタンプをゲットしたよ！" : "スタンプはもう持ってるよ。ベスト更新をねらおう！"));
     setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 400);
     if(res && res.titles && res.titles.length) res.titles.forEach(id => { const t = GITEM[id]; const tb = el("div", "ear-title"); tb.append(el("small", null, "称号ゲット！"), el("b", null, "👑 " + (t ? t.v : id)));
