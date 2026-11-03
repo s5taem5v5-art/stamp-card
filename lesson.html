@@ -6428,7 +6428,9 @@ function rhBattle(o, tr, lv){
       banner(nm ? "👑 K.O.!! 完全勝利" : "K.O.!!", "ko"); try{ GSFX.boom(); }catch(e){} setTimeout(() => { try{ GSFX.fanfare(nm ? 4 : 3); }catch(e){} }, 350);
       setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 200); }
     else { banner(R.hearts <= 0 ? "やられた…" : "にげられた…", "lose"); boss.classList.add("laugh"); talk("フハハ！ またこい！", 2000); }
-    setTimeout(() => rhResult(o, tr, lv, R, win, nm, score, rank), win ? 1900 : 1300);
+    // show the result only if the player is still on this battle: if they already left (back → map → a new battle),
+    // this late timer used to stop the NEW battle and put the old result on screen (= "たたかう didn't work")
+    const run = RhRun; setTimeout(() => { if(RhRun === run && run && !run.stop) rhResult(o, tr, lv, R, win, nm, score, rank); }, win ? 1900 : 1300);
   }
 }
 async function rhResult(o, tr, lv, R, win, nm, score, rank){
