@@ -2263,6 +2263,384 @@ button.ear-chip{cursor:pointer}
 .gr-in.flat .gr-back{display:none}
 .gr-in.flat .gr-front{transform:none}
 
+/* ===== rhythm boss battle (only transform / opacity animate) ===== */
+.rhc{background:linear-gradient(135deg,rgba(255,138,60,.16),rgba(255,61,110,.14)),var(--panel);border-color:rgba(255,138,60,.4)}
+.rh-ov{background:radial-gradient(120% 60% at 50% 0%,#3a1430,#120a24 70%)}
+.rh-cal{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin-bottom:12px;padding:10px 14px;border-radius:16px;border:1.5px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.rh-cal b{font-size:.9rem}
+.rh-cal small{font-size:.72rem;color:var(--muted)}
+.rh-cal.need{border-color:#ffc93c;background:rgba(255,201,60,.14);animation:rh-glow 1.6s ease-in-out infinite}
+@keyframes rh-glow{0%,100%{opacity:1}50%{opacity:.7}}
+/* boss book */
+.rh-book{padding:12px;border-radius:18px;margin-bottom:14px;background:linear-gradient(#2a1438,#1a0c2a);border:1.5px solid rgba(255,138,60,.35)}
+.rh-bt{font-weight:900;font-size:.9rem;margin-bottom:8px}
+.rh-zk{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.rh-zi{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;background:rgba(255,255,255,.04);border:1.5px solid transparent}
+.rh-zi img{width:38px;height:38px}
+.rh-zi small{font-size:.56rem;font-weight:900;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.rh-zi.got{border-color:rgba(255,138,60,.45)}
+.rh-zi.got small{color:#ffd0a8}
+.rh-zi.gold{border-color:#ffd34d;background:rgba(255,211,77,.12)}
+.sil{filter:brightness(0) opacity(.45)}
+.rh-ttl{margin-top:10px;font-size:.8rem;font-weight:800;text-align:center;color:#ffb68a}
+.rh-ttl.got{color:#ffd34d;font-size:.9rem}
+.rh-note{margin-top:4px;font-size:.68rem;text-align:center;color:var(--muted)}
+.rh-node.cur{border-color:#ff8a3c;background:linear-gradient(120deg,rgba(255,138,60,.18),rgba(255,61,110,.16))}
+.rh-node.cur .ear-dot{border-color:#ff8a3c;background:linear-gradient(135deg,#ffb35c,#ff3d6e)}
+.rh-node.cur .ear-dot::after{border-color:#ff8a3c}
+.rh-node .ear-dot img{width:70%;height:70%}
+.rh-crown{position:absolute;top:-10px;right:-6px;font-style:normal;font-size:1rem}
+.rh-bob{animation:rh-bob 2s ease-in-out infinite;will-change:transform}
+@keyframes rh-bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
+/* intro */
+.rh-iboss{width:136px;height:136px;margin:10px 0 6px}
+.rh-rh{margin:0;font-weight:900;color:#ffd0a8}
+.rh-sample{width:100%;color:#fff;background:rgba(255,255,255,.06);border-radius:14px;padding:4px 6px}
+.rh-sample .rh-bar{width:100%;height:80px;display:block}
+/* calibration */
+.rh-cdots{display:flex;gap:8px;justify-content:center}
+.rh-cdots i{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.15)}
+.rh-cdots i.on{background:#ffc93c}
+/* battle */
+.ear-ov.playing.rh-ov{display:flex;flex-direction:column;padding-bottom:max(14px,calc(env(safe-area-inset-bottom,0px) + 8px));overflow:hidden}
+.rh-ov::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(70% 45% at 50% 30%,rgba(255,138,60,.22),transparent 70%);opacity:0}
+.rh-ov.beat::before{animation:rh-breath .45s ease-out}
+@keyframes rh-breath{0%{opacity:1}100%{opacity:0}}
+.rh-ov::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .4s}
+.rh-ov.angry::after{opacity:1;background:radial-gradient(circle at 50% 40%,transparent 50%,rgba(255,30,60,.35));animation:rh-alarm 1.2s ease-in-out infinite}
+.rh-ov.fever::after{opacity:1;background:conic-gradient(from 0deg at 50% 120%,rgba(255,61,110,.25),rgba(255,211,77,.25),rgba(61,255,138,.22),rgba(58,214,255,.25),rgba(160,90,255,.25),rgba(255,61,110,.25));animation:rh-feverbg .9s ease-in-out infinite}
+@keyframes rh-alarm{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes rh-feverbg{0%,100%{opacity:.6}50%{opacity:1}}
+.rh-ov.playing>*:not(.rh-banner):not(.ear-hd){position:relative;z-index:1}
+.rh-ov.playing>.ear-hd{z-index:4}
+.rh-field{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;min-height:188px;padding:4px 4px 0;isolation:isolate}
+.rh-field.hurt{animation:rh-shake .38s ease-out}
+@keyframes rh-shake{0%{transform:translate(0,0)}20%{transform:translate(-9px,4px)}40%{transform:translate(8px,-5px)}60%{transform:translate(-6px,3px)}80%{transform:translate(4px,-2px)}100%{transform:none}}
+.rh-cv{position:absolute;inset:-20px -16px;width:calc(100% + 32px);height:calc(100% + 40px);pointer-events:none;z-index:6}
+.rh-slash{position:absolute;inset:-8px -16px;pointer-events:none;z-index:5;opacity:0;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.95) 48%,rgba(255,40,70,.9) 50%,transparent 56%),radial-gradient(circle,transparent 35%,rgba(255,30,60,.55))}
+.rh-slash.on{animation:rh-slash .42s ease-out}
+@keyframes rh-slash{0%{opacity:1}100%{opacity:0}}
+.rh-boss{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.rh-bshadow{position:absolute;bottom:42px;width:110px;height:18px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent);animation:rh-shadow 1.8s ease-in-out infinite}
+@keyframes rh-shadow{0%,100%{transform:scale(1)}50%{transform:scale(.85)}}
+.rh-bwrap{position:relative;will-change:transform}
+.rh-bimg{width:146px;height:146px;margin-top:10px;display:block;animation:rh-bob 1.8s ease-in-out infinite;will-change:transform}
+.rh-bflash{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,0));opacity:0;pointer-events:none}
+.rh-bflash.on{animation:rh-flash .22s ease-out}
+@keyframes rh-flash{0%{opacity:.95}100%{opacity:0}}
+.rh-bwrap.hit{animation:rh-hit .26s ease-out}
+@keyframes rh-hit{0%{transform:translateX(0) scale(1)}30%{transform:translateX(-10px) scale(.9,.94) rotate(-6deg)}60%{transform:translateX(5px) scale(1.03)}100%{transform:none}}
+.rh-bwrap.atk{animation:rh-atk .38s cubic-bezier(.3,1.6,.5,1)}
+@keyframes rh-atk{0%{transform:none}40%{transform:translate(46px,18px) scale(1.22) rotate(10deg)}100%{transform:none}}
+.rh-bwrap.down{animation:rh-down 1.1s cubic-bezier(.5,0,.8,.4) forwards}
+@keyframes rh-down{0%{transform:none;opacity:1}25%{transform:scale(1.25) rotate(-12deg)}100%{transform:translate(-30px,-140px) scale(.1) rotate(540deg);opacity:0}}
+.rh-boss.angry .rh-bwrap{transform:scale(1.12)}
+.rh-boss.angry .rh-bimg{animation-duration:.6s}
+.rh-boss.angry::before{content:"💢";position:absolute;top:0;right:16%;font-size:1.7rem;z-index:2;animation:rh-bob .5s ease-in-out infinite}
+.rh-boss.laugh .rh-bimg{animation:rh-laugh .25s ease-in-out infinite}
+@keyframes rh-laugh{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.rh-bname{display:flex;align-items:center;gap:6px;padding:3px 12px 3px 4px;border-radius:99px;font-size:.88rem;letter-spacing:.06em;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.4);
+  background:linear-gradient(90deg,var(--c1),var(--c2));box-shadow:0 3px 10px color-mix(in srgb,var(--c1) 50%,transparent),inset 0 1px 0 rgba(255,255,255,.45)}
+.rh-bname small{font-size:.6rem;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:99px;background:rgba(0,0,0,.45)}
+.rh-bname.t4{background:linear-gradient(90deg,#b8860b,#ffe27a,#fff,#ffe27a,#b8860b);color:#3a2400;text-shadow:none}
+.rh-bname.t4 small{background:#1a1205;color:#ffe27a}
+.rh-hp{position:relative;width:min(220px,72%);height:13px;border-radius:99px;background:rgba(0,0,0,.4);overflow:hidden;border:1.5px solid rgba(255,255,255,.25)}
+.rh-hp i{position:absolute;inset:0;transform-origin:left}
+.rh-hpg{background:rgba(255,255,255,.75);transition:transform .45s ease-out}
+.rh-hpf{background:linear-gradient(90deg,#ff3d6e,#ff8a3c,#ffd34d);transition:transform .12s ease-out}
+.rh-boss.angry .rh-hpf{background:linear-gradient(90deg,#ff1f4b,#ff3d6e)}
+.rh-pop{position:absolute;top:44%;left:58%;width:0;height:0;z-index:3}
+.rh-dmg{position:absolute;left:-24px;display:flex;flex-direction:column;align-items:center;line-height:1;white-space:nowrap;font-family:var(--display);font-size:1.5rem;color:#fff;text-shadow:0 2px 0 #c2185b,0 0 8px #ff3d6e;animation:rh-dmg .8s ease-out forwards;will-change:transform,opacity}
+.rh-dmg.big{font-size:1.9rem;color:#ffd34d;text-shadow:0 2px 0 #b8560b,0 0 12px #ff8a3c}
+.rh-dmg small{font-size:.5em;letter-spacing:.12em;color:#fff6c8}
+.rh-dmg.big.crit{font-size:2.1rem}
+@keyframes rh-dmg{0%{transform:translate(var(--x),0) scale(.5);opacity:0}18%{transform:translate(var(--x),-12px) scale(1.2);opacity:1}100%{transform:translate(calc(var(--x) + 14px),-44px) scale(.95);opacity:0}}
+.rh-me{display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-bottom:6px;min-width:104px}
+.rh-hearts{display:flex;gap:2px}
+.rh-hearts img{width:30px;height:30px;transition:opacity .25s,transform .25s}
+.rh-hearts img.lost{opacity:.15;transform:scale(.75)}
+.rh-hearts img.pop{animation:rh-hpop .45s ease-out}
+@keyframes rh-hpop{0%{transform:scale(1.6) rotate(-15deg);opacity:1}100%{transform:scale(.75);opacity:.15}}
+.rh-cbox{display:flex;flex-direction:column;align-items:flex-end;min-height:62px;line-height:1}
+.rh-cn{font-family:var(--display);font-size:2.4rem;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.35);will-change:transform}
+.rh-cn.bump{animation:rh-bump .18s ease-out}
+@keyframes rh-bump{0%{transform:scale(1.35)}100%{transform:none}}
+.rh-cl{font-size:.7rem;font-weight:900;letter-spacing:.12em;color:#ffd0a8}
+.rh-cbox.fire .rh-cn{color:#ffb35c;text-shadow:0 3px 0 #a33a00,0 0 14px rgba(255,138,60,.9)}
+.rh-cbox.fever .rh-cn{background:linear-gradient(90deg,#ff3d6e,#ffd34d,#3dff8a,#3ad6ff,#a05aff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 2px 0 rgba(0,0,0,.4))}
+.rh-cbox.fever .rh-cl{color:#fff}
+.rh-sheet{position:relative;margin-top:6px;padding:6px 8px 6px 34px;border-radius:18px;background:#fffaf0;color:#2a1a10;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.rh-sig{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:center;line-height:1;font-family:var(--display);font-size:1.15rem}
+.rh-bno{position:absolute;right:12px;top:4px;font-size:.66rem;font-weight:900;color:#a0683c}
+.rh-row{position:relative}
+.rh-row .rh-bar{display:block;width:100%;height:84px;overflow:visible}
+.rh-row.nxt{opacity:.4;border-top:1.5px dashed rgba(160,104,60,.35)}
+.rh-row.nxt .rh-bar{height:62px}
+.rh-cursor{position:absolute;left:0;top:4px;bottom:4px;width:4px;margin-left:-2px;border-radius:2px;background:#ff3d6e;box-shadow:0 0 10px #ff3d6e,0 0 2px #fff;opacity:0;will-change:transform}
+.rh-n{transition:fill .1s}
+.rh-n.perfect{fill:#ffb21a;stroke:#ffb21a}
+.rh-n.good{fill:#2fbf8f;stroke:#2fbf8f}
+.rh-n.miss{fill:#ff3d6e;stroke:#ff3d6e}
+.rh-burst{fill:none;stroke-width:3;transform-box:fill-box;transform-origin:center;animation:rh-nburst .4s ease-out forwards}
+.rh-burst.perfect{stroke:#ffb21a}
+.rh-burst.good{stroke:#2fbf8f}
+@keyframes rh-nburst{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.8);opacity:0}}
+.rh-count{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:3.2rem;color:#ff3d6e;pointer-events:none;opacity:0;text-shadow:0 3px 0 rgba(255,255,255,.9)}
+.rh-count.on{animation:rh-count .5s ease-out forwards}
+@keyframes rh-count{0%{transform:scale(2);opacity:0}25%{transform:scale(1);opacity:1}100%{transform:scale(.9);opacity:0}}
+.rh-judge{text-align:center;font-family:var(--display);font-size:1.4rem;min-height:1.5em;margin:6px 0 0;opacity:0}
+.rh-judge.show{animation:rh-judge .5s ease-out forwards}
+@keyframes rh-judge{0%{transform:scale(1.4);opacity:0}25%{transform:scale(1);opacity:1}75%{opacity:1}100%{opacity:0}}
+.rh-judge.perfect{color:#ffd34d;text-shadow:0 0 12px rgba(255,211,77,.7)}
+.rh-judge.good{color:#5be3b0}
+.rh-judge.miss{color:#ff6b8f}
+.rh-banner{position:fixed;left:0;right:0;top:38%;z-index:20;text-align:center;font-family:var(--display);font-size:1.7rem;color:#fff;padding:14px 10px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(0,0,0,.75) 15%,rgba(0,0,0,.75) 85%,transparent);animation:rh-banner 1.4s cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes rh-banner{0%{transform:translateX(100%) skewX(-12deg);opacity:0}15%{transform:translateX(0) skewX(-8deg);opacity:1}80%{transform:translateX(0) skewX(-8deg);opacity:1}100%{transform:translateX(-60%) skewX(-12deg);opacity:0}}
+.rh-banner.angry{color:#ff6b8f}
+.rh-banner.fire{color:#ffb35c}
+.rh-banner.fever{background:linear-gradient(90deg,transparent,rgba(160,40,255,.75) 15%,rgba(255,61,110,.75) 85%,transparent)}
+.rh-banner.ko{top:30%;font-size:2.6rem;color:#ffd34d;text-shadow:0 4px 0 #a33a00,0 0 20px rgba(255,211,77,.8)}
+.rh-banner.lose{color:#c9b8ff}
+.rh-bub{position:absolute;top:-4px;left:58%;z-index:4;max-width:150px;padding:6px 10px;border-radius:14px 14px 14px 4px;background:#fff;color:#2a1a10;font-size:.78rem;font-weight:900;white-space:nowrap;
+  box-shadow:0 4px 10px rgba(0,0,0,.35);opacity:0;transform:scale(.6);transform-origin:left bottom;transition:opacity .2s,transform .2s}
+.rh-bub.on{opacity:1;transform:none}
+/* the drum */
+.rh-pad{position:relative;font:inherit;font-family:var(--display);font-size:1.4rem;width:100%;padding:18px;border:0;border-radius:24px;cursor:pointer;color:#fff;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
+  background:linear-gradient(160deg,#3a1450,#1c0a30);box-shadow:inset 0 0 0 2px rgba(255,138,60,.35),0 6px 0 #0e0418;overflow:hidden}
+.rh-pad.big{flex:1;min-height:150px;margin-top:6px;padding:10px;display:grid;place-items:center}
+.rh-drum{position:relative;height:min(100%,62vw,230px);aspect-ratio:1;display:grid;place-items:center;will-change:transform}
+.rh-drum i{position:absolute;border-radius:50%;pointer-events:none}
+.rh-glow2{inset:-14%;background:radial-gradient(closest-side,rgba(255,138,60,.55),transparent);opacity:0}
+.rh-glow2.on{animation:rh-breath .4s ease-out}
+.rh-rim{inset:0;background:conic-gradient(#ffd34d,#ff8a3c,#ff3d6e,#c2185b,#ff8a3c,#ffd34d);box-shadow:0 8px 0 rgba(0,0,0,.45),0 0 24px rgba(255,138,60,.35)}
+.rh-skin{inset:7%;background:radial-gradient(circle at 40% 32%,#fffaf0,#f4dfc0 58%,#d9b98e);box-shadow:inset 0 -8px 16px rgba(120,70,20,.35),inset 0 4px 10px rgba(255,255,255,.7)}
+.rh-skin::after{content:"";position:absolute;inset:30%;border-radius:50%;border:3px solid rgba(194,24,91,.35)}
+.rh-app{inset:-2%;border:5px solid #ffd34d;box-shadow:0 0 14px #ffd34d;opacity:0;will-change:transform,opacity}
+.rh-ov.fever .rh-app{border-color:#fff}
+.rh-lab{position:relative;color:#7a2a10;font-size:1.25rem;letter-spacing:.08em;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.rh-drum.hit{animation:rh-dhit .14s ease-out}
+@keyframes rh-dhit{0%{transform:scale(.9)}100%{transform:none}}
+.rh-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.rh-fx i{position:absolute;pointer-events:none;font-style:normal}
+.rh-rip{width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid #fff;opacity:0;animation:rh-rip .5s ease-out forwards}
+.rh-rip.perfect{border-color:#ffd34d;box-shadow:0 0 18px #ffd34d}
+.rh-rip.good{border-color:#5be3b0}
+.rh-rip.miss{border-color:#ff3d6e}
+@keyframes rh-rip{0%{transform:scale(.3);opacity:1}100%{transform:scale(2.4);opacity:0}}
+.rh-spark{width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#ffd34d;color:#fff;font-size:1rem;line-height:10px;text-align:center;animation:rh-spark .6s cubic-bezier(.2,.8,.4,1) forwards}
+.rh-spark.good{background:#5be3b0}
+.rh-spark:not(:empty){background:none;width:auto;height:auto;font-size:1.3rem;color:#ffd34d;text-shadow:0 0 6px #ff8a3c}
+@keyframes rh-spark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+.rh-word{font-family:var(--display);font-size:1.3rem;white-space:nowrap;transform:translate(-50%,-50%);animation:rh-word .65s ease-out forwards}
+.rh-word.perfect{color:#ffd34d;text-shadow:0 2px 0 #a33a00}
+.rh-word.good{color:#5be3b0;text-shadow:0 2px 0 #0d5a40}
+.rh-word.miss{color:#ff6b8f;text-shadow:0 2px 0 #6a0a20}
+@keyframes rh-word{0%{transform:translate(-50%,-50%) scale(.6);opacity:0}20%{transform:translate(-50%,-110%) scale(1.15);opacity:1}100%{transform:translate(-50%,-220%) scale(1);opacity:0}}
+/* result */
+.rh-rank{display:flex;flex-direction:column;align-items:center;line-height:1;opacity:0;transform:scale(3) rotate(-20deg)}
+.rh-rank.on{animation:rh-rank .5s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes rh-rank{0%{opacity:0;transform:scale(3) rotate(-20deg)}100%{opacity:1;transform:scale(1) rotate(-8deg)}}
+.rh-rank small{font-size:.7rem;font-weight:900;letter-spacing:.2em;color:var(--muted)}
+.rh-rank b{font-family:var(--display);font-size:4.4rem;font-weight:400}
+.rh-rank.rS b{background:linear-gradient(180deg,#fff6c8,#ffd34d 50%,#ff8a3c);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 rgba(120,50,0,.6)) drop-shadow(0 0 14px rgba(255,211,77,.6))}
+.rh-rank.rA b{color:#ff6b9a;text-shadow:0 4px 0 #6a0a30}
+.rh-rank.rB b{color:#5ab0ff;text-shadow:0 4px 0 #0a3a6a}
+.rh-rank.rC b{color:#9fb0c4;text-shadow:0 4px 0 #2a3440}
+.rh-rk{position:absolute;bottom:-6px;left:-6px;font-style:normal;font-family:var(--display);font-size:.9rem;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#1a0c2a;border:2px solid currentColor}
+.rh-rk.rS{color:#ffd34d}.rh-rk.rA{color:#ff6b9a}.rh-rk.rB{color:#5ab0ff}.rh-rk.rC{color:#9fb0c4}
+.rh-rboss{width:120px;height:120px;margin:6px 0}
+.rh-rboss.beaten .rhb-img{transform:rotate(-14deg)}
+.rh-rboss.beaten{opacity:.9}
+.rh-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%}
+.rh-stats div{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:12px;background:rgba(255,255,255,.07)}
+.rh-stats small{font-size:.6rem;color:var(--muted);font-weight:900}
+.rh-stats b{font-size:1.1rem}
+.ear-ov.ura.rh-ov{background:radial-gradient(120% 60% at 50% 0%,#2a0a20,#07020f 70%)}
+@media (prefers-reduced-motion:reduce){.rh-bob,.rh-bimg,.rh-cal.need,.rh-bshadow,.rh-ov.angry::after,.rh-ov.fever::after{animation:none}}
+
+/* ===== the boss, drawn like a rare item ===== */
+.rhb{position:relative;display:inline-block;isolation:isolate;--c1:#ff8a3c;--c2:#ff3d6e}
+.rhb>i{position:absolute;border-radius:50%;pointer-events:none}
+.rhb-img{position:absolute;left:10%;top:10%;width:80%;height:80%;z-index:3;filter:drop-shadow(0 8px 12px rgba(0,0,0,.55)) drop-shadow(0 0 10px color-mix(in srgb,var(--c1) 70%,transparent))}
+.rhb-aura{inset:-16%;z-index:0;background:radial-gradient(closest-side,color-mix(in srgb,var(--c1) 85%,transparent),color-mix(in srgb,var(--c2) 45%,transparent) 55%,transparent);animation:rhb-aura 1.6s ease-in-out infinite;will-change:transform,opacity}
+@keyframes rhb-aura{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+.rhb-rays{inset:-34%;z-index:0;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--c1) 55%,transparent) 0deg 7deg,transparent 7deg 20deg);
+  -webkit-mask:radial-gradient(closest-side,#000 20%,transparent 72%);mask:radial-gradient(closest-side,#000 20%,transparent 72%);animation:rhb-spin 14s linear infinite;will-change:transform}
+.rhb-ring{inset:-2%;z-index:2;background:conic-gradient(from 0deg,var(--c1),#fff,var(--c2),var(--c1),#fff,var(--c2),var(--c1));
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));animation:rhb-spin 3s linear infinite;will-change:transform;opacity:.95}
+.rhb-ring2{inset:-11%;z-index:1;border:2px dashed color-mix(in srgb,var(--c2) 80%,#fff);opacity:.75;animation:rhb-spin 7s linear infinite reverse;will-change:transform}
+.rhb.t4 .rhb-ring{background:conic-gradient(#ffe27a,#fff,#ff4fd8,#ffe27a,#3ad6ff,#fff,#b8860b,#ffe27a);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px));mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px));animation-duration:2.2s}
+.rhb.t4 .rhb-ring2{border:2px solid transparent;border-top-color:#ffe27a;border-bottom-color:#3ad6ff;border-style:solid;opacity:1}
+.rhb.t4 .rhb-aura{background:radial-gradient(closest-side,rgba(255,226,122,.85),color-mix(in srgb,var(--c1) 60%,transparent) 50%,rgba(255,79,216,.25) 70%,transparent)}
+@keyframes rhb-spin{to{transform:rotate(360deg)}}
+.rhb-tw{z-index:4;width:14%;height:14%;border-radius:0!important;background:#fff;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);opacity:0;animation:rhb-tw 1.8s ease-in-out infinite;will-change:transform,opacity}
+.rhb-tw.s0{left:2%;top:6%}.rhb-tw.s1{right:0;top:30%;animation-delay:.45s}.rhb-tw.s2{left:10%;bottom:4%;animation-delay:.9s}.rhb-tw.s3{right:12%;bottom:-2%;animation-delay:1.35s}
+@keyframes rhb-tw{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+.rhb-orbit{inset:-14%;z-index:4;animation:rhb-spin 2.4s linear infinite;will-change:transform}
+.rhb-orbit::before,.rhb-orbit::after{content:"";position:absolute;width:12%;height:12%;border-radius:50%;background:radial-gradient(circle,#fff,#ffe27a 45%,transparent 70%);box-shadow:0 0 10px #ffe27a}
+.rhb-orbit::before{left:44%;top:-4%}
+.rhb-orbit::after{left:44%;bottom:-4%;background:radial-gradient(circle,#fff,#3ad6ff 45%,transparent 70%);box-shadow:0 0 10px #3ad6ff}
+/* small ones (map, book): keep the glow, drop the busy parts */
+.rhb.mini{width:100%;height:100%}
+.ear-dot .rhb.mini{position:absolute;inset:4%;width:92%;height:92%}
+.rhb.mini .rhb-rays,.rhb.mini .rhb-ring2,.rhb.mini .rhb-tw,.rhb.mini .rhb-orbit{display:none}
+.rhb.mini .rhb-ring{-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px))}
+.rhb.mini .rhb-aura{inset:-8%}
+.rh-zi .rhb.mini{width:40px;height:40px}
+.rh-zi .sil{width:38px;height:38px}
+/* the battle */
+.rh-boss.angry .rhb{--c1:#ff1f4b;--c2:#ff7a00}
+.rh-boss.angry .rhb-aura{animation-duration:.6s}
+.rh-boss.angry .rhb-ring{animation-duration:1.1s}
+.rh-ov.fever .rhb-rays{animation-duration:4s}
+@media (prefers-reduced-motion:reduce){.rhb-aura,.rhb-rays,.rhb-ring,.rhb-ring2,.rhb-tw,.rhb-orbit{animation:none}}
+
+/* ===== boss pictures (cards) and weak points ===== */
+.rh-ic{object-fit:cover;object-position:50% 32%;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.18)}
+.rhb.art .rhb-img{left:0;top:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c1) 60%,transparent))}
+.rhb.art:not(.mini) .rhb-ring,.rhb.art:not(.mini) .rhb-ring2{display:none}
+.rhb.art .rhb-aura{inset:-6% -14%}
+.rhb.art:not(.mini) .rhb-rays{inset:-22% -30%}
+.rhb>i.rhb-frame{inset:1.5% 2.5%;z-index:4;border-radius:14px;overflow:hidden;padding:3px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.rhb-frame::before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,var(--c1),#fff,var(--c2),transparent 40%,var(--c1),#fff,var(--c2),transparent 90%,var(--c1));animation:rhb-spin 3s linear infinite;will-change:transform}
+.rhb.t4 .rhb-frame::before{background:conic-gradient(#ffe27a,#fff,#ff4fd8,#ffe27a,#3ad6ff,#fff,#b8860b,#ffe27a);animation-duration:2.2s}
+.rhb.art.mini .rhb-frame{display:none}
+.rhb.art.mini .rhb-img{left:6%;top:6%;width:88%;height:88%;object-fit:cover;object-position:50% 32%;border-radius:50%}
+.rhb.art.mini .rhb-aura{inset:-8%}
+.rh-bimg.art{width:144px;height:188px}
+.rh-iboss.art{width:150px;height:200px;margin:14px 0 8px}
+.rh-rboss.art{width:105px;height:140px}
+.rh-rboss.beaten.art .rhb-img{transform:rotate(-8deg);filter:grayscale(.5) drop-shadow(0 8px 14px rgba(0,0,0,.6))}
+.rhb.gone{opacity:0;transition:opacity .05s}
+/* weak points */
+.rh-tg{position:absolute;left:10%;top:10%;width:80%;height:80%;z-index:6;pointer-events:none}
+.rhb.art .rh-tg{left:0;top:0;width:100%;height:100%}
+.rh-wk{position:absolute;width:0;height:0}
+.rh-wk>i,.rh-wk>svg{position:absolute;pointer-events:none}
+.wk-r{left:-15px;top:-15px;width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);box-shadow:0 0 6px rgba(0,0,0,.6);transform:scale(.6);opacity:.55;transition:transform .25s,opacity .25s}
+.wk-x{left:-21px;top:-21px;width:42px;height:42px;opacity:0;background:
+  linear-gradient(#ffe27a,#ffe27a) 50% 0/3px 9px no-repeat,linear-gradient(#ffe27a,#ffe27a) 50% 100%/3px 9px no-repeat,
+  linear-gradient(#ffe27a,#ffe27a) 0 50%/9px 3px no-repeat,linear-gradient(#ffe27a,#ffe27a) 100% 50%/9px 3px no-repeat;filter:drop-shadow(0 0 3px #000)}
+.rh-wk.cur .wk-r{transform:none;opacity:1;border:3px solid #ffe27a;box-shadow:0 0 12px #ffe27a,inset 0 0 8px rgba(255,226,122,.6),0 0 0 2px rgba(0,0,0,.45);animation:wk-pulse .7s ease-in-out infinite}
+.rh-wk.cur .wk-x{opacity:1;animation:rhb-spin 2.4s linear infinite}
+.rh-wk.core.cur .wk-r{border-color:#ff3d6e;box-shadow:0 0 14px #ff3d6e,inset 0 0 8px rgba(255,61,110,.6),0 0 0 2px rgba(0,0,0,.45)}
+@keyframes wk-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.rh-wk.hit .wk-r{animation:wk-hit .2s ease-out}
+@keyframes wk-hit{0%{transform:scale(.7)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+.wk-cr{left:-30px;top:-30px;width:60px;height:60px;overflow:visible;fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px #000) drop-shadow(0 0 4px var(--c1))}
+.wk-cr g{opacity:0;transition:opacity .15s}
+.rh-wk.c1 .k1,.rh-wk.c2 .k2,.rh-wk.br .k1,.rh-wk.br .k2{opacity:1}
+.wk-hole{left:-17px;top:-17px;width:34px;height:34px;border-radius:50%;background:radial-gradient(closest-side,#000 30%,rgba(20,0,20,.7) 60%,transparent);opacity:0;transform:scale(.3);transition:opacity .2s,transform .3s cubic-bezier(.2,1.6,.4,1)}
+.rh-wk.br .wk-hole{opacity:.85;transform:none}
+.rh-wk.br .wk-r,.rh-wk.br .wk-x{opacity:0;animation:none}
+.rh-wk.gd .wk-r{opacity:.9;transform:scale(.8);border:2px dashed #c9b8ff;animation:none}
+.rh-wk.gd::after{content:"🛡";position:absolute;left:-9px;top:-11px;font-size:16px}
+.rh-shard{left:-6px;top:-6px;width:12px;height:12px;background:var(--c1);clip-path:polygon(50% 0,100% 80%,10% 100%);animation:rh-shard .75s cubic-bezier(.2,.7,.5,1) forwards;will-change:transform,opacity}
+.rh-shard.w{background:#fff}
+@keyframes rh-shard{0%{transform:translate(0,0) rotate(0) scale(1.3);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.5);opacity:0}}
+.rh-bwrap.brk{animation:rh-brk .5s ease-out}
+@keyframes rh-brk{0%{transform:none}15%{transform:translate(-8px,3px) rotate(-5deg) scale(.95)}35%{transform:translate(7px,-3px) rotate(4deg)}55%{transform:translate(-5px,2px) rotate(-2deg)}75%{transform:translate(3px,0)}100%{transform:none}}
+/* K.O.: the card breaks in four */
+.rh-q{position:absolute;z-index:7;object-fit:contain;pointer-events:none;will-change:transform,opacity;animation:rh-q 1.25s cubic-bezier(.4,0,.7,.5) forwards}
+.rh-q.q0{clip-path:polygon(0 0,53% 0,47% 45%,0 55%);--qx:-70px;--qy:-60px;--qr:-50deg}
+.rh-q.q1{clip-path:polygon(53% 0,100% 0,100% 47%,47% 45%);--qx:80px;--qy:-70px;--qr:60deg}
+.rh-q.q2{clip-path:polygon(0 55%,47% 45%,56% 100%,0 100%);--qx:-80px;--qy:90px;--qr:-35deg}
+.rh-q.q3{clip-path:polygon(47% 45%,100% 47%,100% 100%,56% 100%);--qx:70px;--qy:100px;--qr:45deg}
+@keyframes rh-q{0%{transform:none;opacity:1}12%{transform:scale(1.04);opacity:1}22%{transform:translate(calc(var(--qx)*.06),calc(var(--qy)*.06));opacity:1}100%{transform:translate(var(--qx),var(--qy)) rotate(var(--qr)) scale(.7);opacity:0}}
+/* HP of the part you aim at, and the list of parts */
+.rh-hp{height:15px}
+.rh-hpl{position:absolute;inset:0;display:grid;place-items:center;font-size:.6rem;font-weight:900;letter-spacing:.06em;color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000;line-height:1}
+.rh-pp{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;max-width:100%;margin-top:1px}
+.rh-pp span{font-size:.56rem;font-weight:900;padding:1px 6px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--muted);border:1.5px solid transparent;white-space:nowrap}
+.rh-pp span.cur{color:#ffe27a;border-color:#ffe27a;background:rgba(255,226,122,.14)}
+.rh-pp span.core.cur{color:#ff8fab;border-color:#ff3d6e;background:rgba(255,61,110,.16)}
+.rh-pp span.br{text-decoration:line-through;opacity:.6}
+.rh-pp span.br::before{content:"💥"}
+.rh-pp span.gd::before{content:"🛡"}
+/* which part / rhythm on the sheet */
+.rh-sheet{padding-top:18px}
+.rh-tp{position:absolute;left:36px;top:4px;font-size:.66rem;font-weight:900;color:#c2185b;letter-spacing:.02em;white-space:nowrap}
+.rh-tp.on{animation:rh-tp .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes rh-tp{0%{transform:scale(1.5);opacity:0}100%{transform:none;opacity:1}}
+.rh-nx{position:absolute;right:10px;bottom:6px;font-size:.6rem;font-weight:900;padding:2px 8px;border-radius:99px;background:#ffe27a;color:#5a2a00;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;pointer-events:none}
+.rh-nx.on{opacity:1;transform:none}
+.rh-banner small{display:block;font-family:inherit;font-size:.9rem;font-weight:900;letter-spacing:.1em;opacity:.9;margin-top:2px}
+.rh-banner.tg{top:22%;color:#ffe27a;font-size:1.5rem}
+.rh-banner.brk{top:22%;font-size:2rem;color:#fff;text-shadow:0 3px 0 #a33a00,0 0 16px #ff8a3c;background:linear-gradient(90deg,transparent,rgba(255,90,0,.7) 15%,rgba(255,30,80,.7) 85%,transparent)}
+.rh-banner.gd{top:22%;font-size:1.05rem;color:#c9b8ff}
+/* intro: the route of weak points */
+.rh-route{width:100%;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.06);text-align:left}
+.rh-route>b{display:block;font-size:.78rem;color:#ffe27a;margin-bottom:4px}
+.rh-route ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.rh-route li{position:relative;display:flex;align-items:center;gap:5px;font-size:.78rem}
+.rh-route li+li::before{content:"▶";position:absolute;left:-12px;font-size:.55rem;color:var(--muted)}
+.rh-route li i{font-style:normal;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:.62rem;font-weight:900;background:#ffe27a;color:#3a2400}
+.rh-route li.core i{background:none;font-size:.9rem}
+.rh-route li small{font-size:.66rem;color:var(--muted)}
+.rh-brk{font-weight:900;color:#ffb35c;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){.rhb-frame::before,.rh-wk.cur .wk-r,.rh-wk.cur .wk-x{animation:none}}
+/* ===== boss avatars (UR, from the rhythm battle) and first-win rewards ===== */
+.st-boss .bg{background:radial-gradient(circle at 50% 40%,#4a1a6e,#12051f 75%)}
+.av2.st-boss .bg .ph{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;object-position:50% 32%;transform:scale(1.18);animation:rhav-breath 3s ease-in-out infinite;will-change:transform}
+@keyframes rhav-breath{0%,100%{transform:scale(1.18)}50%{transform:scale(1.25) translateY(-2%)}}
+.st-boss .rg{padding:6%;background:conic-gradient(#ff4fd8,#fff,#b46bff,#ff4fd8,#3ad6ff,#fff,#ff4fd8);animation:av-spin 3s linear infinite}
+.st-boss .aura{inset:-8%;border-radius:50%;z-index:-1;background:radial-gradient(closest-side,rgba(255,79,216,.7),rgba(180,107,255,.3) 60%,transparent);animation:sec-aura 1.8s ease-in-out infinite;will-change:transform,opacity}
+.still .st-boss .aura,.still .st-boss .bg .ph{animation:none}
+@media (prefers-reduced-motion:reduce){.st-boss .aura,.st-boss .rg,.av2.st-boss .bg .ph{animation:none}}
+.rh-rw{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 10px;width:100%;padding:8px 10px;border-radius:14px;background:linear-gradient(120deg,rgba(255,79,216,.16),rgba(255,211,77,.12));border:1.5px solid rgba(255,211,77,.45)}
+.rh-rw>small{width:100%;text-align:center;font-size:.68rem;font-weight:900;color:#ffd34d;letter-spacing:.08em}
+.rh-rw>b{font-size:1rem}
+.rh-rw.got{opacity:.55;filter:grayscale(.5)}
+.rh-rwav{display:inline-block;width:46px;height:46px;flex:none}
+.rh-rwav.big{width:120px;height:120px;margin:4px 0;animation:rh-rwin .7s cubic-bezier(.2,1.6,.4,1) both .5s}
+@keyframes rh-rwin{0%{transform:scale(0) rotate(-30deg);opacity:0}100%{transform:none;opacity:1}}
+.rh-rwget{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:10px;border-radius:16px;background:linear-gradient(120deg,rgba(255,211,77,.18),rgba(255,138,60,.14));border:1.5px solid rgba(255,211,77,.6)}
+.rh-rwget small{font-size:.7rem;font-weight:900;color:#ffd34d;letter-spacing:.1em}
+.rh-rwget b{font-size:1.15rem}
+.rh-rwget.av{background:linear-gradient(150deg,rgba(255,79,216,.22),rgba(58,214,255,.14));border-color:#ff4fd8;box-shadow:0 0 20px rgba(255,79,216,.35)}
+.rh-rwt{display:flex;align-items:center;gap:4px}
+/* ===== hidden bosses drawn with poses (idle / float on the beat / attack / special) ===== */
+.rhb.spr .rhs{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;z-index:3;opacity:0;pointer-events:none;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c1) 60%,transparent))}
+.rhb.spr .rhs-i{transition:none}
+.rhb.spr.f2 .rhs-i{opacity:0}.rhb.spr.f2 .rhs-f{opacity:1}
+.rhb.spr.pa .rhs-i,.rhb.spr.pa .rhs-f,.rhb.spr.ps .rhs-i,.rhb.spr.ps .rhs-f{opacity:0}
+.rhb.spr.pa .rhs-a{opacity:1;animation:rhs-atk .56s cubic-bezier(.2,1.4,.4,1)}
+.rhb.spr.ps .rhs-s{opacity:1;animation:rhs-sp 1.8s ease-out}
+.rhb.spr.pa .rhs-a~.rhs-s,.rhb.spr.pa .rhs-s{opacity:0}
+@keyframes rhs-atk{0%{transform:translateX(-10%) scale(.95)}35%{transform:translateX(14%) scale(1.15)}100%{transform:none}}
+@keyframes rhs-sp{0%{transform:scale(.8);opacity:0}12%{transform:scale(1.35);opacity:1}30%{transform:scale(1.22)}85%{transform:scale(1.25);opacity:1}100%{transform:scale(1.1);opacity:0}}
+.rh-spfx{position:absolute;pointer-events:none;z-index:5;will-change:transform,opacity}
+.rh-fxa{left:40%;top:18%;width:150px;animation:rh-fxa .6s cubic-bezier(.3,.6,.4,1) forwards}
+@keyframes rh-fxa{0%{transform:translate(-40px,10px) scale(.5) rotate(-20deg);opacity:0}25%{opacity:1}100%{transform:translate(190px,40px) scale(1.25) rotate(12deg);opacity:0}}
+.rh-bwrap{z-index:1}
+.rh-fxs{left:50%;top:48%;width:240px;margin:-120px 0 0 -120px;z-index:0;animation:rh-fxs 1.7s ease-out forwards}
+@keyframes rh-fxs{0%{transform:scale(.3);opacity:0}15%{transform:scale(1.3);opacity:.85}70%{transform:scale(1.5);opacity:.75}100%{transform:scale(1.9);opacity:0}}
+.rh-fxr{left:50%;top:22%;width:200px;margin-left:-100px;z-index:4;animation:rh-fxr 1.6s ease-out forwards}
+@keyframes rh-fxr{0%{transform:scale(.2);opacity:0}20%{opacity:1}100%{transform:scale(2.3);opacity:0}}
+@media (prefers-reduced-motion:reduce){.rh-spfx,.rhb.spr .rhs{animation:none!important}}
+.rh-iboss.spr .rhs-i{animation:rhs-blinkA 1.4s steps(1) infinite}
+.rh-iboss.spr .rhs-f{animation:rhs-blinkB 1.4s steps(1) infinite}
+@keyframes rhs-blinkA{0%{opacity:1}50%{opacity:0}}
+@keyframes rhs-blinkB{0%{opacity:0}50%{opacity:1}}
+.rh-bname{white-space:nowrap;max-width:100%}
+.rh-bname.long{font-size:.74rem;letter-spacing:.02em}
+
+/* moving SECRET boss avatar: idle / float take turns on the beat, attack and special now and then (8s loop) */
+.st-boss.mv .bg{background:radial-gradient(circle at 50% 45%,#3a1660,#0b0418 72%)}
+.av2.st-boss.mv .bg .ph{object-fit:contain;object-position:50% 50%;transform:scale(1.08);opacity:0;animation:rhmv-0 8s steps(1,end) infinite,rhmv-br 3s ease-in-out infinite}
+@keyframes rhmv-br{0%,100%{transform:scale(1.02)}50%{transform:scale(1.07) translateY(-2%)}}
+.av2.st-boss.mv .bg .ph.f1{animation-name:rhmv-1,rhmv-br}
+.av2.st-boss.mv .bg .ph.f2{animation-name:rhmv-2,rhmv-br}
+.av2.st-boss.mv .bg .ph.f3{animation-name:rhmv-3,rhmv-br}
+@keyframes rhmv-0{0%,12.5%,25%,50%,62.5%,75%{opacity:1}6.25%,18.75%,31.25%,37.5%,43.75%,56.25%,68.75%,81.25%,87.5%,93.75%{opacity:0}100%{opacity:1}}
+@keyframes rhmv-1{6.25%,18.75%,31.25%,56.25%,68.75%,81.25%{opacity:1}0%,12.5%,25%,37.5%,43.75%,50%,62.5%,75%,87.5%,93.75%{opacity:0}100%{opacity:0}}
+@keyframes rhmv-2{37.5%,43.75%{opacity:1}0%,6.25%,12.5%,18.75%,25%,31.25%,50%,56.25%,62.5%,68.75%,75%,81.25%,87.5%,93.75%{opacity:0}100%{opacity:0}}
+@keyframes rhmv-3{87.5%,93.75%{opacity:1}0%,6.25%,12.5%,18.75%,25%,31.25%,37.5%,43.75%,50%,56.25%,62.5%,68.75%,75%,81.25%{opacity:0}100%{opacity:0}}
+.still .st-boss.mv .bg .ph{animation:none}.still .st-boss.mv .bg .ph.f0{opacity:1}
+@media (prefers-reduced-motion:reduce){.av2.st-boss.mv .bg .ph{animation:none}.av2.st-boss.mv .bg .ph.f0{opacity:1}}
+.rh-rwget.sec{border-color:#ffe27a;box-shadow:0 0 26px rgba(255,226,122,.45),inset 0 0 18px rgba(123,47,247,.35);background:linear-gradient(150deg,rgba(123,47,247,.3),rgba(255,31,75,.18))}
+
 </style>
 </head>
 <body>
@@ -3424,6 +3802,8 @@ const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bea
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
 function avHTML(s){
+  if(s && s.img && s.st==="boss"){ const mv = Array.isArray(s.mv) ? s.mv : null; // mv = pose sprites that take turns with the idle picture
+    return `<span class="av2 st-boss${mv ? " mv" : ""}"><i class="aura"></i><i class="bg"><img class="ph${mv ? " f0" : ""}" src="${s.img}" alt="" decoding="async">${mv ? mv.map((m, i) => `<img class="ph f${i + 1}" src="${m}" alt="" decoding="async">`).join("") : ""}</i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`; }
   if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp"><img class="ph" src="${s.img}" alt="" decoding="async">${["hd", "hl", "hr"].map(c => `<img class="pt ${c}" src="${s.img.replace(/\.webp$/, "_" + c + ".webp")}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
   if(!s||!s.ch) return "";
   const st=s.st||"pastel";
@@ -4477,6 +4857,8 @@ function openWardrobe(opt){
     if(t==="fx") DECO.fx.forEach(([k,l,n])=>{ const ic=el("span","gi gi-fx"); if(FXSET[k]) FXSET[k].e.slice(0,2).forEach(c=>{ const im=el("img"); im.src=F3D(c); im.alt=""; im.loading="lazy"; ic.append(im); }); else ic.textContent="🚫"; L.push({v:k,n,label:l,ic}); });
     if(t==="pat") DECO.pat.forEach(([k,l,n])=>{ const sw=el("span","dk-sw"); sw.append(el("span","pf-pat p-"+k)); L.push({v:k,n,label:l,ic:sw}); });
     if(t==="title" && typeof EAR_TITLES!=="undefined") EAR_TITLES.forEach(g=>{ L.push({v:g.id,g,label:g.n,ic:gIcon(g),sub:gOwned(g.id)?"耳トレ":g.sp}); });
+    if(t==="title" && typeof RH_TITLES!=="undefined") RH_TITLES.forEach(g=>{ L.push({v:g.id,g,label:g.n,ic:gIcon(g),sub:gOwned(g.id)?"リズムバトル":g.sp}); });
+    if(t==="av" && typeof RH_AVATARS!=="undefined") RH_AVATARS.forEach(g=>{ const own=gOwned(g.id); L.push({v:g.id,g,label:own?g.n:"？？？",ic:own?gIcon(g):el("span","gi q","？"),sub:own?"リズムバトル":g.sp}); });
     GACHA.filter(g=>g.cat===t).forEach(g=>{ L.push({v:g.id,g,label:g.r>=4&&!gOwned(g.id)?"？？？":g.n,ic: g.r>=4&&!gOwned(g.id)?el("span","gi q","？"):gIcon(g), sub: g.cat==="av"&&AV_STYLE[g.v.st]?AV_STYLE[g.v.st].jp:""}); });
     return L;
   }
@@ -5490,7 +5872,7 @@ async function openEarAll(){
   document.getElementById("earall")?.remove();
   const o = el("div", "sheet earall"); o.id = "earall"; const p = el("div", "panel"); p.setAttribute("role", "dialog"); o.append(p);
   const close = () => o.remove(); o.onclick = e => { if(e.target === o) close(); };
-  const hd = el("div", "ea-hd"); hd.append(el("b", null, "🎧 みんなの耳トレレベル")); const x = el("button", "ear-x", "×"); x.type = "button"; x.setAttribute("aria-label", "とじる"); x.onclick = close; hd.append(x); p.append(hd);
+  const hd = el("div", "ea-hd"); hd.append(el("b", null, "🎧 みんなの耳トレ・リズムバトル")); const x = el("button", "ear-x", "×"); x.type = "button"; x.setAttribute("aria-label", "とじる"); x.onclick = close; hd.append(x); p.append(hd);
   const body = el("div", "ea-body"); body.append(el("div", "empty", "よみこみ中…")); p.append(body);
   document.body.append(o);
   let rows; try{ rows = await rpc("mc_t_ear_all", { tk: TK }); }catch(e){ body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした（" + e.message + "）")); return; }
@@ -5498,7 +5880,7 @@ async function openEarAll(){
   // one row per person (the course cards of one number together)
   const groups = new Map(); T.students.forEach(s => { const k = s.num != null ? "n" + s.num : "i" + s.id; if(!groups.has(k)) groups.set(k, []); groups.get(k).push(s); });
   const co = c => { const i = COURSE_KEYS.indexOf(c); return i < 0 ? 9 : i; };
-  const ppl = [...groups.entries()].map(([k, g]) => { g.sort((a, b) => co(a.course) - co(b.course)); const r = prog.get(k) || {}; return { k, g, s:g[0], p:r.p|0, gt:r.g|0, pu:r.pu|0, gu:r.gu|0, last:r.last || "" }; });
+  const ppl = [...groups.entries()].map(([k, g]) => { g.sort((a, b) => co(a.course) - co(b.course)); const r = prog.get(k) || {}; return { k, g, s:g[0], p:r.p|0, gt:r.g|0, pu:r.pu|0, gu:r.gu|0, rh:r.r|0, ru:r.ru|0, last:r.last || "" }; });
   const PM = EAR_TRACKS.piano.levels.length, GM = EAR_TRACKS.guitar.levels.length, UM = EAR_TRACKS.piano_ura.levels.length, PB = earBase("piano");
   let sort = lsGet("mc_ea_sort") || "num";
   function draw(){
@@ -5509,11 +5891,12 @@ async function openEarAll(){
       .forEach(([a, b]) => { const c = el("div", "ea-chip"); c.append(el("small", null, a), el("b", null, b)); sum.append(c); });
     body.append(sum);
     const so = el("select", "ea-sort"); so.id = "ea-sort";
-    so.innerHTML = '<option value="num">番号順</option><option value="piano">ピアノが進んでいる順</option><option value="guitar">ギターが進んでいる順</option><option value="recent">最近やった順</option><option value="none">まだの人を上に</option>';
+    so.innerHTML = '<option value="num">番号順</option><option value="piano">ピアノが進んでいる順</option><option value="guitar">ギターが進んでいる順</option><option value="rhythm">リズムバトルが進んでいる順</option><option value="recent">最近やった順</option><option value="none">まだの人を上に</option>';
     so.value = sort; so.onchange = () => { sort = so.value; lsSet("mc_ea_sort", sort); draw(); }; body.append(so);
     const arr = ppl.slice();
     if(sort === "piano") arr.sort((a, b) => (b.p + b.pu) - (a.p + a.pu) || numSort(a.s, b.s));
     else if(sort === "guitar") arr.sort((a, b) => (b.gt + b.gu) - (a.gt + a.gu) || numSort(a.s, b.s));
+    else if(sort === "rhythm") arr.sort((a, b) => (b.rh + b.ru) - (a.rh + a.ru) || numSort(a.s, b.s));
     else if(sort === "recent") arr.sort((a, b) => String(b.last).localeCompare(String(a.last)) || numSort(a.s, b.s));
     else if(sort === "none") arr.sort((a, b) => (a.p + a.gt) - (b.p + b.gt) || numSort(a.s, b.s));
     else arr.sort((a, b) => numSort(a.s, b.s));
@@ -5534,6 +5917,11 @@ async function openEarAll(){
         return w;
       };
       r.append(tr("🎹", x.p, PM, x.pu, "piano"), tr("🎸", x.gt, GM, x.gu, "guitar"));
+      if(typeof RH_LEVELS !== "undefined"){ const RL = RH_LEVELS.rhythm.levels, RM = RL.length, w = el("div", "ea-tr" + (x.rh >= RM ? " all" : "") + (!x.rh ? " zero" : ""));
+        const bar = el("span", "ea-bar"); const f = el("i"); f.style.transform = "scaleX(" + (x.rh / RM) + ")"; bar.append(f);
+        w.append(el("span", "ea-ic", "🥁"), el("b", "ea-lv", x.rh ? "Lv" + x.rh : "—"), bar, el("small", null, x.rh >= RM ? "🏆 ボス全部たおした" : x.rh ? RL[x.rh].boss + " とたたかい中" : "まだ"));
+        if(x.rh >= RM) w.append(el("span", "ea-ura" + (x.ru >= RH_LEVELS.rhythm_ura.levels.length ? " all" : ""), "🌑 裏 " + x.ru + "/" + RH_LEVELS.rhythm_ura.levels.length));
+        r.append(w); }
       if(x.last) r.append(el("small", "ea-last", "最後にクリア：" + x.last.slice(5).replace("-", "/")));
       r.onclick = () => { close(); const open = x.s; T.sel = open.id; T.detail = null; T.sAssign = []; T.confirmDel = null; T.confirmStu = false; T.ym = nowYM(); tRender(); tLoadStudent(); setTimeout(() => document.getElementById("t-ear")?.scrollIntoView({ block:"center" }), 900); };
       list.append(r);
@@ -5543,12 +5931,528 @@ async function openEarAll(){
   }
   draw();
 }
+/* ================= RHYTHM BOSS BATTLE: bosses and rhythms ================= */
+/* a bar is a string of tokens (durations in quarter notes):
+   w=4 h=2 q=1 e=.5 s=.25 t=1/3 (triplet eighth) ; "." after = dotted ; "r" after = rest ; "~" after = tied to the next note (the next one is not tapped) */
+const RH_DUR = { w:4, h:2, q:1, e:.5, s:.25, t:1/3 };
+function rhParse(bar){
+  let pos = 0, tie = false; const out = [];
+  bar.trim().split(/\s+/).forEach(tok => {
+    const m = /^([whqest])(\.?)(r?)(~?)$/.exec(tok); if(!m) throw new Error("bad token " + tok);
+    const d = RH_DUR[m[1]] * (m[2] ? 1.5 : 1);
+    out.push({ k:m[1], dot:!!m[2], rest:!!m[3], tieNext:!!m[4], tied:tie, at:pos, d });
+    tie = !!m[4]; pos += d;
+  });
+  out.len = pos; return out;
+}
+const RH_LEVELS = {
+  rhythm: { name:"リズムバトル", title:"g_ti_rh_y", levels:[
+    { n:"四分音符", boss:"グラル", art:"rhb1.webp", P:[["顔",.45,.5]], col:["#b39dff","#f0abfc"], ic:"1f47b", bpm:76, bar:4, A:["q q q q"], B:["q q q q"], tip:"「タン・タン・タン・タン」。まずは拍にぴったり合わせよう" },
+    { n:"休符", boss:"バルガ", art:"rhb2.webp", P:[["角",.36,.2,1],["本体",.5,.6]], col:["#ff4d6d","#7b2cbf"], ic:"1f987", bpm:80, bar:4, A:["q q q qr","q qr q q","q q qr q"], B:["qr q qr q","q qr qr q","qr q q q"], tip:"休符はたたかない！ 心の中で「ウン」と数えよう" },
+    { n:"長い音", boss:"ドゥーム", art:"rhb3.webp", P:[["剣",.3,.65,2],["兜",.5,.25]], col:["#3ddc84","#00b4d8"], ic:"1f422", bpm:84, bar:4, A:["h h","h q q","q q h"], B:["w","h. q","q h q","qr q h"], tip:"二分音符は2拍、全音符は4拍。たたいたら、そのまま待つ" },
+    { n:"八分音符", boss:"アラクネ", art:"rhb4.webp", P:[["脚",.2,.65,1],["糸",.8,.2,3],["目",.5,.43]], col:["#ffd166","#ff8fab"], ic:"1f42d", bpm:80, bar:4, A:["e e q e e q","q q e e q","e e e e q q"], B:["e e e e e e q","q e e e e q","e e q e e e e"], tip:"1拍に2つ。「タタ・タン」" },
+    { n:"うら拍", boss:"ゴルザ", art:"rhb5.webp", P:[["右こぶし",.75,.6,2],["角",.45,.13,4],["胸のコア",.46,.45]], col:["#80ed99","#ffd60a"], ic:"1f438", bpm:76, bar:4, A:["er e q er e q","q er e q q","er e er e q q"], B:["er e er e er e q","q er e er e q","er e e e er e q"], tip:"「ウン・タ」。拍の“あいだ”でたたく" },
+    { n:"付点のリズム", boss:"ヴァルド", art:"rhb6.webp", P:[["翼",.77,.23,4],["鱗",.5,.72,5],["頭",.21,.45]], col:["#9ef01a","#7209b7"], ic:"1f40d", bpm:80, bar:4, A:["q. e q q","q. e h","q q q. e"], B:["q. e q. e","h q. e","q. e e e q"], tip:"「ターンタ」。長い・短いをはっきり" },
+    { n:"スキップ", boss:"セラフィム", art:"rhb7.webp", P:[["左の翼",.2,.4,3],["右の翼",.8,.4,5],["光の輪",.5,.12,6],["本体",.5,.5]], col:["#ffafcc","#a2d2ff"], ic:"1f430", bpm:72, bar:4, A:["e. s e. s q q","q e. s q e. s"], B:["e. s e. s e. s e. s","e. s q e. s q"], tip:"「タッタ・タッタ」。はねるように" },
+    { n:"十六分音符", boss:"リヴァイア", art:"rhb8.webp", P:[["触手",.15,.72,4],["触手",.8,.55,6],["王冠",.41,.15,7],["口",.5,.42]], col:["#ffd000","#ff6d00"], ic:"1f41d", bpm:66, bar:4, A:["s s s s q q q","q s s s s q q","e e s s s s q q"], B:["s s s s s s s s q q","s s e s s e q q","e s s q s s e q"], tip:"1拍に4つ。「タカタカ」" },
+    { n:"三連符", boss:"アポカリプス", art:"rhb9.webp", P:[["左手",.13,.5,5],["右手",.85,.5,7],["光輪",.5,.2,8],["胸のコア",.5,.55]], col:["#4cc9f0","#7209b7"], ic:"1f43a", bpm:66, bar:4, A:["t t t q t t t q","q t t t q q","t t t t t t q q"], B:["t t t t t t t t t q","q t t t t t t q","t t t q t t t t t t"], tip:"1拍に3つ。「タタタ」と均等に" },
+    { n:"シンコペーション", boss:"ヒドラ", art:"rhb10.webp", P:[["左の首",.16,.33,6],["右の首",.85,.31,7],["中央の首",.5,.18,8],["鱗",.5,.72,9],["心臓",.5,.5]], col:["#ff3d3d","#ffd34d"], ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。5つの首をこわせ、ラスボス！" }
+  ]},
+  rhythm_ura: { name:"裏ボス", title:"g_ti_rh_u", parent:"rhythm", ura:true, levels:[
+    { n:"5拍子", boss:"鬼神・焔魔王", art:"rhu1_idle.webp", hp:[.6,.8], spr:{ f:"rhu1_float.webp", a:"rhu1_attack.webp", s:"rhu1_special.webp", fxa:"rhu_fx1_atk.webp", fxs:"rhu_fx1_sp.webp" }, P:[["角",.79,.13,0],["数珠",.48,.6]], col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
+    { n:"7拍子", boss:"宇宙創造神・アストラル", art:"rhu2_idle.webp", hp:[.6,.8], spr:{ f:"rhu2_float.webp", a:"rhu2_attack.webp", s:"rhu2_special.webp", fxa:"rhu_fx2_atk.webp", fxs:"rhu_fx2_sp.webp", fxr:"rhu_fx2_ring.webp" }, P:[["光輪",.33,.1,0],["星の瞳",.49,.37]], col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
+  ]}
+};
+/* a boss has 1-5 weak points ("parts"). each part is attacked with its own rhythm:
+   P:[name, x, y, topic] - x/y = where it is on the boss picture (0..1); topic = the level whose rhythms this part uses
+   (0 = this level's calm rhythms). the last part is the core: it uses this level's own rhythms and makes the boss angry. */
+function rhParts(L){
+  const P = L.P || [["本体", .5, .5]], base = RH_LEVELS.rhythm.levels;
+  return P.map((p, i) => { const core = i === P.length - 1, tp = p[3];
+    const src = core || tp === 0 || tp == null ? L : base[tp - 1];
+    return { nm:p[0], x:p[1], y:p[2], core, topic:src.n, pool:core ? null : (src === L ? L.A : src.A.concat(src.B)) }; });
+}
+// one battle: every part gets 2 bars of its rhythm; the core gets calm bars then angry bars
+function rhMakeChart(L){
+  const pick = (pool, prev) => { const c = pool.filter(p => p !== prev); return (c.length ? c : pool)[(Math.random() * (c.length || pool.length)) | 0]; };
+  const parts = rhParts(L), bars = []; let prev = null;
+  const add = (pool, pi, angry) => { prev = pick(pool, prev); const b = rhParse(prev); b.pi = pi; b.B = angry; bars.push(b); };
+  parts.forEach((p, pi) => {
+    if(!p.core){ for(let k = 0; k < 2; k++) add(p.pool, pi, false); return; }
+    const k = parts.length === 1 ? 3 : 2;
+    for(let j = 0; j < k; j++) add(L.A, pi, false);
+    for(let j = 0; j < k; j++) add(L.B, pi, true);
+  });
+  bars.parts = parts; return bars;
+}
+/* ================= RHYTHM BOSS BATTLE: screens ================= */
+const RH_TITLES = [
+  { id:"g_ti_rh_y", r:3, cat:"title", v:"リズム勇者", n:"しょうごう", sp:"リズムバトルのボスを全部たおす" },
+  { id:"g_ti_rh_u", r:4, cat:"title", v:"変拍子の支配者", n:"しょうごう", sp:"リズムバトルの裏ボスを全部たおす" }
+];
+RH_TITLES.forEach(t => { GITEM[t.id] = t; });
+// beating a boss the first time: Lv1-5 = 10 gacha tickets, Lv6-10 = that boss as a UR avatar (never in the gacha)
+const RH_AVATARS = RH_LEVELS.rhythm.levels.map((L, i) => i >= 5 ? { id:"g_av_rh" + (i + 1), r:4, cat:"av", v:{ img:L.art, st:"boss" }, n:L.boss, sp:"リズムバトル Lv" + (i + 1) + " " + L.boss + "をたおす" } : null).filter(Boolean);
+// hidden bosses: 10 tickets + the boss as a moving SECRET avatar (its pose sprites take turns)
+RH_LEVELS.rhythm_ura.levels.forEach((L, i) => RH_AVATARS.push({ id:"g_av_rhu" + (i + 1), r:5, cat:"av", v:{ img:L.art, mv:[L.spr.f, L.spr.a, L.spr.s], st:"boss" }, n:L.boss, sp:"裏ボス" + (i + 1) + " " + L.boss + "をたおす" }));
+RH_AVATARS.forEach(a => { GITEM[a.id] = a; });
+const rhReward = (tr, lv) => tr === "rhythm_ura" ? { t:10, av:"g_av_rhu" + lv } : tr !== "rhythm" ? null : lv <= 5 ? { t:10 } : { av:"g_av_rh" + lv };
+const Rh = { prog:{ rhythm:{}, rhythm_ura:{} }, best:{} };
+const RH_PERFECT = .055, RH_GOOD = .12;
+const rhDone = tr => Object.keys(Rh.prog[tr] || {}).length;
+const rhMax = tr => RH_LEVELS[tr].levels.length;
+const rhAll = tr => rhDone(tr) >= rhMax(tr);
+const rhOpen = (tr, lv) => (!RH_LEVELS[tr].parent || rhAll(RH_LEVELS[tr].parent)) && (lv === 1 || !!(Rh.prog[tr] || {})[lv - 1] || rhAll(tr));
+const rhBest = (tr, lv) => Rh.best[tr + ":" + lv] || null;
+const rhLat = () => { const v = parseFloat(lsGet("mc_rh_lat")); return isFinite(v) ? v : null; };
+async function rhFetch(){ try{ const r = await rpc("mc_s_rh", { sk: SK }); if(r){ Rh.prog = { rhythm:(r.prog && r.prog.rhythm) || {}, rhythm_ura:(r.prog && r.prog.rhythm_ura) || {} }; Rh.best = r.best || {}; } }catch(e){} }
+
+/* ---------- sounds (short synth hits; the context is the ear-training one) ---------- */
+function rhClick(t, accent){
+  const c = earCtx(); if(!c) return; const o = c.createOscillator(), g = c.createGain();
+  o.type = "square"; o.frequency.value = accent ? 1760 : 1175;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(accent ? .16 : .09, t + .002); g.gain.exponentialRampToValueAtTime(.0008, t + .06);
+  o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .08);
+}
+function rhDrum(kind){
+  const c = earCtx(); if(!c) return; const t = c.currentTime + .005; const o = c.createOscillator(), g = c.createGain();
+  if(kind === "miss"){ o.type = "sawtooth"; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(70, t + .2); g.gain.setValueAtTime(.1, t); g.gain.exponentialRampToValueAtTime(.0008, t + .25); }
+  else { o.type = "sine"; o.frequency.setValueAtTime(kind === "perfect" ? 190 : 150, t); o.frequency.exponentialRampToValueAtTime(48, t + .14); g.gain.setValueAtTime(kind === "perfect" ? .5 : .38, t); g.gain.exponentialRampToValueAtTime(.0008, t + .2); }
+  o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .3);
+}
+
+/* ---------- notation: one bar as an svg (x is proportional to time, so a cursor can run over it) ---------- */
+const RH_W = 340, RH_PAD = 22, RH_Y = 58, RH_TOP = 22;
+function rhX(at, len){ return RH_PAD + at / len * (RH_W - RH_PAD * 2); }
+function rhBarSVG(bar, L){
+  const len = bar.len, xs = [], parts = [];
+  const groupOf = at => { if(L.unit === "e" && L.accents){ let g = 0; L.accents.forEach((a, i) => { if(at >= a - 1e-6) g = i; }); return g; } return Math.floor(at + 1e-6); };
+  const beamable = n => !n.rest && (n.k === "e" || n.k === "s" || n.k === "t");
+  // the beam groups
+  const groups = []; let cur = null;
+  bar.forEach((n, i) => { if(beamable(n)){ const g = groupOf(n.at); if(cur && cur.g === g && cur.last === i - 1){ cur.ids.push(i); cur.last = i; } else { cur = { g, ids:[i], last:i }; groups.push(cur); } } else cur = null; });
+  const inBeam = new Set(); groups.forEach(G => { if(G.ids.length > 1) G.ids.forEach(i => inBeam.add(i)); });
+  parts.push(`<line x1="6" x2="${RH_W - 6}" y1="${RH_Y}" y2="${RH_Y}" stroke="currentColor" stroke-opacity=".35" stroke-width="1.4"/>`);
+  bar.forEach((n, i) => {
+    const x = rhX(n.at, len); xs.push(x);
+    if(n.rest){
+      if(n.k === "w") parts.push(`<rect x="${x - 7}" y="${RH_Y}" width="14" height="6" fill="currentColor"/>`);
+      else if(n.k === "h") parts.push(`<rect x="${x - 7}" y="${RH_Y - 6}" width="14" height="6" fill="currentColor"/>`);
+      else if(n.k === "q") parts.push(`<path d="M${x - 2} ${RH_Y - 20} l6 7 l-6 6 l6 7 q-9 -3 -4 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`);
+      else { const two = n.k === "s"; parts.push(`<circle cx="${x - 3}" cy="${RH_Y - 10}" r="2.8" fill="currentColor"/><path d="M${x - 3} ${RH_Y - 8} q5 1 7 -3 l-6 16" fill="none" stroke="currentColor" stroke-width="1.8"/>` + (two ? `<circle cx="${x - 5}" cy="${RH_Y - 3}" r="2.6" fill="currentColor"/>` : "")); }
+      if(n.dot) parts.push(`<circle cx="${x + 10}" cy="${RH_Y - 6}" r="2" fill="currentColor"/>`);
+      return;
+    }
+    const hollow = n.k === "h" || n.k === "w";
+    parts.push(`<ellipse class="rh-n" data-i="${i}" cx="${x}" cy="${RH_Y}" rx="7" ry="5.2" transform="rotate(-20 ${x} ${RH_Y})" fill="${hollow ? "none" : "currentColor"}" stroke="currentColor" stroke-width="${hollow ? 2.4 : 1}"/>`);
+    if(n.k !== "w") parts.push(`<line x1="${x + 6}" x2="${x + 6}" y1="${RH_Y - 2}" y2="${RH_TOP}" stroke="currentColor" stroke-width="1.8"/>`);
+    if(n.dot) parts.push(`<circle cx="${x + 12}" cy="${RH_Y - 2}" r="2.2" fill="currentColor"/>`);
+    if(!inBeam.has(i) && (n.k === "e" || n.k === "s" || n.k === "t")){ parts.push(`<path d="M${x + 6} ${RH_TOP} q9 7 4 20" fill="none" stroke="currentColor" stroke-width="2.4"/>`); if(n.k === "s") parts.push(`<path d="M${x + 6} ${RH_TOP + 7} q9 7 4 20" fill="none" stroke="currentColor" stroke-width="2.4"/>`); }
+    if(n.tieNext && bar[i + 1]) parts.push(`<path d="M${x + 4} ${RH_Y + 8} Q${(x + rhX(bar[i + 1].at, len)) / 2} ${RH_Y + 20} ${rhX(bar[i + 1].at, len) - 4} ${RH_Y + 8}" fill="none" stroke="currentColor" stroke-width="2"/>`);
+  });
+  // beams (and the second beam of sixteenths, and the 3 of triplets)
+  groups.filter(G => G.ids.length > 1).forEach(G => {
+    const a = xs[G.ids[0]] + 6, b = xs[G.ids[G.ids.length - 1]] + 6;
+    parts.push(`<rect x="${a - .9}" y="${RH_TOP - 1}" width="${b - a + 1.8}" height="5" fill="currentColor"/>`);
+    G.ids.forEach((i, j) => { if(bar[i].k !== "s") return; const nx = G.ids[j + 1], pv = G.ids[j - 1];
+      if(nx != null && bar[nx].k === "s") parts.push(`<rect x="${xs[i] + 5}" y="${RH_TOP + 6}" width="${xs[nx] - xs[i] + 2}" height="4.5" fill="currentColor"/>`);
+      else if(!(pv != null && bar[pv].k === "s")){ const toL = nx == null; parts.push(`<rect x="${toL ? xs[i] - 4 : xs[i] + 5}" y="${RH_TOP + 6}" width="10" height="4.5" fill="currentColor"/>`); } });
+    if(bar[G.ids[0]].k === "t") parts.push(`<text x="${(a + b) / 2}" y="${RH_TOP - 5}" text-anchor="middle" font-size="12" font-weight="900" fill="currentColor">3</text>`);
+  });
+  // single triplet groups that were not beamed still show the 3
+  return { svg:`<svg class="rh-bar" viewBox="0 0 ${RH_W} 90" preserveAspectRatio="none" aria-hidden="true">${parts.join("")}</svg>`, xs };
+}
+const rhTimeSig = L => L.unit === "e" ? [L.bar * 2, 8] : [L.bar, 4];
+
+/* ---------- a boss drawn like a rare item: aura, spinning rings, rays, sparkles (stronger bosses get more) ---------- */
+function rhBoss(L, lv, cls){
+  const tier = L.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1, c = L.col || ["#ff8a3c", "#ff3d6e"];
+  const w = el("span", "rhb t" + tier + (cls ? " " + cls : "")); w.style.setProperty("--c1", c[0]); w.style.setProperty("--c2", c[1]);
+  w.append(el("i", "rhb-aura"));
+  if(tier >= 2) w.append(el("i", "rhb-rays"));
+  w.append(el("i", "rhb-ring"));
+  if(tier >= 3) w.append(el("i", "rhb-ring2"));
+  if(L.art) w.classList.add("art");
+  const im = L.art ? el("img", "rhb-img") : earImg(L.ic, "rhb-img"); if(L.art){ im.src = L.art; im.alt = ""; im.decoding = "async"; } w.append(im);
+  // a boss with poses (idle / float / attack / special): all pictures stacked, css shows one
+  if(L.spr && cls && /\b(big|rh-iboss)\b/.test(cls)){ w.classList.add("spr"); im.classList.add("rhs-i");
+    [["f", L.spr.f], ["a", L.spr.a], ["s", L.spr.s]].forEach(([k, src]) => { const p = el("img", "rhs rhs-" + k); p.src = src; p.alt = ""; p.decoding = "async"; w.append(p); }); }
+  for(let i = 0; i < (tier >= 3 ? 4 : tier >= 2 ? 2 : 0); i++) w.append(el("i", "rhb-tw s" + i));
+  if(tier >= 4) w.append(el("i", "rhb-orbit"));
+  return w;
+}
+
+// a small round icon of a boss (its picture, or its emoji)
+function rhIc(L, cls){ if(!L.art) return earImg(L.ic, cls); const i = el("img", "rh-ic" + (cls ? " " + cls : "")); i.src = L.art; i.alt = ""; i.decoding = "async"; return i; }
+/* ---------- the card on the student page ---------- */
+function rhCard(){
+  const box = el("section", "card earc rhc"); box.id = "rh-card";
+  const top = el("div", "earc-top"); const t = el("div", "earc-t"); t.append(el("b", null, "リズムバトル"), el("small", null, "リズムでボスをたおそう"));
+  const d = rhDone("rhythm"), m = rhMax("rhythm");
+  top.append(earImg("1f941", "earc-ic"), t, el("span", "earc-n", "⚔ " + d + "/" + m)); box.append(top);
+  const row = (tr) => { const T = RH_LEVELS[tr], dd = rhDone(tr), mm = rhMax(tr), nx = dd < mm ? T.levels[dd] : null;
+    const r = el("button", "earc-row" + (T.ura ? " ura" : "")); r.type = "button"; r.dataset.track = tr;
+    const bar = el("span", "earc-bar"); const fill = el("i"); fill.style.transform = "scaleX(" + (dd / mm) + ")"; bar.append(fill);
+    const nm = el("span", "earc-nm"); nm.append(el("b", null, T.ura ? "🌑 " + T.name : "ボス"), el("small", null, !nx ? "🏆 ぜんぶたおした！" : "つぎ：" + nx.boss + "（" + nx.n + "）"));
+    r.append(nx ? rhIc(nx) : earImg(T.ura ? "1f47e" : "1f409"), nm, bar, el("span", "earc-lv", dd + "/" + mm)); r.onclick = () => openRh(tr); return r; };
+  box.append(row("rhythm")); if(rhAll("rhythm")) box.append(row("rhythm_ura"));
+  return box;
+}
+
+/* ---------- overlay / map ---------- */
+const RhS = { tab:"rhythm" };
+function openRh(tr){
+  if(tr) RhS.tab = tr;
+  document.getElementById("rh")?.remove();
+  const o = el("div", "ear-ov rh-ov"); o.id = "rh"; o.setAttribute("role", "dialog");
+  document.body.append(o);
+  try{ BGM.hold(true); }catch(err){}
+  rhMap(o); requestAnimationFrame(() => o.classList.add("in"));
+}
+function rhClose(){ rhStopRun(); const o = document.getElementById("rh"); if(o) o.remove(); try{ BGM.hold(false); }catch(err){} if(typeof stuRender === "function" && Stu.info && !busyNow()) stuRender(); }
+function rhHead(o, title, onBack){
+  const h = el("div", "ear-hd"); const b = el("button", "ear-x", onBack ? "‹" : "×"); b.type = "button"; b.setAttribute("aria-label", onBack ? "もどる" : "とじる");
+  b.onclick = onBack || rhClose; h.append(b, el("b", null, title)); o.append(h); return h;
+}
+function rhMap(o){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0;
+  let tr = RhS.tab; if(RH_LEVELS[tr].parent && !rhAll(RH_LEVELS[tr].parent)) tr = RhS.tab = "rhythm";
+  const T = RH_LEVELS[tr], ura = !!T.ura; o.classList.toggle("ura", ura);
+  rhHead(o, ura ? "🌑 裏ボス" : "🥁 リズムバトル", ura ? () => { RhS.tab = "rhythm"; rhMap(o); } : null);
+  // timing
+  const lat = rhLat(); const cal = el("button", "rh-cal" + (lat == null ? " need" : "")); cal.type = "button"; cal.id = "rh-cal";
+  cal.append(el("b", null, lat == null ? "⏱ はじめに「タイミング合わせ」をしよう" : "⏱ タイミング合わせ済み"), el("small", null, lat == null ? "スマホごとの音のおくれを調べて、判定を公平にするよ（20秒）" : "ずれ " + Math.round(lat * 1000) + "ms ・ もう一度やる"));
+  cal.onclick = () => rhCalibrate(o, () => rhMap(o)); o.append(cal);
+  // boss book
+  const book = el("div", "rh-book" + (ura ? " ura" : ""));
+  book.append(el("div", "rh-bt", (ura ? "💀 裏ボス図鑑" : "📖 ボス図鑑") + "　" + rhDone(tr) + "/" + rhMax(tr)));
+  const grid = el("div", "rh-zk");
+  T.levels.forEach((L, i) => { const lv = i + 1, d = (Rh.prog[tr] || {})[lv], b = rhBest(tr, lv);
+    const c = el("div", "rh-zi" + (d ? " got" : "") + (b && b.nm ? " gold" : "")); const im = d ? rhBoss(L, lv, "mini") : rhIc(L); if(!d) im.classList.add("sil"); c.append(im, el("small", null, d ? L.boss : "？？？")); grid.append(c); });
+  book.append(grid);
+  const tt = GITEM[T.title]; book.append(el("div", "rh-ttl" + (rhAll(tr) ? " got" : ""), rhAll(tr) ? "🏆 称号「" + tt.v + "」ゲット！" : (ura ? "裏ボスを全部たおすと" : "ボスを全部たおすと") + "称号「" + tt.v + "」"));
+  book.append(el("div", "rh-note", "👑 ミスなしでたおすと金の「完全勝利」"));
+  o.append(book);
+  // the path
+  const path = el("div", "ear-path rh-path");
+  T.levels.forEach((L, i) => { const lv = i + 1, d = (Rh.prog[tr] || {})[lv], un = rhOpen(tr, lv), cur = !d && un, b = rhBest(tr, lv);
+    const n = el("button", "ear-node rh-node" + (d ? " done" : "") + (cur ? " cur" : "") + (!un ? " lock" : "") + (i % 2 ? " r" : "")); n.type = "button"; n.dataset.lv = lv;
+    const c = el("span", "ear-dot"); const im = un ? rhBoss(L, lv, "mini" + (!d ? " rh-bob" : "")) : earImg("1f512"); c.append(im); if(b && b.nm) c.append(el("i", "rh-crown", "👑")); if(b && b.rk) c.append(el("i", "rh-rk r" + b.rk, b.rk));
+    const tx = el("span", "ear-nt"); tx.append(el("b", null, (ura ? "裏" : "Lv") + lv + " " + L.boss), el("small", null, un ? "🥁 " + L.n + (b ? " ・ ベスト " + (b.rk ? b.rk + "ランク " : "") + b.s + "点" : "") : "前のボスをたおすとあくよ"));
+    n.append(c, tx); n.onclick = () => { if(!un){ toast("前のボスをたおすとあくよ"); return; } rhIntro(o, tr, lv); }; path.append(n); });
+  o.append(path);
+  if(!ura){ const open = rhAll("rhythm"); const door = el("button", "ear-door" + (open ? " open" : "")); door.type = "button"; door.id = "rh-ura";
+    const dd = el("span", "ear-dot"); dd.append(earImg(open ? "1f311" : "1f512"));
+    const dt = el("span", "ear-nt"); dt.append(el("b", null, open ? "🌑 裏ボス" : "？？？"), el("small", null, open ? "5拍子と7拍子のボス（" + rhDone("rhythm_ura") + "/" + rhMax("rhythm_ura") + "）" : "ボスを全部たおすと、なにかが起きる…"));
+    door.append(dd, dt); door.onclick = () => { if(!open){ toast("ボスを全部たおすと…？"); return; } RhS.tab = "rhythm_ura"; rhMap(o); }; o.append(door); }
+  setTimeout(() => { const c = o.querySelector(".ear-node.cur"); if(c && c.offsetTop > innerHeight * .6) o.scrollTo({ top: c.offsetTop - innerHeight * .4, behavior: "smooth" }); }, 60);
+}
+
+/* ---------- timing calibration: tap along with 8 clicks ---------- */
+let RhRun = null;
+function rhStopRun(){ if(RhRun){ RhRun.stop = true; cancelAnimationFrame(RhRun.raf); if(RhRun.off) RhRun.off(); RhRun = null; } }
+function rhCalibrate(o, done){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; rhHead(o, "⏱ タイミング合わせ", done);
+  const box = el("div", "ear-intro rh-calbox");
+  box.append(el("h2", null, "「カッ」に合わせてタップ"), el("p", "ear-tip", "4回きいてから、8回タップしてね。スマホの音のおくれを調べて、判定を公平にするよ。イヤホンを使う子は、イヤホンをつけたままやってね。"));
+  const dots = el("div", "rh-cdots"); for(let i = 0; i < 8; i++) dots.append(el("i")); box.append(dots);
+  const pad = el("button", "rh-pad", "スタート"); pad.type = "button"; pad.id = "rh-calpad"; box.append(pad);
+  const msg = el("p", "ear-load"); box.append(msg); o.append(box);
+  let st = null;
+  pad.onpointerdown = e => { e.preventDefault();
+    const c = earCtx(); if(!c) return;
+    if(!st){ const spb = 60 / 96, t0 = c.currentTime + .4; st = { t0, spb, taps:[] }; for(let i = 0; i < 12; i++) rhClick(t0 + i * spb, i % 4 === 0); pad.textContent = "きいて…"; setTimeout(() => { if(st) pad.textContent = "タップ！"; }, (.4 + 4 * spb) * 1000); return; }
+    const now = c.currentTime; if(now < st.t0 + 3.5 * st.spb) return;
+    const k = Math.round((now - st.t0) / st.spb); const dt = now - (st.t0 + k * st.spb); if(k < 4 || k > 11) return;
+    st.taps.push(dt); rhDrum("good"); dots.children[Math.min(7, st.taps.length - 1)].classList.add("on");
+    if(st.taps.length >= 8){ const s = st.taps.slice().sort((a, b) => a - b); const med = (s[3] + s[4]) / 2; const v = Math.max(-.15, Math.min(.3, med));
+      lsSet("mc_rh_lat", String(v)); pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
+  };
+}
+
+/* ---------- before a battle ---------- */
+function rhIntro(o, tr, lv){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; const T = RH_LEVELS[tr], L = T.levels[lv - 1];
+  rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => rhMap(o));
+  const card = el("div", "ear-intro rh-intro");
+  const bi = rhBoss(L, lv, "rh-iboss"); card.append(bi, el("h2", null, L.boss + "があらわれた！"), el("p", "rh-rh", "🥁 " + L.n + " ・ ♩=" + L.bpm + " ・ " + rhTimeSig(L).join("/") + "拍子"), el("p", "ear-tip", L.tip));
+  // the weak points, in order, with their rhythms
+  const parts = rhParts(L), rt = el("div", "rh-route"); rt.append(el("b", null, parts.length > 1 ? "🎯 こわす場所 " + parts.length + "か所" : "🎯 ねらう場所"));
+  const ol = el("ol"); parts.forEach((p, i) => { const li = el("li", p.core ? "core" : null); li.append(el("i", null, p.core ? "💀" : String(i + 1)), el("b", null, p.nm), el("small", null, p.topic)); ol.append(li); }); rt.append(ol); card.append(rt);
+  const rw = rhReward(tr, lv), beaten = !!(Rh.prog[tr] || {})[lv];
+  if(rw){ const box = el("div", "rh-rw" + (beaten ? " got" : "")); box.append(el("small", null, beaten ? "初回クリア報酬（ゲット済み）" : "🎁 初回クリア報酬"));
+    if(rw.t) box.append(el("b", null, "🎟 ガチャチケ ×" + rw.t + (rw.av ? " ＋" : "")));
+    if(rw.av && GITEM[rw.av]){ const g = GITEM[rw.av], ic = el("span", "rh-rwav"); ic.innerHTML = avHTML(g.v); const t = el("span"); t.append(rarBadge(g.r), el("b", null, " アバター「" + g.n + "」")); box.append(ic, t); }
+    card.append(box); }
+  // a sample bar of this level
+  const sm = rhBarSVG(rhParse(L.A[0]), L); const sw = el("div", "rh-sample"); sw.innerHTML = sm.svg; card.append(sw);
+  const lis = el("button", "ear-sm", "🔊 お手本をきく"); lis.type = "button"; lis.onclick = () => rhDemo(L, rhParse(L.A[0])); card.append(lis);
+  card.append(el("p", "ear-how", "📜 ルール\nねらう場所ごとにリズムが変わるよ。パーフェクト＝大ダメージ、グッド＝小ダメージ。こわしきれないとボスが守りをかためて、最後の" + parts[parts.length - 1].nm + "がかたくなる！ ミスやよけいなタップでハートが減るよ（3つ）。10コンボで必殺技！"));
+  const go = el("button", "ear-go", "⚔ たたかう"); go.type = "button"; go.id = "rh-start";
+  go.onclick = () => { earCtx(); if(rhLat() == null){ toast("先に「タイミング合わせ」をしよう"); rhCalibrate(o, () => rhIntro(o, tr, lv)); return; } rhBattle(o, tr, lv); };
+  card.append(go); o.append(card);
+}
+function rhDemo(L, bar){ const c = earCtx(); if(!c) return; const spb = 60 / L.bpm, t0 = c.currentTime + .2;
+  const beats = rhClickTimes(L); beats.forEach(b => rhClick(t0 + b.at * spb, b.acc));
+  bar.forEach(n => { if(n.rest || n.tied) return; const t = t0 + n.at * spb; const os = c.createOscillator(), g = c.createGain(); os.type = "sine"; os.frequency.setValueAtTime(170, t); os.frequency.exponentialRampToValueAtTime(50, t + .13); g.gain.setValueAtTime(.45, t); g.gain.exponentialRampToValueAtTime(.0008, t + .18); os.connect(g); g.connect(EarA.out); os.start(t); os.stop(t + .25); }); }
+// metronome positions inside one bar
+function rhClickTimes(L){ if(L.unit === "e") return L.accents.map((a, i) => ({ at:a, acc:i === 0 })); return Array.from({ length:Math.round(L.bar) }, (_, i) => ({ at:i, acc:i === 0 })); }
+
+/* ---------- the battle ---------- */
+// little sparkle on top of a hit, and a rising chime for combo milestones
+function rhPing(f, t0, vol){ const c = earCtx(); if(!c) return; const t = c.currentTime + (t0 || 0) + .005; const o = c.createOscillator(), g = c.createGain(); o.type = "triangle"; o.frequency.value = f;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol || .07, t + .004); g.gain.exponentialRampToValueAtTime(.0008, t + .22); o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .25); }
+function rhChime(n){ [0, .07, .14, .21].slice(0, n).forEach((d, i) => rhPing([1047, 1319, 1568, 2093][i], d, .08)); }
+const rhRank = R => { const r = (R.p + R.g * .5) / Math.max(1, R.p + R.g + R.m); return R.m === 0 && r >= .9 ? "S" : r >= .8 ? "A" : r >= .6 ? "B" : "C"; };
+// a crunch when a weak point breaks
+function rhCrash(){ const c = earCtx(); if(!c) return; const t = c.currentTime + .005;
+  const n = Math.floor(c.sampleRate * .35), buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0); for(let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.2);
+  const src = c.createBufferSource(); src.buffer = buf; const f = c.createBiquadFilter(); f.type = "bandpass"; f.Q.value = 1.2; f.frequency.setValueAtTime(3800, t); f.frequency.exponentialRampToValueAtTime(500, t + .3);
+  const g = c.createGain(); g.gain.value = .55; src.connect(f); f.connect(g); g.connect(EarA.out); src.start(t);
+  const o = c.createOscillator(), og = c.createGain(); o.type = "sine"; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(40, t + .25); og.gain.setValueAtTime(.5, t); og.gain.exponentialRampToValueAtTime(.0008, t + .3); o.connect(og); og.connect(EarA.out); o.start(t); o.stop(t + .32);
+  [0, .06, .12].forEach((dl, i) => rhPing([2637, 3136, 3951][i], .05 + dl, .05)); }
+// a crack drawn over a weak point (3 rays first, then all of them)
+const RH_CRACK = '<svg class="wk-cr" viewBox="-50 -50 100 100"><g class="k1"><polyline points="0,0 -8,-14 -6,-26 -16,-40"/><polyline points="0,0 15,-6 26,-2 40,-12"/><polyline points="0,0 4,16 -4,28 2,42"/></g><g class="k2"><polyline points="0,0 -16,4 -28,0 -42,8"/><polyline points="0,0 10,-18 22,-30"/><polyline points="0,0 14,12 24,26 36,30"/><polyline points="-8,-14 -20,-18"/><polyline points="4,16 16,22"/></g></svg>';
+// normal bosses forgive a miss or two; hidden bosses (L.hp) want near-perfect play
+const RH_PART_HP = .35, RH_CORE_HP = .5;
+function rhBattle(o, tr, lv){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.add("playing"); o.classList.remove("angry", "fever");
+  const T = RH_LEVELS[tr], L = T.levels[lv - 1], chart = rhMakeChart(L), c = earCtx();
+  const spb = 60 / L.bpm, barSec = L.bar * spb, lat = rhLat() || 0;
+  const parts = chart.parts.map(p => Object.assign({}, p, { hp:0, max:0, br:false, gd:false })), core = parts[parts.length - 1];
+  const R = { hp:0, max:0, hearts:3, combo:0, maxCombo:0, p:0, g:0, m:0, done:false, angry:false, n:0, br:0, np:parts.length - 1, parts };
+  RhRun = { stop:false, raf:0 };
+  const h = rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => { if(!R.done && !h.dataset.ok){ h.dataset.ok = "1"; toast("もう一度おすとにげます"); setTimeout(() => delete h.dataset.ok, 2500); return; } rhStopRun(); o.classList.remove("playing", "angry", "fever"); rhMap(o); });
+  // the field: the boss on the left, you on the right
+  const field = el("div", "rh-field");
+  const boss = el("div", "rh-boss"); const bw = el("div", "rh-bwrap"); const bimg = rhBoss(L, lv, "big rh-bimg"); const bflash = el("i", "rh-bflash"); const bshadow = el("i", "rh-bshadow");
+  // weak points on the boss
+  const tg = el("div", "rh-tg"); const wk = parts.map(p => { const m = el("span", "rh-wk" + (p.core ? " core" : "")); m.style.left = p.x * 100 + "%"; m.style.top = p.y * 100 + "%"; m.innerHTML = RH_CRACK + '<i class="wk-hole"></i><i class="wk-r"></i><i class="wk-x"></i>'; tg.append(m); return m; });
+  bimg.append(tg);
+  bw.append(bimg, bflash); boss.append(bshadow, bw);
+  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"), hpl = el("b", "rh-hpl"); hpb.append(hpg, hpf, hpl); const plate = el("b", "rh-bname t" + (T.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1) + (L.boss.length > 7 ? " long" : "")); plate.append(el("small", null, T.ura ? "裏BOSS" : "BOSS " + lv), document.createTextNode(L.boss)); plate.style.setProperty("--c1", (L.col || [])[0] || "#ff8a3c"); plate.style.setProperty("--c2", (L.col || [])[1] || "#ff3d6e"); boss.append(plate, hpb);
+  const pp = el("div", "rh-pp"); const pips = parts.map(p => { const x = el("span", p.core ? "core" : null, (p.core ? "💀" : "") + p.nm); pp.append(x); return x; }); if(parts.length > 1) boss.append(pp);
+  const pop = el("div", "rh-pop"); boss.append(pop);
+  const bub = el("div", "rh-bub"); boss.append(bub);
+  const talk = (t, ms) => { bub.textContent = t; again(bub, "on"); clearTimeout(bub._t); bub._t = setTimeout(() => bub.classList.remove("on"), ms || 1600); };
+  const me = el("div", "rh-me"); const hearts = el("div", "rh-hearts"); for(let i = 0; i < 3; i++) hearts.append(earImg("2764-fe0f"));
+  const cbox = el("div", "rh-cbox"); const cn = el("b", "rh-cn"); const cl = el("small", "rh-cl"); cbox.append(cn, cl); me.append(hearts, cbox);
+  const slash = el("i", "rh-slash"); const cv = el("canvas", "rh-cv");
+  field.append(boss, me, slash, cv); o.append(field);
+  // the music sheet
+  const sheet = el("div", "rh-sheet"); const rowA = el("div", "rh-row cur"), rowB = el("div", "rh-row nxt"); const cur = el("i", "rh-cursor"); rowA.append(cur);
+  const sig = el("div", "rh-sig"); const ts = rhTimeSig(L); sig.innerHTML = "<b>" + ts[0] + "</b><b>" + ts[1] + "</b>";
+  const bno = el("span", "rh-bno"); const tpl = el("span", "rh-tp"); const nxl = el("span", "rh-nx"); const count = el("div", "rh-count"); sheet.append(sig, bno, tpl, rowA, rowB, nxl, count); o.append(sheet);
+  const judge = el("div", "rh-judge"); o.append(judge);
+  // the drum you hit
+  const pad = el("button", "rh-pad big"); pad.type = "button"; pad.id = "rh-pad"; pad.setAttribute("aria-label", "たたく");
+  const drum = el("span", "rh-drum"); const rim = el("i", "rh-rim"), skin = el("i", "rh-skin"), app = el("i", "rh-app"), glow = el("i", "rh-glow2");
+  const lab = el("b", "rh-lab", "たたく！"); drum.append(glow, rim, skin, app, lab); const fx = el("span", "rh-fx"); pad.append(drum, fx); o.append(pad);
+  // notes and their times; every part gets HP from the notes aimed at it
+  const t0 = c.currentTime + .5 + barSec; const notes = [];
+  chart.forEach((bar, bi) => bar.forEach((n, i) => { if(!n.rest && !n.tied) notes.push({ t:t0 + bi * barSec + n.at * spb, bi, i, pi:bar.pi, j:null }); }));
+  // HP = a share of the damage a perfect player would deal to that part (combos included), so every level feels the same
+  const pd = parts.map(() => 0); notes.forEach((n, i) => { const k = i + 1; pd[n.pi] += 2 * (k >= 20 ? 3 : k >= 10 ? 2 : 1); });
+  parts.forEach((p, pi) => { p.max = p.hp = Math.max(4, Math.ceil(pd[pi] * (p.core ? (L.hp ? L.hp[1] : RH_CORE_HP) : (L.hp ? L.hp[0] : RH_PART_HP)))); });
+  R.n = notes.length; const sync = () => { R.hp = parts.reduce((a, p) => a + (p.br || p.gd ? 0 : p.hp), 0); }; R.max = parts.reduce((a, p) => a + p.max, 0); sync();
+  // metronome: one count-in bar, then every bar
+  const clicks = rhClickTimes(L);
+  for(let bi = -1; bi < chart.length; bi++) clicks.forEach(k => rhClick(t0 + bi * barSec + k.at * spb, k.acc));
+  const countLabels = clicks.length === 4 ? ["3", "2", "1", "GO!"] : clicks.map((_, i) => i === clicks.length - 1 ? "GO!" : String(clicks.length - 1 - i));
+  let shown = -2, svgA = null, lastBeat = -99, lastCount = -1, aim = -1;
+  const label = p => (p.core && parts.length > 1 ? "💀 " : "🎯 ") + p.nm + " ・ " + p.topic;
+  function target(pi){
+    if(pi === aim) return; const prev = parts[aim];
+    // the part we were hitting got away: its HP goes to the core
+    if(prev && !prev.br && !prev.core){ prev.gd = true; core.hp += prev.hp; core.max += prev.hp; wk[aim].classList.add("gd"); pips[aim].classList.add("gd"); banner("🛡 " + prev.nm + "はこわせなかった… " + core.nm + "がかたくなった！", "gd"); talk("きかんなぁ！", 1200); }
+    aim = pi; const p = parts[pi]; wk.forEach((m, i) => m.classList.toggle("cur", i === pi)); pips.forEach((x, i) => x.classList.toggle("cur", i === pi));
+    tpl.textContent = label(p); again(tpl, "on");
+    if(parts.length > 1) setTimeout(() => { if(!R.done) banner((p.core ? "💀 さいごは" : "🎯 ") + p.nm + "をねらえ！", "tg", "リズム：" + p.topic); }, prev ? 1450 : 0);
+    hud();
+  }
+  function drawRows(bi){
+    shown = bi;
+    const a = bi >= 0 && chart[bi] ? rhBarSVG(chart[bi], L) : null, b = chart[bi + 1] ? rhBarSVG(chart[bi + 1], L) : null;
+    rowA.querySelectorAll("svg").forEach(s => s.remove()); rowB.innerHTML = "";
+    if(a){ rowA.insertAdjacentHTML("afterbegin", a.svg); svgA = rowA.querySelector("svg"); notes.filter(n => n.bi === bi && n.j).forEach(n => mark(n)); } else { rowA.insertAdjacentHTML("afterbegin", '<svg class="rh-bar" viewBox="0 0 340 90"></svg>'); svgA = null; }
+    if(b) rowB.innerHTML = b.svg;
+    // tell what comes next when the next bar aims at another part
+    const nxp = chart[bi + 1] && (bi < 0 || chart[bi + 1].pi !== chart[bi].pi) ? parts[chart[bi + 1].pi] : null;
+    nxl.textContent = nxp && bi >= 0 ? "NEXT ▶ " + label(nxp) : ""; nxl.classList.toggle("on", !!(nxp && bi >= 0));
+    bno.textContent = bi >= 0 ? (bi + 1) + " / " + chart.length : "";
+    if(bi >= 0 && chart[bi]) target(chart[bi].pi);
+    if(bi >= 0 && chart[bi] && chart[bi].B && !R.angry){ R.angry = true; boss.classList.add("angry"); o.classList.add("angry"); setTimeout(() => { if(!R.done) banner("💢 怒りモード！", "angry"); }, parts.length > 1 && chart[bi - 1] && chart[bi - 1].pi !== chart[bi].pi ? 1500 : 0); talk(["本気を出すぞ！", "まだまだぁ！", "ゆるさん！"][(Math.random() * 3) | 0]); GSFX && GSFX.rumble && GSFX.rumble();
+      if(L.spr){ pose("ps", 1800); spfx(L.spr.fxs, "rh-fxs"); if(L.spr.fxr) spfx(L.spr.fxr, "rh-fxr"); again(field, "hurt"); } }
+  }
+  // poses and effects of a boss drawn with poses
+  let poseT = 0;
+  function pose(c, ms){ bimg.classList.remove("pa", "ps"); void bimg.offsetWidth; bimg.classList.add(c); clearTimeout(poseT); poseT = setTimeout(() => bimg.classList.remove(c), ms); }
+  function spfx(src, c){ if(!src) return; const f = el("img", "rh-spfx " + c); f.src = src; f.alt = ""; if(c === "rh-fxs") boss.prepend(f); else boss.append(f); setTimeout(() => f.remove(), 1700); }
+  function mark(n){ if(n.bi !== shown || !svgA) return; const e = svgA.querySelector('.rh-n[data-i="' + n.i + '"]'); if(!e) return; e.setAttribute("class", "rh-n " + n.j);
+    if(n.j !== "miss"){ const cx = +e.getAttribute("cx"); svgA.insertAdjacentHTML("beforeend", `<circle class="rh-burst ${n.j}" cx="${cx}" cy="${RH_Y}" r="12"/>`); } }
+  function say(t, cls){ judge.textContent = t; judge.className = "rh-judge " + (cls || ""); void judge.offsetWidth; judge.classList.add("show"); }
+  function banner(t, cls, sub){ o.querySelectorAll(".rh-banner").forEach(x => x.remove()); const b = el("div", "rh-banner " + (cls || ""), t); if(sub) b.append(el("small", null, sub)); o.append(b); setTimeout(() => b.remove(), 1400); }
+  function again(node, cls){ node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); }
+  function hud(){ const p = parts[Math.max(0, aim)], f = Math.max(0, p.hp / p.max);
+    hpf.style.transform = "scaleX(" + f + ")"; setTimeout(() => { hpg.style.transform = "scaleX(" + Math.max(0, p.hp / p.max) + ")"; }, 260); hpl.textContent = parts.length > 1 ? p.nm : "";
+    [...hearts.children].forEach((x, i) => x.classList.toggle("lost", i >= R.hearts));
+    cn.textContent = R.combo >= 2 ? R.combo : ""; cl.textContent = R.combo >= 2 ? (R.combo >= 20 ? "FEVER ×3" : R.combo >= 10 ? "必殺 ×2" : "COMBO") : "";
+    cbox.classList.toggle("fire", R.combo >= 10); cbox.classList.toggle("fever", R.combo >= 20); o.classList.toggle("fever", R.combo >= 20); if(R.combo >= 2) again(cn, "bump"); }
+  // cracks grow while a part loses HP; at 0 it shatters
+  function crack(pi){ const p = parts[pi], m = wk[pi], f = p.hp / p.max; m.classList.toggle("c1", f < .67); m.classList.toggle("c2", f < .34); }
+  function shatter(pi){
+    const p = parts[pi], m = wk[pi]; p.br = true; p.hp = 0; R.br++; m.classList.add("br"); m.classList.remove("cur"); pips[pi].classList.add("br"); rhCrash(); try{ buzz([20, 20, 50]); }catch(e){}
+    for(let i = 0; i < 9; i++){ const a = Math.PI * 2 * i / 9 + Math.random() * .4, d = 34 + Math.random() * 40; const s = el("i", "rh-shard" + (i % 3 ? "" : " w")); s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", (Math.sin(a) * d + 26) + "px"); s.style.setProperty("--r", ((Math.random() * 2 - 1) * 540) + "deg"); m.append(s); setTimeout(() => s.remove(), 750); }
+    again(bw, "brk"); again(bflash, "on");
+    if(!p.core){ banner("💥 " + p.nm + "を破壊！", "brk"); talk(["ぐわぁぁ！", "よくも" + p.nm + "を…！", "まだ終わらんぞ！"][(Math.random() * 3) | 0], 1200); }
+  }
+  // damage goes to the part the note aimed at (a broken part takes no more)
+  function deal(pi, dmg){
+    const p = parts[pi];
+    if(!p.br && !p.gd){ p.hp -= dmg; if(p.hp <= 0){ dmg = -p.hp; shatter(pi); } else { dmg = 0; crack(pi); } }
+    sync(); if(p.core && core.hp <= 0 && !core.br) shatter(parts.length - 1);
+  }
+  function hurt(text){
+    if(R.m === 0 || Math.random() < .35) talk(["きかないぞ！", "ずれてるぞ〜", "スキあり！", "ふふん♪"][(Math.random() * 4) | 0], 900);
+    R.m++; R.combo = 0; R.hearts--; rhDrum("miss"); try{ buzz([40, 30, 60]); }catch(e){}
+    again(field, "hurt"); again(bw, "atk"); again(slash, "on"); say(text, "miss");
+    if(L.spr){ pose("pa", 560); spfx(L.spr.fxa, "rh-fxa"); }
+    const lost = hearts.children[R.hearts]; if(lost) again(lost, "pop");
+  }
+  function hit(n, kind, x, y){
+    n.j = kind; mark(n);
+    if(kind === "miss"){ hurt("ミス！"); }
+    else { if(kind === "perfect") R.p++; else R.g++; R.combo++; R.maxCombo = Math.max(R.maxCombo, R.combo);
+      const mul = R.combo >= 20 ? 3 : R.combo >= 10 ? 2 : 1, dmg = (kind === "perfect" ? 2 : 1) * mul; deal(n.pi, dmg); rhDrum(kind); if(kind === "perfect") rhPing(R.combo >= 20 ? 2637 : 2093, 0, .05);
+      again(bw, "hit"); again(bflash, "on"); const m = wk[n.pi]; if(m && !parts[n.pi].br) again(m, "hit");
+      const d = el("span", "rh-dmg" + (mul > 1 ? " big" : "") + (kind === "perfect" ? " crit" : "")); if(kind === "perfect" && mul > 1) d.append(el("small", null, "CRITICAL")); d.append("-" + dmg); d.style.setProperty("--x", (Math.random() * 50 - 10) + "px"); pop.append(d); setTimeout(() => d.remove(), 800);
+      say(kind === "perfect" ? "パーフェクト！" : "グッド", kind);
+      if(R.combo === 10){ banner("🔥 必殺モード！ ダメージ×2", "fire"); rhChime(3); }
+      if(R.combo === 20){ banner("🌈 FEVER!! ダメージ×3", "fever"); rhChime(4); }
+      if(R.combo > 20 && R.combo % 10 === 0){ banner(R.combo + " COMBO!!", "fever"); rhChime(4); } }
+    if(x != null) burst(x, y, kind);
+    hud();
+    if(core.br) finish(true); else if(R.hearts <= 0) finish(false);
+  }
+  // effects at the finger: a ripple, sparks and a word
+  function burst(x, y, kind){
+    const rp = el("i", "rh-rip " + kind); rp.style.left = x + "px"; rp.style.top = y + "px"; fx.append(rp); setTimeout(() => rp.remove(), 520);
+    const n = kind === "perfect" ? 10 : kind === "good" ? 6 : 0;
+    for(let i = 0; i < n; i++){ const a = Math.PI * 2 * i / n + Math.random() * .5, d = 50 + Math.random() * 50; const s = el("i", "rh-spark " + kind, kind === "perfect" && i % 3 === 0 ? "♪" : "");
+      s.style.left = x + "px"; s.style.top = y + "px"; s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", Math.sin(a) * d + "px"); fx.append(s); setTimeout(() => s.remove(), 600); }
+    const w = el("i", "rh-word " + kind, kind === "perfect" ? "PERFECT" : kind === "good" ? "GOOD" : "MISS"); w.style.left = x + "px"; w.style.top = y + "px"; fx.append(w); setTimeout(() => w.remove(), 650);
+  }
+  function tap(x, y){
+    if(R.done) return; const now = c.currentTime - lat; if(now < t0 - barSec * .25) return;
+    if(x == null){ const r = pad.getBoundingClientRect(); x = r.width / 2; y = r.height / 2; }
+    again(drum, "hit");
+    let best = null, bd = 1e9; notes.forEach(n => { if(n.j) return; const d = Math.abs(n.t - now); if(d < bd){ bd = d; best = n; } });
+    if(best && bd <= RH_GOOD){ const k = bd <= RH_PERFECT ? "perfect" : "good"; hit(best, k, x, y); if(k === "good") say(now < best.t ? "グッド（はやい）" : "グッド（おそい）", "good"); return; }
+    // a tap with no note: right after a hit it is forgiven, otherwise it is a miss (no button mashing)
+    if(notes.some(n => n.j && n.j !== "miss" && now - n.t > -RH_GOOD && now - n.t < .16)) return;
+    burst(x, y, "miss"); hurt("よけいなタップ！"); hud();
+    if(R.hearts <= 0) finish(false);
+  }
+  pad.onpointerdown = e => { e.preventDefault(); const r = pad.getBoundingClientRect(); tap(e.clientX - r.left, e.clientY - r.top); };
+  const key = e => { if(e.code === "Space" || e.code === "Enter"){ e.preventDefault(); if(!e.repeat) tap(); } };
+  document.addEventListener("keydown", key); RhRun.off = () => document.removeEventListener("keydown", key);
+  RhRun.notes = notes; RhRun.tap = tap; RhRun.ctx = c; RhRun.R = R;   // (used by the automatic tests)
+  drawRows(-1); aim = -1; target(chart[0].pi); setTimeout(() => talk(["かかってこい！", "リズムでしょうぶだ！", "おまえにたおせるかな？"][(Math.random() * 3) | 0]), 250);
+  const end = t0 + chart.length * barSec, lead = Math.max(.45, Math.min(.8, spb));
+  function loop(){
+    if(!RhRun || RhRun.stop || R.done) return;
+    const at = c.currentTime, now = at - lat, bi = Math.floor((at - t0) / barSec);
+    if(bi !== shown && bi < chart.length) drawRows(bi);
+    if(bi >= 0){ const f = ((at - t0) - bi * barSec) / barSec; cur.style.transform = "translateX(" + ((RH_PAD + f * (RH_W - RH_PAD * 2)) / RH_W * rowA.clientWidth) + "px)"; cur.style.opacity = "1"; } else cur.style.opacity = "0";
+    // count-in: 3, 2, 1, GO!
+    if(at < t0 + .3){ const k = clicks.findIndex((q, i) => at >= t0 - barSec + q.at * spb && (i === clicks.length - 1 || at < t0 - barSec + clicks[i + 1].at * spb));
+      if(k >= 0 && k !== lastCount){ lastCount = k; count.textContent = countLabels[k]; again(count, "on"); } }
+    // every beat the drum and the room breathe
+    const beat = Math.floor((at - t0) / spb); if(beat !== lastBeat && at >= t0 - barSec){ lastBeat = beat; again(glow, "on"); again(o, "beat"); if(L.spr) bimg.classList.toggle("f2", (beat & 1) === 1); }
+    // the ring closing in on the next note
+    const nx = notes.find(n => !n.j);
+    if(nx){ const d = nx.t - now; if(d <= lead && d > -RH_GOOD){ const k = Math.max(0, d / lead); app.style.transform = "scale(" + (1 + k * 1.1) + ")"; app.style.opacity = String(1 - k * .7); } else app.style.opacity = "0"; } else app.style.opacity = "0";
+    notes.forEach(n => { if(!n.j && now - n.t > RH_GOOD) hit(n, "miss"); });
+    if(R.done) return;
+    if(at > end + .3){ finish(core.br); return; }
+    RhRun.raf = requestAnimationFrame(loop);
+  }
+  RhRun.raf = requestAnimationFrame(loop);
+  function finish(win){
+    if(R.done) return; R.done = true; if(RhRun){ RhRun.off && RhRun.off(); } app.style.opacity = "0"; sync();
+    const nm = R.m === 0, score = R.p * 100 + R.g * 50 + R.maxCombo * 10 + R.hearts * 200 + R.br * 300, rank = win ? rhRank(R) : null;
+    if(win){
+      // the boss card breaks into four pieces and flies apart
+      const im = bimg.querySelector(".rhb-img");
+      if(L.art && im){ const W = bimg.offsetWidth, H = bimg.offsetHeight;
+        for(let q = 0; q < 4; q++){ const k = el("img", "rh-q q" + q); k.src = L.art; k.alt = ""; k.style.left = bimg.offsetLeft + "px"; k.style.top = bimg.offsetTop + "px"; k.style.width = W + "px"; k.style.height = H + "px"; bw.append(k); }
+        bimg.classList.add("gone"); }
+      else bw.classList.add("down");
+      banner(nm ? "👑 K.O.!! 完全勝利" : "K.O.!!", "ko"); try{ GSFX.boom(); }catch(e){} setTimeout(() => { try{ GSFX.fanfare(nm ? 4 : 3); }catch(e){} }, 350);
+      setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 200); }
+    else { banner(R.hearts <= 0 ? "やられた…" : "にげられた…", "lose"); boss.classList.add("laugh"); talk("フハハ！ またこい！", 2000); }
+    setTimeout(() => rhResult(o, tr, lv, R, win, nm, score, rank), win ? 1900 : 1300);
+  }
+}
+async function rhResult(o, tr, lv, R, win, nm, score, rank){
+  if(document.getElementById("rh") !== o) return;
+  rhStopRun(); o.classList.remove("playing"); o.innerHTML = ""; o.scrollTop = 0;
+  const T = RH_LEVELS[tr], L = T.levels[lv - 1];
+  rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => rhMap(o));
+  o.classList.remove("angry", "fever");
+  const r = el("div", "ear-res rh-res" + (win ? " perfect" : "")); o.append(r);
+  const cv = el("canvas", "ear-cf"); r.append(cv);
+  const bi = rhBoss(L, lv, "rh-rboss" + (win ? " beaten" : "")); r.append(bi);
+  r.append(el("h2", null, win ? (nm ? "👑 完全勝利！" : L.boss + "をたおした！") : (R.hearts <= 0 ? "やられた…" : "にげられた…")));
+  const st = el("div", "rh-stats"); [["パーフェクト", R.p], ["グッド", R.g], ["ミス", R.m], ["最大コンボ", R.maxCombo]].forEach(([a, b]) => { const d = el("div"); d.append(el("small", null, a), el("b", null, String(b))); st.append(d); }); r.append(st);
+  if(R.np > 0) r.append(el("div", "rh-brk", "💥 部位破壊 " + R.br + " / " + (R.np + 1) + (R.br > R.np ? " ・ ぜんぶこわした！" : "")));
+  r.append(el("div", "ear-score", score + " 点"));
+  if(rank){ const rk = el("div", "rh-rank r" + rank); rk.append(el("small", null, "RANK"), el("b", null, rank)); r.prepend(rk); setTimeout(() => { rk.classList.add("on"); try{ GSFX.star(rank === "S" ? 3 : rank === "A" ? 2 : 1); }catch(e){} }, 500); }
+  let res = null;
+  if(win){
+    try{ res = await rpc("mc_s_ear_clear", { sk: SK, p_track: tr, p_lv: lv }); if(res && res.ear){ Rh.prog = { rhythm:res.ear.rhythm || {}, rhythm_ura:res.ear.rhythm_ura || {} }; } if(res && res.gacha) gSet(res.gacha);
+      const b = await rpc("mc_s_rh_score", { sk: SK, p_track: tr, p_lv: lv, p_score: score, p_nm: nm, p_rank: rank || "C" }); if(b) Rh.best = b; }
+    catch(e){ r.append(el("p", "ear-err", "記録できませんでした（" + e.message + "）。電波のいいところでもう一度たおしてね")); }
+    const sp = el("div", "ear-bigst"); sp.append(rhIc(L), el("b", null, nm ? "PERFECT" : "WIN"), el("small", null, (T.ura ? "裏" : "Lv") + lv)); r.append(sp);
+    r.append(el("p", "ear-rs", res && res.new ? "ボスのスタンプをゲットしたよ！" : "スタンプはもう持ってるよ。ベスト更新をねらおう！"));
+    setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 400);
+    if(res && res.reward){ const rw = res.reward, box = el("div", "rh-rwget");
+      if(rw.t){ box.append(el("small", null, "初回クリア報酬"), el("b", null, "🎟 ガチャチケ ×" + rw.t + " ゲット！")); try{ GSFX.star(2); }catch(e){} }
+      if(rw.av && GITEM[rw.av]){ const g = GITEM[rw.av], ic = el("span", "rh-rwav big"); ic.innerHTML = avHTML(g.v);
+        const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { rhClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"av", item:rw.av }); };
+        const t = el("span", "rh-rwt"); t.append(rarBadge(g.r), el("b", null, " " + g.n));
+        box.classList.add("av"); if(g.r >= 5) box.classList.add("sec"); box.append(el("small", null, g.r >= 5 ? "🌑 シークレット！ 裏ボスがなかまになった！" : "ボスがなかまになった！"), ic, t, w); setTimeout(() => { try{ GSFX.fanfare(4); }catch(e){} }, 900); }
+      r.append(box); }
+    if(res && res.titles && res.titles.length) res.titles.forEach(id => { const t = GITEM[id]; const tb = el("div", "ear-title"); tb.append(el("small", null, "称号ゲット！"), el("b", null, "👑 " + (t ? t.v : id)));
+      const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { rhClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"title", item:id }); }; tb.append(w); r.append(tb); });
+    if(!T.ura && lv === rhMax(tr) && rhAll(tr)){ const d = el("div", "ear-unlock"); d.append(earImg("1f311", "ear-moon"), el("b", null, "裏ボスがめざめた…！"), el("small", null, "5拍子と7拍子のボスが待っている"));
+      const go = el("button", "ear-go ura", "🌑 裏ボスへ"); go.type = "button"; go.onclick = () => { RhS.tab = "rhythm_ura"; rhMap(o); }; d.append(go); r.append(d); }
+  } else r.append(el("p", "ear-rs", R.hearts <= 0 ? "ミスは3回まで。お手本をきいて、もう一回！" : "時間内にたおせなかった。パーフェクトをふやすとダメージが大きいよ"));
+  const ac = el("div", "ear-acts");
+  const again = el("button", "ear-sm", "もう一回"); again.type = "button"; again.onclick = () => rhBattle(o, tr, lv); ac.append(again);
+  if(win && lv < rhMax(tr)){ const nx = el("button", "ear-go", "つぎのボスへ ▶"); nx.type = "button"; nx.id = "rh-next"; nx.onclick = () => rhIntro(o, tr, lv + 1); ac.append(nx); }
+  const mp = el("button", "ear-sm", "マップにもどる"); mp.type = "button"; mp.onclick = () => rhMap(o); ac.append(mp);
+  r.append(ac);
+}
+
+/* ---------- teacher: the student's page ---------- */
+function tRh(s){
+  const box = el("section", "card tear"); box.id = "t-rh"; box.append(el("h3", "sech", "🥁 リズムバトル"));
+  const body = el("div", "tear-b"); body.append(el("div", "empty", "よみこみ中…")); box.append(body);
+  rpc("mc_t_ear", { tk: TK, sid: s.id }).then(r => { body.innerHTML = "";
+    ["rhythm", "rhythm_ura"].forEach(tr => { const p = (r && r[tr]) || {}, T = RH_LEVELS[tr], d = Object.keys(p).length, m = T.levels.length; if(T.ura && !d) return;
+      const last = Object.keys(p).map(Number).sort((a, b) => b - a)[0];
+      const row = el("div", "tear-r" + (T.ura ? " ura" : "")); row.append(earImg(T.ura ? "1f311" : "1f941"), el("b", null, T.ura ? "裏ボス" : "ボス"), el("span", "tear-n", d + " / " + m),
+        el("small", null, d >= m ? "🏆 全部たおした" : last ? (T.ura ? "裏" : "Lv") + last + " " + T.levels[last - 1].boss + " まで（" + p[last].slice(5).replace("-", "/") + "）" : "まだ"));
+      body.append(row); }); }).catch(() => { body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした")); });
+  return box;
+}
 
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
   if([...document.querySelectorAll(".keep")].some(x=>x.value)) return true;
-  if(document.querySelector(".sheet,#gacha,#zukan,#gift,#fb-pop,#ear")) return true; return false; }
+  if(document.querySelector(".sheet,#gacha,#zukan,#gift,#fb-pop,#ear,#rh")) return true; return false; }
 function badge(map, st){ const [t,c]=map[st]||[st,""]; return el("span","st "+c, t); }
 function dueText(due){ if(!due) return ""; const t=todayKey(); const [,m,d]=due.split("-");
   return (due<t?"⚠ ":"")+"しめきり "+(+m)+"/"+(+d)+(due===t?"（今日）":""); }
@@ -5574,13 +6478,13 @@ async function stuRefresh(force){
     if(Array.isArray(ks) && ks.length){ const before=(Stu.keys||[]).map(k=>k.sk).join(); Stu.keys=ks; lsSet("mc_sks",JSON.stringify(ks)); if(before && before!==ks.map(k=>k.sk).join()) pushSync(); }
     if(!Stu.keys.length) Stu.keys=[{sk:SK, course:null}];
     if(!Stu.keys.some(k=>k.sk===SK)){ SK=Stu.keys[0].sk; lsSet("mc_sk",SK); }
-    const evp=evLoad(), earp=earFetch();
+    const evp=evLoad(), earp=earFetch(), rhp=rhFetch();
     const res=await Promise.all(Stu.keys.map(k=>Promise.all([rpc("mc_s_state",{sk:k.sk}), rpc("mc_s_assign",{sk:k.sk})]).then(([st,as])=>({k,st,as})).catch(()=>null)));
     res.forEach(r=>{ if(r) Stu.sib[r.k.sk]={st:r.st, as:r.as||[]}; });
     const cur=Stu.sib[SK]; if(!cur) throw new Error("network");
     const st=cur.st, as=cur.as;
     Stu.info=st; Stu.stamps=st.stamps||[]; Stu.assign=as||[]; lsSet("mc_cache_"+SK, JSON.stringify({st, as}));
-    await evp; await earp;
+    await evp; await earp; await rhp;
     document.title=st.name+"さんのスタンプカード"; setNote("課題を出して、先生がOKしたら自分でスタンプを押せるよ。");
     if(force || (!Stu.styling && !window.__party && !Stu.playing && !Stu.sending && !busyNow())) stuRender();
     stuRankCheck();
@@ -5652,7 +6556,7 @@ function stuRender(){
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(stuCards());
-  { const ec=evStudentCard(); if(ec) app.append(ec); const fs=fbSection(); if(fs) app.append(fs); app.append(earCard()); }
+  { const ec=evStudentCard(); if(ec) app.append(ec); const fs=fbSection(); if(fs) app.append(fs); app.append(earCard()); app.append(rhCard()); }
   app.append(wardrobeBtn());
   app.append(gachaCard());
   app.append(shareCard());
@@ -6084,7 +6988,7 @@ function tStudents(app){
   const stats=el("div","stats"); { const ppl=new Set(T.students.map(s=>s.num!=null?"n"+s.num:"i"+s.id)).size; stats.innerHTML=`<span>生徒 ${ppl}人</span>`; }
   const so=el("select"); so.id="sort"; so.innerHTML=`<option value="num">番号順</option><option value="name">名前順</option><option value="recent">最近スタンプ順</option><option value="few">スタンプ少ない順</option>`; so.value=T.sort;
   so.onchange=()=>{ T.sort=so.value; lsSet("mc_sort",T.sort); drawList(); }; stats.append(so); app.append(stats);
-  { const eb=el("button","ea-open"); eb.type="button"; eb.id="earall-btn"; const im=el("img"); im.src=F3D("1f3a7"); im.alt=""; eb.append(im, el("span",null,"みんなの耳トレレベルを見る"), el("em",null,"›")); eb.onclick=()=>openEarAll(); app.append(eb); }
+  { const eb=el("button","ea-open"); eb.type="button"; eb.id="earall-btn"; const im=el("img"); im.src=F3D("1f3a7"); im.alt=""; eb.append(im, el("span",null,"みんなの耳トレ・リズムバトルを見る"), el("em",null,"›")); eb.onclick=()=>openEarAll(); app.append(eb); }
   const list=el("div","list"); list.id="list"; app.append(list);
   function drawList(){
     list.innerHTML="";
@@ -6172,7 +7076,7 @@ function tStudent(app){
   app.append(gStepper(s));
   app.append(msgEditor(s));
   app.append(tGacha(s));
-  app.append(tEar(s));
+  app.append(tEar(s)); app.append(tRh(s));
   app.append(tComments(s));
   const box=el("section","card"); box.style.setProperty("--pc",`var(${COLORS[(s.color|0)%4]})`);
   const who=el("div","who"); const hh=el("h2",null,s.name); if(s.num!=null) hh.prepend(el("span","no big","No."+s.num+" "));
