@@ -6011,8 +6011,10 @@ const rhBest = (tr, lv) => Rh.best[tr + ":" + lv] || null;
 const rhLat = () => { const v = parseFloat(lsGet("mc_rh_lat2")); return isFinite(v) ? v : null; };
 function rhHeard(c, ts){
   const pn = performance.now(); let t = ts > 0 && Math.abs(pn - ts) < 1000 ? ts : pn;
-  try{ if(c.getOutputTimestamp){ const o = c.getOutputTimestamp(); if(o && o.contextTime > 0 && o.performanceTime > 0) return o.contextTime + (t - o.performanceTime) / 1000; } }catch(e){}
-  return c.currentTime - (pn - t) / 1000 - ((c.outputLatency || 0) + (c.baseLatency || 0));
+  const fb = c.currentTime - (pn - t) / 1000 - ((c.outputLatency || 0) + (c.baseLatency || 0));
+  // some phones report a broken output time stamp (wrong clock / stale): only trust it when it agrees with the plain clock
+  try{ if(c.getOutputTimestamp){ const o = c.getOutputTimestamp(); if(o && o.contextTime > 0 && o.performanceTime > 0){ const v = o.contextTime + (t - o.performanceTime) / 1000; if(Math.abs(v - fb) < .35) return v; } } }catch(e){}
+  return fb;
 }
 async function rhFetch(){ try{ const r = await rpc("mc_s_rh", { sk: SK }); if(r){ Rh.prog = { rhythm:(r.prog && r.prog.rhythm) || {}, rhythm_ura:(r.prog && r.prog.rhythm_ura) || {} }; Rh.best = r.best || {}; } }catch(e){} }
 
@@ -6170,12 +6172,16 @@ function rhCalibrate(o, done){
   let st = null;
   pad.onpointerdown = e => { e.preventDefault();
     const c = earCtx(); if(!c) return;
-    if(!st){ const spb = 60 / 96, t0 = c.currentTime + .4; st = { t0, spb, taps:[] }; for(let i = 0; i < 12; i++) rhClick(t0 + i * spb, i % 4 === 0); pad.textContent = "きいて…"; setTimeout(() => { if(st) pad.textContent = "タップ！"; }, (.4 + 4 * spb) * 1000); return; }
+    if(!st){ const spb = 60 / 96, t0 = c.currentTime + .4; st = { t0, spb, taps:[], n:0 };
+      // keep the click going until 8 taps are in (a slow or late start never leaves the pad dead)
+      const feed = () => { if(!st || st.fin || !pad.isConnected) return; while(st.t0 + st.n * spb < c.currentTime + 1){ rhClick(st.t0 + st.n * spb, st.n % 4 === 0); st.n++; } st.tm = setTimeout(feed, 250); }; feed();
+      pad.textContent = "きいて…"; setTimeout(() => { if(st) pad.textContent = "タップ！"; }, (.4 + 4 * spb) * 1000); return; }
+    if(st.fin) return;
     const now = rhHeard(c, e.timeStamp); if(now < st.t0 + 3.5 * st.spb) return;
-    const k = Math.round((now - st.t0) / st.spb); const dt = now - (st.t0 + k * st.spb); if(k < 4 || k > 11) return;
+    const k = Math.round((now - st.t0) / st.spb); const dt = now - (st.t0 + k * st.spb); if(k < 4) return;
     st.taps.push(dt); rhDrum("good"); dots.children[Math.min(7, st.taps.length - 1)].classList.add("on");
     if(st.taps.length >= 8){ const s = st.taps.slice().sort((a, b) => a - b); const med = (s[3] + s[4]) / 2; const v = Math.max(-.12, Math.min(.2, med));
-      lsSet("mc_rh_lat2", String(v)); pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
+      lsSet("mc_rh_lat2", String(v)); st.fin = true; clearTimeout(st.tm); pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
   };
 }
 
@@ -6198,7 +6204,7 @@ function rhIntro(o, tr, lv){
   const lis = el("button", "ear-sm", "🔊 お手本をきく"); lis.type = "button"; lis.onclick = () => rhDemo(L, rhParse(L.A[0])); card.append(lis);
   card.append(el("p", "ear-how", "📜 ルール\nねらう場所ごとにリズムが変わるよ。パーフェクト＝大ダメージ、グッド＝小ダメージ。こわしきれないとボスが守りをかためて、最後の" + parts[parts.length - 1].nm + "がかたくなる！ ミスやよけいなタップでハートが減るよ（3つ）。10コンボで必殺技！"));
   const go = el("button", "ear-go", "⚔ たたかう"); go.type = "button"; go.id = "rh-start";
-  go.onclick = () => { earCtx(); if(rhLat() == null){ toast("先に「タイミング合わせ」をしよう"); rhCalibrate(o, () => rhIntro(o, tr, lv)); return; } rhBattle(o, tr, lv); };
+  go.onclick = () => { earCtx(); rhBattle(o, tr, lv); };   // timing is automatic now: no forced calibration
   card.append(go); o.append(card);
 }
 function rhDemo(L, bar){ const c = earCtx(); if(!c) return; const spb = 60 / L.bpm, t0 = c.currentTime + .2;
