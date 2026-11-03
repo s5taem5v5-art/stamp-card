@@ -6019,11 +6019,16 @@ function rhHeard(c, ts){
 async function rhFetch(){ try{ const r = await rpc("mc_s_rh", { sk: SK }); if(r){ Rh.prog = { rhythm:(r.prog && r.prog.rhythm) || {}, rhythm_ura:(r.prog && r.prog.rhythm_ura) || {} }; Rh.best = r.best || {}; } }catch(e){} }
 
 /* ---------- sounds (short synth hits; the context is the ear-training one) ---------- */
-function rhClick(t, accent){
+// clicks are scheduled ahead of time, so each battle / demo sends them to its own bus: cutting the bus silences every click
+// still waiting to play (otherwise a battle left early, or a demo, keeps clicking on top of the next one = doubled clicks)
+let RhDemoBus = null;
+function rhBus(){ const c = earCtx(); const b = c.createGain(); b.connect(EarA.out); return b; }
+function rhCut(b){ if(!b) return; try{ const c = earCtx(); b.gain.cancelScheduledValues(c.currentTime); b.gain.setValueAtTime(b.gain.value, c.currentTime); b.gain.linearRampToValueAtTime(0, c.currentTime + .03); setTimeout(() => { try{ b.disconnect(); }catch(e){} }, 80); }catch(e){} }
+function rhClick(t, accent, bus){
   const c = earCtx(); if(!c) return; const o = c.createOscillator(), g = c.createGain();
   o.type = "square"; o.frequency.value = accent ? 1760 : 1175;
   g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(accent ? .16 : .09, t + .002); g.gain.exponentialRampToValueAtTime(.0008, t + .06);
-  o.connect(g); g.connect(EarA.out); o.start(t); o.stop(t + .08);
+  o.connect(g); g.connect(bus || EarA.out); o.start(t); o.stop(t + .08);
 }
 function rhDrum(kind){
   const c = earCtx(); if(!c) return; const t = c.currentTime + .005; const o = c.createOscillator(), g = c.createGain();
@@ -6161,7 +6166,7 @@ function rhMap(o){
 
 /* ---------- timing calibration: tap along with 8 clicks ---------- */
 let RhRun = null;
-function rhStopRun(){ if(RhRun){ RhRun.stop = true; cancelAnimationFrame(RhRun.raf); if(RhRun.off) RhRun.off(); RhRun = null; } }
+function rhStopRun(){ rhCut(RhDemoBus); RhDemoBus = null; if(RhRun){ RhRun.stop = true; cancelAnimationFrame(RhRun.raf); if(RhRun.off) RhRun.off(); rhCut(RhRun.bus); RhRun = null; } }
 function rhCalibrate(o, done){
   rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; rhHead(o, "⏱ タイミング合わせ", done);
   const box = el("div", "ear-intro rh-calbox");
@@ -6172,16 +6177,17 @@ function rhCalibrate(o, done){
   let st = null;
   pad.onpointerdown = e => { e.preventDefault();
     const c = earCtx(); if(!c) return;
-    if(!st){ const spb = 60 / 96, t0 = c.currentTime + .4; st = { t0, spb, taps:[], n:0 };
+    if(!st){ const spb = 60 / 96, t0 = c.currentTime + .4; st = { t0, spb, taps:[], n:0 }; rhCut(RhDemoBus); const bus = RhDemoBus = rhBus();
       // keep the click going until 8 taps are in (a slow or late start never leaves the pad dead)
-      const feed = () => { if(!st || st.fin || !pad.isConnected) return; while(st.t0 + st.n * spb < c.currentTime + 1){ rhClick(st.t0 + st.n * spb, st.n % 4 === 0); st.n++; } st.tm = setTimeout(feed, 250); }; feed();
+      const feed = () => { if(!st || st.fin || !pad.isConnected) return; while(st.t0 + st.n * spb < c.currentTime + 1){ rhClick(st.t0 + st.n * spb, st.n % 4 === 0, bus); st.n++; } st.tm = setTimeout(feed, 250); }; feed();
       pad.textContent = "きいて…"; setTimeout(() => { if(st) pad.textContent = "タップ！"; }, (.4 + 4 * spb) * 1000); return; }
     if(st.fin) return;
     const now = rhHeard(c, e.timeStamp); if(now < st.t0 + 3.5 * st.spb) return;
+    if(st.last && now - st.last < .15) return; st.last = now;   // a doubled tap counts once
     const k = Math.round((now - st.t0) / st.spb); const dt = now - (st.t0 + k * st.spb); if(k < 4) return;
     st.taps.push(dt); rhDrum("good"); dots.children[Math.min(7, st.taps.length - 1)].classList.add("on");
     if(st.taps.length >= 8){ const s = st.taps.slice().sort((a, b) => a - b); const med = (s[3] + s[4]) / 2; const v = Math.max(-.12, Math.min(.2, med));
-      lsSet("mc_rh_lat2", String(v)); st.fin = true; clearTimeout(st.tm); pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
+      lsSet("mc_rh_lat2", String(v)); st.fin = true; clearTimeout(st.tm); rhCut(RhDemoBus); RhDemoBus = null; pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
   };
 }
 
@@ -6208,8 +6214,9 @@ function rhIntro(o, tr, lv){
   card.append(go); o.append(card);
 }
 function rhDemo(L, bar){ const c = earCtx(); if(!c) return; const spb = 60 / L.bpm, t0 = c.currentTime + .2;
-  const beats = rhClickTimes(L); beats.forEach(b => rhClick(t0 + b.at * spb, b.acc));
-  bar.forEach(n => { if(n.rest || n.tied) return; const t = t0 + n.at * spb; const os = c.createOscillator(), g = c.createGain(); os.type = "sine"; os.frequency.setValueAtTime(170, t); os.frequency.exponentialRampToValueAtTime(50, t + .13); g.gain.setValueAtTime(.45, t); g.gain.exponentialRampToValueAtTime(.0008, t + .18); os.connect(g); g.connect(EarA.out); os.start(t); os.stop(t + .25); }); }
+  rhCut(RhDemoBus); const bus = RhDemoBus = rhBus();   // pressing お手本 again restarts it instead of playing two at once
+  const beats = rhClickTimes(L); beats.forEach(b => rhClick(t0 + b.at * spb, b.acc, bus));
+  bar.forEach(n => { if(n.rest || n.tied) return; const t = t0 + n.at * spb; const os = c.createOscillator(), g = c.createGain(); os.type = "sine"; os.frequency.setValueAtTime(170, t); os.frequency.exponentialRampToValueAtTime(50, t + .13); g.gain.setValueAtTime(.45, t); g.gain.exponentialRampToValueAtTime(.0008, t + .18); os.connect(g); g.connect(bus); os.start(t); os.stop(t + .25); }); }
 // metronome positions inside one bar
 function rhClickTimes(L){ if(L.unit === "e") return L.accents.map((a, i) => ({ at:a, acc:i === 0 })); return Array.from({ length:Math.round(L.bar) }, (_, i) => ({ at:i, acc:i === 0 })); }
 
@@ -6236,7 +6243,7 @@ function rhBattle(o, tr, lv){
   const spb = 60 / L.bpm, barSec = L.bar * spb; let lat = rhLat() || 0; const lat0 = lat;
   const parts = chart.parts.map(p => Object.assign({}, p, { hp:0, max:0, br:false, gd:false })), core = parts[parts.length - 1];
   const R = { hp:0, max:0, hearts:3, combo:0, maxCombo:0, p:0, g:0, m:0, done:false, angry:false, n:0, br:0, np:parts.length - 1, parts };
-  RhRun = { stop:false, raf:0 };
+  RhRun = { stop:false, raf:0, bus:rhBus() }; const bus = RhRun.bus;
   const h = rhHead(o, (T.ura ? "裏" : "Lv") + lv + " " + L.boss, () => { if(!R.done && !h.dataset.ok){ h.dataset.ok = "1"; toast("もう一度おすとにげます"); setTimeout(() => delete h.dataset.ok, 2500); return; } rhStopRun(); o.classList.remove("playing", "angry", "fever"); rhMap(o); });
   // the field: the boss on the left, you on the right
   const field = el("div", "rh-field");
@@ -6266,13 +6273,17 @@ function rhBattle(o, tr, lv){
   // notes and their times; every part gets HP from the notes aimed at it
   const t0 = c.currentTime + .5 + barSec; const notes = [];
   chart.forEach((bar, bi) => bar.forEach((n, i) => { if(!n.rest && !n.tied) notes.push({ t:t0 + bi * barSec + n.at * spb, bi, i, pi:bar.pi, j:null }); }));
+  // one tap can arrive twice (a finger that bounces, two fingers, a palm): a second tap closer than this to the last one is ignored.
+  // it is kept well under the shortest gap between two notes of this level, so fast rhythms still work.
+  let gapMin = 1; for(let k = 1; k < notes.length; k++){ const d = notes[k].t - notes[k - 1].t; if(d > .001 && d < gapMin) gapMin = d; }
+  const DBL = Math.max(.04, Math.min(.09, gapMin * .5)); let lastTap = -1;
   // HP = a share of the damage a perfect player would deal to that part (combos included), so every level feels the same
   const pd = parts.map(() => 0); notes.forEach((n, i) => { const k = i + 1; pd[n.pi] += 2 * (k >= 20 ? 3 : k >= 10 ? 2 : 1); });
   parts.forEach((p, pi) => { p.max = p.hp = Math.max(4, Math.ceil(pd[pi] * (p.core ? (L.hp ? L.hp[1] : RH_CORE_HP) : (L.hp ? L.hp[0] : RH_PART_HP)))); });
   R.n = notes.length; const sync = () => { R.hp = parts.reduce((a, p) => a + (p.br || p.gd ? 0 : p.hp), 0); }; R.max = parts.reduce((a, p) => a + p.max, 0); sync();
   // metronome: one count-in bar, then every bar
   const clicks = rhClickTimes(L);
-  for(let bi = -1; bi < chart.length; bi++) clicks.forEach(k => rhClick(t0 + bi * barSec + k.at * spb, k.acc));
+  for(let bi = -1; bi < chart.length; bi++) clicks.forEach(k => rhClick(t0 + bi * barSec + k.at * spb, k.acc, bus));
   const countLabels = clicks.length === 4 ? ["3", "2", "1", "GO!"] : clicks.map((_, i) => i === clicks.length - 1 ? "GO!" : String(clicks.length - 1 - i));
   let shown = -2, svgA = null, lastBeat = -99, lastCount = -1, aim = -1;
   const label = p => (p.core && parts.length > 1 ? "💀 " : "🎯 ") + p.nm + " ・ " + p.topic;
@@ -6359,6 +6370,7 @@ function rhBattle(o, tr, lv){
   }
   function tap(x, y, ts){
     if(R.done) return; const now = rhHeard(c, ts) - lat; if(now < t0 - barSec * .25) return;
+    if(now - lastTap < DBL && now >= lastTap) return; lastTap = now;
     if(x == null){ const r = pad.getBoundingClientRect(); x = r.width / 2; y = r.height / 2; }
     again(drum, "hit");
     let best = null, bd = 1e9; notes.forEach(n => { if(n.j) return; const d = Math.abs(n.t - now); if(d < bd){ bd = d; best = n; } });
@@ -6397,7 +6409,7 @@ function rhBattle(o, tr, lv){
   RhRun.raf = requestAnimationFrame(loop);
   function finish(win){
     if(R.p + R.g >= 8 && Math.abs(lat - lat0) > .004) lsSet("mc_rh_lat2", String(Math.round(lat * 1000) / 1000));   // keep what the self-tuning learned
-    if(R.done) return; R.done = true; if(RhRun){ RhRun.off && RhRun.off(); } app.style.opacity = "0"; sync();
+    if(R.done) return; R.done = true; rhCut(bus); if(RhRun){ RhRun.off && RhRun.off(); } app.style.opacity = "0"; sync();
     const nm = R.m === 0, score = R.p * 100 + R.g * 50 + R.maxCombo * 10 + R.hearts * 200 + R.br * 300, rank = win ? rhRank(R) : null;
     if(win){
       // the boss card breaks into four pieces and flies apart
