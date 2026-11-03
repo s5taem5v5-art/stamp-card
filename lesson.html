@@ -2580,6 +2580,26 @@ button.ear-chip{cursor:pointer}
 .rh-route li small{font-size:.66rem;color:var(--muted)}
 .rh-brk{font-weight:900;color:#ffb35c;font-size:.95rem}
 @media (prefers-reduced-motion:reduce){.rhb-frame::before,.rh-wk.cur .wk-r,.rh-wk.cur .wk-x{animation:none}}
+/* ===== boss avatars (UR, from the rhythm battle) and first-win rewards ===== */
+.st-boss .bg{background:radial-gradient(circle at 50% 40%,#4a1a6e,#12051f 75%)}
+.av2.st-boss .bg .ph{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;object-position:50% 32%;transform:scale(1.18);animation:rhav-breath 3s ease-in-out infinite;will-change:transform}
+@keyframes rhav-breath{0%,100%{transform:scale(1.18)}50%{transform:scale(1.25) translateY(-2%)}}
+.st-boss .rg{padding:6%;background:conic-gradient(#ff4fd8,#fff,#b46bff,#ff4fd8,#3ad6ff,#fff,#ff4fd8);animation:av-spin 3s linear infinite}
+.st-boss .aura{inset:-8%;border-radius:50%;z-index:-1;background:radial-gradient(closest-side,rgba(255,79,216,.7),rgba(180,107,255,.3) 60%,transparent);animation:sec-aura 1.8s ease-in-out infinite;will-change:transform,opacity}
+.still .st-boss .aura,.still .st-boss .bg .ph{animation:none}
+@media (prefers-reduced-motion:reduce){.st-boss .aura,.st-boss .rg,.av2.st-boss .bg .ph{animation:none}}
+.rh-rw{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 10px;width:100%;padding:8px 10px;border-radius:14px;background:linear-gradient(120deg,rgba(255,79,216,.16),rgba(255,211,77,.12));border:1.5px solid rgba(255,211,77,.45)}
+.rh-rw>small{width:100%;text-align:center;font-size:.68rem;font-weight:900;color:#ffd34d;letter-spacing:.08em}
+.rh-rw>b{font-size:1rem}
+.rh-rw.got{opacity:.55;filter:grayscale(.5)}
+.rh-rwav{display:inline-block;width:46px;height:46px;flex:none}
+.rh-rwav.big{width:120px;height:120px;margin:4px 0;animation:rh-rwin .7s cubic-bezier(.2,1.6,.4,1) both .5s}
+@keyframes rh-rwin{0%{transform:scale(0) rotate(-30deg);opacity:0}100%{transform:none;opacity:1}}
+.rh-rwget{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:10px;border-radius:16px;background:linear-gradient(120deg,rgba(255,211,77,.18),rgba(255,138,60,.14));border:1.5px solid rgba(255,211,77,.6)}
+.rh-rwget small{font-size:.7rem;font-weight:900;color:#ffd34d;letter-spacing:.1em}
+.rh-rwget b{font-size:1.15rem}
+.rh-rwget.av{background:linear-gradient(150deg,rgba(255,79,216,.22),rgba(58,214,255,.14));border-color:#ff4fd8;box-shadow:0 0 20px rgba(255,79,216,.35)}
+.rh-rwt{display:flex;align-items:center;gap:4px}
 
 </style>
 </head>
@@ -3742,6 +3762,7 @@ const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bea
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
 function avHTML(s){
+  if(s && s.img && s.st==="boss") return `<span class="av2 st-boss"><i class="aura"></i><i class="bg"><img class="ph" src="${s.img}" alt="" decoding="async"></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
   if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp"><img class="ph" src="${s.img}" alt="" decoding="async">${["hd", "hl", "hr"].map(c => `<img class="pt ${c}" src="${s.img.replace(/\.webp$/, "_" + c + ".webp")}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
   if(!s||!s.ch) return "";
   const st=s.st||"pastel";
@@ -4795,6 +4816,8 @@ function openWardrobe(opt){
     if(t==="fx") DECO.fx.forEach(([k,l,n])=>{ const ic=el("span","gi gi-fx"); if(FXSET[k]) FXSET[k].e.slice(0,2).forEach(c=>{ const im=el("img"); im.src=F3D(c); im.alt=""; im.loading="lazy"; ic.append(im); }); else ic.textContent="🚫"; L.push({v:k,n,label:l,ic}); });
     if(t==="pat") DECO.pat.forEach(([k,l,n])=>{ const sw=el("span","dk-sw"); sw.append(el("span","pf-pat p-"+k)); L.push({v:k,n,label:l,ic:sw}); });
     if(t==="title" && typeof EAR_TITLES!=="undefined") EAR_TITLES.forEach(g=>{ L.push({v:g.id,g,label:g.n,ic:gIcon(g),sub:gOwned(g.id)?"耳トレ":g.sp}); });
+    if(t==="title" && typeof RH_TITLES!=="undefined") RH_TITLES.forEach(g=>{ L.push({v:g.id,g,label:g.n,ic:gIcon(g),sub:gOwned(g.id)?"リズムバトル":g.sp}); });
+    if(t==="av" && typeof RH_AVATARS!=="undefined") RH_AVATARS.forEach(g=>{ const own=gOwned(g.id); L.push({v:g.id,g,label:own?g.n:"？？？",ic:own?gIcon(g):el("span","gi q","？"),sub:own?"リズムバトル":g.sp}); });
     GACHA.filter(g=>g.cat===t).forEach(g=>{ L.push({v:g.id,g,label:g.r>=4&&!gOwned(g.id)?"？？？":g.n,ic: g.r>=4&&!gOwned(g.id)?el("span","gi q","？"):gIcon(g), sub: g.cat==="av"&&AV_STYLE[g.v.st]?AV_STYLE[g.v.st].jp:""}); });
     return L;
   }
@@ -5927,6 +5950,10 @@ const RH_TITLES = [
   { id:"g_ti_rh_u", r:4, cat:"title", v:"変拍子の支配者", n:"しょうごう", sp:"リズムバトルの裏ボスを全部たおす" }
 ];
 RH_TITLES.forEach(t => { GITEM[t.id] = t; });
+// beating a boss the first time: Lv1-5 = 10 gacha tickets, Lv6-10 = that boss as a UR avatar (never in the gacha)
+const RH_AVATARS = RH_LEVELS.rhythm.levels.map((L, i) => i >= 5 ? { id:"g_av_rh" + (i + 1), r:4, cat:"av", v:{ img:L.art, st:"boss" }, n:L.boss, sp:"リズムバトル Lv" + (i + 1) + " " + L.boss + "をたおす" } : null).filter(Boolean);
+RH_AVATARS.forEach(a => { GITEM[a.id] = a; });
+const rhReward = (tr, lv) => tr !== "rhythm" ? null : lv <= 5 ? { t:10 } : { av:"g_av_rh" + lv };
 const Rh = { prog:{ rhythm:{}, rhythm_ura:{} }, best:{} };
 const RH_PERFECT = .055, RH_GOOD = .12;
 const rhDone = tr => Object.keys(Rh.prog[tr] || {}).length;
@@ -6106,6 +6133,11 @@ function rhIntro(o, tr, lv){
   // the weak points, in order, with their rhythms
   const parts = rhParts(L), rt = el("div", "rh-route"); rt.append(el("b", null, parts.length > 1 ? "🎯 こわす場所 " + parts.length + "か所" : "🎯 ねらう場所"));
   const ol = el("ol"); parts.forEach((p, i) => { const li = el("li", p.core ? "core" : null); li.append(el("i", null, p.core ? "💀" : String(i + 1)), el("b", null, p.nm), el("small", null, p.topic)); ol.append(li); }); rt.append(ol); card.append(rt);
+  const rw = rhReward(tr, lv), beaten = !!(Rh.prog[tr] || {})[lv];
+  if(rw){ const box = el("div", "rh-rw" + (beaten ? " got" : "")); box.append(el("small", null, beaten ? "初回クリア報酬（ゲット済み）" : "🎁 初回クリア報酬"));
+    if(rw.t) box.append(el("b", null, "🎟 ガチャチケ ×" + rw.t));
+    else { const g = GITEM[rw.av], ic = el("span", "rh-rwav"); ic.innerHTML = avHTML(g.v); const t = el("span"); t.append(rarBadge(g.r), el("b", null, " アバター「" + g.n + "」")); box.append(ic, t); }
+    card.append(box); }
   // a sample bar of this level
   const sm = rhBarSVG(rhParse(L.A[0]), L); const sw = el("div", "rh-sample"); sw.innerHTML = sm.svg; card.append(sw);
   const lis = el("button", "ear-sm", "🔊 お手本をきく"); lis.type = "button"; lis.onclick = () => rhDemo(L, rhParse(L.A[0])); card.append(lis);
@@ -6331,6 +6363,13 @@ async function rhResult(o, tr, lv, R, win, nm, score, rank){
     const sp = el("div", "ear-bigst"); sp.append(rhIc(L), el("b", null, nm ? "PERFECT" : "WIN"), el("small", null, (T.ura ? "裏" : "Lv") + lv)); r.append(sp);
     r.append(el("p", "ear-rs", res && res.new ? "ボスのスタンプをゲットしたよ！" : "スタンプはもう持ってるよ。ベスト更新をねらおう！"));
     setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 400);
+    if(res && res.reward){ const rw = res.reward, box = el("div", "rh-rwget");
+      if(rw.t){ box.append(el("small", null, "初回クリア報酬"), el("b", null, "🎟 ガチャチケ ×" + rw.t + " ゲット！")); try{ GSFX.star(2); }catch(e){} }
+      else if(rw.av && GITEM[rw.av]){ const g = GITEM[rw.av], ic = el("span", "rh-rwav big"); ic.innerHTML = avHTML(g.v);
+        const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { rhClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"av", item:rw.av }); };
+        const t = el("span", "rh-rwt"); t.append(rarBadge(g.r), el("b", null, " " + g.n));
+        box.classList.add("av"); box.append(el("small", null, "ボスがなかまになった！"), ic, t, w); setTimeout(() => { try{ GSFX.fanfare(4); }catch(e){} }, 900); }
+      r.append(box); }
     if(res && res.titles && res.titles.length) res.titles.forEach(id => { const t = GITEM[id]; const tb = el("div", "ear-title"); tb.append(el("small", null, "称号ゲット！"), el("b", null, "👑 " + (t ? t.v : id)));
       const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { rhClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"title", item:id }); }; tb.append(w); r.append(tb); });
     if(!T.ura && lv === rhMax(tr) && rhAll(tr)){ const d = el("div", "ear-unlock"); d.append(earImg("1f311", "ear-moon"), el("b", null, "裏ボスがめざめた…！"), el("small", null, "5拍子と7拍子のボスが待っている"));
