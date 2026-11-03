@@ -6004,7 +6004,16 @@ const rhMax = tr => RH_LEVELS[tr].levels.length;
 const rhAll = tr => rhDone(tr) >= rhMax(tr);
 const rhOpen = (tr, lv) => (!RH_LEVELS[tr].parent || rhAll(RH_LEVELS[tr].parent)) && (lv === 1 || !!(Rh.prog[tr] || {})[lv - 1] || rhAll(tr));
 const rhBest = (tr, lv) => Rh.best[tr + ":" + lv] || null;
-const rhLat = () => { const v = parseFloat(lsGet("mc_rh_lat")); return isFinite(v) ? v : null; };
+// timing: a tap is judged against the moment the player actually HEARD the music.
+// getOutputTimestamp() tells which audio is coming out of the speaker right now, so the speaker/Bluetooth delay
+// and the delay before our tap handler runs (we use the event's own time stamp) are taken out automatically.
+// what is left (the player's finger/touch screen) is the small personal offset below, which also tunes itself while playing.
+const rhLat = () => { const v = parseFloat(lsGet("mc_rh_lat2")); return isFinite(v) ? v : null; };
+function rhHeard(c, ts){
+  const pn = performance.now(); let t = ts > 0 && Math.abs(pn - ts) < 1000 ? ts : pn;
+  try{ if(c.getOutputTimestamp){ const o = c.getOutputTimestamp(); if(o && o.contextTime > 0 && o.performanceTime > 0) return o.contextTime + (t - o.performanceTime) / 1000; } }catch(e){}
+  return c.currentTime - (pn - t) / 1000 - ((c.outputLatency || 0) + (c.baseLatency || 0));
+}
 async function rhFetch(){ try{ const r = await rpc("mc_s_rh", { sk: SK }); if(r){ Rh.prog = { rhythm:(r.prog && r.prog.rhythm) || {}, rhythm_ura:(r.prog && r.prog.rhythm_ura) || {} }; Rh.best = r.best || {}; } }catch(e){} }
 
 /* ---------- sounds (short synth hits; the context is the ear-training one) ---------- */
@@ -6120,8 +6129,8 @@ function rhMap(o){
   const T = RH_LEVELS[tr], ura = !!T.ura; o.classList.toggle("ura", ura);
   rhHead(o, ura ? "🌑 裏ボス" : "🥁 リズムバトル", ura ? () => { RhS.tab = "rhythm"; rhMap(o); } : null);
   // timing
-  const lat = rhLat(); const cal = el("button", "rh-cal" + (lat == null ? " need" : "")); cal.type = "button"; cal.id = "rh-cal";
-  cal.append(el("b", null, lat == null ? "⏱ はじめに「タイミング合わせ」をしよう" : "⏱ タイミング合わせ済み"), el("small", null, lat == null ? "スマホごとの音のおくれを調べて、判定を公平にするよ（20秒）" : "ずれ " + Math.round(lat * 1000) + "ms ・ もう一度やる"));
+  const lat = rhLat(); const cal = el("button", "rh-cal"); cal.type = "button"; cal.id = "rh-cal";
+  cal.append(el("b", null, "⏱ タイミングは自動で合わせてるよ"), el("small", null, lat == null ? "ずれが気になったら「タイミング合わせ」（20秒）" : "ずれ " + Math.round(lat * 1000) + "ms ・ もう一度やる"));
   cal.onclick = () => rhCalibrate(o, () => rhMap(o)); o.append(cal);
   // boss book
   const book = el("div", "rh-book" + (ura ? " ura" : ""));
@@ -6162,11 +6171,11 @@ function rhCalibrate(o, done){
   pad.onpointerdown = e => { e.preventDefault();
     const c = earCtx(); if(!c) return;
     if(!st){ const spb = 60 / 96, t0 = c.currentTime + .4; st = { t0, spb, taps:[] }; for(let i = 0; i < 12; i++) rhClick(t0 + i * spb, i % 4 === 0); pad.textContent = "きいて…"; setTimeout(() => { if(st) pad.textContent = "タップ！"; }, (.4 + 4 * spb) * 1000); return; }
-    const now = c.currentTime; if(now < st.t0 + 3.5 * st.spb) return;
+    const now = rhHeard(c, e.timeStamp); if(now < st.t0 + 3.5 * st.spb) return;
     const k = Math.round((now - st.t0) / st.spb); const dt = now - (st.t0 + k * st.spb); if(k < 4 || k > 11) return;
     st.taps.push(dt); rhDrum("good"); dots.children[Math.min(7, st.taps.length - 1)].classList.add("on");
-    if(st.taps.length >= 8){ const s = st.taps.slice().sort((a, b) => a - b); const med = (s[3] + s[4]) / 2; const v = Math.max(-.15, Math.min(.3, med));
-      lsSet("mc_rh_lat", String(v)); pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
+    if(st.taps.length >= 8){ const s = st.taps.slice().sort((a, b) => a - b); const med = (s[3] + s[4]) / 2; const v = Math.max(-.12, Math.min(.2, med));
+      lsSet("mc_rh_lat2", String(v)); pad.disabled = true; pad.textContent = "OK！"; msg.textContent = "おくれ " + Math.round(v * 1000) + "ms で合わせたよ"; setTimeout(done, 1100); }
   };
 }
 
@@ -6218,7 +6227,7 @@ const RH_PART_HP = .35, RH_CORE_HP = .5;
 function rhBattle(o, tr, lv){
   rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.add("playing"); o.classList.remove("angry", "fever");
   const T = RH_LEVELS[tr], L = T.levels[lv - 1], chart = rhMakeChart(L), c = earCtx();
-  const spb = 60 / L.bpm, barSec = L.bar * spb, lat = rhLat() || 0;
+  const spb = 60 / L.bpm, barSec = L.bar * spb; let lat = rhLat() || 0; const lat0 = lat;
   const parts = chart.parts.map(p => Object.assign({}, p, { hp:0, max:0, br:false, gd:false })), core = parts[parts.length - 1];
   const R = { hp:0, max:0, hearts:3, combo:0, maxCombo:0, p:0, g:0, m:0, done:false, angry:false, n:0, br:0, np:parts.length - 1, parts };
   RhRun = { stop:false, raf:0 };
@@ -6342,26 +6351,28 @@ function rhBattle(o, tr, lv){
       s.style.left = x + "px"; s.style.top = y + "px"; s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", Math.sin(a) * d + "px"); fx.append(s); setTimeout(() => s.remove(), 600); }
     const w = el("i", "rh-word " + kind, kind === "perfect" ? "PERFECT" : kind === "good" ? "GOOD" : "MISS"); w.style.left = x + "px"; w.style.top = y + "px"; fx.append(w); setTimeout(() => w.remove(), 650);
   }
-  function tap(x, y){
-    if(R.done) return; const now = c.currentTime - lat; if(now < t0 - barSec * .25) return;
+  function tap(x, y, ts){
+    if(R.done) return; const now = rhHeard(c, ts) - lat; if(now < t0 - barSec * .25) return;
     if(x == null){ const r = pad.getBoundingClientRect(); x = r.width / 2; y = r.height / 2; }
     again(drum, "hit");
     let best = null, bd = 1e9; notes.forEach(n => { if(n.j) return; const d = Math.abs(n.t - now); if(d < bd){ bd = d; best = n; } });
-    if(best && bd <= RH_GOOD){ const k = bd <= RH_PERFECT ? "perfect" : "good"; hit(best, k, x, y); if(k === "good") say(now < best.t ? "グッド（はやい）" : "グッド（おそい）", "good"); return; }
+    if(best && bd <= RH_GOOD){ const k = bd <= RH_PERFECT ? "perfect" : "good"; hit(best, k, x, y);
+      // self-tuning: a player who is always a bit early/late on a hit gets the offset nudged toward them (max ±60ms from the start)
+      lat = Math.max(lat0 - .06, Math.min(lat0 + .06, lat + (now - best.t) * .2)); RhRun.lat = lat; if(k === "good") say(now < best.t ? "グッド（はやい）" : "グッド（おそい）", "good"); return; }
     // a tap with no note: right after a hit it is forgiven, otherwise it is a miss (no button mashing)
     if(notes.some(n => n.j && n.j !== "miss" && now - n.t > -RH_GOOD && now - n.t < .16)) return;
     burst(x, y, "miss"); hurt("よけいなタップ！"); hud();
     if(R.hearts <= 0) finish(false);
   }
-  pad.onpointerdown = e => { e.preventDefault(); const r = pad.getBoundingClientRect(); tap(e.clientX - r.left, e.clientY - r.top); };
-  const key = e => { if(e.code === "Space" || e.code === "Enter"){ e.preventDefault(); if(!e.repeat) tap(); } };
+  pad.onpointerdown = e => { e.preventDefault(); const r = pad.getBoundingClientRect(); tap(e.clientX - r.left, e.clientY - r.top, e.timeStamp); };
+  const key = e => { if(e.code === "Space" || e.code === "Enter"){ e.preventDefault(); if(!e.repeat) tap(null, null, e.timeStamp); } };
   document.addEventListener("keydown", key); RhRun.off = () => document.removeEventListener("keydown", key);
-  RhRun.notes = notes; RhRun.tap = tap; RhRun.ctx = c; RhRun.R = R;   // (used by the automatic tests)
+  RhRun.notes = notes; RhRun.tap = tap; RhRun.ctx = c; RhRun.R = R; RhRun.now = () => rhHeard(c) - lat;   // (used by the automatic tests)
   drawRows(-1); aim = -1; target(chart[0].pi); setTimeout(() => talk(["かかってこい！", "リズムでしょうぶだ！", "おまえにたおせるかな？"][(Math.random() * 3) | 0]), 250);
   const end = t0 + chart.length * barSec, lead = Math.max(.45, Math.min(.8, spb));
   function loop(){
     if(!RhRun || RhRun.stop || R.done) return;
-    const at = c.currentTime, now = at - lat, bi = Math.floor((at - t0) / barSec);
+    const at = rhHeard(c), now = at - lat, bi = Math.floor((at - t0) / barSec);
     if(bi !== shown && bi < chart.length) drawRows(bi);
     if(bi >= 0){ const f = ((at - t0) - bi * barSec) / barSec; cur.style.transform = "translateX(" + ((RH_PAD + f * (RH_W - RH_PAD * 2)) / RH_W * rowA.clientWidth) + "px)"; cur.style.opacity = "1"; } else cur.style.opacity = "0";
     // count-in: 3, 2, 1, GO!
@@ -6379,6 +6390,7 @@ function rhBattle(o, tr, lv){
   }
   RhRun.raf = requestAnimationFrame(loop);
   function finish(win){
+    if(R.p + R.g >= 8 && Math.abs(lat - lat0) > .004) lsSet("mc_rh_lat2", String(Math.round(lat * 1000) / 1000));   // keep what the self-tuning learned
     if(R.done) return; R.done = true; if(RhRun){ RhRun.off && RhRun.off(); } app.style.opacity = "0"; sync();
     const nm = R.m === 0, score = R.p * 100 + R.g * 50 + R.maxCombo * 10 + R.hearts * 200 + R.br * 300, rank = win ? rhRank(R) : null;
     if(win){
