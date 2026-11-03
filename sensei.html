@@ -2600,6 +2600,31 @@ button.ear-chip{cursor:pointer}
 .rh-rwget b{font-size:1.15rem}
 .rh-rwget.av{background:linear-gradient(150deg,rgba(255,79,216,.22),rgba(58,214,255,.14));border-color:#ff4fd8;box-shadow:0 0 20px rgba(255,79,216,.35)}
 .rh-rwt{display:flex;align-items:center;gap:4px}
+/* ===== hidden bosses drawn with poses (idle / float on the beat / attack / special) ===== */
+.rhb.spr .rhs{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;z-index:3;opacity:0;pointer-events:none;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c1) 60%,transparent))}
+.rhb.spr .rhs-i{transition:none}
+.rhb.spr.f2 .rhs-i{opacity:0}.rhb.spr.f2 .rhs-f{opacity:1}
+.rhb.spr.pa .rhs-i,.rhb.spr.pa .rhs-f,.rhb.spr.ps .rhs-i,.rhb.spr.ps .rhs-f{opacity:0}
+.rhb.spr.pa .rhs-a{opacity:1;animation:rhs-atk .56s cubic-bezier(.2,1.4,.4,1)}
+.rhb.spr.ps .rhs-s{opacity:1;animation:rhs-sp 1.8s ease-out}
+.rhb.spr.pa .rhs-a~.rhs-s,.rhb.spr.pa .rhs-s{opacity:0}
+@keyframes rhs-atk{0%{transform:translateX(-10%) scale(.95)}35%{transform:translateX(14%) scale(1.15)}100%{transform:none}}
+@keyframes rhs-sp{0%{transform:scale(.8);opacity:0}12%{transform:scale(1.35);opacity:1}30%{transform:scale(1.22)}85%{transform:scale(1.25);opacity:1}100%{transform:scale(1.1);opacity:0}}
+.rh-spfx{position:absolute;pointer-events:none;z-index:5;will-change:transform,opacity}
+.rh-fxa{left:40%;top:18%;width:150px;animation:rh-fxa .6s cubic-bezier(.3,.6,.4,1) forwards}
+@keyframes rh-fxa{0%{transform:translate(-40px,10px) scale(.5) rotate(-20deg);opacity:0}25%{opacity:1}100%{transform:translate(190px,40px) scale(1.25) rotate(12deg);opacity:0}}
+.rh-bwrap{z-index:1}
+.rh-fxs{left:50%;top:48%;width:240px;margin:-120px 0 0 -120px;z-index:0;animation:rh-fxs 1.7s ease-out forwards}
+@keyframes rh-fxs{0%{transform:scale(.3);opacity:0}15%{transform:scale(1.3);opacity:.85}70%{transform:scale(1.5);opacity:.75}100%{transform:scale(1.9);opacity:0}}
+.rh-fxr{left:50%;top:22%;width:200px;margin-left:-100px;z-index:4;animation:rh-fxr 1.6s ease-out forwards}
+@keyframes rh-fxr{0%{transform:scale(.2);opacity:0}20%{opacity:1}100%{transform:scale(2.3);opacity:0}}
+@media (prefers-reduced-motion:reduce){.rh-spfx,.rhb.spr .rhs{animation:none!important}}
+.rh-iboss.spr .rhs-i{animation:rhs-blinkA 1.4s steps(1) infinite}
+.rh-iboss.spr .rhs-f{animation:rhs-blinkB 1.4s steps(1) infinite}
+@keyframes rhs-blinkA{0%{opacity:1}50%{opacity:0}}
+@keyframes rhs-blinkB{0%{opacity:0}50%{opacity:1}}
+.rh-bname{white-space:nowrap;max-width:100%}
+.rh-bname.long{font-size:.74rem;letter-spacing:.02em}
 
 </style>
 </head>
@@ -5918,8 +5943,8 @@ const RH_LEVELS = {
     { n:"シンコペーション", boss:"ヒドラ", art:"rhb10.webp", P:[["左の首",.16,.33,6],["右の首",.85,.31,7],["中央の首",.5,.18,8],["鱗",.5,.72,9],["心臓",.5,.5]], col:["#ff3d3d","#ffd34d"], ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。5つの首をこわせ、ラスボス！" }
   ]},
   rhythm_ura: { name:"裏ボス", title:"g_ti_rh_u", parent:"rhythm", ura:true, levels:[
-    { n:"5拍子", boss:"オニ", P:[["角",.5,.22,0],["本体",.5,.6]], col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
-    { n:"7拍子", boss:"宇宙のまおう", P:[["アンテナ",.5,.18,0],["本体",.5,.6]], col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
+    { n:"5拍子", boss:"鬼神・焔魔王", art:"rhu1_idle.webp", spr:{ f:"rhu1_float.webp", a:"rhu1_attack.webp", s:"rhu1_special.webp", fxa:"rhu_fx1_atk.webp", fxs:"rhu_fx1_sp.webp" }, P:[["角",.79,.13,0],["数珠",.48,.6]], col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
+    { n:"7拍子", boss:"宇宙創造神・アストラル", art:"rhu2_idle.webp", spr:{ f:"rhu2_float.webp", a:"rhu2_attack.webp", s:"rhu2_special.webp", fxa:"rhu_fx2_atk.webp", fxs:"rhu_fx2_sp.webp", fxr:"rhu_fx2_ring.webp" }, P:[["光輪",.33,.1,0],["星の瞳",.49,.37]], col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
   ]}
 };
 /* a boss has 1-5 weak points ("parts"). each part is attacked with its own rhythm:
@@ -6031,6 +6056,9 @@ function rhBoss(L, lv, cls){
   if(tier >= 3) w.append(el("i", "rhb-ring2"));
   if(L.art) w.classList.add("art");
   const im = L.art ? el("img", "rhb-img") : earImg(L.ic, "rhb-img"); if(L.art){ im.src = L.art; im.alt = ""; im.decoding = "async"; } w.append(im);
+  // a boss with poses (idle / float / attack / special): all pictures stacked, css shows one
+  if(L.spr && cls && /\b(big|rh-iboss)\b/.test(cls)){ w.classList.add("spr"); im.classList.add("rhs-i");
+    [["f", L.spr.f], ["a", L.spr.a], ["s", L.spr.s]].forEach(([k, src]) => { const p = el("img", "rhs rhs-" + k); p.src = src; p.alt = ""; p.decoding = "async"; w.append(p); }); }
   for(let i = 0; i < (tier >= 3 ? 4 : tier >= 2 ? 2 : 0); i++) w.append(el("i", "rhb-tw s" + i));
   if(tier >= 4) w.append(el("i", "rhb-orbit"));
   return w;
@@ -6183,7 +6211,7 @@ function rhBattle(o, tr, lv){
   const tg = el("div", "rh-tg"); const wk = parts.map(p => { const m = el("span", "rh-wk" + (p.core ? " core" : "")); m.style.left = p.x * 100 + "%"; m.style.top = p.y * 100 + "%"; m.innerHTML = RH_CRACK + '<i class="wk-hole"></i><i class="wk-r"></i><i class="wk-x"></i>'; tg.append(m); return m; });
   bimg.append(tg);
   bw.append(bimg, bflash); boss.append(bshadow, bw);
-  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"), hpl = el("b", "rh-hpl"); hpb.append(hpg, hpf, hpl); const plate = el("b", "rh-bname t" + (T.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1)); plate.append(el("small", null, T.ura ? "裏BOSS" : "BOSS " + lv), document.createTextNode(L.boss)); plate.style.setProperty("--c1", (L.col || [])[0] || "#ff8a3c"); plate.style.setProperty("--c2", (L.col || [])[1] || "#ff3d6e"); boss.append(plate, hpb);
+  const hpb = el("div", "rh-hp"); const hpg = el("i", "rh-hpg"), hpf = el("i", "rh-hpf"), hpl = el("b", "rh-hpl"); hpb.append(hpg, hpf, hpl); const plate = el("b", "rh-bname t" + (T.ura || lv >= 10 ? 4 : lv >= 8 ? 3 : lv >= 4 ? 2 : 1) + (L.boss.length > 7 ? " long" : "")); plate.append(el("small", null, T.ura ? "裏BOSS" : "BOSS " + lv), document.createTextNode(L.boss)); plate.style.setProperty("--c1", (L.col || [])[0] || "#ff8a3c"); plate.style.setProperty("--c2", (L.col || [])[1] || "#ff3d6e"); boss.append(plate, hpb);
   const pp = el("div", "rh-pp"); const pips = parts.map(p => { const x = el("span", p.core ? "core" : null, (p.core ? "💀" : "") + p.nm); pp.append(x); return x; }); if(parts.length > 1) boss.append(pp);
   const pop = el("div", "rh-pop"); boss.append(pop);
   const bub = el("div", "rh-bub"); boss.append(bub);
@@ -6234,8 +6262,13 @@ function rhBattle(o, tr, lv){
     nxl.textContent = nxp && bi >= 0 ? "NEXT ▶ " + label(nxp) : ""; nxl.classList.toggle("on", !!(nxp && bi >= 0));
     bno.textContent = bi >= 0 ? (bi + 1) + " / " + chart.length : "";
     if(bi >= 0 && chart[bi]) target(chart[bi].pi);
-    if(bi >= 0 && chart[bi] && chart[bi].B && !R.angry){ R.angry = true; boss.classList.add("angry"); o.classList.add("angry"); setTimeout(() => { if(!R.done) banner("💢 怒りモード！", "angry"); }, parts.length > 1 && chart[bi - 1] && chart[bi - 1].pi !== chart[bi].pi ? 1500 : 0); talk(["本気を出すぞ！", "まだまだぁ！", "ゆるさん！"][(Math.random() * 3) | 0]); GSFX && GSFX.rumble && GSFX.rumble(); }
+    if(bi >= 0 && chart[bi] && chart[bi].B && !R.angry){ R.angry = true; boss.classList.add("angry"); o.classList.add("angry"); setTimeout(() => { if(!R.done) banner("💢 怒りモード！", "angry"); }, parts.length > 1 && chart[bi - 1] && chart[bi - 1].pi !== chart[bi].pi ? 1500 : 0); talk(["本気を出すぞ！", "まだまだぁ！", "ゆるさん！"][(Math.random() * 3) | 0]); GSFX && GSFX.rumble && GSFX.rumble();
+      if(L.spr){ pose("ps", 1800); spfx(L.spr.fxs, "rh-fxs"); if(L.spr.fxr) spfx(L.spr.fxr, "rh-fxr"); again(field, "hurt"); } }
   }
+  // poses and effects of a boss drawn with poses
+  let poseT = 0;
+  function pose(c, ms){ bimg.classList.remove("pa", "ps"); void bimg.offsetWidth; bimg.classList.add(c); clearTimeout(poseT); poseT = setTimeout(() => bimg.classList.remove(c), ms); }
+  function spfx(src, c){ if(!src) return; const f = el("img", "rh-spfx " + c); f.src = src; f.alt = ""; if(c === "rh-fxs") boss.prepend(f); else boss.append(f); setTimeout(() => f.remove(), 1700); }
   function mark(n){ if(n.bi !== shown || !svgA) return; const e = svgA.querySelector('.rh-n[data-i="' + n.i + '"]'); if(!e) return; e.setAttribute("class", "rh-n " + n.j);
     if(n.j !== "miss"){ const cx = +e.getAttribute("cx"); svgA.insertAdjacentHTML("beforeend", `<circle class="rh-burst ${n.j}" cx="${cx}" cy="${RH_Y}" r="12"/>`); } }
   function say(t, cls){ judge.textContent = t; judge.className = "rh-judge " + (cls || ""); void judge.offsetWidth; judge.classList.add("show"); }
@@ -6264,6 +6297,7 @@ function rhBattle(o, tr, lv){
     if(R.m === 0 || Math.random() < .35) talk(["きかないぞ！", "ずれてるぞ〜", "スキあり！", "ふふん♪"][(Math.random() * 4) | 0], 900);
     R.m++; R.combo = 0; R.hearts--; rhDrum("miss"); try{ buzz([40, 30, 60]); }catch(e){}
     again(field, "hurt"); again(bw, "atk"); again(slash, "on"); say(text, "miss");
+    if(L.spr){ pose("pa", 560); spfx(L.spr.fxa, "rh-fxa"); }
     const lost = hearts.children[R.hearts]; if(lost) again(lost, "pop");
   }
   function hit(n, kind, x, y){
@@ -6315,7 +6349,7 @@ function rhBattle(o, tr, lv){
     if(at < t0 + .3){ const k = clicks.findIndex((q, i) => at >= t0 - barSec + q.at * spb && (i === clicks.length - 1 || at < t0 - barSec + clicks[i + 1].at * spb));
       if(k >= 0 && k !== lastCount){ lastCount = k; count.textContent = countLabels[k]; again(count, "on"); } }
     // every beat the drum and the room breathe
-    const beat = Math.floor((at - t0) / spb); if(beat !== lastBeat && at >= t0 - barSec){ lastBeat = beat; again(glow, "on"); again(o, "beat"); }
+    const beat = Math.floor((at - t0) / spb); if(beat !== lastBeat && at >= t0 - barSec){ lastBeat = beat; again(glow, "on"); again(o, "beat"); if(L.spr) bimg.classList.toggle("f2", (beat & 1) === 1); }
     // the ring closing in on the next note
     const nx = notes.find(n => !n.j);
     if(nx){ const d = nx.t - now; if(d <= lead && d > -RH_GOOD){ const k = Math.max(0, d / lead); app.style.transform = "scale(" + (1 + k * 1.1) + ")"; app.style.opacity = String(1 - k * .7); } else app.style.opacity = "0"; } else app.style.opacity = "0";
