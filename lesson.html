@@ -2626,6 +2626,21 @@ button.ear-chip{cursor:pointer}
 .rh-bname{white-space:nowrap;max-width:100%}
 .rh-bname.long{font-size:.74rem;letter-spacing:.02em}
 
+/* moving SECRET boss avatar: idle / float take turns on the beat, attack and special now and then (8s loop) */
+.st-boss.mv .bg{background:radial-gradient(circle at 50% 45%,#3a1660,#0b0418 72%)}
+.av2.st-boss.mv .bg .ph{object-fit:contain;object-position:50% 50%;transform:scale(1.08);opacity:0;animation:rhmv-0 8s steps(1,end) infinite,rhmv-br 3s ease-in-out infinite}
+@keyframes rhmv-br{0%,100%{transform:scale(1.02)}50%{transform:scale(1.07) translateY(-2%)}}
+.av2.st-boss.mv .bg .ph.f1{animation-name:rhmv-1,rhmv-br}
+.av2.st-boss.mv .bg .ph.f2{animation-name:rhmv-2,rhmv-br}
+.av2.st-boss.mv .bg .ph.f3{animation-name:rhmv-3,rhmv-br}
+@keyframes rhmv-0{0%,12.5%,25%,50%,62.5%,75%{opacity:1}6.25%,18.75%,31.25%,37.5%,43.75%,56.25%,68.75%,81.25%,87.5%,93.75%{opacity:0}100%{opacity:1}}
+@keyframes rhmv-1{6.25%,18.75%,31.25%,56.25%,68.75%,81.25%{opacity:1}0%,12.5%,25%,37.5%,43.75%,50%,62.5%,75%,87.5%,93.75%{opacity:0}100%{opacity:0}}
+@keyframes rhmv-2{37.5%,43.75%{opacity:1}0%,6.25%,12.5%,18.75%,25%,31.25%,50%,56.25%,62.5%,68.75%,75%,81.25%,87.5%,93.75%{opacity:0}100%{opacity:0}}
+@keyframes rhmv-3{87.5%,93.75%{opacity:1}0%,6.25%,12.5%,18.75%,25%,31.25%,37.5%,43.75%,50%,56.25%,62.5%,68.75%,75%,81.25%{opacity:0}100%{opacity:0}}
+.still .st-boss.mv .bg .ph{animation:none}.still .st-boss.mv .bg .ph.f0{opacity:1}
+@media (prefers-reduced-motion:reduce){.av2.st-boss.mv .bg .ph{animation:none}.av2.st-boss.mv .bg .ph.f0{opacity:1}}
+.rh-rwget.sec{border-color:#ffe27a;box-shadow:0 0 26px rgba(255,226,122,.45),inset 0 0 18px rgba(123,47,247,.35);background:linear-gradient(150deg,rgba(123,47,247,.3),rgba(255,31,75,.18))}
+
 </style>
 </head>
 <body>
@@ -3787,7 +3802,8 @@ const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bea
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
 function avHTML(s){
-  if(s && s.img && s.st==="boss") return `<span class="av2 st-boss"><i class="aura"></i><i class="bg"><img class="ph" src="${s.img}" alt="" decoding="async"></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
+  if(s && s.img && s.st==="boss"){ const mv = Array.isArray(s.mv) ? s.mv : null; // mv = pose sprites that take turns with the idle picture
+    return `<span class="av2 st-boss${mv ? " mv" : ""}"><i class="aura"></i><i class="bg"><img class="ph${mv ? " f0" : ""}" src="${s.img}" alt="" decoding="async">${mv ? mv.map((m, i) => `<img class="ph f${i + 1}" src="${m}" alt="" decoding="async">`).join("") : ""}</i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`; }
   if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp"><img class="ph" src="${s.img}" alt="" decoding="async">${["hd", "hl", "hr"].map(c => `<img class="pt ${c}" src="${s.img.replace(/\.webp$/, "_" + c + ".webp")}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
   if(!s||!s.ch) return "";
   const st=s.st||"pastel";
@@ -5943,8 +5959,8 @@ const RH_LEVELS = {
     { n:"シンコペーション", boss:"ヒドラ", art:"rhb10.webp", P:[["左の首",.16,.33,6],["右の首",.85,.31,7],["中央の首",.5,.18,8],["鱗",.5,.72,9],["心臓",.5,.5]], col:["#ff3d3d","#ffd34d"], ic:"1f409", bpm:76, bar:4, A:["e q e q q","q e q e q","e q q e q"], B:["e q e e~ e q","q. e e q e","e q e q e e","t t t e q e q"], tip:"アクセントがずれる「タ・ターン・タ」。5つの首をこわせ、ラスボス！" }
   ]},
   rhythm_ura: { name:"裏ボス", title:"g_ti_rh_u", parent:"rhythm", ura:true, levels:[
-    { n:"5拍子", boss:"鬼神・焔魔王", art:"rhu1_idle.webp", spr:{ f:"rhu1_float.webp", a:"rhu1_attack.webp", s:"rhu1_special.webp", fxa:"rhu_fx1_atk.webp", fxs:"rhu_fx1_sp.webp" }, P:[["角",.79,.13,0],["数珠",.48,.6]], col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
-    { n:"7拍子", boss:"宇宙創造神・アストラル", art:"rhu2_idle.webp", spr:{ f:"rhu2_float.webp", a:"rhu2_attack.webp", s:"rhu2_special.webp", fxa:"rhu_fx2_atk.webp", fxs:"rhu_fx2_sp.webp", fxr:"rhu_fx2_ring.webp" }, P:[["光輪",.33,.1,0],["星の瞳",.49,.37]], col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
+    { n:"5拍子", boss:"鬼神・焔魔王", art:"rhu1_idle.webp", hp:[.6,.8], spr:{ f:"rhu1_float.webp", a:"rhu1_attack.webp", s:"rhu1_special.webp", fxa:"rhu_fx1_atk.webp", fxs:"rhu_fx1_sp.webp" }, P:[["角",.79,.13,0],["数珠",.48,.6]], col:["#ff1f4b","#ff9e00"], ic:"1f479", bpm:84, bar:5, accents:[0,3], A:["q q q q q","q. e q q q","e e q q e e q"], B:["q q q. e q","e q e q q q","q e e q e e q"], tip:"「1・2・3・1・2」の5拍子。数えまちがえたら負け" },
+    { n:"7拍子", boss:"宇宙創造神・アストラル", art:"rhu2_idle.webp", hp:[.6,.8], spr:{ f:"rhu2_float.webp", a:"rhu2_attack.webp", s:"rhu2_special.webp", fxa:"rhu_fx2_atk.webp", fxs:"rhu_fx2_sp.webp", fxr:"rhu_fx2_ring.webp" }, P:[["光輪",.33,.1,0],["星の瞳",.49,.37]], col:["#7b2ff7","#00f5d4"], ic:"1f47e", bpm:132, bar:3.5, unit:"e", accents:[0,1,2], A:["e e e e e e e","q e q e e","q. q q"], B:["e e q e q","q e e e q","e q e q e"], tip:"8分の7拍子。「タタ・タタ・タタタ」のまとまりで感じよう" }
   ]}
 };
 /* a boss has 1-5 weak points ("parts"). each part is attacked with its own rhythm:
@@ -5977,8 +5993,10 @@ const RH_TITLES = [
 RH_TITLES.forEach(t => { GITEM[t.id] = t; });
 // beating a boss the first time: Lv1-5 = 10 gacha tickets, Lv6-10 = that boss as a UR avatar (never in the gacha)
 const RH_AVATARS = RH_LEVELS.rhythm.levels.map((L, i) => i >= 5 ? { id:"g_av_rh" + (i + 1), r:4, cat:"av", v:{ img:L.art, st:"boss" }, n:L.boss, sp:"リズムバトル Lv" + (i + 1) + " " + L.boss + "をたおす" } : null).filter(Boolean);
+// hidden bosses: 10 tickets + the boss as a moving SECRET avatar (its pose sprites take turns)
+RH_LEVELS.rhythm_ura.levels.forEach((L, i) => RH_AVATARS.push({ id:"g_av_rhu" + (i + 1), r:5, cat:"av", v:{ img:L.art, mv:[L.spr.f, L.spr.a, L.spr.s], st:"boss" }, n:L.boss, sp:"裏ボス" + (i + 1) + " " + L.boss + "をたおす" }));
 RH_AVATARS.forEach(a => { GITEM[a.id] = a; });
-const rhReward = (tr, lv) => tr !== "rhythm" ? null : lv <= 5 ? { t:10 } : { av:"g_av_rh" + lv };
+const rhReward = (tr, lv) => tr === "rhythm_ura" ? { t:10, av:"g_av_rhu" + lv } : tr !== "rhythm" ? null : lv <= 5 ? { t:10 } : { av:"g_av_rh" + lv };
 const Rh = { prog:{ rhythm:{}, rhythm_ura:{} }, best:{} };
 const RH_PERFECT = .055, RH_GOOD = .12;
 const rhDone = tr => Object.keys(Rh.prog[tr] || {}).length;
@@ -6163,8 +6181,8 @@ function rhIntro(o, tr, lv){
   const ol = el("ol"); parts.forEach((p, i) => { const li = el("li", p.core ? "core" : null); li.append(el("i", null, p.core ? "💀" : String(i + 1)), el("b", null, p.nm), el("small", null, p.topic)); ol.append(li); }); rt.append(ol); card.append(rt);
   const rw = rhReward(tr, lv), beaten = !!(Rh.prog[tr] || {})[lv];
   if(rw){ const box = el("div", "rh-rw" + (beaten ? " got" : "")); box.append(el("small", null, beaten ? "初回クリア報酬（ゲット済み）" : "🎁 初回クリア報酬"));
-    if(rw.t) box.append(el("b", null, "🎟 ガチャチケ ×" + rw.t));
-    else { const g = GITEM[rw.av], ic = el("span", "rh-rwav"); ic.innerHTML = avHTML(g.v); const t = el("span"); t.append(rarBadge(g.r), el("b", null, " アバター「" + g.n + "」")); box.append(ic, t); }
+    if(rw.t) box.append(el("b", null, "🎟 ガチャチケ ×" + rw.t + (rw.av ? " ＋" : "")));
+    if(rw.av && GITEM[rw.av]){ const g = GITEM[rw.av], ic = el("span", "rh-rwav"); ic.innerHTML = avHTML(g.v); const t = el("span"); t.append(rarBadge(g.r), el("b", null, " アバター「" + g.n + "」")); box.append(ic, t); }
     card.append(box); }
   // a sample bar of this level
   const sm = rhBarSVG(rhParse(L.A[0]), L); const sw = el("div", "rh-sample"); sw.innerHTML = sm.svg; card.append(sw);
@@ -6195,7 +6213,8 @@ function rhCrash(){ const c = earCtx(); if(!c) return; const t = c.currentTime +
   [0, .06, .12].forEach((dl, i) => rhPing([2637, 3136, 3951][i], .05 + dl, .05)); }
 // a crack drawn over a weak point (3 rays first, then all of them)
 const RH_CRACK = '<svg class="wk-cr" viewBox="-50 -50 100 100"><g class="k1"><polyline points="0,0 -8,-14 -6,-26 -16,-40"/><polyline points="0,0 15,-6 26,-2 40,-12"/><polyline points="0,0 4,16 -4,28 2,42"/></g><g class="k2"><polyline points="0,0 -16,4 -28,0 -42,8"/><polyline points="0,0 10,-18 22,-30"/><polyline points="0,0 14,12 24,26 36,30"/><polyline points="-8,-14 -20,-18"/><polyline points="4,16 16,22"/></g></svg>';
-const RH_PART_HP = .5, RH_CORE_HP = .7;
+// normal bosses forgive a miss or two; hidden bosses (L.hp) want near-perfect play
+const RH_PART_HP = .35, RH_CORE_HP = .5;
 function rhBattle(o, tr, lv){
   rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.add("playing"); o.classList.remove("angry", "fever");
   const T = RH_LEVELS[tr], L = T.levels[lv - 1], chart = rhMakeChart(L), c = earCtx();
@@ -6234,7 +6253,7 @@ function rhBattle(o, tr, lv){
   chart.forEach((bar, bi) => bar.forEach((n, i) => { if(!n.rest && !n.tied) notes.push({ t:t0 + bi * barSec + n.at * spb, bi, i, pi:bar.pi, j:null }); }));
   // HP = a share of the damage a perfect player would deal to that part (combos included), so every level feels the same
   const pd = parts.map(() => 0); notes.forEach((n, i) => { const k = i + 1; pd[n.pi] += 2 * (k >= 20 ? 3 : k >= 10 ? 2 : 1); });
-  parts.forEach((p, pi) => { p.max = p.hp = Math.max(4, Math.ceil(pd[pi] * (p.core ? RH_CORE_HP : RH_PART_HP))); });
+  parts.forEach((p, pi) => { p.max = p.hp = Math.max(4, Math.ceil(pd[pi] * (p.core ? (L.hp ? L.hp[1] : RH_CORE_HP) : (L.hp ? L.hp[0] : RH_PART_HP)))); });
   R.n = notes.length; const sync = () => { R.hp = parts.reduce((a, p) => a + (p.br || p.gd ? 0 : p.hp), 0); }; R.max = parts.reduce((a, p) => a + p.max, 0); sync();
   // metronome: one count-in bar, then every bar
   const clicks = rhClickTimes(L);
@@ -6399,10 +6418,10 @@ async function rhResult(o, tr, lv, R, win, nm, score, rank){
     setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 400);
     if(res && res.reward){ const rw = res.reward, box = el("div", "rh-rwget");
       if(rw.t){ box.append(el("small", null, "初回クリア報酬"), el("b", null, "🎟 ガチャチケ ×" + rw.t + " ゲット！")); try{ GSFX.star(2); }catch(e){} }
-      else if(rw.av && GITEM[rw.av]){ const g = GITEM[rw.av], ic = el("span", "rh-rwav big"); ic.innerHTML = avHTML(g.v);
+      if(rw.av && GITEM[rw.av]){ const g = GITEM[rw.av], ic = el("span", "rh-rwav big"); ic.innerHTML = avHTML(g.v);
         const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { rhClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"av", item:rw.av }); };
         const t = el("span", "rh-rwt"); t.append(rarBadge(g.r), el("b", null, " " + g.n));
-        box.classList.add("av"); box.append(el("small", null, "ボスがなかまになった！"), ic, t, w); setTimeout(() => { try{ GSFX.fanfare(4); }catch(e){} }, 900); }
+        box.classList.add("av"); if(g.r >= 5) box.classList.add("sec"); box.append(el("small", null, g.r >= 5 ? "🌑 シークレット！ 裏ボスがなかまになった！" : "ボスがなかまになった！"), ic, t, w); setTimeout(() => { try{ GSFX.fanfare(4); }catch(e){} }, 900); }
       r.append(box); }
     if(res && res.titles && res.titles.length) res.titles.forEach(id => { const t = GITEM[id]; const tb = el("div", "ear-title"); tb.append(el("small", null, "称号ゲット！"), el("b", null, "👑 " + (t ? t.v : id)));
       const w = el("button", "ear-sm", "👗 きせかえで付ける"); w.type = "button"; w.onclick = () => { rhClose(); if(typeof openWardrobe === "function") openWardrobe({ tab:"title", item:id }); }; tb.append(w); r.append(tb); });
