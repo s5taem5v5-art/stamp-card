@@ -2641,6 +2641,77 @@ button.ear-chip{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.av2.st-boss.mv .bg .ph{animation:none}.av2.st-boss.mv .bg .ph.f0{opacity:1}}
 .rh-rwget.sec{border-color:#ffe27a;box-shadow:0 0 26px rgba(255,226,122,.45),inset 0 0 18px rgba(123,47,247,.35);background:linear-gradient(150deg,rgba(123,47,247,.3),rgba(255,31,75,.18))}
 
+/* ===== two-hand polyrhythm ===== */
+.pl-door{margin-top:10px}
+.pl-door.open{border-color:#2fb8ff;background:linear-gradient(120deg,#062236,#0c1430 60%,#05030c);box-shadow:0 0 0 1px rgba(60,180,255,.25),0 8px 24px rgba(30,120,220,.35)}
+.pl-door.open .ear-dot{background:radial-gradient(circle,#0a2a44,#040a14);border-color:#3cc4ff}
+.pl-door.open .ear-dot::after{border-color:#3cc4ff}
+.rh-ov.poly{background:radial-gradient(120% 60% at 50% 0%,#0f2a4a,#0a0f24 70%)}
+.pl-hero{position:relative;z-index:1;margin:6px 0 14px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(120,200,255,.25);color:#e8f4ff}
+.pl-hero>b{font-size:17px}
+.pl-hero p{margin:6px 0 8px;font-size:13px;line-height:1.6;white-space:pre-line;color:#c9dcf0}
+.pl-prog{font-size:12px;font-weight:800;color:#8fd3ff}
+.pl-hero .rh-ttl{margin-top:8px}
+.pl-path .pl-node.done .ear-dot{border-color:#3cc4ff}
+.pl-intro .pl-big{width:84px;height:84px;display:block;margin:4px auto 0;filter:drop-shadow(0 6px 14px rgba(60,180,255,.45))}
+/* staves */
+.pl-staves{position:relative;z-index:1;display:grid;gap:4px;margin:10px 0;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.06)}
+.pl-staff{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;align-items:center;column-gap:6px}
+.pl-hl{grid-row:1/3;font-size:13px;font-weight:900;text-align:center;padding:6px 0;border-radius:10px}
+.pl-staff.R .pl-hl{background:#ff8a3c;color:#2a1000}
+.pl-staff.L .pl-hl{background:#3cb4ff;color:#001a2a}
+.pl-staff.R{color:#ffd2b0}
+.pl-staff.L{color:#bfe6ff}
+.pl-svg{position:relative;height:52px}
+.pl-bar{display:block;width:100%;height:100%}
+.pl-kind{font-size:10.5px;opacity:.75}
+.pl-n.perfect{fill:#ffe14d;stroke:#ffe14d}
+.pl-n.good{fill:#7dff9a;stroke:#7dff9a}
+.pl-n.miss{fill:#ff4d6d;stroke:#ff4d6d}
+.pl-cur{position:absolute;top:2px;bottom:2px;left:0;width:3px;margin-left:-1.5px;border-radius:2px;background:#fff;box-shadow:0 0 8px #fff;opacity:0;pointer-events:none}
+.pl-seq{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:8px 0}
+.pl-seq span{padding:5px 10px;border-radius:999px;font-size:13px;font-weight:900}
+.pl-seq .both{background:linear-gradient(90deg,#3cb4ff,#ff8a3c);color:#fff}
+.pl-seq .R{background:#ff8a3c;color:#2a1000}
+.pl-seq .L{background:#3cb4ff;color:#001a2a}
+/* play screen */
+.rh-ov.poly.playing .pl-staves{margin:6px 0;flex:none}
+.pl-info{position:relative;z-index:1;display:flex;align-items:center;gap:10px;padding:4px 4px 0;color:#e8f4ff;flex:none}
+.pl-sec{font-size:18px;font-weight:900;display:inline-block}
+.pl-sec.sR{color:#ffb27a}
+.pl-sec.sL{color:#8fd3ff}
+.pl-sec.sRL{background:linear-gradient(90deg,#8fd3ff,#ffb27a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pl-barn{opacity:.7;font-weight:800}
+.pl-cb{margin-left:auto;font-weight:900;color:#ffe14d}
+.pl-sc{font-weight:900;font-variant-numeric:tabular-nums}
+.pl-lanes{position:relative;z-index:1;flex:1;min-height:120px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.pl-lane{position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.12);transition:opacity .25s}
+.pl-lane.L{border-color:rgba(60,180,255,.4)}
+.pl-lane.R{border-color:rgba(255,138,60,.4)}
+.pl-lanes.sR .pl-lane.L,.pl-lanes.sL .pl-lane.R{opacity:.3}
+.pl-hit{position:absolute;left:8px;right:8px;bottom:14%;height:4px;border-radius:2px;background:#fff;opacity:.8;box-shadow:0 0 10px #fff}
+.pl-fn{position:absolute;left:50%;width:46px;height:18px;margin:-9px 0 0 -23px;border-radius:9px;will-change:top}
+.pl-lane .pl-fn{top:0}
+/* notes fall to the hit line at 86% of the lane height (set from the script) */
+.pl-fn.L{background:#3cb4ff;box-shadow:0 0 12px #3cb4ff}
+.pl-fn.R{background:#ff8a3c;box-shadow:0 0 12px #ff8a3c}
+.pl-fn.miss{background:#ff4d6d;box-shadow:none;opacity:.6}
+.pl-jd{position:absolute;left:50%;bottom:22%;transform:translate(-50%,0);font-size:16px;font-weight:900;white-space:nowrap;opacity:0;pointer-events:none;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.pl-jd.perfect{color:#ffe14d}
+.pl-jd.good{color:#7dff9a}
+.pl-jd.miss{color:#ff6d86}
+.pl-pads{position:relative;z-index:2;flex:none;display:grid;grid-template-columns:1fr 1fr;gap:8px;height:clamp(96px,18vh,150px)}
+.pl-pad{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:20px;font:inherit;color:#fff;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.pl-pad b{font-size:22px;font-weight:900}
+.pl-pad small{font-size:11px;opacity:.7}
+.pl-pad.L{background:linear-gradient(180deg,#3cb4ff,#1a6fd0);box-shadow:0 6px 0 #0f4a8c}
+.pl-pad.R{background:linear-gradient(180deg,#ff9a4c,#e0581a);box-shadow:0 6px 0 #9a3a0c}
+.pl-pad:active{transform:translateY(4px);box-shadow:none}
+.pl-acc{font-size:40px;font-weight:900;margin:2px 0 6px}
+.pl-stats{grid-template-columns:repeat(2,1fr)}
+.pl-legend{font-size:11px;opacity:.65;margin:2px 0 6px}
+.rh-ov.poly.playing>.ear-hd,.rh-ov.poly.playing>.pl-info,.rh-ov.poly.playing>.pl-staves,.rh-ov.poly.playing>.pl-lanes,.rh-ov.poly.playing>.pl-pads{align-self:stretch;width:100%;box-sizing:border-box}
+
 </style>
 </head>
 <body>
@@ -6134,7 +6205,7 @@ function rhHead(o, title, onBack){
 function rhMap(o){
   rhStopRun(); o.innerHTML = ""; o.scrollTop = 0;
   let tr = RhS.tab; if(RH_LEVELS[tr].parent && !rhAll(RH_LEVELS[tr].parent)) tr = RhS.tab = "rhythm";
-  const T = RH_LEVELS[tr], ura = !!T.ura; o.classList.toggle("ura", ura);
+  const T = RH_LEVELS[tr], ura = !!T.ura; o.classList.toggle("ura", ura); o.classList.remove("poly");
   rhHead(o, ura ? "🌑 裏ボス" : "🥁 リズムバトル", ura ? () => { RhS.tab = "rhythm"; rhMap(o); } : null);
   // timing
   const lat = rhLat(); const cal = el("button", "rh-cal"); cal.type = "button"; cal.id = "rh-cal";
@@ -6161,7 +6232,12 @@ function rhMap(o){
   if(!ura){ const open = rhAll("rhythm"); const door = el("button", "ear-door" + (open ? " open" : "")); door.type = "button"; door.id = "rh-ura";
     const dd = el("span", "ear-dot"); dd.append(earImg(open ? "1f311" : "1f512"));
     const dt = el("span", "ear-nt"); dt.append(el("b", null, open ? "🌑 裏ボス" : "？？？"), el("small", null, open ? "5拍子と7拍子のボス（" + rhDone("rhythm_ura") + "/" + rhMax("rhythm_ura") + "）" : "ボスを全部たおすと、なにかが起きる…"));
-    door.append(dd, dt); door.onclick = () => { if(!open){ toast("ボスを全部たおすと…？"); return; } RhS.tab = "rhythm_ura"; rhMap(o); }; o.append(door); }
+    door.append(dd, dt); door.onclick = () => { if(!open){ toast("ボスを全部たおすと…？"); return; } RhS.tab = "rhythm_ura"; rhMap(o); }; o.append(door);
+    // for players who beat every boss: two hands, two rhythms
+    if(typeof RH_POLY !== "undefined"){ const pd = el("button", "ear-door pl-door" + (open ? " open" : "")); pd.type = "button"; pd.id = "rh-poly";
+      const pi = el("span", "ear-dot"); pi.append(earImg(open ? "1f64c" : "1f512"));
+      const pt = el("span", "ear-nt"); pt.append(el("b", null, open ? "🙌 両手ポリリズム" : "？？？"), el("small", null, open ? "左手と右手で別々のリズム（" + rhPolyDone() + "/" + RH_POLY.length + "）" : "ボスを全部たおすと、もうひとつ…"));
+      pd.append(pi, pt); pd.onclick = () => { if(!open){ toast("ボスを全部たおすと…？"); return; } rhPolyMap(o); }; o.append(pd); } }
   setTimeout(() => { const c = o.querySelector(".ear-node.cur"); if(c && c.offsetTop > innerHeight * .6) o.scrollTo({ top: c.offsetTop - innerHeight * .4, behavior: "smooth" }); }, 60);
 }
 
@@ -6485,6 +6561,228 @@ function tRh(s){
         el("small", null, d >= m ? "🏆 全部たおした" : last ? (T.ura ? "裏" : "Lv") + last + " " + T.levels[last - 1].boss + " まで（" + p[last].slice(5).replace("-", "/") + "）" : "まだ"));
       body.append(row); }); }).catch(() => { body.innerHTML = ""; body.append(el("div", "empty", "よみこめませんでした")); });
   return box;
+}
+
+/* ================= RHYTHM: two-hand polyrhythm (for players who beat every boss) =================
+   left hand taps the left half of the screen, right hand the right half. each hand has its own rhythm.
+   a stage = 1 count-in bar, then 2 bars right hand only, 2 bars left hand only, 4 bars both hands. */
+const RH_POLY = [
+  { n:"2たい1", nm:"ふたごの鐘", ic:"1f514", bpm:80, beats:2, R:4, L:2, say:["いっしょ", "右", "いっしょ", "右"], tip:"右手は8分音符「タタタタ」、左手は4分音符「ドン・ドン」。左がたたくときは右もいっしょ！" },
+  { n:"1たい2", nm:"あべこべの鐘", ic:"1f504", bpm:84, beats:2, R:2, L:4, say:["いっしょ", "左", "いっしょ", "左"], tip:"こんどは左手がこまかい。右手はゆったり4分音符" },
+  { n:"3たい2", nm:"三日月と太陽", ic:"1f319", bpm:60, beats:2, R:3, L:2, say:["いっしょ", "右", "左", "右"], tip:"右手は3連符（2拍に3つ）、左手は4分音符（2拍に2つ）。「いっしょ・右・左・右」の順にたたく" },
+  { n:"2たい3", nm:"太陽と三日月", ic:"2600-fe0f", bpm:66, beats:2, R:2, L:3, say:["いっしょ", "左", "右", "左"], tip:"左手が3連符、右手が4分音符。「いっしょ・左・右・左」" },
+  { n:"4たい3", nm:"歯車の時計塔", ic:"2699-fe0f", bpm:63, beats:3, R:4, L:3, say:["いっしょ", "右", "左", "右", "左", "右"], tip:"右手は付点8分音符（3拍に4つ）、左手は4分音符（3拍に3つ）。「いっしょ・右・左・右・左・右」" },
+  { n:"3たい4", nm:"ポリリズムの王", ic:"1f451", bpm:72, beats:4, R:3, L:4, say:["いっしょ", "左", "右", "左", "右", "左"], tip:"右手は2分音符の3連符（4拍に3つ）、左手は4分音符（4拍に4つ）。「いっしょ・左・右・左・右・左」" },
+];
+const RH_POLY_TITLE = { id:"g_ti_rh_p", r:4, cat:"title", v:"ポリリズムの達人", n:"しょうごう", sp:"両手ポリリズムを全部クリア" };
+RH_TITLES.push(RH_POLY_TITLE); GITEM[RH_POLY_TITLE.id] = RH_POLY_TITLE;
+const RH_POLY_RW = 5;   // gacha tickets for the first clear of each stage
+const rhPolyBest = lv => rhBest("rhythm_poly", lv);
+const rhPolyClear = lv => { const b = rhPolyBest(lv); return !!(b && b.rk && b.rk !== "C"); };
+const rhPolyOpen = lv => rhAll("rhythm") && (lv === 1 || rhPolyClear(lv - 1));
+const rhPolyDone = () => RH_POLY.filter((S, i) => rhPolyClear(i + 1)).length;
+// the beat positions of n even notes in a bar of `beats` quarter notes
+const rhPolyAt = (n, beats) => Array.from({ length:n }, (_, i) => i * beats / n);
+// what the notes of n-in-beats are called (for the screen)
+function rhPolyName(n, beats){
+  if(n === beats) return "4分音符"; if(n === beats * 2) return "8分音符";
+  if(n * 2 === beats * 3) return "3連符"; if(n * 3 === beats * 4) return "付点8分音符"; if(n * 4 === beats * 3) return "2分音符の3連符"; return n + "つ";
+}
+
+/* ---------- notation: one hand, one bar ---------- */
+const PL_W = 340, PL_P = 26, PL_Y = 46, PL_T = 16;
+function rhPolySVG(n, beats, hand){
+  const at = rhPolyAt(n, beats), x = a => PL_P + 8 + a / beats * (PL_W - PL_P * 2 - 8), p = [];
+  const kind = n === beats ? "q" : n === beats * 2 ? "e" : n * 2 === beats * 3 ? "q3" : n * 3 === beats * 4 ? "e." : n * 4 === beats * 3 ? "h3" : "q";
+  p.push(`<line x1="4" x2="${PL_W - 4}" y1="${PL_Y}" y2="${PL_Y}" stroke="currentColor" stroke-opacity=".35" stroke-width="1.4"/>`);
+  p.push(`<text x="10" y="${PL_Y - 15}" font-size="13" font-weight="900" fill="currentColor" text-anchor="middle">${beats}</text><text x="10" y="${PL_Y + 1}" font-size="13" font-weight="900" fill="currentColor" text-anchor="middle">4</text>`);
+  p.push(`<line x1="${PL_W - 4}" x2="${PL_W - 4}" y1="${PL_Y - 22}" y2="${PL_Y + 10}" stroke="currentColor" stroke-opacity=".5" stroke-width="1.6"/>`);
+  const xs = at.map(x), hollow = kind === "h3";
+  xs.forEach((cx, i) => {
+    p.push(`<ellipse class="pl-n" data-h="${hand}" data-i="${i}" cx="${cx}" cy="${PL_Y}" rx="7.5" ry="5.4" transform="rotate(-20 ${cx} ${PL_Y})" fill="${hollow ? "none" : "currentColor"}" stroke="currentColor" stroke-width="${hollow ? 2.4 : 1}"/>`);
+    p.push(`<line x1="${cx + 6.5}" x2="${cx + 6.5}" y1="${PL_Y - 2}" y2="${PL_T}" stroke="currentColor" stroke-width="1.8"/>`);
+    if(kind === "e.") p.push(`<circle cx="${cx + 13}" cy="${PL_Y - 2}" r="2.2" fill="currentColor"/>`);
+  });
+  // beams: eighths two by two (one per beat), dotted eighths all together
+  if(kind === "e") for(let i = 0; i + 1 < xs.length; i += 2) p.push(`<rect x="${xs[i] + 5.6}" y="${PL_T - 1}" width="${xs[i + 1] - xs[i] + 1.8}" height="5" fill="currentColor"/>`);
+  if(kind === "e.") p.push(`<rect x="${xs[0] + 5.6}" y="${PL_T - 1}" width="${xs[xs.length - 1] - xs[0] + 1.8}" height="5" fill="currentColor"/>`);
+  // triplet bracket with the 3
+  if(kind === "q3" || kind === "h3"){ const a = xs[0] + 1, b = xs[xs.length - 1] + 12, m = (a + b) / 2;
+    p.push(`<path d="M${a} ${PL_T - 2} v-6 H${m - 9} M${m + 9} ${PL_T - 8} H${b} v6" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="${m}" y="${PL_T - 3}" font-size="13" font-weight="900" text-anchor="middle" fill="currentColor">3</text>`); }
+  return `<svg class="pl-bar" viewBox="0 0 ${PL_W} 60" preserveAspectRatio="none" aria-hidden="true">${p.join("")}</svg>`;
+}
+function rhPolyStaves(S){
+  const w = el("div", "pl-staves");
+  [["R", "右手", S.R], ["L", "左手", S.L]].forEach(([h, nm, n]) => { const r = el("div", "pl-staff " + h); r.append(el("b", "pl-hl", nm)); const s = el("div", "pl-svg"); s.innerHTML = rhPolySVG(n, S.beats, h); r.append(s, el("small", "pl-kind", rhPolyName(n, S.beats))); w.append(r); });
+  return w;
+}
+
+/* ---------- sounds: right hand = high wood block, left hand = low drum ---------- */
+function rhPolySnd(h, t, bus, vol){
+  const c = earCtx(); if(!c) return; t = t == null ? c.currentTime : t; const v = vol == null ? 1 : vol;
+  const o = c.createOscillator(), g = c.createGain();
+  if(h === "R"){ o.type = "triangle"; o.frequency.setValueAtTime(1250, t); o.frequency.exponentialRampToValueAtTime(900, t + .05); g.gain.setValueAtTime(.4 * v, t); g.gain.exponentialRampToValueAtTime(.0008, t + .09); }
+  else { o.type = "sine"; o.frequency.setValueAtTime(190, t); o.frequency.exponentialRampToValueAtTime(55, t + .14); g.gain.setValueAtTime(.6 * v, t); g.gain.exponentialRampToValueAtTime(.0008, t + .2); }
+  o.connect(g); g.connect(bus || EarA.out); o.start(t); o.stop(t + .25); if(bus) (bus._o || (bus._o = [])).push(o);
+}
+// お手本: 2 bars of both hands with the click
+function rhPolyDemo(S){
+  const c = earCtx(); if(!c) return; rhCut(RhDemoBus); const bus = RhDemoBus = rhBus();
+  const spb = 60 / S.bpm, bar = S.beats * spb, t0 = c.currentTime + .25;
+  for(let b = 0; b < 2; b++){
+    for(let k = 0; k < S.beats; k++) rhClick(t0 + b * bar + k * spb, k === 0, bus);
+    rhPolyAt(S.R, S.beats).forEach(a => rhPolySnd("R", t0 + b * bar + a * spb, bus));
+    rhPolyAt(S.L, S.beats).forEach(a => rhPolySnd("L", t0 + b * bar + a * spb, bus));
+  }
+}
+
+/* ---------- the stage list ---------- */
+function rhPolyMap(o){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.remove("ura", "playing"); o.classList.add("poly");
+  rhHead(o, "🎹 両手ポリリズム", () => { o.classList.remove("poly"); rhMap(o); });
+  const top = el("div", "pl-hero"); top.append(el("b", null, "🙌 両手で別々のリズム"), el("p", null, "左手は画面の左半分、右手は右半分をタップ（キーボードなら F と J）。\n右手だけ → 左手だけ → 両手 の順に出てくるよ。Bランク以上でクリア！"),
+    el("div", "pl-prog", "クリア " + rhPolyDone() + " / " + RH_POLY.length + "　・　はじめてのクリアで 🎟×" + RH_POLY_RW));
+  const tt = el("div", "rh-ttl" + (rhPolyDone() >= RH_POLY.length ? " got" : ""), rhPolyDone() >= RH_POLY.length ? "🏆 称号「" + RH_POLY_TITLE.v + "」ゲット！" : "全部クリアで称号「" + RH_POLY_TITLE.v + "」"); top.append(tt);
+  o.append(top);
+  const path = el("div", "ear-path rh-path pl-path");
+  RH_POLY.forEach((S, i) => { const lv = i + 1, b = rhPolyBest(lv), done = rhPolyClear(lv), un = rhPolyOpen(lv), cur = un && !done;
+    const n = el("button", "ear-node rh-node pl-node" + (done ? " done" : "") + (cur ? " cur" : "") + (!un ? " lock" : "") + (i % 2 ? " r" : "")); n.type = "button"; n.dataset.lv = lv;
+    const c = el("span", "ear-dot"); c.append(earImg(un ? S.ic : "1f512")); if(b && b.rk) c.append(el("i", "rh-rk r" + b.rk, b.rk)); if(b && b.nm) c.append(el("i", "rh-crown", "👑"));
+    const tx = el("span", "ear-nt"); tx.append(el("b", null, lv + ". " + S.nm), el("small", null, un ? "🙌 " + S.n + "（右" + S.R + "・左" + S.L + "）" + (b ? " ・ ベスト " + (b.rk ? b.rk + "ランク " : "") + b.s + "点" : "") : "前のステージをクリアするとあくよ"));
+    n.append(c, tx); n.onclick = () => { if(!un){ toast("前のステージをクリアするとあくよ"); return; } rhPolyIntro(o, lv); }; path.append(n); });
+  o.append(path);
+}
+function rhPolyIntro(o, lv){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; const S = RH_POLY[lv - 1];
+  rhHead(o, lv + ". " + S.nm, () => rhPolyMap(o));
+  const card = el("div", "ear-intro pl-intro");
+  card.append(earImg(S.ic, "pl-big"), el("h2", null, S.nm), el("p", "rh-rh", "🙌 " + S.n + " ・ ♩=" + S.bpm + " ・ " + S.beats + "/4拍子"), el("p", "ear-tip", S.tip));
+  card.append(rhPolyStaves(S));
+  // the order both hands play in, as one line
+  const seq = el("div", "pl-seq"); S.say.forEach(w => seq.append(el("span", w === "いっしょ" ? "both" : w === "右" ? "R" : "L", w))); card.append(seq);
+  const lis = el("button", "ear-sm", "🔊 お手本をきく（両手）"); lis.type = "button"; lis.onclick = () => rhPolyDemo(S); card.append(lis);
+  const b = rhPolyBest(lv);
+  const rw = el("div", "rh-rw" + (rhPolyClear(lv) ? " got" : "")); rw.append(el("small", null, rhPolyClear(lv) ? "初回クリア報酬（ゲット済み）" : "🎁 はじめてのクリア"), el("b", null, "🎟 ガチャチケ ×" + RH_POLY_RW + (lv === RH_POLY.length ? " ＋ 称号への最後の1つ" : ""))); card.append(rw);
+  if(b) card.append(el("p", "ear-how", "ベスト：" + (b.rk || "-") + "ランク " + b.s + "点" + (b.nm ? " 👑" : "")));
+  card.append(el("p", "ear-how", "📜 ルール\nカウント1小節のあと、右手だけ2小節 → 左手だけ2小節 → 両手4小節。ハートはなし、さいごまでたたいて正確さ（％）でランクが決まるよ。S＝95％以上でミスなし、A＝85％、B＝70％。"));
+  const go = el("button", "ear-go", "🙌 スタート"); go.type = "button"; go.id = "pl-start"; go.onclick = () => { earCtx(); rhPolyPlay(o, lv); }; card.append(go);
+  o.append(card);
+}
+
+/* ---------- play ---------- */
+function rhPolyPlay(o, lv){
+  rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.add("playing"); const S = RH_POLY[lv - 1];
+  const c = earCtx(); if(c && c.state !== "running") try{ c.resume(); }catch(e){}
+  const spb = 60 / S.bpm, barSec = S.beats * spb, BARS = 8, LEAD = 1.7;
+  const lat = rhLat() || 0, t0 = c.currentTime + .6 + barSec;   // bar 0 starts after one count-in bar
+  const sec = b => b < 2 ? "R" : b < 4 ? "L" : "RL";
+  const notes = [];
+  for(let b = 0; b < BARS; b++){ const s = sec(b);
+    if(s.includes("R")) rhPolyAt(S.R, S.beats).forEach((a, i) => notes.push({ h:"R", i, b, t:t0 + b * barSec + a * spb, j:null }));
+    if(s.includes("L")) rhPolyAt(S.L, S.beats).forEach((a, i) => notes.push({ h:"L", i, b, t:t0 + b * barSec + a * spb, j:null })); }
+  notes.sort((a, b) => a.t - b.t);
+  const end = t0 + BARS * barSec;
+  const R = { p:0, g:0, m:0, x:0, combo:0, maxCombo:0, hp:{ R:{ p:0, g:0, m:0 }, L:{ p:0, g:0, m:0 } }, done:false };
+  RhRun = { stop:false, raf:0, bus:rhBus() }; const bus = RhRun.bus;
+  // header and screen
+  const h = rhHead(o, lv + ". " + S.nm, () => { rhStopRun(); o.classList.remove("playing"); rhPolyIntro(o, lv); });
+  const info = el("div", "pl-info"); const secEl = el("b", "pl-sec", "カウント…"), barEl = el("small", "pl-barn", ""), scEl = el("span", "pl-sc", "0"), cbEl = el("span", "pl-cb", ""); info.append(secEl, barEl, cbEl, scEl); o.append(info);
+  const staves = rhPolyStaves(S); staves.classList.add("live"); const curs = [...staves.querySelectorAll(".pl-svg")].map(w => { const k = el("i", "pl-cur"); w.append(k); return k; }); o.append(staves);
+  const lanes = el("div", "pl-lanes"); const lane = {};
+  ["L", "R"].forEach(hd => { const ln = el("div", "pl-lane " + hd); ln.append(el("i", "pl-hit")); const jd = el("b", "pl-jd"); ln.append(jd); lane[hd] = { el:ln, jd }; lanes.append(ln); });
+  o.append(lanes);
+  const pads = el("div", "pl-pads"); const pad = {};
+  [["L", "左手", "F"], ["R", "右手", "J"]].forEach(([hd, nm, key]) => { const b = el("button", "pl-pad " + hd); b.type = "button"; b.append(el("b", null, nm), el("small", null, key)); pad[hd] = b; pads.append(b); });
+  o.append(pads);
+  // falling notes (made once, moved every frame)
+  notes.forEach(n => { n.d = el("i", "pl-fn " + n.h); n.d.style.display = "none"; lane[n.h].el.append(n.d); });
+  const svgN = (hd, i) => staves.querySelector('.pl-staff.' + hd + ' .pl-n[data-i="' + i + '"]');
+  // metronome, fed about 1 second ahead
+  const clickQ = []; for(let b = -1; b < BARS; b++) for(let k = 0; k < S.beats; k++) clickQ.push([t0 + b * barSec + k * spb, k === 0]);
+  let clickI = 0; const feed = () => { if(R.done || !RhRun || RhRun.stop) return; while(clickI < clickQ.length && clickQ[clickI][0] < c.currentTime + 1.2){ const q = clickQ[clickI++]; if(q[0] > c.currentTime - .01) rhClick(q[0], q[1], bus); } };
+  feed(); RhRun.feed = setInterval(feed, 200);
+  const pop = (hd, txt, cls) => { const j = lane[hd].jd; j.textContent = txt; j.className = "pl-jd " + cls; try{ j.animate([{ transform:"translate(-50%,0) scale(1.25)", opacity:1 }, { transform:"translate(-50%,-14px) scale(1)", opacity:0 }], { duration:520, easing:"ease-out" }); }catch(e){} };
+  const flash = hd => { try{ pad[hd].animate([{ filter:"brightness(1.7)" }, { filter:"brightness(1)" }], { duration:160 }); }catch(e){} };
+  function judge(n, kind){
+    n.j = kind; R.hp[n.h][kind[0]]++; n.d.classList.add(kind);
+    const s = svgN(n.h, n.i); if(s){ s.classList.remove("perfect", "good", "miss"); s.classList.add(kind); }
+    if(kind === "miss"){ R.m++; R.combo = 0; pop(n.h, "ミス", "miss"); }
+    else { R[kind[0]]++; R.combo++; R.maxCombo = Math.max(R.maxCombo, R.combo); pop(n.h, kind === "perfect" ? "パーフェクト" : "グッド", kind); if(kind === "perfect") rhPing(n.h === "R" ? 2093 : 1568, 0, .035); }
+    scEl.textContent = String(R.p * 100 + R.g * 50); cbEl.textContent = R.combo >= 5 ? R.combo + " コンボ" : "";
+  }
+  const last = { R:-1, L:-1 };
+  function tap(hd, ts){
+    if(R.done) return; rhPolySnd(hd); flash(hd);   // the hand's own sound first, always
+    const now = rhHeard(c, ts) - lat; if(now < t0 - barSec * .25) return;
+    if(now - last[hd] < .09 && now >= last[hd]) return; last[hd] = now;   // one tap that arrived twice
+    let best = null, bd = 9; notes.forEach(n => { if(n.h !== hd || n.j) return; const d = Math.abs(now - n.t); if(d < bd){ bd = d; best = n; } });
+    if(best && bd <= RH_GOOD){ judge(best, bd <= RH_PERFECT ? "perfect" : "good"); return; }
+    // a bounce right after a hit of the same hand is forgiven; otherwise it is an extra tap
+    if(notes.some(n => n.h === hd && n.j && n.j !== "miss" && now - n.t > -RH_GOOD && now - n.t < .16)) return;
+    R.x++; R.combo = 0; cbEl.textContent = ""; pop(hd, "よけい", "miss");
+  }
+  ["L", "R"].forEach(hd => { pad[hd].addEventListener("pointerdown", e => { e.preventDefault(); tap(hd, e.timeStamp); }); });
+  const LK = new Set(["KeyF", "KeyD", "KeyS", "KeyA", "ArrowLeft"]), RK = new Set(["KeyJ", "KeyK", "KeyL", "Semicolon", "ArrowRight"]);
+  const onKey = e => { if(e.repeat) return; if(LK.has(e.code)){ e.preventDefault(); tap("L", e.timeStamp); } else if(RK.has(e.code)){ e.preventDefault(); tap("R", e.timeStamp); } };
+  document.addEventListener("keydown", onKey); RhRun.off = () => document.removeEventListener("keydown", onKey);
+  Object.assign(RhRun, { tap, notes, R, now:() => rhHeard(c) - lat });   // also lets the automatic tests play
+  let shownSec = "";
+  function loop(){
+    if(!RhRun || RhRun.stop) return;
+    const now = rhHeard(c) - lat;
+    const b = Math.floor((now - t0) / barSec);
+    const s = now < t0 ? "C" : b >= BARS ? "E" : sec(b);
+    if(s !== shownSec){ shownSec = s; secEl.textContent = s === "C" ? "カウント…" : s === "R" ? "👉 右手だけ" : s === "L" ? "👈 左手だけ" : s === "E" ? "おわり！" : "🙌 両手！";
+      secEl.className = "pl-sec s" + s; lanes.className = "pl-lanes s" + s;
+      if(s === "R" || s === "L" || s === "RL") try{ secEl.animate([{ transform:"scale(1.3)" }, { transform:"scale(1)" }], { duration:300 }); }catch(e){}
+      // a new section: clear the colours on the staff
+      staves.querySelectorAll(".pl-n").forEach(x => x.classList.remove("perfect", "good", "miss")); }
+    if(b >= 0 && b < BARS){ barEl.textContent = (b + 1) + " / " + BARS; const f = (now - t0 - b * barSec) / barSec, lx = (PL_P + 8 + f * (PL_W - PL_P * 2 - 8)) / PL_W * 100; curs.forEach(k => { k.style.left = lx + "%"; k.style.opacity = "1"; });
+      if(f < .04) staves.querySelectorAll(".pl-n").forEach(x => x.classList.remove("perfect", "good", "miss")); }
+    else curs.forEach(k => { k.style.opacity = "0"; });
+    notes.forEach(n => { const d = n.t - now;
+      if(d > LEAD || d < -.25 || (n.j && n.j !== "miss" && d < -.08)){ if(n.d.style.display !== "none") n.d.style.display = "none"; }
+      else { if(n.d.style.display === "none") n.d.style.display = ""; n.d.style.top = ((1 - d / LEAD) * 86) + "%"; }
+      if(!n.j && now - n.t > RH_GOOD) judge(n, "miss"); });
+    if(now > end + .4){ finish(); return; }
+    RhRun.raf = requestAnimationFrame(loop);
+  }
+  RhRun.raf = requestAnimationFrame(loop);
+  function finish(){
+    if(R.done) return; R.done = true; clearInterval(RhRun && RhRun.feed); rhCut(bus); if(RhRun && RhRun.off) RhRun.off();
+    const total = notes.length, acc = (R.p + R.g * .5) / Math.max(1, total + R.x);
+    const nm = R.m === 0 && R.x === 0, rank = acc >= .95 && nm ? "S" : acc >= .85 ? "A" : acc >= .7 ? "B" : "C";
+    const score = R.p * 100 + R.g * 50 + R.maxCombo * 10;
+    secEl.textContent = rank !== "C" ? "クリア！" : "ざんねん…";
+    const run = RhRun; setTimeout(() => { if(RhRun === run && run && !run.stop) rhPolyResult(o, lv, R, total, acc, rank, nm, score); }, 900);
+  }
+}
+
+/* ---------- result ---------- */
+async function rhPolyResult(o, lv, R, total, acc, rank, nm, score){
+  if(document.getElementById("rh") !== o) return;
+  rhStopRun(); o.classList.remove("playing"); o.innerHTML = ""; o.scrollTop = 0; const S = RH_POLY[lv - 1], ok = rank !== "C";
+  rhHead(o, lv + ". " + S.nm, () => rhPolyMap(o));
+  const r = el("div", "ear-res rh-res pl-res" + (ok ? " perfect" : "")); o.append(r);
+  const cv = el("canvas", "ear-cf"); r.append(cv);
+  const rk = el("div", "rh-rank r" + rank); rk.append(el("small", null, "RANK"), el("b", null, rank)); r.append(rk); setTimeout(() => rk.classList.add("on"), 300);
+  r.append(el("h2", null, ok ? (nm ? "👑 パーフェクトクリア！" : "クリア！") : "もうすこし！"), el("div", "pl-acc", Math.round(acc * 100) + "%"));
+  const st = el("div", "rh-stats pl-stats");
+  [["右手", R.hp.R], ["左手", R.hp.L]].forEach(([nmh, x]) => { const d = el("div"); d.append(el("small", null, nmh), el("b", null, x.p + " / " + x.g + " / " + x.m)); st.append(d); });
+  const d1 = el("div"); d1.append(el("small", null, "よけい"), el("b", null, String(R.x))); const d2 = el("div"); d2.append(el("small", null, "最大コンボ"), el("b", null, String(R.maxCombo))); st.append(d1, d2);
+  r.append(st, el("p", "pl-legend", "パーフェクト / グッド / ミス"), el("div", "ear-score", score + " 点"));
+  if(!ok) r.append(el("p", "ear-rs", "B（70％）でクリア。「お手本」を聞いて、両手の順番「" + S.say.join("・") + "」を声に出してみよう"));
+  let res = null;
+  try{ res = await rpc("mc_s_poly_clear", { sk: SK, p_lv: lv, p_score: score, p_rank: rank, p_nm: nm }); if(res && res.best) Rh.best = res.best; if(res && res.gacha) gSet(res.gacha); }
+  catch(e){ r.append(el("p", "ear-err", "記録できませんでした（" + e.message + "）。電波のいいところでもう一度やってね")); }
+  if(ok){ try{ GSFX.fanfare(nm ? 4 : 3); }catch(e){} setTimeout(() => { if(typeof gBurst === "function") gBurst(cv, nm ? 4 : 3, true); }, 300); }
+  if(res && res.reward && res.reward.t){ const box = el("div", "rh-rwget"); box.append(el("small", null, "はじめてのクリア"), el("b", null, "🎟 ガチャチケ ×" + res.reward.t + " ゲット！")); r.append(box); try{ GSFX.star(2); }catch(e){} }
+  if(res && res.titles && res.titles.includes(RH_POLY_TITLE.id)){ const box = el("div", "rh-rwget sec"); box.append(el("small", null, "全ステージクリア！"), el("b", null, "🏆 称号「" + RH_POLY_TITLE.v + "」ゲット！")); r.append(box); }
+  const bt = el("div", "ear-acts");
+  const again = el("button", ok ? "ear-sm" : "ear-go", "もう一回"); again.type = "button"; again.onclick = () => rhPolyPlay(o, lv); bt.append(again);
+  if(ok && lv < RH_POLY.length){ const nx = el("button", "ear-go", "つぎのステージへ ▶"); nx.type = "button"; nx.onclick = () => rhPolyIntro(o, lv + 1); bt.append(nx); }
+  const mp = el("button", "ear-sm", "ステージ一覧"); mp.type = "button"; mp.onclick = () => rhPolyMap(o); bt.append(mp);
+  r.append(bt);
 }
 
 // something is being watched / typed / sent -> don't redraw
