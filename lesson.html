@@ -2795,6 +2795,12 @@ button.ear-chip{cursor:pointer}
 .hon-info small{font-size:.74rem;opacity:.75}
 .hon-info .warn{color:#ff9d7a;opacity:1}
 .hon-acts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.hon-per{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.hon-pl{font-size:.72rem;font-weight:800;opacity:.7;margin-right:2px}
+.hon-pm{font:inherit;font-size:.76rem;font-weight:800;padding:5px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.22);background:transparent;color:inherit;cursor:pointer}
+.hon-pm.sel{background:#e7c66a;border-color:#e7c66a;color:#3a2806}
+.hon-auto{font:inherit;font-size:.76rem;font-weight:800;padding:5px 11px;border-radius:99px;border:1px dashed rgba(255,255,255,.3);background:transparent;color:inherit;cursor:pointer}
+.hon-auto.on{border-style:solid;border-color:#7ee7c7;background:rgba(126,231,199,.18);color:#bff7e6}
 .hon-acts .hon-on{background:linear-gradient(180deg,#fff2bf,#e7c66a);color:#3a2806;border-color:#d6b45a}
 .hon-acts .hon-renew{background:#dce3ef;color:#1d2b44;border-color:#b9c6da}
 .hon-note{margin:6px 0 0;font-size:.72rem;opacity:.65;line-height:1.5}
@@ -6895,9 +6901,13 @@ async function rhPolyResult(o, lv, R, total, acc, rank, nm, score){
    two separate routes (not a higher and a lower one): same size, same frame, different motif.
    特待生 = gold medal with a laurel and a note.  Chapter U = violet aurora medal with a "U", an aurora orbit and a ring of stars. */
 const HONOR = {
-  tokutai:  { name:"特待生",   short:"特待",  ico:"🎓", line:"スキルテスト合格！ 特待生として1年間がんばろう" },
-  chapter_u:{ name:"Chapter U", short:"Ch.U", ico:"🌌", line:"スキルテスト合格！ Chapter U の1年がはじまるよ" },
+  tokutai:  { name:"特待生",   short:"特待",  ico:"🎓", line: p => "スキルテスト合格！ 特待生として" + p + "がんばろう" },
+  chapter_u:{ name:"Chapter U", short:"Ch.U", ico:"🌌", line: p => "スキルテスト合格！ Chapter U の" + p + "がはじまるよ" },
 };
+// length of one period (months) → words. a year counts "N年目", shorter periods count "N回目"
+const HON_MONTHS = [1, 3, 6, 12];
+const honPer = m => (m || 12) === 12 ? "1年" : m + "ヶ月";
+const honTerm = h => ((h.months || 12) === 12 ? h.terms + "年目" : h.terms + "回目");
 const HONOR_KEYS = ["tokutai", "chapter_u"];
 const honorSort = list => (list || []).filter(h => h && HONOR[h.kind]).sort((a, b) => HONOR_KEYS.indexOf(a.kind) - HONOR_KEYS.indexOf(b.kind));
 const honorActive = list => honorSort(list).filter(h => h.active);
@@ -6939,12 +6949,12 @@ function honorEmblem(kind){
     <path d="M14.4 13.2l.55 1.25 1.25.55-1.25.55-.55 1.25-.55-1.25-1.25-.55 1.25-.55z" fill="#fff"/></svg>`;
 }
 function honorBadge(h, opts){
-  const H = HONOR[h.kind]; const b = el("span", "hon " + h.kind + (opts && opts.small ? " sm" : "")); b.setAttribute("aria-label", H.name + (h.terms > 1 ? " " + h.terms + "年目" : ""));
+  const H = HONOR[h.kind]; const b = el("span", "hon " + h.kind + (opts && opts.small ? " sm" : "")); b.setAttribute("aria-label", H.name + (h.terms > 1 ? " " + honTerm(h) : ""));
   const em = el("span", "hon-em"); em.innerHTML = honorEmblem(h.kind); b.append(em);
   const t = el("span", "hon-t");
   if(h.kind === "chapter_u"){ t.append(el("span", "hon-ch", "Chapter"), el("b", "hon-u", "U")); } else t.append(el("b", null, H.name));
   b.append(t);
-  if(h.terms > 1) b.append(el("small", "hon-y", h.terms + "年目"));
+  if(h.terms > 1) b.append(el("small", "hon-y", honTerm(h)));
   return b;
 }
 // the row of badges on a profile card (nothing when there is none)
@@ -6979,9 +6989,9 @@ function honorShow(h, done){
   const em = el("div", "hon-big"); em.innerHTML = `<span class="hon-ring"></span>${honorEmblem(h.kind)}`;
   const k = el("div", "hon-k", again ? "CONTINUED" : "CONGRATULATIONS");
   const t = el("div", "hon-ttl"); t.append(el("b", null, H.name), document.createTextNode(again ? " 継続です！" : (h.kind === "chapter_u" ? " " : "") + "になりました！"));
-  if(again) inn.append(em, k, t, el("div", "hon-yr", h.terms + "年目"));
+  if(again) inn.append(em, k, t, el("div", "hon-yr", honTerm(h)));
   else inn.append(em, k, t);
-  inn.append(honorBadge(h), el("p", "hon-line", again ? "スキルテスト合格、おめでとう！ " + h.terms + "年目もいっしょにがんばろう" : H.line));
+  inn.append(honorBadge(h), el("p", "hon-line", again ? "おめでとう！ " + honTerm(h) + "もいっしょにがんばろう" : H.line(honPer(h.months))));
   if(h.until){ const [y, m, d] = h.until.split("-"); inn.append(el("small", "hon-until", "期間：" + (+y) + "年" + (+m) + "月" + (+d) + "日まで")); }
   const ok = el("button", "hon-ok", again ? "これからもがんばる！" : "やったー！"); ok.type = "button"; inn.append(ok);
   o.append(cv, el("div", "hon-beams"), inn);
@@ -6998,32 +7008,49 @@ function honorEditor(s){
   const sec = el("section", "card hon-ed"); sec.id = "honor-ed";
   sec.append(el("h3", "sech", "🎓 特待生・Chapter U（スキルテスト）"));
   const pk = pkOf(s), list = (T.honors && T.honors[pk]) || [];
+  T.honM = T.honM || {}; T.honA = T.honA || {};
   HONOR_KEYS.forEach(kind => {
-    const H = HONOR[kind], h = list.find(x => x.kind === kind);
+    const H = HONOR[kind], h = list.find(x => x.kind === kind), key = s.id + kind;
+    const mSel = T.honM[key] || (h && h.months) || 12;
     const row = el("div", "hon-row" + (h ? (h.active ? " on" : " old") : ""));
     const pv = honorBadge(h || { kind, terms:1 }, { small:true }); if(!h || !h.active) pv.classList.add("off"); row.append(pv);
     const info = el("div", "hon-info");
     if(!h) info.append(el("b", null, "なし"));
     else { const left = honLeft(h.until, T.today);
-      if(h.active) info.append(el("b", null, (h.terms > 1 ? h.terms + "年目" : "1年目") + "・" + honDate(h.until) + " まで"), el("small", left <= 30 ? "warn" : null, "のこり " + left + " 日" + (h.news ? "・生徒はまだお祝いを見ていません" : "")));
+      if(h.active) info.append(el("b", null, honTerm(h) + "・" + honDate(h.until) + " まで"),
+        el("small", left <= 30 && !h.auto ? "warn" : null, (h.auto ? "🔁 " + honPer(h.months) + "ごとに自動継続" : "のこり " + left + " 日") + (h.news ? "・生徒はまだお祝いを見ていません" : "")));
       else info.append(el("b", "warn", "期限切れ（" + honDate(h.until) + "）"), el("small", null, "続けるなら「継続」、終わるなら「外す」")); }
     row.append(info);
-    const acts = el("div", "hon-acts");
-    const act = async (a, label) => {
-      try{ const r = await rpc("mc_t_honor", { tk: TK, sid: s.id, p_kind: kind, p_act: a }); T.honors = T.honors || {}; T.honors[pk] = Array.isArray(r) ? r : []; T.honConfirm = null;
-        toast(label); tRender(); }
+    const act = async (a, label, extra) => {
+      try{ const r = await rpc("mc_t_honor", Object.assign({ tk: TK, sid: s.id, p_kind: kind, p_act: a }, extra || {})); T.honors = T.honors || {}; T.honors[pk] = Array.isArray(r) ? r : []; T.honConfirm = null;
+        delete T.honM[key]; delete T.honA[key]; toast(label); tRender(); }
       catch(e){ toast("できませんでした（" + e.message + "）"); } };
-    if(!h){ const b = el("button", "btn small hon-on", H.name + "にする"); b.type = "button"; b.dataset.k = kind; b.onclick = () => act("on", H.name + "にしました（次に開いたときにお祝いが出ます）"); acts.append(b); }
+    // the length: used for "on", "継続" and the automatic renewal
+    const per = el("div", "hon-per"); per.append(el("span", "hon-pl", "期間"));
+    HON_MONTHS.forEach(m => { const b = el("button", "hon-pm" + (m === mSel ? " sel" : ""), honPer(m)); b.type = "button"; b.dataset.k = kind; b.dataset.m = m;
+      b.onclick = () => { T.honM[key] = m; if(h && h.auto && m !== h.months) act("auto", H.name + "の自動継続を" + honPer(m) + "ごとにしました", { p_auto: true, p_months: m }); else tRender(); };
+      per.append(b); });
+    // auto-renew switch
+    const autoOn = h ? !!h.auto : !!T.honA[key];
+    const sw = el("button", "hon-auto" + (autoOn ? " on" : ""), (autoOn ? "🔁 自動継続：オン" : "自動継続：オフ")); sw.type = "button"; sw.dataset.k = kind;
+    sw.setAttribute("aria-pressed", autoOn ? "true" : "false");
+    sw.onclick = () => { if(!h){ T.honA[key] = !autoOn; tRender(); return; }
+      act("auto", autoOn ? H.name + "の自動継続をオフにしました" : H.name + "を" + honPer(mSel) + "ごとに自動継続にしました", { p_auto: !autoOn, p_months: mSel }); };
+    row.append(per);
+    const acts = el("div", "hon-acts");
+    if(!h){ const b = el("button", "btn small hon-on", H.name + "にする（" + honPer(mSel) + (autoOn ? "・自動継続" : "") + "）"); b.type = "button"; b.dataset.k = kind;
+      b.onclick = () => act("on", H.name + "にしました（次に開いたときにお祝いが出ます）", { p_months: mSel, p_auto: autoOn }); acts.append(b); }
     else {
-      // one more year: when it is ending soon (90 days) or already over
-      if(!h.active || honLeft(h.until, T.today) <= 90){ const b = el("button", "btn small hon-renew", "継続（＋1年）"); b.type = "button"; b.dataset.k = kind; b.onclick = () => act("renew", H.name + "を継続しました（" + (h.terms + 1) + "年目）"); acts.append(b); }
-      const cf = T.honConfirm === s.id + kind;
+      // one more period by hand: when it is ending soon (90 days) or already over, and not renewing by itself
+      if(!h.auto && (!h.active || honLeft(h.until, T.today) <= 90)){ const b = el("button", "btn small hon-renew", "継続（＋" + honPer(mSel) + "）"); b.type = "button"; b.dataset.k = kind;
+        b.onclick = () => act("renew", H.name + "を継続しました（" + honTerm({ terms: h.terms + 1, months: mSel }) + "）", { p_months: mSel }); acts.append(b); }
+      const cf = T.honConfirm === key;
       const off = el("button", "btn small hon-off" + (cf ? " danger" : ""), cf ? "本当に外す？" : "外す"); off.type = "button"; off.dataset.k = kind;
-      off.onclick = () => { if(!cf){ T.honConfirm = s.id + kind; tRender(); return; } act("off", H.name + "を外しました"); }; acts.append(off);
+      off.onclick = () => { if(!cf){ T.honConfirm = key; tRender(); return; } act("off", H.name + "を外しました"); }; acts.append(off);
     }
-    row.append(acts); sec.append(row);
+    acts.append(sw); row.append(acts); sec.append(row);
   });
-  sec.append(el("p", "hon-note", "1年ごとの期限つき。「継続」は期限の90日前から出ます。同じ番号のコースカード全部に表示されます。"));
+  sec.append(el("p", "hon-note", "期間は 1・3・6ヶ月か1年。「自動継続」がオンだと、外すまで期間ごとに勝手に更新されて、生徒には毎回「継続です！」が出ます。手動の「継続」は期限の90日前から出ます。同じ番号のコースカード全部に表示されます。"));
   return sec;
 }
 // tiny marks in the teacher's student list
