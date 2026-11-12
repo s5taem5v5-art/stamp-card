@@ -2712,6 +2712,93 @@ button.ear-chip{cursor:pointer}
 .pl-legend{font-size:11px;opacity:.65;margin:2px 0 6px}
 .rh-ov.poly.playing>.ear-hd,.rh-ov.poly.playing>.pl-info,.rh-ov.poly.playing>.pl-staves,.rh-ov.poly.playing>.pl-lanes,.rh-ov.poly.playing>.pl-pads{align-self:stretch;width:100%;box-sizing:border-box}
 
+/* ===== honors: 特待生 (gold medal) / Chapter U (silver shield + aurora) — same size and frame, different motif ===== */
+.hon{position:relative;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px 0 3px;border-radius:999px;overflow:hidden;
+  border:1.5px solid;box-sizing:border-box;white-space:nowrap;vertical-align:middle;isolation:isolate}
+.hon::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.28) 46%,transparent 60%);
+  transform:translateX(-120%);animation:honShine 5.5s ease-in-out 1.2s infinite}
+@keyframes honShine{0%,70%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.hon-em{flex:none;width:22px;height:22px;display:block}
+.hon-em svg{width:100%;height:100%;display:block}
+.hon-t{display:inline-flex;align-items:baseline;gap:3px;line-height:1}
+.hon-t b{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:.86rem;letter-spacing:.06em}
+.hon-y{font-size:.6rem;font-weight:900;padding:1px 6px;border-radius:99px;line-height:1.4}
+/* 特待生: night navy, gold */
+.hon.tokutai{background:linear-gradient(180deg,#1a2032,#111827);border-color:#d6b45a;color:#f5e7a1;box-shadow:0 0 12px rgba(228,198,106,.25),inset 0 1px 0 rgba(255,240,190,.18)}
+.hon.tokutai .hon-t b{background:linear-gradient(180deg,#fff6cf,#e7c66a 60%,#c49a3a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hon.tokutai .hon-y{background:#e7c66a;color:#3a2806}
+/* Chapter U: deep blue, silver, faint aurora */
+.hon.chapter_u{background:linear-gradient(100deg,rgba(139,233,255,.16),rgba(207,168,255,.16) 50%,rgba(126,231,199,.14)),linear-gradient(180deg,#1c2a44,#162033);
+  border-color:#dce3ef;color:#eef3fb;box-shadow:0 0 12px rgba(160,200,255,.22),inset 0 1px 0 rgba(255,255,255,.18)}
+.hon-ch{font-family:Cinzel,serif;font-weight:700;font-size:.74rem;letter-spacing:.08em;color:#dce3ef}
+.hon-u{font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:1.02rem;letter-spacing:0;background:linear-gradient(180deg,#ffffff,#b9c6da);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hon.chapter_u .hon-y{background:#dce3ef;color:#1d2b44}
+.hon.sm{height:24px;padding-right:9px}
+.hon.sm .hon-em{width:19px;height:19px}
+.hon.off{filter:grayscale(1) brightness(.75);opacity:.55;box-shadow:none}
+.hon.off::after{display:none}
+/* on the profile card: its own row above the rank */
+.pf-hon{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:3px}
+.pf-hon .hon{height:25px;padding-right:9px}
+.pf-hon .hon-em{width:19px;height:19px}
+.pf-hon .hon-t b{font-size:.78rem}
+.pf-hon .hon-ch{font-size:.66rem}
+.pf-hon .hon-u{font-size:.9rem}
+
+/* ===== the celebration (first open after the teacher turns it on / renews it) ===== */
+.hon-ov{position:fixed;inset:0;z-index:81;display:grid;place-items:center;padding:16px;overflow:hidden;animation:fadein .3s;
+  background:radial-gradient(circle at 50% 38%,rgba(214,180,90,.42),rgba(8,6,20,.98) 62%),#080614}
+.hon-ov.chapter_u{background:radial-gradient(circle at 50% 38%,rgba(110,170,255,.38),rgba(150,110,255,.2) 35%,rgba(6,8,22,.98) 64%),#060816}
+.hon-ov.again{background:radial-gradient(circle at 50% 38%,rgba(214,180,90,.28),rgba(8,6,20,.98) 58%),#080614}
+.hon-ov.chapter_u.again{background:radial-gradient(circle at 50% 38%,rgba(150,190,255,.26),rgba(6,8,22,.98) 58%),#060816}
+.hon-ov.bye{opacity:0;transition:opacity .35s}
+.hon-beams{position:absolute;left:50%;top:38%;width:220vmax;height:220vmax;margin:-110vmax 0 0 -110vmax;pointer-events:none;opacity:.3;
+  background:repeating-conic-gradient(from 0deg,rgba(255,236,170,.25) 0 5deg,transparent 5deg 16deg);animation:spin 20s linear infinite;
+  -webkit-mask:radial-gradient(circle,#000 0,transparent 42%);mask:radial-gradient(circle,#000 0,transparent 42%)}
+.hon-ov.chapter_u .hon-beams{background:repeating-conic-gradient(from 0deg,rgba(170,220,255,.25) 0 5deg,transparent 5deg 16deg)}
+.hon-ov.again .hon-beams{opacity:.14}
+.hon-in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;max-width:340px;color:#fff}
+.hon-big{position:relative;width:min(46vw,170px);aspect-ratio:1;animation:pop .7s .1s both}
+.hon-big svg{position:relative;width:100%;height:100%;filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
+.hon-ring{position:absolute;inset:-14%;border-radius:50%;background:radial-gradient(circle,rgba(255,240,190,.55),transparent 66%);animation:breathe 1.8s ease-in-out infinite}
+.hon-ov.chapter_u .hon-ring{background:radial-gradient(circle,rgba(190,225,255,.5),rgba(207,168,255,.25) 45%,transparent 68%)}
+/* renewing: calmer — a light runs around the edge once instead of the burst */
+.hon-ov.again .hon-big{animation:fadein .6s both}
+.hon-ov.again .hon-ring{animation:none;opacity:.6;background:conic-gradient(from 0deg,transparent 0 70%,rgba(255,240,190,.9) 85%,transparent 100%);
+  -webkit-mask:radial-gradient(circle,transparent 58%,#000 60%,#000 66%,transparent 68%);mask:radial-gradient(circle,transparent 58%,#000 60%,#000 66%,transparent 68%);animation:spin 2.4s linear 1}
+.hon-ov.chapter_u.again .hon-ring{background:conic-gradient(from 0deg,transparent 0 70%,rgba(200,230,255,.95) 85%,transparent 100%)}
+.hon-k{font-family:Cinzel,serif;font-weight:900;font-size:.78rem;letter-spacing:.32em;color:#e7c66a;animation:pop .6s .25s both}
+.hon-ov.chapter_u .hon-k{color:#c9dcff}
+.hon-ttl{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.45rem;line-height:1.35;animation:pop .6s .4s both}
+.hon-ttl b{font-size:1.9rem;background:linear-gradient(180deg,#fff6cf,#e7c66a 60%,#b98a2e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hon-ov.chapter_u .hon-ttl b{font-family:Cinzel,serif;font-weight:900;background:linear-gradient(180deg,#ffffff,#b9c6da 60%,#8ea2c2);-webkit-background-clip:text;background-clip:text}
+.hon-yr{font-weight:900;font-size:.95rem;padding:3px 14px;border-radius:99px;background:#e7c66a;color:#3a2806;animation:pop .5s .6s both}
+.hon-ov.chapter_u .hon-yr{background:#dce3ef;color:#1d2b44}
+.hon-in>.hon{margin-top:2px;animation:pop .5s .7s both}
+.hon-line{margin:2px 0 0;font-size:.88rem;font-weight:700;color:#e8e2f6;line-height:1.6}
+.hon-until{font-size:.72rem;color:rgba(255,255,255,.6)}
+.hon-ok{margin-top:8px;border:0;border-radius:99px;padding:12px 28px;font:inherit;font-weight:900;font-size:1rem;color:#3a2806;cursor:pointer;
+  background:linear-gradient(180deg,#fff2bf,#e7c66a);box-shadow:0 5px 0 #9a7524,0 10px 24px rgba(0,0,0,.4)}
+.hon-ov.chapter_u .hon-ok{color:#1d2b44;background:linear-gradient(180deg,#ffffff,#c9d5e8);box-shadow:0 5px 0 #6d7f9c,0 10px 24px rgba(0,0,0,.4)}
+.hon-ok:active{transform:translateY(4px);box-shadow:none}
+
+/* ===== teacher ===== */
+.hon-ed .hon-row{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.1)}
+.hon-ed .hon-row:first-of-type{border-top:0}
+.hon-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.hon-info b{font-size:.88rem}
+.hon-info small{font-size:.74rem;opacity:.75}
+.hon-info .warn{color:#ff9d7a;opacity:1}
+.hon-acts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.hon-acts .hon-on{background:linear-gradient(180deg,#fff2bf,#e7c66a);color:#3a2806;border-color:#d6b45a}
+.hon-acts .hon-renew{background:#dce3ef;color:#1d2b44;border-color:#b9c6da}
+.hon-note{margin:6px 0 0;font-size:.72rem;opacity:.65;line-height:1.5}
+.hon-mini{display:inline-flex;gap:3px;margin-left:6px;vertical-align:middle}
+.hm{font-size:.6rem;font-weight:900;padding:1px 6px;border-radius:99px;line-height:1.5;white-space:nowrap}
+.hm.tokutai{background:#1a2032;color:#f5e7a1;border:1px solid #d6b45a}
+.hm.chapter_u{background:#1c2a44;color:#eef3fb;border:1px solid #dce3ef}
+.hm.old{background:transparent;color:#ff9d7a;border-color:#ff9d7a}
+
 </style>
 </head>
 <body>
@@ -4112,6 +4199,7 @@ function profileEl(info, stats, opts){
   if(nick && forT) who.append(el("span","pf-real","（"+(info.name||"")+"）"));
   if(gOk(info.grade)){ card.classList.add("has-g"); const [gn,gs]=gParts(info.grade); const pl=el("div","pf-gp"); pl.append(el("small",null,"CLASS"));
     const big=el("b"); big.append(el("span","gG","G"), el("span","gN",String(gn))); if(gs) big.append(el("span","gS",gs==="-"?"−":"+")); pl.append(big); card._gp=pl; }
+  { const hr = typeof honorRow === "function" ? honorRow(info.honor) : null; if(hr) tx.append(hr); }   // 特待生 / Chapter U
   tx.append(lv, who);
   if(P.title){ const tr=gr(P.title); tx.append(el("span","pf-title"+(tr>=0?" tr tr"+tr:""),(tr>=3?"👑 ":"🎖 ")+String(gv(P.title)).slice(0,20))); }
   else tx.append(el("div","pf-tag",R.tag));
@@ -6790,6 +6878,129 @@ async function rhPolyResult(o, lv, R, total, acc, rank, nm, score){
   r.append(bt);
 }
 
+/* ================= honors from the yearly skill test: 特待生 / Chapter U =================
+   two separate routes (not a higher and a lower one): same size, same frame, different motif.
+   特待生 = gold medal with a laurel and a note.  Chapter U = silver shield with a "U" and a star orbit. */
+const HONOR = {
+  tokutai:  { name:"特待生",   short:"特待",  ico:"🎓", line:"スキルテスト合格！ 特待生として1年間がんばろう" },
+  chapter_u:{ name:"Chapter U", short:"Ch.U", ico:"🌌", line:"スキルテスト合格！ Chapter U の1年がはじまるよ" },
+};
+const HONOR_KEYS = ["tokutai", "chapter_u"];
+const honorSort = list => (list || []).filter(h => h && HONOR[h.kind]).sort((a, b) => HONOR_KEYS.indexOf(a.kind) - HONOR_KEYS.indexOf(b.kind));
+const honorActive = list => honorSort(list).filter(h => h.active);
+const pkOf = s => s.num != null ? "n" + s.num : "i" + s.id;
+// a laurel wreath: small leaves along both sides of the circle, open at the top
+const HON_LAUREL = (() => { const L = [];
+  [0, 1].forEach(right => { for(let k = 0; k < 6; k++){ const t = 108 + k * 25, th = (right ? 180 - t : t) * Math.PI / 180, x = 20 + Math.cos(th) * 16, y = 20 + Math.sin(th) * 16, rot = (right ? 180 - t : t) + (right ? -22 : 22);
+    L.push(`<ellipse cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" rx="1.6" ry="3.4" transform="rotate(${rot.toFixed(1)} ${x.toFixed(2)} ${y.toFixed(2)})"/>`); } });
+  return '<g fill="currentColor">' + L.join("") + '</g>'; })();
+// the little emblem at the left of the badge (also drawn big in the celebration)
+function honorEmblem(kind){
+  if(kind === "tokutai") return `<svg viewBox="0 0 40 40" aria-hidden="true"><defs><radialGradient id="hgT" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff6cf"/><stop offset=".45" stop-color="#e7c66a"/><stop offset="1" stop-color="#9a7524"/></radialGradient></defs>
+    ${HON_LAUREL.replace('currentColor', '#e7c66a')}<circle cx="20" cy="20" r="13" fill="url(#hgT)" stroke="#f5e7a1" stroke-width="1.2"/>
+    <path d="M22 12.5v9.4a3.2 2.7 0 1 1-1.6-2.3V14.4l4.4 1.4v2z" fill="#4a3208"/></svg>`;
+  return `<svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="hgU" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f7fc"/><stop offset=".5" stop-color="#b9c6da"/><stop offset="1" stop-color="#6d7f9c"/></linearGradient></defs>
+    <path d="M20 4l13 5v10c0 9-6 14-13 17C13 33 7 28 7 19V9z" fill="url(#hgU)" stroke="#eef3fb" stroke-width="1.2"/>
+    <ellipse cx="20" cy="19" rx="12" ry="4.2" transform="rotate(-18 20 19)" fill="none" stroke="#7ee7c7" stroke-width="1.1" opacity=".9"/>
+    <circle cx="30.5" cy="15.6" r="1.6" fill="#cfa8ff"/>
+    <text x="20" y="25" text-anchor="middle" font-family="'Dela Gothic One',sans-serif" font-size="15" fill="#1d2b44">U</text></svg>`;
+}
+function honorBadge(h, opts){
+  const H = HONOR[h.kind]; const b = el("span", "hon " + h.kind + (opts && opts.small ? " sm" : "")); b.setAttribute("aria-label", H.name + (h.terms > 1 ? " " + h.terms + "年目" : ""));
+  const em = el("span", "hon-em"); em.innerHTML = honorEmblem(h.kind); b.append(em);
+  const t = el("span", "hon-t");
+  if(h.kind === "chapter_u"){ t.append(el("span", "hon-ch", "Chapter"), el("b", "hon-u", "U")); } else t.append(el("b", null, H.name));
+  b.append(t);
+  if(h.terms > 1) b.append(el("small", "hon-y", h.terms + "年目"));
+  return b;
+}
+// the row of badges on a profile card (nothing when there is none)
+function honorRow(list){
+  const a = honorActive(list); if(!a.length) return null;
+  const r = el("div", "pf-hon"); a.forEach(h => r.append(honorBadge(h))); return r;
+}
+
+/* ---------- student: fetch, and the celebration the first time it is opened ---------- */
+// (started together with the other fetches; applied once the cards are loaded)
+const stuHonorStart = () => rpc("mc_s_honor", { sk: SK }).catch(() => undefined);
+function stuHonorApply(h){
+  if(Array.isArray(h)) Stu.honor = h; else if(!Stu.honor) Stu.honor = [];
+  const act = honorActive(Stu.honor);
+  Object.values(Stu.sib || {}).forEach(d => { if(d && d.st) d.st.honor = act; }); if(Stu.info) Stu.info.honor = act;
+}
+let _honorShowing = false;
+function stuHonorCheck(){
+  if(_honorShowing || window.__party || Stu.playing || document.getElementById("rankup")) return;
+  const h = honorActive(Stu.honor).find(x => x.news); if(!h) return;
+  _honorShowing = true;
+  honorShow(h, async () => {
+    try{ const r = await rpc("mc_s_honor_seen", { sk: SK, p_kind: h.kind }); if(Array.isArray(r)) Stu.honor = r; }catch(e){ h.news = false; }
+    _honorShowing = false; setTimeout(stuHonorCheck, 400);   // the other one, if both came at once
+  });
+}
+function honorShow(h, done){
+  const H = HONOR[h.kind], again = h.terms > 1;
+  const o = el("div", "hon-ov " + h.kind + (again ? " again" : "")); o.id = "honorup"; o.setAttribute("role", "dialog");
+  const cv = el("canvas", "pf-fx ru-fx"); cv.setAttribute("aria-hidden", "true");
+  const inn = el("div", "hon-in");
+  const em = el("div", "hon-big"); em.innerHTML = `<span class="hon-ring"></span>${honorEmblem(h.kind)}`;
+  const k = el("div", "hon-k", again ? "CONTINUED" : "CONGRATULATIONS");
+  const t = el("div", "hon-ttl"); t.append(el("b", null, H.name), document.createTextNode(again ? " 継続です！" : (h.kind === "chapter_u" ? " " : "") + "になりました！"));
+  if(again) inn.append(em, k, t, el("div", "hon-yr", h.terms + "年目"));
+  else inn.append(em, k, t);
+  inn.append(honorBadge(h), el("p", "hon-line", again ? "スキルテスト合格、おめでとう！ " + h.terms + "年目もいっしょにがんばろう" : H.line));
+  if(h.until){ const [y, m, d] = h.until.split("-"); inn.append(el("small", "hon-until", "期間：" + (+y) + "年" + (+m) + "月" + (+d) + "日まで")); }
+  const ok = el("button", "hon-ok", again ? "これからもがんばる！" : "やったー！"); ok.type = "button"; inn.append(ok);
+  o.append(cv, el("div", "hon-beams"), inn);
+  let closed = false; const close = () => { if(closed) return; closed = true; o.classList.add("bye"); setTimeout(() => { o.remove(); window.__party = false; done && done(); }, 350); };
+  ok.onclick = close; document.body.append(o); window.__party = true;
+  try{ FX.attach(cv, again ? 1 : 3, { boost: again ? 2 : 6, big: !again }); }catch(e){}
+  try{ SFX.unlock(); BGM.duck && BGM.duck(3); SFX.result(false); }catch(e){}
+}
+
+/* ---------- teacher: on / off / one more year ---------- */
+const honDate = s => { if(!s) return ""; const [y, m, d] = s.split("-"); return (+y) + "/" + (+m) + "/" + (+d); };
+const honLeft = (until, today) => Math.round((new Date(until + "T00:00:00") - new Date((today || new Date().toISOString().slice(0, 10)) + "T00:00:00")) / 864e5);
+function honorEditor(s){
+  const sec = el("section", "card hon-ed"); sec.id = "honor-ed";
+  sec.append(el("h3", "sech", "🎓 特待生・Chapter U（スキルテスト）"));
+  const pk = pkOf(s), list = (T.honors && T.honors[pk]) || [];
+  HONOR_KEYS.forEach(kind => {
+    const H = HONOR[kind], h = list.find(x => x.kind === kind);
+    const row = el("div", "hon-row" + (h ? (h.active ? " on" : " old") : ""));
+    const pv = honorBadge(h || { kind, terms:1 }, { small:true }); if(!h || !h.active) pv.classList.add("off"); row.append(pv);
+    const info = el("div", "hon-info");
+    if(!h) info.append(el("b", null, "なし"));
+    else { const left = honLeft(h.until, T.today);
+      if(h.active) info.append(el("b", null, (h.terms > 1 ? h.terms + "年目" : "1年目") + "・" + honDate(h.until) + " まで"), el("small", left <= 30 ? "warn" : null, "のこり " + left + " 日" + (h.news ? "・生徒はまだお祝いを見ていません" : "")));
+      else info.append(el("b", "warn", "期限切れ（" + honDate(h.until) + "）"), el("small", null, "続けるなら「継続」、終わるなら「外す」")); }
+    row.append(info);
+    const acts = el("div", "hon-acts");
+    const act = async (a, label) => {
+      try{ const r = await rpc("mc_t_honor", { tk: TK, sid: s.id, p_kind: kind, p_act: a }); T.honors = T.honors || {}; T.honors[pk] = Array.isArray(r) ? r : []; T.honConfirm = null;
+        toast(label); tRender(); }
+      catch(e){ toast("できませんでした（" + e.message + "）"); } };
+    if(!h){ const b = el("button", "btn small hon-on", H.name + "にする"); b.type = "button"; b.dataset.k = kind; b.onclick = () => act("on", H.name + "にしました（次に開いたときにお祝いが出ます）"); acts.append(b); }
+    else {
+      // one more year: when it is ending soon (90 days) or already over
+      if(!h.active || honLeft(h.until, T.today) <= 90){ const b = el("button", "btn small hon-renew", "継続（＋1年）"); b.type = "button"; b.dataset.k = kind; b.onclick = () => act("renew", H.name + "を継続しました（" + (h.terms + 1) + "年目）"); acts.append(b); }
+      const cf = T.honConfirm === s.id + kind;
+      const off = el("button", "btn small hon-off" + (cf ? " danger" : ""), cf ? "本当に外す？" : "外す"); off.type = "button"; off.dataset.k = kind;
+      off.onclick = () => { if(!cf){ T.honConfirm = s.id + kind; tRender(); return; } act("off", H.name + "を外しました"); }; acts.append(off);
+    }
+    row.append(acts); sec.append(row);
+  });
+  sec.append(el("p", "hon-note", "1年ごとの期限つき。「継続」は期限の90日前から出ます。同じ番号のコースカード全部に表示されます。"));
+  return sec;
+}
+// tiny marks in the teacher's student list
+function honorMini(pk){
+  const list = (T.honors && T.honors[pk]) || []; if(!list.length) return null;
+  const w = el("span", "hon-mini");
+  honorSort(list).forEach(h => { const H = HONOR[h.kind]; w.append(el("span", "hm " + h.kind + (h.active ? "" : " old"), H.short + (h.active ? "" : " 期限切れ"))); });
+  return w;
+}
+
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
@@ -6820,16 +7031,16 @@ async function stuRefresh(force){
     if(Array.isArray(ks) && ks.length){ const before=(Stu.keys||[]).map(k=>k.sk).join(); Stu.keys=ks; lsSet("mc_sks",JSON.stringify(ks)); if(before && before!==ks.map(k=>k.sk).join()) pushSync(); }
     if(!Stu.keys.length) Stu.keys=[{sk:SK, course:null}];
     if(!Stu.keys.some(k=>k.sk===SK)){ SK=Stu.keys[0].sk; lsSet("mc_sk",SK); }
-    const evp=evLoad(), earp=earFetch(), rhp=rhFetch();
+    const evp=evLoad(), earp=earFetch(), rhp=rhFetch(), honp=stuHonorStart();
     const res=await Promise.all(Stu.keys.map(k=>Promise.all([rpc("mc_s_state",{sk:k.sk}), rpc("mc_s_assign",{sk:k.sk})]).then(([st,as])=>({k,st,as})).catch(()=>null)));
     res.forEach(r=>{ if(r) Stu.sib[r.k.sk]={st:r.st, as:r.as||[]}; });
     const cur=Stu.sib[SK]; if(!cur) throw new Error("network");
     const st=cur.st, as=cur.as;
     Stu.info=st; Stu.stamps=st.stamps||[]; Stu.assign=as||[]; lsSet("mc_cache_"+SK, JSON.stringify({st, as}));
-    await evp; await earp; await rhp;
+    await evp; await earp; await rhp; stuHonorApply(await honp);
     document.title=st.name+"さんのスタンプカード"; setNote("課題を出して、先生がOKしたら自分でスタンプを押せるよ。");
     if(force || (!Stu.styling && !window.__party && !Stu.playing && !Stu.sending && !busyNow())) stuRender();
-    stuRankCheck();
+    stuRankCheck(); stuHonorCheck();
   }catch(e){ if(e.message==="bad_key"){ stuLogout("番号が見つからなくなりました。もう一度入れてね。"); return; }
     setNote("つながりません。電波のいいところで開き直してください。"); }
 }
@@ -7113,8 +7324,8 @@ const T = { view:lsGet("mc_view")||"review", students:[], tasks:[], review:[], q
 const nmC = s => s.name+(s.course&&COURSES[s.course]?" "+COURSES[s.course].ico:"");
 const stuName = sid => { const s=T.students.find(x=>x.id===sid); return s ? (s.num!=null?"No."+s.num+" ":"")+nmC(s) : "（削除された生徒）"; };
 async function tRefresh(force){
-  try{ const [st, tk]=await Promise.all([rpc("mc_t_state",{tk:TK}), rpc("mc_t_tasks",{tk:TK})]);
-    T.students=st.students||[]; if(st.today) T.today=st.today; T.tasks=tk.tasks||[]; T.review=tk.review||[];
+  try{ const [st, tk, hon]=await Promise.all([rpc("mc_t_state",{tk:TK}), rpc("mc_t_tasks",{tk:TK}), rpc("mc_t_honors",{tk:TK}).catch(()=>null)]);
+    if(hon && typeof hon==="object") T.honors=hon; T.students=st.students||[]; if(st.today) T.today=st.today; T.tasks=tk.tasks||[]; T.review=tk.review||[];
     setNote("先生用ページ ・ このリンクは生徒に渡さないでね"); if(force || (!window.__party && !busyNow())) tRender(); }
   catch(e){ if(e.message==="bad_key"){ lsSet("mc_tk",""); tLock("もう一度パスワードを入れてください。"); return; } setNote("つながりません。電波のいいところで開き直してください。"); }
 }
@@ -7350,7 +7561,7 @@ function tStudents(app){
     arr.forEach(p=>{ const s=p.s, multi=p.g.length>1; const r=el("button","srow"+(multi?" multi":"")); r.dataset.id=s.id;
       const av=p.g.map(x=>x.prof&&avKey(x.prof.av)).find(Boolean); const ae=av&&avEl(av,"srow-av"); if(ae){ r.append(ae); } else r.innerHTML=stampSVG(okStamp(s.stamp_p));
       const nb=el("span","no",s.num!=null?"No."+s.num:"番号なし"); if(s.num==null) nb.classList.add("none"); r.append(nb);
-      const nw=el("span","nmw"); nw.append(el("span","nm",s.name));
+      const nw=el("span","nmw"); const nmS=el("span","nm",s.name); const hm=honorMini(pkOf(s)); if(hm) nmS.append(hm); nw.append(nmS);
       p.g.forEach(x=>{ const sub=el("span","nsub");
         if(x.course&&COURSES[x.course]) sub.append(el("span","cc cc-"+x.course, courseTag(x.course)));
         sub.append(el("span","rkc rk"+rankOf(x.rank), RANKS[rankOf(x.rank)].name+(gOk(x.grade)?" "+gLabel(x.grade):"")));
@@ -7413,9 +7624,10 @@ function tStudent(app){
     sibs.forEach(x=>{ const b=el("button","ctab"+(x.id===s.id?" on":""), courseTag(x.course)||"コースなし"); b.type="button"; b.dataset.course=x.course||"";
       b.onclick=()=>{ if(x.id===s.id) return; T.lastCourse=x.course; T.sel=x.id; T.detail=null; T.sAssign=[]; T.confirmDel=null; T.ym=nowYM(); tRender(); tLoadStudent(); }; tb.append(b); });
     app.append(tb); }
-  app.append(profileEl(s, profileStats(s, stamps, T.sAssign), {teacher:true}));
+  app.append(profileEl({...s, honor:honorActive((T.honors||{})[pkOf(s)])}, profileStats(s, stamps, T.sAssign), {teacher:true}));
   app.append(coursePicker(s));
   app.append(gStepper(s));
+  app.append(honorEditor(s));
   app.append(msgEditor(s));
   app.append(tGacha(s));
   app.append(tEar(s)); app.append(tRh(s));
