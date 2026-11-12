@@ -2640,6 +2640,10 @@ button.ear-chip{cursor:pointer}
 .still .st-boss.mv .bg .ph{animation:none}.still .st-boss.mv .bg .ph.f0{opacity:1}
 @media (prefers-reduced-motion:reduce){.av2.st-boss.mv .bg .ph{animation:none}.av2.st-boss.mv .bg .ph.f0{opacity:1}}
 .rh-rwget.sec{border-color:#ffe27a;box-shadow:0 0 26px rgba(255,226,122,.45),inset 0 0 18px rgba(123,47,247,.35);background:linear-gradient(150deg,rgba(123,47,247,.3),rgba(255,31,75,.18))}
+/* no-guide bars: the ring is gone, read the score */
+.rh-sheet.ng{box-shadow:0 0 0 3px #7b5cff,0 6px 18px rgba(0,0,0,.35)}
+.rh-sheet.ng::after{content:"👀 楽譜を見て ×1.5";position:absolute;left:50%;top:-11px;transform:translateX(-50%);white-space:nowrap;padding:2px 9px;border-radius:99px;background:#7b5cff;color:#fff;font-size:.62rem;font-weight:900;letter-spacing:.02em;pointer-events:none}
+.rh-banner.ng{color:#c4b2ff;text-shadow:0 3px 0 #3a1f9a,0 0 16px rgba(123,92,255,.8)}
 
 /* ===== two-hand polyrhythm ===== */
 .pl-door{margin-top:10px}
@@ -2712,7 +2716,7 @@ button.ear-chip{cursor:pointer}
 .pl-legend{font-size:11px;opacity:.65;margin:2px 0 6px}
 .rh-ov.poly.playing>.ear-hd,.rh-ov.poly.playing>.pl-info,.rh-ov.poly.playing>.pl-staves,.rh-ov.poly.playing>.pl-lanes,.rh-ov.poly.playing>.pl-pads{align-self:stretch;width:100%;box-sizing:border-box}
 
-/* ===== honors: 特待生 (gold medal) / Chapter U (silver shield + aurora) — same size and frame, different motif ===== */
+/* ===== honors: 特待生 (gold medal) / Chapter U (silver medal + aurora) — same size and frame, different motif ===== */
 .hon{position:relative;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px 0 3px;border-radius:999px;overflow:hidden;
   border:1.5px solid;box-sizing:border-box;white-space:nowrap;vertical-align:middle;isolation:isolate}
 .hon::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.28) 46%,transparent 60%);
@@ -2724,14 +2728,14 @@ button.ear-chip{cursor:pointer}
 .hon-t b{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:.86rem;letter-spacing:.06em}
 .hon-y{font-size:.6rem;font-weight:900;padding:1px 6px;border-radius:99px;line-height:1.4}
 /* 特待生: night navy, gold */
-.hon.tokutai{background:linear-gradient(180deg,#1a2032,#111827);border-color:#d6b45a;color:#f5e7a1;box-shadow:0 0 12px rgba(228,198,106,.25),inset 0 1px 0 rgba(255,240,190,.18)}
+.hon.tokutai{background:linear-gradient(100deg,rgba(255,226,140,.16),transparent 50%,rgba(255,226,140,.12)),linear-gradient(180deg,#1f2438,#111827);border-color:#e7c66a;color:#f5e7a1;box-shadow:0 0 12px rgba(228,198,106,.3),0 0 18px rgba(255,240,190,.12),inset 0 1px 0 rgba(255,240,190,.18)}
 .hon.tokutai .hon-t b{background:linear-gradient(180deg,#fff6cf,#e7c66a 60%,#c49a3a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hon.tokutai .hon-y{background:#e7c66a;color:#3a2806}
 /* Chapter U: deep blue, silver, faint aurora */
-.hon.chapter_u{background:linear-gradient(100deg,rgba(139,233,255,.16),rgba(207,168,255,.16) 50%,rgba(126,231,199,.14)),linear-gradient(180deg,#1c2a44,#162033);
-  border-color:#dce3ef;color:#eef3fb;box-shadow:0 0 12px rgba(160,200,255,.22),inset 0 1px 0 rgba(255,255,255,.18)}
-.hon-ch{font-family:Cinzel,serif;font-weight:700;font-size:.74rem;letter-spacing:.08em;color:#dce3ef}
-.hon-u{font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:1.02rem;letter-spacing:0;background:linear-gradient(180deg,#ffffff,#b9c6da);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hon.chapter_u{background:linear-gradient(100deg,rgba(139,233,255,.24),rgba(207,168,255,.24) 50%,rgba(143,247,210,.2)),linear-gradient(180deg,#1f2c4a,#141c33);
+  border-color:#dce3ef;color:#eef3fb;box-shadow:0 0 12px rgba(139,233,255,.3),0 0 18px rgba(207,168,255,.18),inset 0 1px 0 rgba(255,255,255,.22)}
+.hon-ch{font-family:Cinzel,serif;font-weight:900;font-size:.74rem;letter-spacing:.08em;background:linear-gradient(180deg,#ffffff,#dce3ef 60%,#aebcd4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hon-u{font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:1.02rem;letter-spacing:0;background:linear-gradient(120deg,#8be9ff,#ffffff 45%,#cfa8ff 75%,#8ff7d2);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hon.chapter_u .hon-y{background:#dce3ef;color:#1d2b44}
 .hon.sm{height:24px;padding-right:9px}
 .hon.sm .hon-em{width:19px;height:19px}
@@ -2748,30 +2752,30 @@ button.ear-chip{cursor:pointer}
 /* ===== the celebration (first open after the teacher turns it on / renews it) ===== */
 .hon-ov{position:fixed;inset:0;z-index:81;display:grid;place-items:center;padding:16px;overflow:hidden;animation:fadein .3s;
   background:radial-gradient(circle at 50% 38%,rgba(214,180,90,.42),rgba(8,6,20,.98) 62%),#080614}
-.hon-ov.chapter_u{background:radial-gradient(circle at 50% 38%,rgba(110,170,255,.38),rgba(150,110,255,.2) 35%,rgba(6,8,22,.98) 64%),#060816}
+.hon-ov.chapter_u{background:radial-gradient(circle at 50% 38%,rgba(139,233,255,.42),rgba(150,110,255,.3) 30%,rgba(143,247,210,.1) 46%,rgba(6,8,22,.98) 64%),#060816}
 .hon-ov.again{background:radial-gradient(circle at 50% 38%,rgba(214,180,90,.28),rgba(8,6,20,.98) 58%),#080614}
 .hon-ov.chapter_u.again{background:radial-gradient(circle at 50% 38%,rgba(150,190,255,.26),rgba(6,8,22,.98) 58%),#060816}
 .hon-ov.bye{opacity:0;transition:opacity .35s}
 .hon-beams{position:absolute;left:50%;top:38%;width:220vmax;height:220vmax;margin:-110vmax 0 0 -110vmax;pointer-events:none;opacity:.3;
   background:repeating-conic-gradient(from 0deg,rgba(255,236,170,.25) 0 5deg,transparent 5deg 16deg);animation:spin 20s linear infinite;
   -webkit-mask:radial-gradient(circle,#000 0,transparent 42%);mask:radial-gradient(circle,#000 0,transparent 42%)}
-.hon-ov.chapter_u .hon-beams{background:repeating-conic-gradient(from 0deg,rgba(170,220,255,.25) 0 5deg,transparent 5deg 16deg)}
+.hon-ov.chapter_u .hon-beams{background:repeating-conic-gradient(from 0deg,rgba(139,233,255,.28) 0 5deg,transparent 5deg 11deg,rgba(207,168,255,.26) 11deg 16deg,transparent 16deg 22deg)}
 .hon-ov.again .hon-beams{opacity:.14}
 .hon-in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;max-width:340px;color:#fff}
 .hon-big{position:relative;width:min(46vw,170px);aspect-ratio:1;animation:pop .7s .1s both}
 .hon-big svg{position:relative;width:100%;height:100%;filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
 .hon-ring{position:absolute;inset:-14%;border-radius:50%;background:radial-gradient(circle,rgba(255,240,190,.55),transparent 66%);animation:breathe 1.8s ease-in-out infinite}
-.hon-ov.chapter_u .hon-ring{background:radial-gradient(circle,rgba(190,225,255,.5),rgba(207,168,255,.25) 45%,transparent 68%)}
+.hon-ov.chapter_u .hon-ring{background:radial-gradient(circle,rgba(200,240,255,.6),rgba(207,168,255,.32) 45%,transparent 68%)}
 /* renewing: calmer — a light runs around the edge once instead of the burst */
 .hon-ov.again .hon-big{animation:fadein .6s both}
 .hon-ov.again .hon-ring{animation:none;opacity:.6;background:conic-gradient(from 0deg,transparent 0 70%,rgba(255,240,190,.9) 85%,transparent 100%);
   -webkit-mask:radial-gradient(circle,transparent 58%,#000 60%,#000 66%,transparent 68%);mask:radial-gradient(circle,transparent 58%,#000 60%,#000 66%,transparent 68%);animation:spin 2.4s linear 1}
 .hon-ov.chapter_u.again .hon-ring{background:conic-gradient(from 0deg,transparent 0 70%,rgba(200,230,255,.95) 85%,transparent 100%)}
 .hon-k{font-family:Cinzel,serif;font-weight:900;font-size:.78rem;letter-spacing:.32em;color:#e7c66a;animation:pop .6s .25s both}
-.hon-ov.chapter_u .hon-k{color:#c9dcff}
+.hon-ov.chapter_u .hon-k{color:#a9ecff}
 .hon-ttl{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.45rem;line-height:1.35;animation:pop .6s .4s both}
 .hon-ttl b{font-size:1.9rem;background:linear-gradient(180deg,#fff6cf,#e7c66a 60%,#b98a2e);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hon-ov.chapter_u .hon-ttl b{font-family:Cinzel,serif;font-weight:900;background:linear-gradient(180deg,#ffffff,#b9c6da 60%,#8ea2c2);-webkit-background-clip:text;background-clip:text}
+.hon-ov.chapter_u .hon-ttl b{font-family:Cinzel,serif;font-weight:900;background:linear-gradient(110deg,#8be9ff,#ffffff 40%,#cfa8ff 70%,#8ff7d2);-webkit-background-clip:text;background-clip:text}
 .hon-yr{font-weight:900;font-size:.95rem;padding:3px 14px;border-radius:99px;background:#e7c66a;color:#3a2806;animation:pop .5s .6s both}
 .hon-ov.chapter_u .hon-yr{background:#dce3ef;color:#1d2b44}
 .hon-in>.hon{margin-top:2px;animation:pop .5s .7s both}
@@ -2779,7 +2783,7 @@ button.ear-chip{cursor:pointer}
 .hon-until{font-size:.72rem;color:rgba(255,255,255,.6)}
 .hon-ok{margin-top:8px;border:0;border-radius:99px;padding:12px 28px;font:inherit;font-weight:900;font-size:1rem;color:#3a2806;cursor:pointer;
   background:linear-gradient(180deg,#fff2bf,#e7c66a);box-shadow:0 5px 0 #9a7524,0 10px 24px rgba(0,0,0,.4)}
-.hon-ov.chapter_u .hon-ok{color:#1d2b44;background:linear-gradient(180deg,#ffffff,#c9d5e8);box-shadow:0 5px 0 #6d7f9c,0 10px 24px rgba(0,0,0,.4)}
+.hon-ov.chapter_u .hon-ok{color:#1d2b44;background:linear-gradient(180deg,#ffffff,#d6e6f7 55%,#c9d0f5);box-shadow:0 5px 0 #6d6fa8,0 10px 24px rgba(0,0,0,.4)}
 .hon-ok:active{transform:translateY(4px);box-shadow:none}
 
 /* ===== teacher ===== */
@@ -2796,7 +2800,7 @@ button.ear-chip{cursor:pointer}
 .hon-mini{display:inline-flex;gap:3px;margin-left:6px;vertical-align:middle}
 .hm{font-size:.6rem;font-weight:900;padding:1px 6px;border-radius:99px;line-height:1.5;white-space:nowrap}
 .hm.tokutai{background:#1a2032;color:#f5e7a1;border:1px solid #d6b45a}
-.hm.chapter_u{background:#1c2a44;color:#eef3fb;border:1px solid #dce3ef}
+.hm.chapter_u{background:linear-gradient(100deg,#1f3150,#2a2350);color:#eef3fb;border:1px solid #a9ecff}
 .hm.old{background:transparent;color:#ff9d7a;border-color:#ff9d7a}
 
 </style>
@@ -6373,7 +6377,7 @@ function rhIntro(o, tr, lv){
   // a sample bar of this level
   const sm = rhBarSVG(rhParse(L.A[0]), L); const sw = el("div", "rh-sample"); sw.innerHTML = sm.svg; card.append(sw);
   const lis = el("button", "ear-sm", "🔊 お手本をきく"); lis.type = "button"; lis.onclick = () => rhDemo(L, rhParse(L.A[0])); card.append(lis);
-  card.append(el("p", "ear-how", "📜 ルール\nねらう場所ごとにリズムが変わるよ。パーフェクト＝大ダメージ、グッド＝小ダメージ。こわしきれないとボスが守りをかためて、最後の" + parts[parts.length - 1].nm + "がかたくなる！ ミスやよけいなタップでハートが減るよ（3つ）。10コンボで必殺技！"));
+  card.append(el("p", "ear-how", "📜 ルール\nねらう場所ごとにリズムが変わるよ。パーフェクト＝大ダメージ、グッド＝小ダメージ。こわしきれないとボスが守りをかためて、最後の" + parts[parts.length - 1].nm + "がかたくなる！ ミスやよけいなタップでハートが減るよ（3つ）。10コンボで必殺技！\n👀 たたくタイミングを教える輪は、場所ごとの最初の小節だけ。そのあとは楽譜を見て、拍を感じてたたこう。輪なしで当てるとダメージ×1.5！"));
   const go = el("button", "ear-go", "⚔ たたかう"); go.type = "button"; go.id = "rh-start";
   go.onclick = () => { earCtx(); rhBattle(o, tr, lv); };   // timing is automatic now: no forced calibration
   card.append(go); o.append(card);
@@ -6438,12 +6442,16 @@ function rhBattle(o, tr, lv){
   // notes and their times; every part gets HP from the notes aimed at it
   const t0 = c.currentTime + .5 + barSec; const notes = [];
   chart.forEach((bar, bi) => bar.forEach((n, i) => { if(!n.rest && !n.tied) notes.push({ t:t0 + bi * barSec + n.at * spb, bi, i, pi:bar.pi, j:null }); }));
+  // the ring that shows WHEN to tap is a guide only for the first bar of every weak point (the first 2 bars on Lv1-3), never when angry.
+  // after that: read the score, feel the beat. a hit without the ring does x1.5 damage.
+  { const G = tr === "rhythm" && lv <= 3 ? 2 : 1; let lastPi = null, j = 0; chart.forEach(bar => { if(bar.pi !== lastPi){ lastPi = bar.pi; j = 0; } bar.guide = !bar.B && j < G; j++; }); }
+  const RH_NG = 1.5; let ngTold = false;
   // one tap can arrive twice (a finger that bounces, two fingers, a palm): a second tap closer than this to the last one is ignored.
   // it is kept well under the shortest gap between two notes of this level, so fast rhythms still work.
   let gapMin = 1; for(let k = 1; k < notes.length; k++){ const d = notes[k].t - notes[k - 1].t; if(d > .001 && d < gapMin) gapMin = d; }
   const DBL = Math.max(.04, Math.min(.09, gapMin * .5)); let lastTap = -1;
   // HP = a share of the damage a perfect player would deal to that part (combos included), so every level feels the same
-  const pd = parts.map(() => 0); notes.forEach((n, i) => { const k = i + 1; pd[n.pi] += 2 * (k >= 20 ? 3 : k >= 10 ? 2 : 1); });
+  const pd = parts.map(() => 0); notes.forEach((n, i) => { const k = i + 1; pd[n.pi] += 2 * (k >= 20 ? 3 : k >= 10 ? 2 : 1) * (chart[n.bi].guide ? 1 : RH_NG); });
   parts.forEach((p, pi) => { p.max = p.hp = Math.max(4, Math.ceil(pd[pi] * (p.core ? (L.hp ? L.hp[1] : RH_CORE_HP) : (L.hp ? L.hp[0] : RH_PART_HP)))); });
   R.n = notes.length; const sync = () => { R.hp = parts.reduce((a, p) => a + (p.br || p.gd ? 0 : p.hp), 0); }; R.max = parts.reduce((a, p) => a + p.max, 0); sync();
   // metronome: one count-in bar, then every bar
@@ -6474,6 +6482,9 @@ function rhBattle(o, tr, lv){
     const nxp = chart[bi + 1] && (bi < 0 || chart[bi + 1].pi !== chart[bi].pi) ? parts[chart[bi + 1].pi] : null;
     nxl.textContent = nxp && bi >= 0 ? "NEXT ▶ " + label(nxp) : ""; nxl.classList.toggle("on", !!(nxp && bi >= 0));
     bno.textContent = bi >= 0 ? (bi + 1) + " / " + chart.length : "";
+    // no ring in this bar: say so (the first time with a banner)
+    const ngBar = bi >= 0 && chart[bi] && !chart[bi].guide; sheet.classList.toggle("ng", !!ngBar);
+    if(ngBar && !ngTold){ ngTold = true; banner("👀 ここから輪なし！", "ng", "楽譜を見て、拍を感じてたたこう（ダメージ×1.5）"); }
     if(bi >= 0 && chart[bi]) target(chart[bi].pi);
     if(bi >= 0 && chart[bi] && chart[bi].B && !R.angry){ R.angry = true; boss.classList.add("angry"); o.classList.add("angry"); setTimeout(() => { if(!R.done) banner("💢 怒りモード！", "angry"); }, parts.length > 1 && chart[bi - 1] && chart[bi - 1].pi !== chart[bi].pi ? 1500 : 0); talk(["本気を出すぞ！", "まだまだぁ！", "ゆるさん！"][(Math.random() * 3) | 0]); GSFX && GSFX.rumble && GSFX.rumble();
       if(L.spr){ pose("ps", 1800); spfx(L.spr.fxs, "rh-fxs"); if(L.spr.fxr) spfx(L.spr.fxr, "rh-fxr"); again(field, "hurt"); } }
@@ -6520,10 +6531,10 @@ function rhBattle(o, tr, lv){
     if(kind === "miss"){ hurt("ミス！"); }
     else { if(kind === "perfect") R.p++; else R.g++; R.combo++; R.maxCombo = Math.max(R.maxCombo, R.combo);
       rhDrum(kind); if(kind === "perfect") rhPing(R.combo >= 20 ? 2637 : 2093, 0, .05);   // sound first: the screen work below must not delay it
-      const mul = R.combo >= 20 ? 3 : R.combo >= 10 ? 2 : 1, dmg = (kind === "perfect" ? 2 : 1) * mul; deal(n.pi, dmg);
+      const ng = !chart[n.bi].guide, mul = R.combo >= 20 ? 3 : R.combo >= 10 ? 2 : 1, dmg = Math.round((kind === "perfect" ? 2 : 1) * mul * (ng ? RH_NG : 1)); deal(n.pi, dmg); if(ng) R.ng = (R.ng || 0) + 1;
       again(bw, "hit"); again(bflash, "on"); const m = wk[n.pi]; if(m && !parts[n.pi].br) again(m, "hit");
       const d = el("span", "rh-dmg" + (mul > 1 ? " big" : "") + (kind === "perfect" ? " crit" : "")); if(kind === "perfect" && mul > 1) d.append(el("small", null, "CRITICAL")); d.append("-" + dmg); d.style.setProperty("--x", (Math.random() * 50 - 10) + "px"); pop.append(d); setTimeout(() => d.remove(), 800);
-      say(kind === "perfect" ? "パーフェクト！" : "グッド", kind);
+      say((kind === "perfect" ? "パーフェクト！" : "グッド") + (ng ? " 👀" : ""), kind);
       if(R.combo === 10){ banner("🔥 必殺モード！ ダメージ×2", "fire"); rhChime(3); }
       if(R.combo === 20){ banner("🌈 FEVER!! ダメージ×3", "fever"); rhChime(4); }
       if(R.combo > 20 && R.combo % 10 === 0){ banner(R.combo + " COMBO!!", "fever"); rhChime(4); } }
@@ -6573,7 +6584,7 @@ function rhBattle(o, tr, lv){
     const nx = notes.find(n => !n.j);
     // drawn on the HEARD time (like the cursor), not shifted by the player's offset: a ring shifted by `lat` made players who
     // follow the ring tap later, which raised `lat` again and again (the offset ran away to 0.3s = "it lags")
-    if(nx){ const d = nx.t - at; if(d <= lead && d > -RH_GOOD){ const k = Math.max(0, d / lead); app.style.transform = "scale(" + (1 + k * 1.1) + ")"; app.style.opacity = String(1 - k * .7); } else app.style.opacity = "0"; } else app.style.opacity = "0";
+    if(nx && chart[nx.bi] && chart[nx.bi].guide){ const d = nx.t - at; if(d <= lead && d > -RH_GOOD){ const k = Math.max(0, d / lead); app.style.transform = "scale(" + (1 + k * 1.1) + ")"; app.style.opacity = String(1 - k * .7); } else app.style.opacity = "0"; } else app.style.opacity = "0";
     notes.forEach(n => { if(!n.j && now - n.t > RH_GOOD) hit(n, "miss"); });
     if(R.done) return;
     if(at > end + .3){ finish(core.br); return; }
@@ -6730,7 +6741,7 @@ function rhPolyDemo(S){
 function rhPolyMap(o){
   rhStopRun(); o.innerHTML = ""; o.scrollTop = 0; o.classList.remove("ura", "playing"); o.classList.add("poly");
   rhHead(o, "🎹 両手ポリリズム", () => { o.classList.remove("poly"); rhMap(o); });
-  const top = el("div", "pl-hero"); top.append(el("b", null, "🙌 両手で別々のリズム"), el("p", null, "左手は画面の左半分、右手は右半分をタップ（キーボードなら F と J）。\n右手だけ → 左手だけ → 両手 の順に出てくるよ。Bランク以上でクリア！"),
+  const top = el("div", "pl-hero"); top.append(el("b", null, "🙌 両手で別々のリズム"), el("p", null, "左手は画面の左半分、右手は右半分をタップ（キーボードなら F と J）。\n右手だけ → 左手だけ → 両手 の順に出てくるよ。両手のところは音符が落ちてこないので、楽譜を読んでたたこう。Bランク以上でクリア！"),
     el("div", "pl-prog", "クリア " + rhPolyDone() + " / " + RH_POLY.length + "　・　はじめてのクリアで 🎟×" + RH_POLY_RW));
   const tt = el("div", "rh-ttl" + (rhPolyDone() >= RH_POLY.length ? " got" : ""), rhPolyDone() >= RH_POLY.length ? "🏆 称号「" + RH_POLY_TITLE.v + "」ゲット！" : "全部クリアで称号「" + RH_POLY_TITLE.v + "」"); top.append(tt);
   o.append(top);
@@ -6754,7 +6765,7 @@ function rhPolyIntro(o, lv){
   const b = rhPolyBest(lv);
   const rw = el("div", "rh-rw" + (rhPolyClear(lv) ? " got" : "")); rw.append(el("small", null, rhPolyClear(lv) ? "初回クリア報酬（ゲット済み）" : "🎁 はじめてのクリア"), el("b", null, "🎟 ガチャチケ ×" + RH_POLY_RW + (lv === RH_POLY.length ? " ＋ 称号への最後の1つ" : ""))); card.append(rw);
   if(b) card.append(el("p", "ear-how", "ベスト：" + (b.rk || "-") + "ランク " + b.s + "点" + (b.nm ? " 👑" : "")));
-  card.append(el("p", "ear-how", "📜 ルール\nカウント1小節のあと、右手だけ2小節 → 左手だけ2小節 → 両手4小節。ハートはなし、さいごまでたたいて正確さ（％）でランクが決まるよ。S＝95％以上でミスなし、A＝85％、B＝70％。"));
+  card.append(el("p", "ear-how", "📜 ルール\nカウント1小節のあと、右手だけ2小節 → 左手だけ2小節 → 両手4小節。片手の練習では音符が落ちてくるけど、両手の4小節は落ちてこない！ 楽譜とカーソルを見て、拍を感じてたたこう（得点×1.5）。ハートはなし、さいごまでたたいて正確さ（％）でランクが決まるよ。S＝95％以上でミスなし、A＝85％、B＝70％。"));
   const go = el("button", "ear-go", "🙌 スタート"); go.type = "button"; go.id = "pl-start"; go.onclick = () => { earCtx(); rhPolyPlay(o, lv); }; card.append(go);
   o.append(card);
 }
@@ -6768,11 +6779,12 @@ function rhPolyPlay(o, lv){
   const sec = b => b < 2 ? "R" : b < 4 ? "L" : "RL";
   const notes = [];
   for(let b = 0; b < BARS; b++){ const s = sec(b);
-    if(s.includes("R")) rhPolyAt(S.R, S.beats).forEach((a, i) => notes.push({ h:"R", i, b, t:t0 + b * barSec + a * spb, j:null }));
-    if(s.includes("L")) rhPolyAt(S.L, S.beats).forEach((a, i) => notes.push({ h:"L", i, b, t:t0 + b * barSec + a * spb, j:null })); }
+    // falling notes (the timing guide) only in the one-hand practice bars; the two-hand bars are read from the score
+    if(s.includes("R")) rhPolyAt(S.R, S.beats).forEach((a, i) => notes.push({ h:"R", i, b, g:s !== "RL", t:t0 + b * barSec + a * spb, j:null }));
+    if(s.includes("L")) rhPolyAt(S.L, S.beats).forEach((a, i) => notes.push({ h:"L", i, b, g:s !== "RL", t:t0 + b * barSec + a * spb, j:null })); }
   notes.sort((a, b) => a.t - b.t);
   const end = t0 + BARS * barSec;
-  const R = { p:0, g:0, m:0, x:0, combo:0, maxCombo:0, hp:{ R:{ p:0, g:0, m:0 }, L:{ p:0, g:0, m:0 } }, done:false };
+  const R = { p:0, g:0, m:0, x:0, pts:0, combo:0, maxCombo:0, hp:{ R:{ p:0, g:0, m:0 }, L:{ p:0, g:0, m:0 } }, done:false };
   RhRun = { stop:false, raf:0, bus:rhBus() }; const bus = RhRun.bus;
   // header and screen
   const h = rhHead(o, lv + ". " + S.nm, () => { rhStopRun(); o.classList.remove("playing"); rhPolyIntro(o, lv); });
@@ -6799,8 +6811,8 @@ function rhPolyPlay(o, lv){
     n.j = kind; R.hp[n.h][kind[0]]++; n.d.classList.add(kind);
     const s = svgN(n.h, n.i); if(s){ s.classList.remove("perfect", "good", "miss"); s.classList.add(kind); }
     if(kind === "miss"){ R.m++; R.combo = 0; pop(n.h, "ミス", "miss"); }
-    else { R[kind[0]]++; R.combo++; R.maxCombo = Math.max(R.maxCombo, R.combo); pop(n.h, kind === "perfect" ? "パーフェクト" : "グッド", kind); if(kind === "perfect") rhPing(n.h === "R" ? 2093 : 1568, 0, .035); }
-    scEl.textContent = String(R.p * 100 + R.g * 50); cbEl.textContent = R.combo >= 5 ? R.combo + " コンボ" : "";
+    else { R[kind[0]]++; R.combo++; R.maxCombo = Math.max(R.maxCombo, R.combo); R.pts += (kind === "perfect" ? 100 : 50) * (n.g ? 1 : 1.5); pop(n.h, (kind === "perfect" ? "パーフェクト" : "グッド") + (n.g ? "" : " 👀"), kind); if(kind === "perfect") rhPing(n.h === "R" ? 2093 : 1568, 0, .035); }
+    scEl.textContent = String(Math.round(R.pts)); cbEl.textContent = R.combo >= 5 ? R.combo + " コンボ" : "";
   }
   const last = { R:-1, L:-1 };
   function tap(hd, ts){
@@ -6826,7 +6838,7 @@ function rhPolyPlay(o, lv){
     const at = rhHeard(c), now = at - lat;
     const b = Math.floor((at - t0) / barSec);
     const s = at < t0 ? "C" : b >= BARS ? "E" : sec(b);
-    if(s !== shownSec){ shownSec = s; secEl.textContent = s === "C" ? "カウント…" : s === "R" ? "👉 右手だけ" : s === "L" ? "👈 左手だけ" : s === "E" ? "おわり！" : "🙌 両手！";
+    if(s !== shownSec){ shownSec = s; secEl.textContent = s === "C" ? "カウント…" : s === "R" ? "👉 右手だけ" : s === "L" ? "👈 左手だけ" : s === "E" ? "おわり！" : "🙌 両手！ 👀 楽譜を見て";
       secEl.className = "pl-sec s" + s; lanes.className = "pl-lanes s" + s;
       if(s === "R" || s === "L" || s === "RL") try{ secEl.animate([{ transform:"scale(1.3)" }, { transform:"scale(1)" }], { duration:300 }); }catch(e){}
     }
@@ -6834,7 +6846,7 @@ function rhPolyPlay(o, lv){
       const f = (at - t0 - b * barSec) / barSec, lx = (PL_P + 8 + f * (PL_W - PL_P * 2 - 8)) / PL_W * staffW; curs.forEach(k => { k.style.transform = "translateX(" + lx.toFixed(1) + "px)"; }); }
     else if(shownBar !== -1){ shownBar = -1; curs.forEach(k => { k.style.opacity = "0"; }); }
     notes.forEach(n => { const d = n.t - at;
-      if(d > LEAD || d < -.25 || (n.j && n.j !== "miss" && d < -.08)){ if(n.vis){ n.vis = false; n.d.style.display = "none"; } }
+      if(!n.g || d > LEAD || d < -.25 || (n.j && n.j !== "miss" && d < -.08)){ if(n.vis){ n.vis = false; n.d.style.display = "none"; } }
       else { if(!n.vis){ n.vis = true; n.d.style.display = ""; } n.d.style.transform = "translate3d(0," + ((1 - d / LEAD) * .86 * laneH).toFixed(1) + "px,0)"; }   // the hit line is at 86% of the lane
       if(!n.j && now - n.t > RH_GOOD) judge(n, "miss"); });
     if(at > end + .4){ finish(); return; }
@@ -6845,7 +6857,7 @@ function rhPolyPlay(o, lv){
     if(R.done) return; R.done = true; clearInterval(RhRun && RhRun.feed); rhCut(bus); if(RhRun && RhRun.off) RhRun.off();
     const total = notes.length, acc = (R.p + R.g * .5) / Math.max(1, total + R.x);
     const nm = R.m === 0 && R.x === 0, rank = acc >= .95 && nm ? "S" : acc >= .85 ? "A" : acc >= .7 ? "B" : "C";
-    const score = R.p * 100 + R.g * 50 + R.maxCombo * 10;
+    const score = Math.round(R.pts) + R.maxCombo * 10;
     secEl.textContent = rank !== "C" ? "クリア！" : "ざんねん…";
     const run = RhRun; setTimeout(() => { if(RhRun === run && run && !run.stop) rhPolyResult(o, lv, R, total, acc, rank, nm, score); }, 900);
   }
@@ -6880,7 +6892,7 @@ async function rhPolyResult(o, lv, R, total, acc, rank, nm, score){
 
 /* ================= honors from the yearly skill test: 特待生 / Chapter U =================
    two separate routes (not a higher and a lower one): same size, same frame, different motif.
-   特待生 = gold medal with a laurel and a note.  Chapter U = silver shield with a "U" and a star orbit. */
+   特待生 = gold medal with a laurel and a note.  Chapter U = silver medal with a "U", an aurora orbit and a ring of stars. */
 const HONOR = {
   tokutai:  { name:"特待生",   short:"特待",  ico:"🎓", line:"スキルテスト合格！ 特待生として1年間がんばろう" },
   chapter_u:{ name:"Chapter U", short:"Ch.U", ico:"🌌", line:"スキルテスト合格！ Chapter U の1年がはじまるよ" },
@@ -6889,21 +6901,39 @@ const HONOR_KEYS = ["tokutai", "chapter_u"];
 const honorSort = list => (list || []).filter(h => h && HONOR[h.kind]).sort((a, b) => HONOR_KEYS.indexOf(a.kind) - HONOR_KEYS.indexOf(b.kind));
 const honorActive = list => honorSort(list).filter(h => h.active);
 const pkOf = s => s.num != null ? "n" + s.num : "i" + s.id;
-// a laurel wreath: small leaves along both sides of the circle, open at the top
-const HON_LAUREL = (() => { const L = [];
-  [0, 1].forEach(right => { for(let k = 0; k < 6; k++){ const t = 108 + k * 25, th = (right ? 180 - t : t) * Math.PI / 180, x = 20 + Math.cos(th) * 16, y = 20 + Math.sin(th) * 16, rot = (right ? 180 - t : t) + (right ? -22 : 22);
-    L.push(`<ellipse cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" rx="1.6" ry="3.4" transform="rotate(${rot.toFixed(1)} ${x.toFixed(2)} ${y.toFixed(2)})"/>`); } });
-  return '<g fill="currentColor">' + L.join("") + '</g>'; })();
-// the little emblem at the left of the badge (also drawn big in the celebration)
+// the ring of 12 ornaments around both medals (same places, same count): leaves for 特待生, little stars for Chapter U
+const HON_SPOTS = (() => { const P = [];
+  [0, 1].forEach(right => { for(let k = 0; k < 6; k++){ const t = 112 + k * 24, a = right ? 180 - t : t, th = a * Math.PI / 180;
+    P.push({ x: 20 + Math.cos(th) * 16.2, y: 20 + Math.sin(th) * 16.2, rot: a + (right ? -90 + 28 : 90 - 28), k }); } });
+  return P; })();
+const f2 = n => n.toFixed(2);
+const HON_LAUREL = '<g fill="url(#hgL)" stroke="#fff3c4" stroke-width=".35">' + HON_SPOTS.map(p =>
+  `<path d="M0-4.2Q3-.5 0 3.9Q-3-.5 0-4.2z" transform="translate(${f2(p.x)} ${f2(p.y)}) rotate(${p.rot.toFixed(1)})"/>`).join("") + '</g>';
+const HON_STARS = '<g>' + HON_SPOTS.map((p, i) => { const r = p.k % 2 ? 1.7 : 2.5, c = ["#8be9ff", "#cfa8ff", "#8ff7d2"][i % 3];
+  return `<path d="M0-${r}L${f2(r * .28)}-${f2(r * .28)}L${r} 0L${f2(r * .28)} ${f2(r * .28)}L0 ${r}L-${f2(r * .28)} ${f2(r * .28)}L-${r} 0L-${f2(r * .28)}-${f2(r * .28)}z" fill="${c}" transform="translate(${f2(p.x)} ${f2(p.y)})"/>`; }).join("") + '</g>';
+// the little emblem at the left of the badge (also drawn big in the celebration).
+// both: a round medal of the same size, a ring of 12 ornaments, an inner rim, a symbol and a small star.
 function honorEmblem(kind){
-  if(kind === "tokutai") return `<svg viewBox="0 0 40 40" aria-hidden="true"><defs><radialGradient id="hgT" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff6cf"/><stop offset=".45" stop-color="#e7c66a"/><stop offset="1" stop-color="#9a7524"/></radialGradient></defs>
-    ${HON_LAUREL.replace('currentColor', '#e7c66a')}<circle cx="20" cy="20" r="13" fill="url(#hgT)" stroke="#f5e7a1" stroke-width="1.2"/>
-    <path d="M22 12.5v9.4a3.2 2.7 0 1 1-1.6-2.3V14.4l4.4 1.4v2z" fill="#4a3208"/></svg>`;
-  return `<svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="hgU" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f7fc"/><stop offset=".5" stop-color="#b9c6da"/><stop offset="1" stop-color="#6d7f9c"/></linearGradient></defs>
-    <path d="M20 4l13 5v10c0 9-6 14-13 17C13 33 7 28 7 19V9z" fill="url(#hgU)" stroke="#eef3fb" stroke-width="1.2"/>
-    <ellipse cx="20" cy="19" rx="12" ry="4.2" transform="rotate(-18 20 19)" fill="none" stroke="#7ee7c7" stroke-width="1.1" opacity=".9"/>
-    <circle cx="30.5" cy="15.6" r="1.6" fill="#cfa8ff"/>
-    <text x="20" y="25" text-anchor="middle" font-family="'Dela Gothic One',sans-serif" font-size="15" fill="#1d2b44">U</text></svg>`;
+  if(kind === "tokutai") return `<svg viewBox="0 0 40 40" aria-hidden="true"><defs>
+    <radialGradient id="hgT" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#fffbe6"/><stop offset=".35" stop-color="#f3d77e"/><stop offset=".75" stop-color="#c99a35"/><stop offset="1" stop-color="#8a6417"/></radialGradient>
+    <linearGradient id="hgL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0b0"/><stop offset="1" stop-color="#c99a35"/></linearGradient>
+    <linearGradient id="hgTr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffdf2"/><stop offset=".5" stop-color="#e7c66a"/><stop offset="1" stop-color="#fff3c4"/></linearGradient></defs>
+    ${HON_LAUREL}
+    <circle cx="20" cy="20" r="12.6" fill="url(#hgT)" stroke="url(#hgTr)" stroke-width="1.6"/>
+    <circle cx="20" cy="20" r="10" fill="none" stroke="#8a6417" stroke-width=".7" opacity=".55"/>
+    <path d="M21.6 12.4v9.6a3.3 2.8 0 1 1-1.7-2.4v-5.4l4.6 1.5v2.1z" fill="#4a3208"/>
+    <path d="M14.4 13.2l.55 1.25 1.25.55-1.25.55-.55 1.25-.55-1.25-1.25-.55 1.25-.55z" fill="#fff"/></svg>`;
+  return `<svg viewBox="0 0 40 40" aria-hidden="true"><defs>
+    <radialGradient id="hgU" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#dfe7f3"/><stop offset=".78" stop-color="#93a6c4"/><stop offset="1" stop-color="#5d6f8f"/></radialGradient>
+    <linearGradient id="hgUr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8be9ff"/><stop offset=".5" stop-color="#cfa8ff"/><stop offset="1" stop-color="#8ff7d2"/></linearGradient>
+    <linearGradient id="hgUu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b4f8f"/><stop offset="1" stop-color="#1a2547"/></linearGradient></defs>
+    ${HON_STARS}
+    <circle cx="20" cy="20" r="12.6" fill="url(#hgU)" stroke="url(#hgUr)" stroke-width="1.6"/>
+    <circle cx="20" cy="20" r="10" fill="none" stroke="#5d6f8f" stroke-width=".7" opacity=".55"/>
+    <ellipse cx="20" cy="20.5" rx="11" ry="3.6" transform="rotate(-20 20 20.5)" fill="none" stroke="url(#hgUr)" stroke-width="1.2"/>
+    <text x="20" y="25.4" text-anchor="middle" font-family="'Dela Gothic One',sans-serif" font-size="15" fill="url(#hgUu)" stroke="#fff" stroke-width=".5" paint-order="stroke">U</text>
+    <circle cx="29.6" cy="16.8" r="1.5" fill="#cfa8ff" stroke="#fff" stroke-width=".4"/>
+    <path d="M14.4 13.2l.55 1.25 1.25.55-1.25.55-.55 1.25-.55-1.25-1.25-.55 1.25-.55z" fill="#fff"/></svg>`;
 }
 function honorBadge(h, opts){
   const H = HONOR[h.kind]; const b = el("span", "hon " + h.kind + (opts && opts.small ? " sm" : "")); b.setAttribute("aria-label", H.name + (h.terms > 1 ? " " + h.terms + "年目" : ""));
