@@ -2799,6 +2799,10 @@ button.ear-chip{cursor:pointer}
 .hon-pl{font-size:.72rem;font-weight:800;opacity:.7;margin-right:2px}
 .hon-pm{font:inherit;font-size:.76rem;font-weight:800;padding:5px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.22);background:transparent;color:inherit;cursor:pointer}
 .hon-pm.sel{background:#e7c66a;border-color:#e7c66a;color:#3a2806}
+.hon-ed .hon-own{display:inline-flex;flex-direction:row;flex-wrap:nowrap;white-space:nowrap;margin:0;align-items:center;gap:3px;font-size:.76rem;font-weight:800;padding:2px 10px 2px 3px;border-radius:99px;border:1px solid rgba(255,255,255,.22)}
+.hon-ed .hon-own.sel{border-color:#e7c66a;background:rgba(231,198,106,.16)}
+.hon-ed .hon-pin{display:inline-block;flex:none;min-width:0;margin:0;height:auto;box-shadow:none;width:3.4em;font:inherit;font-size:.8rem;font-weight:800;text-align:center;padding:4px 2px;border-radius:99px;border:0;background:rgba(255,255,255,.1);color:inherit;-moz-appearance:textfield}
+.hon-pin::-webkit-outer-spin-button,.hon-pin::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .hon-auto{font:inherit;font-size:.76rem;font-weight:800;padding:5px 11px;border-radius:99px;border:1px dashed rgba(255,255,255,.3);background:transparent;color:inherit;cursor:pointer}
 .hon-auto.on{border-style:solid;border-color:#7ee7c7;background:rgba(126,231,199,.18);color:#bff7e6}
 .hon-acts .hon-on{background:linear-gradient(180deg,#fff2bf,#e7c66a);color:#3a2806;border-color:#d6b45a}
@@ -6906,7 +6910,7 @@ const HONOR = {
 };
 // length of one period (months) → words. a year counts "N年目", shorter periods count "N回目"
 const HON_MONTHS = [1, 3, 6, 12];
-const honPer = m => (m || 12) === 12 ? "1年" : m + "ヶ月";
+const honPer = m => { m = m || 12; return m % 12 === 0 ? (m / 12) + "年" : m + "ヶ月"; };
 const honTerm = h => ((h.months || 12) === 12 ? h.terms + "年目" : h.terms + "回目");
 const HONOR_KEYS = ["tokutai", "chapter_u"];
 const honorSort = list => (list || []).filter(h => h && HONOR[h.kind]).sort((a, b) => HONOR_KEYS.indexOf(a.kind) - HONOR_KEYS.indexOf(b.kind));
@@ -7027,9 +7031,16 @@ function honorEditor(s){
       catch(e){ toast("できませんでした（" + e.message + "）"); } };
     // the length: used for "on", "継続" and the automatic renewal
     const per = el("div", "hon-per"); per.append(el("span", "hon-pl", "期間"));
+    const pick = m => { T.honM[key] = m; if(h && h.auto && m !== h.months) act("auto", H.name + "の自動継続を" + honPer(m) + "ごとにしました", { p_auto: true, p_months: m }); else tRender(); };
     HON_MONTHS.forEach(m => { const b = el("button", "hon-pm" + (m === mSel ? " sel" : ""), honPer(m)); b.type = "button"; b.dataset.k = kind; b.dataset.m = m;
-      b.onclick = () => { T.honM[key] = m; if(h && h.auto && m !== h.months) act("auto", H.name + "の自動継続を" + honPer(m) + "ごとにしました", { p_auto: true, p_months: m }); else tRender(); };
-      per.append(b); });
+      b.onclick = () => pick(m); per.append(b); });
+    // or type any number of months (1..60)
+    const own = el("label", "hon-own" + (HON_MONTHS.includes(mSel) ? "" : " sel"));
+    const inp = el("input", "hon-pin"); inp.type = "number"; inp.min = 1; inp.max = 60; inp.inputMode = "numeric"; inp.dataset.k = kind;
+    inp.placeholder = "自由"; if(!HON_MONTHS.includes(mSel)) inp.value = mSel; inp.setAttribute("aria-label", "期間（ヶ月）を入力");
+    inp.onchange = () => { const v = Math.round(+inp.value); if(!(v >= 1 && v <= 60)){ toast("1〜60ヶ月で入れてね"); inp.value = HON_MONTHS.includes(mSel) ? "" : mSel; return; } pick(v); };
+    inp.onkeydown = e => { if(e.key === "Enter"){ e.preventDefault(); inp.blur(); } };
+    own.append(inp, el("span", null, "ヶ月")); per.append(own);
     // auto-renew switch
     const autoOn = h ? !!h.auto : !!T.honA[key];
     const sw = el("button", "hon-auto" + (autoOn ? " on" : ""), (autoOn ? "🔁 自動継続：オン" : "自動継続：オフ")); sw.type = "button"; sw.dataset.k = kind;
@@ -7050,7 +7061,7 @@ function honorEditor(s){
     }
     acts.append(sw); row.append(acts); sec.append(row);
   });
-  sec.append(el("p", "hon-note", "期間は 1・3・6ヶ月か1年。「自動継続」がオンだと、外すまで期間ごとに勝手に更新されて、生徒には毎回「継続です！」が出ます。手動の「継続」は期限の90日前から出ます。同じ番号のコースカード全部に表示されます。"));
+  sec.append(el("p", "hon-note", "期間は 1・3・6ヶ月・1年のボタンか、数字（1〜60ヶ月）を入力。「自動継続」がオンだと、外すまで期間ごとに勝手に更新されて、生徒には毎回「継続です！」が出ます。手動の「継続」は期限の90日前から出ます。同じ番号のコースカード全部に表示されます。"));
   return sec;
 }
 // tiny marks in the teacher's student list
