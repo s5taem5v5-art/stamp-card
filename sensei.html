@@ -2274,6 +2274,8 @@ button.ear-chip{cursor:pointer}
 @keyframes wit-pen{0%,100%{transform:translate(0,0) rotate(0)}12%{transform:translate(2.5%,-4%) rotate(-3deg)}24%{transform:translate(5%,1%) rotate(1deg)}36%{transform:translate(7.5%,-4%) rotate(-3deg)}48%{transform:translate(10%,1%) rotate(1deg)}60%{transform:translate(12%,-3%) rotate(-2deg)}75%{transform:translate(6%,-6%) rotate(-4deg)}}
 .av2.st-secret.sx-witch .bg .pt.ct{left:14.17%;top:48.89%;width:22.78%!important;height:20.56%!important;transform-origin:55% 95%;animation:wit-cat 2.8s ease-in-out infinite}
 @keyframes wit-cat{0%,100%{transform:scale(1,1)}50%{transform:scale(1.035,1.06)}}
+/* the name lettering: a full-size transparent layer on top of the moving parts (moves only with the body) */
+.av2.st-secret.sx-witch .bg .pt.tx{inset:0;width:100%!important;height:100%!important;animation:none}
 .sx-witch .wx{position:absolute;display:block;border-radius:50%;pointer-events:none;will-change:transform,opacity}
 .sx-witch .wx.moon{left:60%;top:0;width:26%;height:26%;background:radial-gradient(closest-side,rgba(255,244,255,.8),rgba(214,170,255,.3) 60%,transparent);animation:wit-glow 3.6s ease-in-out infinite}
 .sx-witch .wx.book{left:42%;top:74%;width:34%;height:24%;background:radial-gradient(closest-side,rgba(255,238,175,.9),rgba(255,196,110,.32) 55%,transparent);animation:wit-glow 1.8s ease-in-out infinite}
@@ -3765,7 +3767,7 @@ const GACHA = [
   {id:"g_av_unicorn", r:4, cat:"av", v:{ch:"1f984", st:"diamond"}, n:"ダイヤモンドユニコーン"},
   {id:"g_av2_ryu", r:4, cat:"av", v:{ch:"1f432", st:"diamond"}, n:"ダイヤモンド神龍"},
   {id:"g_av_secret", r:5, cat:"av", v:{img:"av_secret.webp", st:"secret"}, n:"MAKASERO!!"},
-  {id:"g_av_witch", r:5, cat:"av", v:{img:"av_witch.webp", st:"witch"}, n:"よるの作曲まじょ"},
+  {id:"g_av_witch", r:5, cat:"av", v:{img:"av_witch.webp", st:"witch"}, n:"YUMI"},
   // ---- N ----
   {id:"g_st_cherry", r:0, cat:"st", v:"1f352", n:"さくらんぼ"},
   {id:"g_st_bear",   r:0, cat:"st", v:"1f9f8", n:"くまのぬいぐるみ"},
@@ -4001,7 +4003,7 @@ const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bea
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
 // moving SECRET avatars: the picture + its cut-out parts (soft edges baked in) + extra light effects. every one wears the SECRET frame
-const AV_PARTS = { secret:["hd", "hl", "hr"], witch:["hd", "hn", "ct"] };
+const AV_PARTS = { secret:["hd", "hl", "hr"], witch:["hd", "hn", "ct", "tx"] };
 const AV_FX = { witch:'<i class="wx moon"></i><i class="wx book"></i><i class="wn n1"></i><i class="wn n2"></i><i class="wn n3"></i>' };
 function avHTML(s){
   if(s && s.img && s.st==="boss"){ const mv = Array.isArray(s.mv) ? s.mv : null; // mv = pose sprites that take turns with the idle picture
