@@ -2263,6 +2263,31 @@ button.ear-chip{cursor:pointer}
 .gr-in.flat .gr-back{display:none}
 .gr-in.flat .gr-front{transform:none}
 
+/* ===== 2nd SECRET: よるの作曲まじょ — writing music at night. the pen writes, the head hums along, the cat on her shoulder breathes,
+   the moon and the book glow and notes rise from the page. same SECRET frame; only transform / opacity animate ===== */
+.av2.st-secret.sx-witch .bg .pp{animation:wit-body 4.6s ease-in-out infinite}
+@keyframes wit-body{0%,100%{transform:scale(1.06) translateY(0) rotate(0)}50%{transform:scale(1.072) translateY(-.8%) rotate(.5deg)}}
+.av2.st-secret.sx-witch .bg .pt.hd{left:30.83%;top:35.56%;width:39.72%!important;height:28.06%!important;transform-origin:50% 100%;animation:wit-head 3.2s ease-in-out infinite}
+@keyframes wit-head{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-2.4deg) translateY(1.5%)}50%{transform:rotate(0) translateY(3%)}75%{transform:rotate(2.2deg) translateY(1.5%)}}
+/* the hand with the pen: little writing strokes to the right, then back to the start of the line */
+.av2.st-secret.sx-witch .bg .pt.hn{left:39.44%;top:68.61%;width:22.5%!important;height:22.5%!important;transform-origin:15% 90%;animation:wit-pen 1.6s ease-in-out infinite}
+@keyframes wit-pen{0%,100%{transform:translate(0,0) rotate(0)}12%{transform:translate(2.5%,-4%) rotate(-3deg)}24%{transform:translate(5%,1%) rotate(1deg)}36%{transform:translate(7.5%,-4%) rotate(-3deg)}48%{transform:translate(10%,1%) rotate(1deg)}60%{transform:translate(12%,-3%) rotate(-2deg)}75%{transform:translate(6%,-6%) rotate(-4deg)}}
+.av2.st-secret.sx-witch .bg .pt.ct{left:14.17%;top:48.89%;width:22.78%!important;height:20.56%!important;transform-origin:55% 95%;animation:wit-cat 2.8s ease-in-out infinite}
+@keyframes wit-cat{0%,100%{transform:scale(1,1)}50%{transform:scale(1.035,1.06)}}
+.sx-witch .wx{position:absolute;display:block;border-radius:50%;pointer-events:none;will-change:transform,opacity}
+.sx-witch .wx.moon{left:60%;top:0;width:26%;height:26%;background:radial-gradient(closest-side,rgba(255,244,255,.8),rgba(214,170,255,.3) 60%,transparent);animation:wit-glow 3.6s ease-in-out infinite}
+.sx-witch .wx.book{left:42%;top:74%;width:34%;height:24%;background:radial-gradient(closest-side,rgba(255,238,175,.9),rgba(255,196,110,.32) 55%,transparent);animation:wit-glow 1.8s ease-in-out infinite}
+@keyframes wit-glow{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
+/* notes rising from the page toward the upper right */
+.sx-witch .wn{position:absolute;display:block;left:58%;top:76%;width:9%;height:10%;pointer-events:none;opacity:0;will-change:transform,opacity;
+  background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M8 3.5v11.2A3.4 2.9 0 1 0 10 17.4V8.3l8.5-2.2v6.6A3.4 2.9 0 1 0 20.5 15.4V1z'/%3E%3C/svg%3E");
+  filter:drop-shadow(0 0 2px #e2b6ff) drop-shadow(0 0 4px #b67bff);animation:wit-note 3.6s ease-out infinite}
+.sx-witch .wn.n2{animation-delay:-1.2s;width:7%;height:8%}
+.sx-witch .wn.n3{animation-delay:-2.4s;left:54%;width:8%;height:9%}
+@keyframes wit-note{0%{opacity:0;transform:translate(0,0) scale(.5) rotate(-10deg)}15%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translate(300%,-420%) scale(1.1) rotate(12deg)}}
+.still .sx-witch .wn,.still .sx-witch .wx{animation:none;opacity:0}
+@media (prefers-reduced-motion:reduce){.sx-witch .wn,.sx-witch .wx,.sx-witch .pt,.sx-witch .pp{animation:none!important}.sx-witch .wn{opacity:0}}
+
 /* ===== rhythm boss battle (only transform / opacity animate) ===== */
 .rhc{background:linear-gradient(135deg,rgba(255,138,60,.16),rgba(255,61,110,.14)),var(--panel);border-color:rgba(255,138,60,.4)}
 .rh-ov{background:radial-gradient(120% 60% at 50% 0%,#3a1430,#120a24 70%)}
@@ -3740,6 +3765,7 @@ const GACHA = [
   {id:"g_av_unicorn", r:4, cat:"av", v:{ch:"1f984", st:"diamond"}, n:"ダイヤモンドユニコーン"},
   {id:"g_av2_ryu", r:4, cat:"av", v:{ch:"1f432", st:"diamond"}, n:"ダイヤモンド神龍"},
   {id:"g_av_secret", r:5, cat:"av", v:{img:"av_secret.webp", st:"secret"}, n:"MAKASERO!!"},
+  {id:"g_av_witch", r:5, cat:"av", v:{img:"av_witch.webp", st:"witch"}, n:"よるの作曲まじょ"},
   // ---- N ----
   {id:"g_st_cherry", r:0, cat:"st", v:"1f352", n:"さくらんぼ"},
   {id:"g_st_bear",   r:0, cat:"st", v:"1f9f8", n:"くまのぬいぐるみ"},
@@ -3974,10 +4000,14 @@ const AV_SPEC = Object.fromEntries(AV_FREE.map(a=>[a[0],a[3]]));
 const AV_LEGACY = {"🐱":"a_cat","🐶":"a_dog","🐰":"a_rabbit","🐻":"a_bear","🐼":"a_panda","🐨":"a_cat_hp","🦊":"a_fox","🐸":"a_frog","🐧":"a_penguin","🐤":"a_chick","🐹":"a_hamster","🤖":"a_robot","👾":"a_alien","👑":"a_peng_crown"};
 const avKey = v => typeof v!=="string" ? null : (AV_SPEC[v] || (GITEM[v] && GITEM[v].cat==="av")) ? v : (AV_LEGACY[v] || null);
 const avSpec = v => { const k=avKey(v); if(!k) return null; return AV_SPEC[k] || (GITEM[k] && GITEM[k].v) || null; };
+// moving SECRET avatars: the picture + its cut-out parts (soft edges baked in) + extra light effects. every one wears the SECRET frame
+const AV_PARTS = { secret:["hd", "hl", "hr"], witch:["hd", "hn", "ct"] };
+const AV_FX = { witch:'<i class="wx moon"></i><i class="wx book"></i><i class="wn n1"></i><i class="wn n2"></i><i class="wn n3"></i>' };
 function avHTML(s){
   if(s && s.img && s.st==="boss"){ const mv = Array.isArray(s.mv) ? s.mv : null; // mv = pose sprites that take turns with the idle picture
     return `<span class="av2 st-boss${mv ? " mv" : ""}"><i class="aura"></i><i class="bg"><img class="ph${mv ? " f0" : ""}" src="${s.img}" alt="" decoding="async">${mv ? mv.map((m, i) => `<img class="ph f${i + 1}" src="${m}" alt="" decoding="async">`).join("") : ""}</i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`; }
-  if(s && s.img) return `<span class="av2 st-${s.st||"secret"}"><i class="aura"></i><i class="bg"><b class="pp"><img class="ph" src="${s.img}" alt="" decoding="async">${["hd", "hl", "hr"].map(c => `<img class="pt ${c}" src="${s.img.replace(/\.webp$/, "_" + c + ".webp")}" alt="" decoding="async">`).join("")}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`;
+  if(s && s.img){ const st = s.st || "secret", P = AV_PARTS[st] || AV_PARTS.secret;
+    return `<span class="av2 st-secret${st !== "secret" ? " sx-" + st : ""}"><i class="aura"></i><i class="bg"><b class="pp"><img class="ph" src="${s.img}" alt="" decoding="async">${P.map(c => `<img class="pt ${c}" src="${s.img.replace(/\.webp$/, "_" + c + ".webp")}" alt="" decoding="async">`).join("")}${AV_FX[st] || ""}</b></i><i class="rg"></i><i class="tw t1"></i><i class="tw t2"></i><i class="tw t3"></i></span>`; }
   if(!s||!s.ch) return "";
   const st=s.st||"pastel";
   const deco = st==="gold"||st==="royal"||st==="diamond" ? '<i class="st1"></i><i class="st2"></i><i class="st3"></i><i class="st4"></i>' : "";
