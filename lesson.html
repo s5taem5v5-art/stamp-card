@@ -2841,6 +2841,165 @@ button.ear-chip{cursor:pointer}
 .hm.chapter_u{background:linear-gradient(100deg,#2a1f5c,#1f2f5c);color:#f3ecff;border:1px solid #cfa8ff}
 .hm.old{background:transparent;color:#ff9d7a;border-color:#ff9d7a}
 
+/* ===== 声マネ選手権: a little stage — spotlight pink/violet, gold for the winners ===== */
+.seg:has(#v-voice){grid-template-columns:repeat(4,1fr)}
+.vo-card{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1px solid rgba(255,255,255,.18);
+  background:radial-gradient(120% 140% at 0% 0%,rgba(255,92,170,.28),transparent 55%),linear-gradient(135deg,rgba(124,77,255,.22),rgba(255,79,216,.12))!important}
+.vo-card.ph-result{background:radial-gradient(120% 140% at 0% 0%,rgba(255,214,102,.3),transparent 55%),linear-gradient(135deg,rgba(124,77,255,.2),rgba(255,180,60,.14))!important}
+.vo-cic{width:52px;height:52px;display:grid;place-items:center;font-size:2rem;border-radius:16px;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);animation:voBob 2.4s ease-in-out infinite}
+@keyframes voBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-3px) rotate(4deg)}}
+.vo-ctx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.vo-ctx b{font-size:1rem}
+.vo-cph{align-self:flex-start;font-size:.66rem;font-weight:900;padding:1px 8px;border-radius:99px;background:#ff5caa;color:#fff}
+.ph-vote .vo-cph{background:#b06bff}.ph-result .vo-cph{background:#e7b93e;color:#3a2806}
+.vo-csub{font-size:.76rem;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vo-go{min-height:46px;padding:0 14px;font-size:.9rem;white-space:nowrap}
+
+/* the full screen */
+.vo-ov{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;background:radial-gradient(90% 60% at 50% 0%,rgba(255,92,170,.25),transparent 70%),#0d0a1c;color:#fff;animation:fadein .25s}
+.vo-hd{display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top) + 12px) 16px 10px}
+.vo-hd b{flex:1;font-size:1.05rem}
+.vo-x{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;font-size:1.5rem;cursor:pointer}
+.vo-body{flex:1;overflow-y:auto;padding:4px 16px calc(env(safe-area-inset-bottom) + 24px);-webkit-overflow-scrolling:touch}
+.vo-steps{display:flex;gap:4px;list-style:none;margin:0 0 10px;padding:0;counter-reset:s}
+.vo-steps li{flex:1;text-align:center;font-size:.72rem;font-weight:800;padding:6px 2px;border-radius:10px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5)}
+.vo-steps li.done{color:rgba(255,255,255,.8)}
+.vo-steps li.on{background:linear-gradient(135deg,#ff5caa,#b06bff);color:#fff}
+.vo-theme{font-weight:800;font-size:.9rem;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.08);margin:0 0 8px}
+.vo-rule{font-size:.8rem;line-height:1.6;opacity:.85;margin:4px 0 10px}
+.vo-count{font-size:.8rem;font-weight:800;opacity:.8;margin-bottom:8px}
+.vo-empty{padding:24px 8px;text-align:center;opacity:.7}
+.vo-box{border-radius:18px;padding:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.vo-bh{font-weight:900;margin-bottom:10px}
+.vo-mrow{display:flex;align-items:center;gap:12px}
+.vo-who{display:flex;flex-direction:column;gap:2px;min-width:0}
+.vo-who small{font-size:.7rem;opacity:.7}.vo-who b{font-size:1.05rem}
+.vo-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.vo-warn{color:#ff9d7a;font-size:.8rem;margin:8px 0 0}
+
+/* recorder */
+.vo-rec{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.vo-rech{font-weight:900;font-size:1rem}
+.vo-recb{position:relative;width:96px;height:96px;border-radius:50%;border:4px solid rgba(255,255,255,.85);background:rgba(255,255,255,.08);cursor:pointer;display:grid;place-items:center;box-shadow:0 0 0 0 rgba(255,60,90,.6);animation:voPulse 2s infinite}
+.vo-recb i{width:60px;height:60px;border-radius:50%;background:#ff3c5a;transition:all .2s}
+.vo-recb.stop{animation:none;box-shadow:0 0 0 6px rgba(255,60,90,.25)}
+.vo-recb.stop i{width:34px;height:34px;border-radius:8px}
+@keyframes voPulse{0%{box-shadow:0 0 0 0 rgba(255,60,90,.55)}70%{box-shadow:0 0 0 18px rgba(255,60,90,0)}100%{box-shadow:0 0 0 0 rgba(255,60,90,0)}}
+.vo-hint{font-size:.74rem;opacity:.7}
+.recording .vo-rech{color:#ff6b84;animation:voBlink 1s steps(2) infinite}
+@keyframes voBlink{50%{opacity:.4}}
+.vo-lv{display:flex;gap:3px;align-items:flex-end;height:34px}
+.vo-lv i{width:8px;height:100%;border-radius:4px;background:rgba(255,255,255,.12);transform-origin:bottom}
+.vo-lv i.on{background:linear-gradient(0deg,#7ee7c7,#ffd166 70%,#ff5caa)}
+.vo-tm{font-variant-numeric:tabular-nums;font-weight:900;font-size:1.3rem}
+.vo-bar{width:100%;max-width:280px;height:8px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.vo-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff5caa,#ffd166)}
+.vo-lab{display:flex;flex-direction:column;gap:4px;width:100%;text-align:left;font-size:.78rem;font-weight:800;opacity:.95;margin-top:6px}
+.vo-in{font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:inherit;width:100%;box-sizing:border-box}
+.vo-send{min-height:48px;padding:0 22px;font-size:1rem}
+.vo-send:disabled{opacity:.7}
+
+/* play button with a progress ring */
+.vo-play{position:relative;flex:none;width:48px;height:48px;border-radius:50%;border:0;padding:0;cursor:pointer;background:linear-gradient(135deg,#ff5caa,#b06bff);color:#fff;display:grid;place-items:center}
+.vo-play .vo-pr{position:absolute;inset:-4px;border-radius:50%;--p:0;background:conic-gradient(#ffd166 calc(var(--p)*1%),transparent 0);-webkit-mask:radial-gradient(circle,transparent 58%,#000 60%);mask:radial-gradient(circle,transparent 58%,#000 60%)}
+.vo-play .vo-ic{width:0;height:0;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.vo-play.on .vo-ic{width:14px;height:16px;border:0;margin:0;background:linear-gradient(90deg,#fff 0 35%,transparent 35% 65%,#fff 65%)}
+.vo-play .vo-dur{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:.6rem;opacity:.7;white-space:nowrap}
+
+/* entries (vote / result) */
+.vo-hearts{display:flex;align-items:center;gap:6px;font-weight:800;font-size:.85rem;margin-bottom:10px}
+.vo-hearts i{font-style:normal;font-size:1.3rem;color:rgba(255,255,255,.2)}
+.vo-hearts i.on{color:#ff5caa;text-shadow:0 0 8px rgba(255,92,170,.7)}
+.vo-hearts small{opacity:.7;font-size:.72rem}
+.vo-list{display:flex;flex-direction:column;gap:10px}
+.vo-it{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:10px 12px 18px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.vo-it:has(.vo-rk){grid-template-columns:auto auto 1fr auto auto}
+.vo-it.me{border-color:rgba(255,209,102,.6)}
+.vo-av,.vo-pav{width:42px;height:42px;display:block;flex:none}
+.vo-av .av2,.vo-pav .av2{width:100%;height:100%}
+.vo-ini{display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#7c4dff,#ff5caa);font-weight:900}
+.vo-itx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.vo-itx b{font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vo-itx small{font-size:.72rem;opacity:.75}
+.vo-heart{width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.35);font-size:1.4rem;cursor:pointer;transition:transform .15s}
+.vo-heart.on{border-color:#ff5caa;background:rgba(255,92,170,.2);color:#ff5caa;text-shadow:0 0 8px rgba(255,92,170,.8);animation:voPop .35s}
+.vo-heart.self{display:grid;place-items:center;font-size:.62rem;font-weight:900;color:#ffd166;border-color:rgba(255,209,102,.5)}
+@keyframes voPop{0%{transform:scale(.7)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.vo-votes{font-weight:900;color:#ff8cc6;white-space:nowrap}
+.vo-rk{font-size:1.3rem;font-weight:900;min-width:28px;text-align:center}
+.vo-it.r1{border-color:#e7b93e;background:linear-gradient(135deg,rgba(231,185,62,.22),rgba(255,255,255,.04))}
+.vo-it.r2{border-color:#cfd8e6}.vo-it.r3{border-color:#d08a52}
+
+/* podium */
+.vo-rh{text-align:center;font-weight:900;font-size:1.2rem;margin:4px 0 10px;letter-spacing:.06em}
+.vo-pod{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end;margin-bottom:14px}
+.vo-pc{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;min-width:0}
+.vo-pc b{font-size:.82rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vo-pc small{font-size:.66rem;opacity:.8;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vo-pav{width:56px;height:56px}
+.vo-pc.p1 .vo-pav{width:72px;height:72px}
+.vo-pst{width:100%;border-radius:12px 12px 4px 4px;font-weight:900;font-size:.8rem;display:grid;place-items:center;margin-top:4px}
+.vo-pc.p1 .vo-pst{height:72px;background:linear-gradient(180deg,#ffe08a,#c99a35);color:#3a2806}
+.vo-pc.p2 .vo-pst{height:52px;background:linear-gradient(180deg,#eef3fb,#9fb0c9);color:#1d2b44}
+.vo-pc.p3 .vo-pst{height:40px;background:linear-gradient(180deg,#f2b98a,#a86a3a);color:#2e1708}
+.vo-mine-r{text-align:center;font-weight:900;padding:10px;border-radius:14px;margin-bottom:12px;background:linear-gradient(135deg,rgba(255,209,102,.3),rgba(255,92,170,.2));animation:pop .6s}
+.vo-mine-r.soft{background:rgba(255,255,255,.06);font-weight:800}
+
+/* teacher */
+.vo-new .vo-lab{opacity:1}
+.vo-pz{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0;font-size:.8rem;font-weight:800}
+.vo-pz label{display:inline-flex;align-items:center;gap:4px}
+.vo-pn{width:3.2em;font:inherit;font-size:16px;text-align:center;padding:6px 4px;border-radius:10px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:inherit}
+.vo-start{width:100%;min-height:48px;margin-top:6px}
+.vo-cur .vo-steps li{color:var(--muted,rgba(255,255,255,.6))}
+.vo-cur .vo-steps li.on{color:#fff}
+.vo-stat{font-size:.78rem;opacity:.8;margin:6px 0}
+.vo-tacts{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0 12px}
+.vo-next{min-height:46px;padding:0 18px}
+.vo-nxh{font-size:.72rem;opacity:.7;flex-basis:100%}
+.vo-tlist{display:flex;flex-direction:column;gap:8px}
+.vo-tr{display:grid;grid-template-columns:auto 1fr auto auto auto;gap:8px;align-items:center;padding:8px 10px 16px;border-radius:12px;background:rgba(255,255,255,.05)}
+.vo-tr.hid{opacity:.5}
+.vo-tr .vo-play{width:40px;height:40px}
+.vo-trk{font-weight:900;font-size:.8rem;min-width:2.6em;text-align:center}
+.vo-del{margin-top:10px;color:#ff9d7a}
+.vo-pd{padding:6px 0;border-top:1px solid rgba(255,255,255,.1)}
+.vo-pd summary{cursor:pointer;font-weight:800;padding:4px 0}
+.vo-pd .vo-tr{margin:6px 0}
+.vo-pd .vo-tr{grid-template-columns:auto 1fr auto auto}
+@media (prefers-reduced-motion:reduce){.vo-cic,.vo-recb{animation:none}}
+
+/* 歌マネ: the same stage with a teal/blue spotlight */
+.vo-ov.song{background:radial-gradient(90% 60% at 50% 0%,rgba(80,200,255,.25),transparent 70%),#0a0d1c}
+.vo-tip{font-size:.76rem;opacity:.85;margin:-4px 0 10px;padding:6px 10px;border-radius:10px;background:rgba(126,231,199,.12)}
+.vo-kind{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.vo-kb{font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;padding:10px 12px;border-radius:14px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05)}
+.vo-kb b{font-size:.95rem}.vo-kb small{font-size:.7rem;opacity:.75}
+.vo-kb.sel{border-color:#ff5caa;background:linear-gradient(135deg,rgba(255,92,170,.22),rgba(176,107,255,.18))}
+.vo-kb[data-k="song"].sel{border-color:#5cc8ff;background:linear-gradient(135deg,rgba(92,200,255,.22),rgba(126,231,199,.16))}
+.vo-secs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 0;font-size:.8rem;font-weight:800}
+.vo-secs span{margin-right:4px}
+.vo-new .vo-pz label{display:inline-flex;flex-direction:row;align-items:center;gap:4px;margin:0;font-size:.8rem;white-space:nowrap}
+.vo-new .vo-pz .vo-pn{width:3.2em;min-width:0;margin:0;height:auto}
+.vo-new .vo-pz>span{flex-basis:100%}
+
+/* anonymous voting */
+.vo-anon{font-size:.78rem;font-weight:800;margin:-4px 0 10px;padding:6px 10px;border-radius:10px;background:rgba(176,107,255,.16)}
+.vo-q{background:linear-gradient(135deg,#3a2f6b,#5b3fa0);font-size:1rem;color:#ffe6a8;box-shadow:inset 0 0 0 1.5px rgba(255,230,168,.35)}
+
+/* women / men themes */
+.vo-sides{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.vo-sh{grid-column:1/-1;font-weight:900;font-size:.9rem}
+.vo-sb{font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;padding:10px 12px;border-radius:14px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);min-width:0}
+.vo-sb b{font-size:.88rem}.vo-sb small{font-size:.72rem;opacity:.8;line-height:1.4;word-break:break-word}
+.vo-sb.f.sel{border-color:#ff8cc6;background:rgba(255,140,198,.18)}
+.vo-sb.m.sel{border-color:#6cc4ff;background:rgba(108,196,255,.18)}
+.vo-rec.wait .vo-recb{opacity:.45;animation:none}
+.vo-side-now{font-size:.78rem;font-weight:800;margin-top:10px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.07)}
+.vo-two{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.vo-twoh{font-size:.7rem;opacity:.7;line-height:1.5}
+.vo-theme.two{white-space:pre-line}
+
 </style>
 </head>
 <body>
@@ -7104,6 +7263,399 @@ function honorMini(pk){
   return w;
 }
 
+/* ================= 声マネ選手権 (voice impression contest) =================
+   teacher opens it -> students record a short clip (entry) -> everybody gives up to 3 hearts (vote) -> results (top 3 get tickets).
+   clips are recorded with the Web Audio API and turned into MP3 in the browser, so every phone can play every clip. */
+const VO = { maxSec: 20, minSec: 1, kbps: 64, lame: "https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js" };
+const VoS = { cur: null, rec: null, open: false, playing: null, busy: false, msg: "" };
+const voPhaseJP = { entry: "エントリー受付中", vote: "投票中", result: "結果発表", closed: "おわり" };
+const voName = x => (x.nick || x.name || "だれか");
+const voSec = s => (Math.round((s || 0) * 10) / 10).toFixed(1) + "秒";
+// 声マネ or 歌マネ: words, the recording length and how the mic is set up
+const voSong = v => !!v && v.kind === "song";
+const voMM = v => voSong(v) ? "歌マネ" : "声マネ";
+const voMax = v => (v && v.max_sec) || VO.maxSec;
+// separate themes for women / men: the student picks one before recording (one vote and one ranking for everybody)
+const voTwo = v => !!v && !!(v.theme_f || v.theme_m);
+const VO_SIDE = { f: { ic: "👩", jp: "女性" }, m: { ic: "👨", jp: "男性" } };
+const voSideTxt = (v, sd) => sd && VO_SIDE[sd] ? VO_SIDE[sd].ic + " " + VO_SIDE[sd].jp + "のお題" + ((sd === "f" ? v.theme_f : v.theme_m) ? "：" + (sd === "f" ? v.theme_f : v.theme_m) : "") : "";
+
+/* ---------- data ---------- */
+const voStart = () => rpc("mc_s_vo", { sk: SK }).catch(() => undefined);
+function voApply(v){ if(v === undefined) return; VoS.cur = v || null; }
+async function voReload(){ try{ voApply(await rpc("mc_s_vo", { sk: SK })); }catch(e){} }
+
+/* ---------- playing a clip (one at a time) ---------- */
+let _voAudio = null;
+function voStop(){
+  if(_voAudio){ try{ _voAudio.pause(); }catch(e){} }
+  if(VoS.playing){ const b = document.querySelector(`[data-vo-play="${VoS.playing}"]`); if(b) b.classList.remove("on"); }
+  VoS.playing = null; try{ BGM.duck && BGM.duck(0); }catch(e){}
+}
+function voPlay(key, src, btn){
+  if(VoS.playing === key){ voStop(); return; }
+  voStop();
+  if(!_voAudio){ _voAudio = new Audio(); _voAudio.preload = "auto"; }
+  const a = _voAudio; a.src = src; VoS.playing = key; btn && btn.classList.add("on");
+  const ring = () => { const b = document.querySelector(`[data-vo-play="${key}"]`); return b && b.querySelector(".vo-pr"); };
+  a.ontimeupdate = () => { const r = ring(); if(r && a.duration) r.style.setProperty("--p", (a.currentTime / a.duration * 100).toFixed(1)); };
+  a.onended = () => { const r = ring(); if(r) r.style.setProperty("--p", 0); voStop(); };
+  a.onerror = () => { toast("再生できませんでした"); voStop(); };
+  try{ SFX.unlock(); BGM.duck && BGM.duck(30); }catch(e){}
+  a.play().catch(() => { toast("再生できませんでした"); voStop(); });
+}
+function voPlayBtn(key, src, dur){
+  const b = el("button", "vo-play"); b.type = "button"; b.dataset.voPlay = key; b.setAttribute("aria-label", "再生");
+  b.innerHTML = '<i class="vo-pr"></i><i class="vo-ic"></i>';
+  if(dur) b.append(el("small", "vo-dur", voSec(dur)));
+  b.onclick = e => { e.stopPropagation(); voPlay(key, src, b); };
+  return b;
+}
+
+/* ---------- recording: mic -> PCM -> MP3 ---------- */
+let _lameP = null;
+function voLame(){
+  if(window.lamejs) return Promise.resolve(window.lamejs);
+  if(!_lameP) _lameP = new Promise((res, rej) => { const s = document.createElement("script"); s.src = VO.lame; s.async = true;
+    s.onload = () => window.lamejs ? res(window.lamejs) : rej(new Error("lame")); s.onerror = () => { _lameP = null; rej(new Error("lame")); }; document.head.append(s); });
+  return _lameP;
+}
+async function voRecStart(onLevel, onTick, onAuto, song, maxSec){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("no_mic");
+  const lameP = voLame();
+  // singing: keep the real sound (no noise cutting / auto volume, which squash long notes); talking: cut the echo
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: song ? { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+                                                                         : { echoCancellation: true, noiseSuppression: false, autoGainControl: true } });
+  const AC = window.AudioContext || window.webkitAudioContext; const ctx = new AC();
+  try{ await ctx.resume(); }catch(e){}
+  const src = ctx.createMediaStreamSource(stream), proc = ctx.createScriptProcessor(4096, 1, 1), mute = ctx.createGain(); mute.gain.value = 0;
+  const chunks = []; let n = 0; const t0 = performance.now();
+  const r = { ctx, stream, chunks, sr: ctx.sampleRate, stopped: false, lameP, kbps: song ? 96 : VO.kbps };
+  proc.onaudioprocess = e => {
+    if(r.stopped) return;
+    const d = e.inputBuffer.getChannelData(0); chunks.push(new Float32Array(d)); n += d.length;
+    let s = 0; for(let i = 0; i < d.length; i += 8) s += d[i] * d[i]; onLevel && onLevel(Math.min(1, Math.sqrt(s / (d.length / 8)) * 4));
+    const sec = n / r.sr; onTick && onTick(sec);
+    if(sec >= (maxSec || VO.maxSec)) onAuto && onAuto();
+  };
+  src.connect(proc); proc.connect(mute); mute.connect(ctx.destination);
+  r.proc = proc; r.src = src; r.t0 = t0;
+  return r;
+}
+async function voRecStop(r){
+  r.stopped = true;
+  try{ r.proc.disconnect(); r.src.disconnect(); }catch(e){}
+  r.stream.getTracks().forEach(t => t.stop());
+  try{ await r.ctx.close(); }catch(e){}
+  const len = r.chunks.reduce((s, c) => s + c.length, 0), dur = len / r.sr;
+  if(dur < VO.minSec) throw new Error("too_short");
+  const lame = await r.lameP;
+  const pcm = new Int16Array(len); let o = 0;
+  r.chunks.forEach(c => { for(let i = 0; i < c.length; i++){ const v = Math.max(-1, Math.min(1, c[i])); pcm[o++] = v < 0 ? v * 0x8000 : v * 0x7fff; } });
+  const sr = [48000, 44100, 32000, 24000, 22050, 16000].includes(r.sr) ? r.sr : 44100;   // phones use 48000 or 44100
+  const enc = new lame.Mp3Encoder(1, sr, r.kbps || VO.kbps), out = [];
+  for(let i = 0; i < pcm.length; i += 1152){ const b = enc.encodeBuffer(pcm.subarray(i, i + 1152)); if(b.length) out.push(new Uint8Array(b)); }
+  const f = enc.flush(); if(f.length) out.push(new Uint8Array(f));
+  return { blob: new Blob(out, { type: "audio/mpeg" }), dur };
+}
+
+/* ---------- the home card ---------- */
+function voCard(){
+  const v = VoS.cur; if(!v) return null;
+  const c = el("section", "card vo-card ph-" + v.phase); c.id = "vo-card";
+  const ic = el("div", "vo-cic", v.phase === "result" ? "🏆" : v.phase === "vote" ? "💗" : voSong(v) ? "🎵" : "🎤");
+  const tx = el("div", "vo-ctx");
+  tx.append(el("b", null, v.title), el("span", "vo-cph", voPhaseJP[v.phase]));
+  let sub = "", go = "ひらく";
+  if(v.phase === "entry"){ sub = v.mine ? "エントリーずみ：「" + v.mine.who + "」のマネ" : (v.theme || (voSong(v) ? "歌手のマネでサビだけ歌って録音しよう！" : "キャラや有名人の声マネを録音しよう！")); go = v.mine ? "見る" : "録音する"; }
+  else if(v.phase === "vote"){ sub = v.count + "人の" + voMM(v) + " ・ ハートのこり " + v.left; go = "聞いて投票"; }
+  else { const me = (v.list || []).find(x => x.mine); sub = me && me.votes > 0 && me.rank <= 3 ? "🎉 " + me.rank + "位になったよ！" : "だれが1位かな？"; go = "結果を見る"; }
+  tx.append(el("small", "vo-csub", sub));
+  const b = el("button", "press vo-go", go); b.type = "button"; b.id = "vo-btn"; b.onclick = voOpen;
+  c.append(ic, tx, b);
+  return c;
+}
+
+/* ---------- the contest screen ---------- */
+function voOpen(){ VoS.open = true; voRender(); voReload().then(() => { if(VoS.open && !VoS.rec && !VoS.busy) voRender(); }); }
+function voClose(){
+  voStop(); if(VoS.rec){ try{ voRecStop(VoS.rec).catch(() => {}); }catch(e){} VoS.rec = null; }
+  if(VoS.draft && VoS.draft.url) URL.revokeObjectURL(VoS.draft.url); VoS.draft = null;
+  VoS.open = false; const o = document.getElementById("vo"); if(o) o.remove(); document.body.classList.remove("noscroll");
+  if(!busyNow()) stuRender();
+}
+function voRender(){
+  if(!VoS.open) return;
+  let o = document.getElementById("vo"); const keep = o ? o.querySelector(".vo-body").scrollTop : 0;
+  if(o) o.remove();
+  o = el("div", "vo-ov"); o.id = "vo"; o.setAttribute("role", "dialog"); document.body.classList.add("noscroll");
+  const v = VoS.cur;
+  const hd = el("div", "vo-hd"); hd.append(el("b", null, (voSong(v) ? "🎵 " : "🎤 ") + (v ? v.title : "ものまね選手権")));
+  o.classList.toggle("song", voSong(v));
+  const x = el("button", "vo-x", "×"); x.type = "button"; x.setAttribute("aria-label", "とじる"); x.onclick = voClose; hd.append(x);
+  const body = el("div", "vo-body");
+  if(!v) body.append(el("div", "vo-empty", "いまはものまね選手権をやっていないよ"));
+  else {
+    const steps = el("ol", "vo-steps"); ["entry", "vote", "result"].forEach(p => { const li = el("li", (p === v.phase ? "on" : "") + (["entry", "vote", "result"].indexOf(p) < ["entry", "vote", "result"].indexOf(v.phase) ? " done" : ""), { entry: "エントリー", vote: "投票", result: "結果" }[p]); steps.append(li); });
+    body.append(steps);
+    if(v.theme) body.append(el("div", "vo-theme", "お題：" + v.theme));
+    if(v.phase === "entry") voEntry(body, v);
+    else if(v.phase === "vote") voVote(body, v);
+    else voResult(body, v);
+  }
+  o.append(hd, body); document.body.append(o); body.scrollTop = keep;
+  if(VoS.playing){ const pb = o.querySelector(`[data-vo-play="${VoS.playing}"]`); if(pb) pb.classList.add("on"); }
+}
+
+/* entry: record, listen, send (and re-record / rename / take back) */
+function voEntry(body, v){
+  const pz = v.prizes || [3, 2, 1];
+  body.append(el("p", "vo-rule", (voSong(v) ? `歌手のマネをして、サビだけ歌おう！（${voMax(v)}秒まで）` : `${voMax(v)}秒までの声マネを録音して出そう！`) + ` あとで名前をかくして、みんなで聞いてハートで投票するよ。上位3人にガチャチケット（1位 ${pz[0]}枚・2位 ${pz[1]}枚・3位 ${pz[2]}枚）！`));
+  if(voSong(v)) body.append(el("p", "vo-tip", "🎧 伴奏を流すときはイヤホンで聞きながら歌うと、声がきれいに録れるよ"));
+  body.append(el("div", "vo-count", "いま " + v.count + " 人がエントリー"));
+  const box = el("section", "vo-box");
+  if(v.mine && !VoS.draft && !VoS.rec && !VoS.redo){
+    box.classList.add("mine");
+    box.append(el("div", "vo-bh", "✅ エントリーずみ"));
+    const row = el("div", "vo-mrow"); row.append(voPlayBtn("mine", fileURL(v.mine.path), v.mine.dur));
+    const who = el("div", "vo-who"); who.append(el("small", null, voSong(v) ? "だれの歌マネ？" : "だれのマネ？"), el("b", null, "「" + v.mine.who + "」"));
+    row.append(who); box.append(row);
+    if(voTwo(v) && v.mine.side) box.append(el("div", "vo-side-now", voSideTxt(v, v.mine.side)));
+    if(v.mine.hidden) box.append(el("p", "vo-warn", "先生がこのエントリーを非公開にしました"));
+    const acts = el("div", "vo-acts");
+    const re = el("button", "btn small", "🎙 とり直す"); re.type = "button"; re.onclick = () => { VoS.redo = true; VoS.side = v.mine.side || null; voStop(); voRender(); };
+    const rn = el("button", "btn small", "✏️ 名前を変える"); rn.type = "button"; rn.onclick = async () => {
+      const w = prompt((voSong(v) ? "だれの歌マネ？（歌手・曲名など）" : "だれのマネ？") + "（30文字まで）", v.mine.who); if(w == null) return; if(!w.trim()){ toast("名前を入れてね"); return; }
+      try{ voApply(await rpc("mc_s_vo_who", { sk: SK, p_vo: v.id, p_who: w.trim() })); toast("変えました"); voRender(); }catch(e){ toast(voErr(e)); } };
+    const cc = el("button", "btn small vo-cancel" + (VoS.cancelAsk ? " danger" : ""), VoS.cancelAsk ? "本当に取り消す？" : "取り消す"); cc.type = "button";
+    cc.onclick = async () => { if(!VoS.cancelAsk){ VoS.cancelAsk = true; voRender(); setTimeout(() => { VoS.cancelAsk = false; }, 4000); return; }
+      VoS.cancelAsk = false; try{ voApply(await rpc("mc_s_vo_cancel", { sk: SK, p_vo: v.id })); toast("エントリーを取り消しました"); voRender(); }catch(e){ toast(voErr(e)); } };
+    acts.append(re, rn, cc); box.append(acts);
+  } else { if(voTwo(v) && !VoS.rec) box.append(voSidePick(v)); box.append(voRecorderEl(v)); }
+  body.append(box);
+}
+function voSidePick(v){
+  const w = el("div", "vo-sides"); w.append(el("div", "vo-sh", "① どっちのお題にする？"));
+  if(VoS.side === undefined) VoS.side = (v.mine && v.mine.side) || null;
+  ["f", "m"].forEach(sd => { const t = sd === "f" ? v.theme_f : v.theme_m; if(!t && !(sd === "f" ? v.theme_m : v.theme_f)) return;
+    const b = el("button", "vo-sb " + sd + (VoS.side === sd ? " sel" : "")); b.type = "button"; b.dataset.side = sd;
+    b.append(el("b", null, VO_SIDE[sd].ic + " " + VO_SIDE[sd].jp + "のお題"), el("small", null, t || "（自由）"));
+    b.onclick = () => { VoS.side = sd; voRender(); }; w.append(b); });
+  return w;
+}
+function voErr(e){
+  const m = (e && e.message) || "";
+  return { no_mic: "マイクが使えません", too_short: "短すぎるよ（1秒以上）", lame: "録音の準備ができませんでした。電波のいいところでもう一度", not_open: "いまはエントリーできません",
+    not_voting: "いまは投票できません", own: "じぶんには投票できないよ", no_left: "ハートはもうないよ（どれかを外すと入れ直せるよ）", no_who: "だれのマネか書いてね", no_side: "女性・男性のどっちのお題か選んでね",
+    no_file: "うまく送れませんでした。もう一度", network: "電波が不安定です。もう一度", NotAllowedError: "マイクを使う許可が必要です（設定でオンにしてね）" }[m]
+    || (e && e.name === "NotAllowedError" ? "マイクを使う許可が必要です（設定でオンにしてね）" : "できませんでした（" + m + "）");
+}
+function voRecorderEl(v){
+  const w = el("div", "vo-rec");
+  const d = VoS.draft;
+  if(VoS.rec){
+    w.classList.add("recording");
+    const lv = el("div", "vo-lv"); for(let i = 0; i < 16; i++) lv.append(el("i"));
+    const tm = el("div", "vo-tm", "0.0 / " + voMax(VoS.cur) + "秒"); tm.id = "vo-tm";
+    const bar = el("div", "vo-bar"); const fill = el("i"); fill.id = "vo-fill"; bar.append(fill);
+    const stop = el("button", "vo-recb stop"); stop.type = "button"; stop.id = "vo-stop"; stop.setAttribute("aria-label", "録音をとめる"); stop.append(el("i"));
+    stop.onclick = voRecFinish;
+    w.append(el("div", "vo-rech", "● 録音中…"), lv, tm, bar, stop, el("small", "vo-hint", "おわったら■をタップ"));
+    VoS.lvEls = [...lv.children];
+    return w;
+  }
+  if(d){
+    w.classList.add("draft");
+    w.append(el("div", "vo-rech", "🎧 聞いてみよう"));
+    const row = el("div", "vo-mrow"); row.append(voPlayBtn("draft", d.url, d.dur)); w.append(row);
+    const lab = el("label", "vo-lab", voSong(v) ? "だれの歌マネ？（歌手・曲名など）" : "だれのマネ？");
+    const inp = el("input", "vo-in"); inp.type = "text"; inp.maxLength = 30; inp.placeholder = voSong(v) ? "例：○○（歌手）の「△△」" : "例：アニメのキャラ、芸能人…"; inp.id = "vo-who";
+    inp.value = d.who || (v.mine && v.mine.who) || ""; inp.oninput = () => { d.who = inp.value; };
+    lab.append(inp); w.append(lab);
+    const acts = el("div", "vo-acts");
+    const again = el("button", "btn small", "🎙 とり直す"); again.type = "button"; again.onclick = () => { voStop(); URL.revokeObjectURL(d.url); VoS.draft = null; voRender(); };
+    const send = el("button", "press vo-send", VoS.busy ? (VoS.msg || "送っています…") : "これで出す！"); send.type = "button"; send.id = "vo-send"; send.disabled = VoS.busy;
+    send.onclick = () => voSubmit(v, inp.value);
+    acts.append(again, send); w.append(acts);
+    return w;
+  }
+  w.append(el("div", "vo-rech", (voTwo(v) ? "② " : "") + (v.mine ? "🎙 とり直す" : voSong(v) ? "🎙 歌って録音してエントリー" : "🎙 録音してエントリー")));
+  if(voTwo(v) && !VoS.side) w.classList.add("wait");
+  const go = el("button", "vo-recb"); go.type = "button"; go.id = "vo-rec"; go.setAttribute("aria-label", "録音スタート"); go.append(el("i"));
+  go.onclick = voRecBegin;
+  w.append(go, el("small", "vo-hint", "●をタップすると録音スタート（" + voMax(v) + "秒まで）"));
+  if(v.mine){ const back = el("button", "link", "やめる（今のエントリーのまま）"); back.type = "button"; back.onclick = () => { VoS.redo = false; voRender(); }; w.append(back); }
+  return w;
+}
+async function voRecBegin(){
+  if(VoS.rec) return;
+  if(voTwo(VoS.cur) && !VoS.side){ toast(voErr({ message: "no_side" })); return; }
+  voStop();
+  try{ BGM.duck && BGM.duck(60); }catch(e){}
+  try{
+    VoS.rec = await voRecStart(lv => { const ls = VoS.lvEls || []; const k = Math.round(lv * ls.length); ls.forEach((x, i) => x.classList.toggle("on", i < k)); },
+      sec => { const mx = voMax(VoS.cur), t = document.getElementById("vo-tm"), f = document.getElementById("vo-fill"); if(t) t.textContent = sec.toFixed(1) + " / " + mx + "秒"; if(f) f.style.width = Math.min(100, sec / mx * 100) + "%"; },
+      () => voRecFinish(), voSong(VoS.cur), voMax(VoS.cur));
+    voRender();
+  }catch(e){ VoS.rec = null; toast(voErr(e)); try{ BGM.duck && BGM.duck(0); }catch(_){} }
+}
+let _voFinishing = false;
+async function voRecFinish(){
+  if(!VoS.rec || _voFinishing) return; _voFinishing = true;
+  const r = VoS.rec;
+  try{ const { blob, dur } = await voRecStop(r); VoS.draft = { blob, dur, url: URL.createObjectURL(blob), who: VoS.draft && VoS.draft.who }; }
+  catch(e){ toast(voErr(e)); }
+  finally{ VoS.rec = null; _voFinishing = false; try{ BGM.duck && BGM.duck(0); }catch(e){} voRender(); }
+}
+async function voSubmit(v, who){
+  const d = VoS.draft; if(!d || VoS.busy) return;
+  who = (who || "").trim(); if(!who){ toast("だれのマネか書いてね"); const i = document.getElementById("vo-who"); if(i) i.focus(); return; }
+  voStop(); VoS.busy = true; VoS.msg = "送っています…"; voRender();
+  const lockP = holdScreen();
+  try{
+    const f = new File([d.blob], "voice.mp3", { type: "audio/mpeg" });
+    await retry(async () => { const path = await rpc("mc_s_vo_begin", { sk: SK, p_vo: v.id, p_ext: "mp3" });
+      await putFile(path, f, p => { VoS.msg = "送っています… " + Math.round(p * 100) + "%"; const b = document.getElementById("vo-send"); if(b) b.textContent = VoS.msg; }); }, 3);
+    const r = await retry(() => rpc("mc_s_vo_submit", { sk: SK, p_vo: v.id, p_who: who, p_dur: Math.round(d.dur * 10) / 10, p_side: voTwo(v) ? VoS.side : null }), 3);
+    voApply(r); URL.revokeObjectURL(d.url); VoS.draft = null; VoS.redo = false; VoS.side = undefined;
+    toast("エントリーしました！"); try{ SFX.result(false); }catch(e){}
+  }catch(e){ toast(voErr(e)); }
+  finally{ VoS.busy = false; VoS.msg = ""; lockP.then(l => { try{ l && l.release(); }catch(e){} }); voRender(); }
+}
+
+/* vote: listen to everybody, up to 3 hearts */
+function voVote(body, v){
+  const hearts = el("div", "vo-hearts"); hearts.append(el("span", null, "ハート"));
+  for(let i = 0; i < 3; i++) hearts.append(el("i", i < v.left ? "on" : "", "♥"));
+  hearts.append(el("small", null, v.left ? "のこり " + v.left : "ぜんぶ使ったよ（外すと入れ直せる）"));
+  body.append(el("p", "vo-rule", "みんなの" + voMM(v) + "を聞いて、いいと思ったものにハートを入れよう（3つまで・じぶん以外）。"),
+    el("p", "vo-anon", "🎭 だれが歌ったかは ひみつ！ 結果発表で名前がわかるよ"), hearts);
+  const list = el("div", "vo-list");
+  (v.list || []).forEach((x, i) => list.append(voItem(x, v, "vote", i + 1)));
+  if(!(v.list || []).length) list.append(el("div", "vo-empty", "まだエントリーがないよ"));
+  body.append(list);
+}
+function voItem(x, v, mode, no){
+  const it = el("div", "vo-it" + (x.mine ? " me" : "") + (mode === "result" && x.votes > 0 && x.rank <= 3 ? " r" + x.rank : ""));
+  it.dataset.id = x.id;
+  if(mode === "result"){ const rk = el("div", "vo-rk"); rk.textContent = x.votes > 0 && x.rank <= 3 ? ["🥇", "🥈", "🥉"][x.rank - 1] : (x.votes > 0 ? x.rank + "位" : "—"); it.append(rk); }
+  // voting is anonymous: no name, no avatar, just a number (the same number for everybody)
+  const anon = mode === "vote" && !x.mine && !x.name;
+  const av = anon ? null : (x.prof && x.prof.av) ? avEl(x.prof.av, "av vo-av") : null;
+  it.append(anon ? el("span", "vo-av vo-ini vo-q", no ? String(no) : "?") : (av || el("span", "vo-av vo-ini", voName(x).slice(0, 1))));
+  const tx = el("div", "vo-itx");
+  tx.append(el("b", null, (anon && no ? "No." + no + " " : "") + "「" + x.who + "」"),
+    el("small", null, anon ? "だれかな？" : voName(x) + (x.mine ? "（じぶん）" : "") + (mode === "result" && x.side && VO_SIDE[x.side] ? " ・ " + VO_SIDE[x.side].ic + VO_SIDE[x.side].jp + "のお題" : "")));
+  it.append(tx, voPlayBtn("e" + x.id, fileURL(x.path), x.dur));
+  if(mode === "vote"){
+    if(x.mine) it.append(el("span", "vo-heart self", "じぶん"));
+    else { const h = el("button", "vo-heart" + (x.voted ? " on" : ""), "♥"); h.type = "button"; h.setAttribute("aria-pressed", x.voted ? "true" : "false"); h.setAttribute("aria-label", "ハート");
+      h.onclick = async () => { if(VoS.busy) return; if(!x.voted && v.left <= 0){ toast(voErr({ message: "no_left" })); return; }
+        VoS.busy = true; try{ voApply(await rpc("mc_s_vo_vote", { sk: SK, p_entry: x.id, p_on: !x.voted })); try{ x.voted ? SFX.tick && SFX.tick() : SFX.ping(); }catch(e){} }
+        catch(e){ toast(voErr(e)); voReload(); } finally{ VoS.busy = false; voRender(); } };
+      it.append(h); }
+  } else if(mode === "result") it.append(el("span", "vo-votes", "♥ " + (x.votes || 0)));
+  return it;
+}
+
+/* results: the podium and everybody's hearts */
+function voResult(body, v){
+  const all = v.list || [], top = all.filter(x => x.votes > 0 && x.rank <= 3);
+  const pod = el("div", "vo-pod");
+  [2, 1, 3].forEach(r => { const xs = top.filter(x => x.rank === r); const col = el("div", "vo-pc p" + r);
+    xs.forEach(x => { const av = (x.prof && x.prof.av) ? avEl(x.prof.av, "av vo-pav") : el("span", "vo-pav vo-ini", voName(x).slice(0, 1)); col.append(av, el("b", null, voName(x)), el("small", null, "「" + x.who + "」")); });
+    col.append(el("div", "vo-pst", ["", "🥇 1位", "🥈 2位", "🥉 3位"][r])); pod.append(col); });
+  body.append(el("div", "vo-rh", "🏆 結果発表 🏆"), pod);
+  const me = all.find(x => x.mine);
+  if(me && me.votes > 0 && me.rank <= 3){
+    const pz = (v.prizes || [3, 2, 1])[me.rank - 1];
+    body.append(el("div", "vo-mine-r", "🎉 " + me.rank + "位おめでとう！" + (pz ? " ガチャチケット " + pz + "枚がとどいたよ" : "")));
+    if(!(VoS.cur.mine && VoS.cur.mine.seen)){ rpc("mc_s_vo_seen", { sk: SK, p_vo: v.id }).catch(() => {}); if(VoS.cur.mine) VoS.cur.mine.seen = true;
+      setTimeout(() => { try{ SFX.result(true); }catch(e){} }, 300); }
+  } else if(me) body.append(el("div", "vo-mine-r soft", "エントリーありがとう！ ♥ " + (me.votes || 0)));
+  const list = el("div", "vo-list"); all.forEach(x => list.append(voItem(x, v, "result")));
+  if(!all.length) list.append(el("div", "vo-empty", "エントリーがなかったよ"));
+  body.append(list);
+}
+
+/* ================= teacher: the 声マネ tab ================= */
+async function tVoLoad(){ try{ T.vo = await rpc("mc_t_vo", { tk: TK }); }catch(e){ T.vo = T.vo || []; } }
+function tVoice(app){
+  const list = T.vo || [], cur = list.find(x => x.phase !== "closed"), past = list.filter(x => x.phase === "closed");
+  if(T.vo === undefined){ app.append(el("div", "empty", "読み込み中…")); tVoLoad().then(() => tRender()); return; }
+  const act = async (fn, args, msg) => { try{ T.vo = await rpc(fn, Object.assign({ tk: TK }, args)); T.voAsk = null; if(msg) toast(msg); }catch(e){ toast(tVoErr(e)); } tRender(); };
+  if(!cur){
+    const song = T.voKind === "song", sec = T.voSec || (song ? 30 : 20);
+    const f = el("section", "card vo-new"); f.append(el("h3", "sech", "🎤 ものまね選手権をはじめる"));
+    const kd = el("div", "vo-kind"); [["voice", "🎤 声マネ", "キャラ・有名人の声"], ["song", "🎵 歌マネ", "歌手のマネでサビを歌う"]].forEach(([k, l, d]) => {
+      const b = el("button", "vo-kb" + ((T.voKind || "voice") === k ? " sel" : "")); b.type = "button"; b.dataset.k = k; b.append(el("b", null, l), el("small", null, d));
+      b.onclick = () => { if((T.voKind || "voice") !== k){ T.voKind = k; T.voSec = null; if(!T.voTitle || /^(声|歌)マネ選手権$/.test(T.voTitle)) T.voTitle = k === "song" ? "歌マネ選手権" : "声マネ選手権"; } tRender(); };
+      kd.append(b); });
+    const ti = el("input", "vo-in"); ti.id = "vo-title"; ti.maxLength = 40; ti.value = T.voTitle || (song ? "歌マネ選手権" : "声マネ選手権"); ti.oninput = () => T.voTitle = ti.value;
+    const th = el("input", "vo-in"); th.id = "vo-theme"; th.maxLength = 80; th.placeholder = song ? "例：好きな歌手のマネでサビだけ" : "例：好きなアニメのキャラ・芸能人"; th.value = T.voTheme || ""; th.oninput = () => T.voTheme = th.value;
+    const sc = el("div", "vo-secs"); sc.append(el("span", null, "録音の長さ"));
+    [20, 30, 45, 60].forEach(n => { const b = el("button", "hon-pm" + (n === sec ? " sel" : ""), n + "秒"); b.type = "button"; b.dataset.s = n; b.onclick = () => { T.voSec = n; tRender(); }; sc.append(b); });
+    const l1 = el("label", "vo-lab", "タイトル"); l1.append(ti); const l2 = el("label", "vo-lab", "お題（生徒に見える説明）"); l2.append(th);
+    const tf = el("input", "vo-in"); tf.id = "vo-theme-f"; tf.maxLength = 80; tf.placeholder = song ? "例：女性歌手のマネ" : "例：女性キャラ・女性の芸能人"; tf.value = T.voThF || ""; tf.oninput = () => T.voThF = tf.value;
+    const tm = el("input", "vo-in"); tm.id = "vo-theme-m"; tm.maxLength = 80; tm.placeholder = song ? "例：男性歌手のマネ" : "例：男性キャラ・男性の芸能人"; tm.value = T.voThM || ""; tm.oninput = () => T.voThM = tm.value;
+    const l3 = el("label", "vo-lab", "👩 女性のお題（なくてもOK）"); l3.append(tf); const l4 = el("label", "vo-lab", "👨 男性のお題（なくてもOK）"); l4.append(tm);
+    const l34 = el("div", "vo-two"); l34.append(l3, l4, el("small", "vo-twoh", "どちらかを入れると、生徒は録音の前に「女性のお題・男性のお題」を選びます。投票と順位は全員いっしょ。"));
+    const pz = el("div", "vo-pz"); pz.append(el("span", null, "ごほうび（ガチャチケット）"));
+    const P = T.voPz || [3, 2, 1];
+    ["1位", "2位", "3位"].forEach((k, i) => { const lb = el("label", null, k); const n = el("input"); n.type = "number"; n.min = 0; n.max = 10; n.value = P[i]; n.className = "vo-pn"; n.dataset.i = i;
+      n.oninput = () => { T.voPz = T.voPz || [3, 2, 1]; T.voPz[i] = Math.max(0, Math.min(10, +n.value | 0)); }; lb.append(n, el("span", null, "枚")); pz.append(lb); });
+    const go = el("button", "press vo-start", "スタート（生徒に通知）"); go.type = "button"; go.id = "vo-start";
+    go.onclick = () => act("mc_t_vo_new", { p_title: ti.value, p_theme: th.value, p_prizes: T.voPz || [3, 2, 1], p_kind: song ? "song" : "voice", p_sec: sec, p_theme_f: tf.value, p_theme_m: tm.value }, "はじめました！ 生徒のホームにカードが出ます");
+    f.append(kd, l1, l2, l34, sc, pz, go, el("p", "hon-note", "流れ：エントリー受付 → 投票（名前はかくして番号だけ）→ 結果発表で名前が出る。進めるのは下のボタンで先生がやります。結果発表のときに上位3人へチケットが自動で届きます。"));
+    app.append(f);
+  } else app.append(tVoCur(cur, act));
+  if(past.length){
+    const s = el("section", "card vo-past"); s.append(el("h3", "sech", "これまでの結果"));
+    past.forEach(p => { const d = el("details", "vo-pd"); const sm = el("summary"); sm.textContent = p.title + "（" + new Date(p.at).toLocaleDateString("ja-JP") + "・" + p.list.length + "人）"; d.append(sm);
+      p.list.filter(x => !x.hidden).forEach(x => d.append(tVoRow(x, null, true)));
+      const ask = T.voAsk === "del" + p.id;
+      const del = el("button", "btn small" + (ask ? " danger" : ""), ask ? "本当に消す？（録音も消えます）" : "この回を消す"); del.type = "button";
+      del.onclick = () => { if(!ask){ T.voAsk = "del" + p.id; tRender(); return; } act("mc_t_vo_del", { p_vo: p.id }, "消しました"); };
+      d.append(del); s.append(d); });
+    app.append(s);
+  }
+}
+function tVoErr(e){ const m = (e && e.message) || ""; return { still_open: "まだ終わっていない回があります", already_result: "結果発表のあとは戻せません", bad_prizes: "チケットは0〜10枚で" }[m] || "できませんでした（" + m + "）"; }
+function tVoRow(x, act, ro){
+  const r = el("div", "vo-tr" + (x.hidden ? " hid" : ""));
+  r.append(el("span", "vo-trk", x.hidden ? "非公開" : (x.votes > 0 ? x.rank + "位" : "—")));
+  const tx = el("div", "vo-itx"); tx.append(el("b", null, "「" + x.who + "」"), el("small", null, (x.name || "") + (x.nick ? "（" + x.nick + "）" : "") + (x.side && VO_SIDE[x.side] ? " ・ " + VO_SIDE[x.side].ic : "") + " ・ " + voSec(x.dur))); r.append(tx);
+  r.append(voPlayBtn("t" + x.id, fileURL(x.path), 0), el("span", "vo-votes", "♥ " + (x.votes || 0)));
+  if(!ro && act){ const h = el("button", "btn small", x.hidden ? "公開に戻す" : "非公開"); h.type = "button"; h.dataset.e = x.id;
+    h.onclick = () => act("mc_t_vo_hide", { p_entry: x.id, p_hidden: !x.hidden }, x.hidden ? "公開に戻しました" : "非公開にしました（ハートは投票した人に戻ります）"); r.append(h); }
+  return r;
+}
+function tVoCur(c, act){
+  const s = el("section", "card vo-cur"); s.id = "vo-cur";
+  s.append(el("h3", "sech", (c.kind === "song" ? "🎵 " : "🎤 ") + c.title));
+  if(c.theme) s.append(el("p", "vo-theme", "お題：" + c.theme));
+  if(c.theme_f || c.theme_m) s.append(el("p", "vo-theme two", "👩 " + (c.theme_f || "（自由）") + "\n👨 " + (c.theme_m || "（自由）")));
+  const steps = el("ol", "vo-steps"); const P = ["entry", "vote", "result"], i = P.indexOf(c.phase);
+  P.forEach((p, k) => steps.append(el("li", (k === i ? "on" : "") + (k < i ? " done" : ""), { entry: "エントリー受付", vote: "投票", result: "結果発表" }[p]))); s.append(steps);
+  const vis = c.list.filter(x => !x.hidden);
+  s.append(el("p", "vo-stat", (c.kind === "song" ? "歌マネ" : "声マネ") + "・" + (c.max_sec || 20) + "秒まで ・ エントリー " + vis.length + " 人" + (c.phase !== "entry" ? " ・ 投票した人 " + c.voters + " 人" : "") + " ・ ごほうび 1位" + c.prizes[0] + "枚 2位" + c.prizes[1] + "枚 3位" + c.prizes[2] + "枚"));
+  const nx = { entry: ["vote", "投票をはじめる", "締め切って投票スタート（生徒に通知）"], vote: ["result", "結果発表！", "結果発表する（上位3人にチケットが届きます）"], result: ["closed", "おわりにする", "おわりにする（生徒のホームから消えます）"] }[c.phase];
+  const acts = el("div", "vo-tacts");
+  if(nx){ const ask = T.voAsk === "ph" + c.id + nx[0];
+    const b = el("button", "press vo-next" + (ask ? " danger" : ""), ask ? "本当に？ もう一度タップ" : nx[1]); b.type = "button"; b.id = "vo-next";
+    b.onclick = () => { if(!ask){ T.voAsk = "ph" + c.id + nx[0]; tRender(); return; } act("mc_t_vo_phase", { p_vo: c.id, p_phase: nx[0] }, { vote: "投票をはじめました", result: "結果発表しました！", closed: "おわりにしました" }[nx[0]]); };
+    acts.append(b); acts.append(el("small", "vo-nxh", nx[2])); }
+  if(c.phase === "vote"){ const back = el("button", "link", "← エントリー受付に戻す"); back.type = "button"; back.onclick = () => act("mc_t_vo_phase", { p_vo: c.id, p_phase: "entry" }, "エントリー受付に戻しました"); acts.append(back); }
+  s.append(acts);
+  const lst = el("div", "vo-tlist");
+  if(!c.list.length) lst.append(el("div", "empty", "まだエントリーがありません"));
+  c.list.slice().sort((a, b) => (a.hidden - b.hidden) || ((b.votes || 0) - (a.votes || 0))).forEach(x => lst.append(tVoRow(x, act, false)));
+  s.append(lst);
+  if(c.phase === "entry"){ const ask = T.voAsk === "del" + c.id; const del = el("button", "link vo-del", ask ? "本当に中止する？（録音も消えます）" : "この回を中止する"); del.type = "button";
+    del.onclick = () => { if(!ask){ T.voAsk = "del" + c.id; tRender(); return; } act("mc_t_vo_del", { p_vo: c.id }, "中止しました"); }; s.append(del); }
+  return s;
+}
+
 // something is being watched / typed / sent -> don't redraw
 function busyNow(){ if(busyTyping() || window.__gEditing || document.querySelector(".pf-flip.is-back")) return true;
   if([...document.querySelectorAll("video,audio")].some(m=>!m.paused)) return true;
@@ -7134,13 +7686,13 @@ async function stuRefresh(force){
     if(Array.isArray(ks) && ks.length){ const before=(Stu.keys||[]).map(k=>k.sk).join(); Stu.keys=ks; lsSet("mc_sks",JSON.stringify(ks)); if(before && before!==ks.map(k=>k.sk).join()) pushSync(); }
     if(!Stu.keys.length) Stu.keys=[{sk:SK, course:null}];
     if(!Stu.keys.some(k=>k.sk===SK)){ SK=Stu.keys[0].sk; lsSet("mc_sk",SK); }
-    const evp=evLoad(), earp=earFetch(), rhp=rhFetch(), honp=stuHonorStart();
+    const evp=evLoad(), earp=earFetch(), rhp=rhFetch(), honp=stuHonorStart(), vop=voStart();
     const res=await Promise.all(Stu.keys.map(k=>Promise.all([rpc("mc_s_state",{sk:k.sk}), rpc("mc_s_assign",{sk:k.sk})]).then(([st,as])=>({k,st,as})).catch(()=>null)));
     res.forEach(r=>{ if(r) Stu.sib[r.k.sk]={st:r.st, as:r.as||[]}; });
     const cur=Stu.sib[SK]; if(!cur) throw new Error("network");
     const st=cur.st, as=cur.as;
     Stu.info=st; Stu.stamps=st.stamps||[]; Stu.assign=as||[]; lsSet("mc_cache_"+SK, JSON.stringify({st, as}));
-    await evp; await earp; await rhp; stuHonorApply(await honp);
+    await evp; await earp; await rhp; stuHonorApply(await honp); voApply(await vop);
     document.title=st.name+"さんのスタンプカード"; setNote("課題を出して、先生がOKしたら自分でスタンプを押せるよ。");
     if(force || (!Stu.styling && !window.__party && !Stu.playing && !Stu.sending && !busyNow())) stuRender();
     stuRankCheck(); stuHonorCheck();
@@ -7212,7 +7764,7 @@ function stuRender(){
   const box=el("section","card"); box.id="card"; box.style.setProperty("--pc",`var(${COLORS[card.color]})`);
   if(Stu.styling){ stuStyle(box); app.append(box); return; }
   app.append(stuCards());
-  { const ec=evStudentCard(); if(ec) app.append(ec); const fs=fbSection(); if(fs) app.append(fs); app.append(earCard()); app.append(rhCard()); }
+  { const ec=evStudentCard(); if(ec) app.append(ec); const vc=voCard(); if(vc) app.append(vc); const fs=fbSection(); if(fs) app.append(fs); app.append(earCard()); app.append(rhCard()); }
   app.append(wardrobeBtn());
   app.append(gachaCard());
   app.append(shareCard());
@@ -7427,8 +7979,8 @@ const T = { view:lsGet("mc_view")||"review", students:[], tasks:[], review:[], q
 const nmC = s => s.name+(s.course&&COURSES[s.course]?" "+COURSES[s.course].ico:"");
 const stuName = sid => { const s=T.students.find(x=>x.id===sid); return s ? (s.num!=null?"No."+s.num+" ":"")+nmC(s) : "（削除された生徒）"; };
 async function tRefresh(force){
-  try{ const [st, tk, hon]=await Promise.all([rpc("mc_t_state",{tk:TK}), rpc("mc_t_tasks",{tk:TK}), rpc("mc_t_honors",{tk:TK}).catch(()=>null)]);
-    if(hon && typeof hon==="object") T.honors=hon; T.students=st.students||[]; if(st.today) T.today=st.today; T.tasks=tk.tasks||[]; T.review=tk.review||[];
+  try{ const [st, tk, hon, vo]=await Promise.all([rpc("mc_t_state",{tk:TK}), rpc("mc_t_tasks",{tk:TK}), rpc("mc_t_honors",{tk:TK}).catch(()=>null), rpc("mc_t_vo",{tk:TK}).catch(()=>undefined)]);
+    if(hon && typeof hon==="object") T.honors=hon; if(Array.isArray(vo)) T.vo=vo; T.students=st.students||[]; if(st.today) T.today=st.today; T.tasks=tk.tasks||[]; T.review=tk.review||[];
     setNote("先生用ページ ・ このリンクは生徒に渡さないでね"); if(force || (!window.__party && !busyNow())) tRender(); }
   catch(e){ if(e.message==="bad_key"){ lsSet("mc_tk",""); tLock("もう一度パスワードを入れてください。"); return; } setNote("つながりません。電波のいいところで開き直してください。"); }
 }
@@ -7444,11 +7996,12 @@ function tRender(){
   const app=document.getElementById("app"); app.innerHTML="";
   document.getElementById("h1").textContent="NACHA"; { const d=new Date(); document.getElementById("today").textContent=`先生用 ・ ${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`; }
   const seg=el("div","seg"); seg.setAttribute("role","tablist");
-  [["review","提出チェック"],["tasks","課題"],["students","生徒"]].forEach(([k,l])=>{ const b=el("button","segb"); b.id="v-"+k; b.setAttribute("role","tab"); b.setAttribute("aria-selected",T.view===k);
+  [["review","提出チェック"],["tasks","課題"],["students","生徒"],["voice","🎤ものまね"]].forEach(([k,l])=>{ const b=el("button","segb"); b.id="v-"+k; b.setAttribute("role","tab"); b.setAttribute("aria-selected",T.view===k);
     b.textContent=l; if(k==="review" && T.review.length) b.append(el("span","cnt",String(T.review.length))); b.onclick=()=>tGo(k); seg.append(b); });
   app.append(seg);
   if(T.view==="review") return tReview(app);
   if(T.view==="tasks") return T.task ? tTask(app) : tTasks(app);
+  if(T.view==="voice") return tVoice(app);
   return T.sel ? tStudent(app) : tStudents(app);
 }
 /* ---- review ---- */
