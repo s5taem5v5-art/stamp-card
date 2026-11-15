@@ -3023,6 +3023,16 @@ button.ear-chip{cursor:pointer}
 .bgm-pop .bgm-row{display:flex;flex-direction:row;align-items:center;gap:10px;margin:0;white-space:nowrap}
 .bgm-pop input.bgm-rg{flex:1;min-width:120px;width:auto;height:8px;padding:0;margin:0;border:0;border-radius:99px;box-shadow:none}
 
+/* deadline + king button */
+.vo-dl{font-size:.8rem;font-weight:800;margin:-2px 0 10px;padding:6px 10px;border-radius:10px;background:rgba(255,209,102,.14);color:#ffe7a6}
+.vo-dl.over{background:rgba(255,157,122,.14);color:#ffb59a}
+.vo-dlset{display:flex;flex-direction:column;gap:6px;margin-top:10px;font-size:.8rem;font-weight:800}
+.vo-dlset.cur{margin:6px 0 10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.05)}
+.vo-dlq{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.vo-dt{max-width:260px}
+.vo-kbtn{margin-top:8px;min-height:50px;padding:0 20px;font-size:1rem;background:linear-gradient(180deg,#fff2bf,#e7c66a)!important;color:#3a2806!important;box-shadow:0 5px 0 #9a7524,0 10px 24px rgba(242,201,76,.35)!important;animation:voBob 2s ease-in-out infinite}
+.vo-card.king{background:radial-gradient(120% 140% at 0% 0%,rgba(242,201,76,.38),transparent 55%),linear-gradient(135deg,rgba(124,77,255,.24),rgba(255,180,60,.16))!important;border-color:rgba(242,201,76,.6)}
+
 </style>
 </head>
 <body>
@@ -3092,7 +3102,7 @@ const STATUS = {open:["まだ","st-open"], submitted:["先生がチェック中"
 const T_STATUS = {open:["未提出","st-open"], submitted:["提出あり","st-sub"], redo:["やり直し中","st-redo"], approved:["OK（生徒が押す前）","st-ok"], stamped:["スタンプ済み","st-done"]};
 /* play the stamp show for the latest stamp of a card, then the goal/midpoint result if one was reached */
 function celebrate(card, after){
-  card.cheer = card.kind==="e" ? "合格おめでとう！" : CHEERS[Math.floor(Math.random()*CHEERS.length)];
+  card.cheer = card.kind==="e" ? "合格おめでとう！" : card.kind==="k" ? "👑 モノマネ王！" : CHEERS[Math.floor(Math.random()*CHEERS.length)];
   const ri = roundInfo(card);
   party(card, ()=>{
     if(ri.inRound===0 && ri.done>0) setTimeout(()=>monthResult(card, ri.done, after), 300);
@@ -7330,6 +7340,9 @@ const KING_URL = "data:image/svg+xml," + encodeURIComponent(KING_SVG);
 const kingSVG = () => `<img src="${KING_URL}" alt="モノマネ王スタンプ" draggable="false">`;
 const isKingDay = (card, day) => (card.list || []).some(s => s && s.kind === "k" && s.day === day);
 
+// so the usual stamp show (party) can use it: label, glow and the picture
+try{ if(typeof STAMPS !== "undefined" && !STAMPS.king){ STAMPS.king = { label: "モノマネ王", glow: "#f2c94c", rim: ["#fff6cf", "#a8741a"], neb: ["#2a0f5c", "#0d0620"] }; STAMP_URL.king = KING_URL; } }catch(e){}
+
 /* ================= 声マネ選手権 (voice impression contest) =================
    teacher opens it -> students record a short clip (entry) -> everybody gives up to 3 hearts (vote) -> results (top 3 get tickets).
    clips are recorded with the Web Audio API and turned into MP3 in the browser, so every phone can play every clip. */
@@ -7338,6 +7351,11 @@ const VoS = { cur: null, rec: null, open: false, playing: null, busy: false, msg
 const voPhaseJP = { entry: "エントリー受付中", vote: "投票中", result: "結果発表", closed: "おわり" };
 const voName = x => (x.nick || x.name || "だれか");
 const voSec = s => (Math.round((s || 0) * 10) / 10).toFixed(1) + "秒";
+// the entry deadline: "11/20(金) 20:00" and how long is left
+const voDL = iso => { const d = new Date(iso); return (d.getMonth() + 1) + "/" + d.getDate() + "(" + "日月火水木金土"[d.getDay()] + ") " + d.getHours() + ":" + String(d.getMinutes()).padStart(2, "0"); };
+const voLeft = iso => { const ms = new Date(iso) - Date.now(); if(ms <= 0) return "しめきりました"; const h = Math.floor(ms / 36e5);
+  return h >= 48 ? "あと" + Math.floor(h / 24) + "日" : h >= 1 ? "あと" + h + "時間" : "あと" + Math.max(1, Math.ceil(ms / 6e4)) + "分"; };
+const voIsKing = v => { const me = v && (v.list || []).find(x => x.mine); return !!(me && me.votes > 0 && me.rank === 1); };
 // 声マネ or 歌マネ: words, the recording length and how the mic is set up
 const voSong = v => !!v && v.kind === "song";
 const voMM = v => voSong(v) ? "歌マネ" : "声マネ";
@@ -7453,9 +7471,12 @@ function voCard(){
   const tx = el("div", "vo-ctx");
   tx.append(el("b", null, v.title), el("span", "vo-cph", voPhaseJP[v.phase]));
   let sub = "", go = "ひらく";
-  if(v.phase === "entry"){ sub = v.mine ? "エントリーずみ" + (v.mine.who ? "：「" + v.mine.who + "」" : "！") : (v.theme || (voSong(v) ? "歌手のマネでサビだけ歌って録音しよう！" : "キャラや有名人の声マネを録音しよう！")); go = v.mine ? "見る" : "録音する"; }
+  if(v.phase === "entry"){ sub = v.mine ? "エントリーずみ" + (v.mine.who ? "：「" + v.mine.who + "」" : "！") : (v.theme || (voSong(v) ? "歌手のマネでサビだけ歌って録音しよう！" : "キャラや有名人の声マネを録音しよう！")); go = v.mine ? "見る" : "録音する";
+    if(v.entry_until) sub = (v.open ? "⏰ " + voDL(v.entry_until) + " まで（" + voLeft(v.entry_until) + "）・" : "⏰ 受付しめきり・") + sub;
+    if(!v.open){ go = "見る"; } }
   else if(v.phase === "vote"){ sub = v.count + "人の" + voMM(v) + " ・ ハートのこり " + v.left; go = "聞いて投票"; }
-  else { const me = (v.list || []).find(x => x.mine); sub = me && me.votes > 0 && me.rank <= 3 ? "🎉 " + me.rank + "位になったよ！" : "だれが1位かな？"; go = "結果を見る"; }
+  else { const me = (v.list || []).find(x => x.mine); sub = me && me.votes > 0 && me.rank <= 3 ? "🎉 " + me.rank + "位になったよ！" : "だれが1位かな？"; go = "結果を見る";
+    if(voIsKing(v) && v.mine && !v.mine.king_at){ sub = "👑 モノマネ王！ スタンプを押そう"; go = "スタンプを押す"; c.classList.add("king"); } }
   tx.append(el("small", "vo-csub", sub));
   const b = el("button", "press vo-go", go); b.type = "button"; b.id = "vo-btn"; b.onclick = voOpen;
   c.append(ic, tx, b);
@@ -7499,7 +7520,13 @@ function voEntry(body, v){
   body.append(el("p", "vo-rule", (voSong(v) ? `歌手のマネをして、サビだけ歌おう！（${voMax(v)}秒まで）` : `${voMax(v)}秒までの声マネを録音して出そう！`) + ` あとで名前をかくして、みんなで聞いてハートで投票するよ。上位3人にガチャチケット（1位 ${pz[0]}枚・2位 ${pz[1]}枚・3位 ${pz[2]}枚）！`));
   if(voSong(v)) body.append(el("p", "vo-tip", "🎧 伴奏を流すときはイヤホンで聞きながら歌うと、声がきれいに録れるよ"));
   body.append(el("div", "vo-count", "いま " + v.count + " 人がエントリー"));
+  if(v.entry_until) body.append(el("div", "vo-dl" + (v.open ? "" : " over"), "⏰ しめきり：" + voDL(v.entry_until) + (v.open ? "（" + voLeft(v.entry_until) + "）" : "（受付はおわりました）")));
   const box = el("section", "vo-box");
+  if(!v.open){
+    if(v.mine){ box.classList.add("mine"); box.append(el("div", "vo-bh", "✅ エントリーずみ")); const row = el("div", "vo-mrow"); row.append(voPlayBtn("mine", fileURL(v.mine.path), v.mine.dur)); box.append(row); }
+    box.append(el("p", "vo-rule", "受付はしめきりました。もうすぐ投票がはじまるよ！"));
+    body.append(box); return;
+  }
   if(v.mine && !VoS.draft && !VoS.rec && !VoS.redo){
     box.classList.add("mine");
     box.append(el("div", "vo-bh", "✅ エントリーずみ"));
@@ -7659,13 +7686,34 @@ function voResult(body, v){
   if(me && me.votes > 0 && me.rank <= 3){
     const pz = (v.prizes || [3, 2, 1])[me.rank - 1];
     body.append(el("div", "vo-mine-r", "🎉 " + me.rank + "位おめでとう！" + (pz ? " ガチャチケット " + pz + "枚がとどいたよ" : "")));
-    if(me.rank === 1){ const k = el("div", "vo-king"); const im = el("span", "vo-kimg"); im.innerHTML = kingSVG(); k.append(im, el("b", null, "👑 モノマネ王！"), el("small", null, "とくべつな「モノマネ王スタンプ」がカードに押されたよ")); body.append(k); }
+    if(me.rank === 1){ const k = el("div", "vo-king"); const im = el("span", "vo-kimg"); im.innerHTML = kingSVG(); k.append(im, el("b", null, "👑 モノマネ王！"));
+      if(v.mine && !v.mine.king_at){ k.append(el("small", null, "1位のごほうび！ とくべつな「モノマネ王スタンプ」を押そう"));
+        const kb = el("button", "press vo-kbtn", "👑 モノマネ王スタンプを押す！"); kb.type = "button"; kb.id = "vo-king"; kb.onclick = () => voKingPress(v, kb); k.append(kb); }
+      else k.append(el("small", null, "モノマネ王スタンプをカードに押したよ ✅"));
+      body.append(k); }
     if(!(VoS.cur.mine && VoS.cur.mine.seen)){ rpc("mc_s_vo_seen", { sk: SK, p_vo: v.id }).catch(() => {}); if(VoS.cur.mine) VoS.cur.mine.seen = true;
       setTimeout(() => { try{ SFX.result(true); }catch(e){} }, 300); }
   } else if(me) body.append(el("div", "vo-mine-r soft", "エントリーありがとう！ ♥ " + (me.votes || 0)));
   const list = el("div", "vo-list"); all.forEach(x => list.append(voItem(x, v, "result")));
   if(!all.length) list.append(el("div", "vo-empty", "エントリーがなかったよ"));
   body.append(list);
+}
+
+/* No.1 presses the モノマネ王 stamp: onto the card they entered with, with the usual stamp show */
+async function voKingPress(v, btn){
+  if(Stu.playing) return; Stu.playing = true; btn.disabled = true; try{ SFX.unlock(); }catch(e){}
+  try{
+    const r = await rpc("mc_s_vo_king", { sk: SK, p_vo: v.id });
+    if(VoS.cur && VoS.cur.mine) VoS.cur.mine.king_at = new Date().toISOString();
+    voClose();
+    // the entry may be on another course card of the same student
+    const sk = Object.keys(Stu.sib || {}).find(k => Stu.sib[k] && Stu.sib[k].st && Stu.sib[k].st.id === r.student_id);
+    if(sk && sk !== SK) stuSwitch(sk);
+    Stu.stamps.push({ id: r.id, kind: "k", day: r.day, note: v.title + " モノマネ王" }); Stu.ym = nowYM();
+    const card = cardAll(Stu.info, Stu.stamps);
+    celebrate({ ...card, stamp: "king", kind: "k" }, () => { Stu.playing = false; stuRender(); stuRefresh(); });
+  }catch(e){ Stu.playing = false; btn.disabled = false;
+    toast({ already: "もう押してあるよ", not_king: "1位の人だけ押せるよ", not_result: "まだ結果発表の前だよ" }[e.message] || "押せませんでした（" + e.message + "）"); voReload().then(() => voRender()); }
 }
 
 /* ================= teacher: the 声マネ tab ================= */
@@ -7683,6 +7731,13 @@ function tVoice(app){
       kd.append(b); });
     const ti = el("input", "vo-in"); ti.id = "vo-title"; ti.maxLength = 40; ti.value = T.voTitle || (song ? "歌マネ選手権" : "声マネ選手権"); ti.oninput = () => T.voTitle = ti.value;
     const th = el("input", "vo-in"); th.id = "vo-theme"; th.maxLength = 80; th.placeholder = song ? "例：好きな歌手のマネでサビだけ" : "例：好きなアニメのキャラ・芸能人"; th.value = T.voTheme || ""; th.oninput = () => T.voTheme = th.value;
+    // the entry deadline (optional): entries close by themselves and voting starts
+    const dl = el("div", "vo-dlset"); dl.append(el("span", null, "⏰ 受付のしめきり（なくてもOK）"));
+    const du = el("input", "vo-in vo-dt"); du.type = "datetime-local"; du.id = "vo-until"; du.value = T.voUntil || ""; du.oninput = () => T.voUntil = du.value;
+    const qk = el("div", "vo-dlq"); [["3日後", 3], ["1週間後", 7], ["2週間後", 14]].forEach(([l, n]) => { const b = el("button", "hon-pm", l); b.type = "button"; b.dataset.d = n;
+      b.onclick = () => { const d = new Date(); d.setDate(d.getDate() + n); d.setHours(20, 0, 0, 0); T.voUntil = voLocal(d); tRender(); }; qk.append(b); });
+    const nb = el("button", "hon-pm", "なし"); nb.type = "button"; nb.onclick = () => { T.voUntil = ""; tRender(); }; qk.append(nb);
+    dl.append(du, qk, el("small", "vo-twoh", "しめきりを過ぎると、自動で投票がはじまります（生徒に通知）。なしなら先生がボタンで進めます。"));
     const sc = el("div", "vo-secs"); sc.append(el("span", null, "録音の長さ"));
     [20, 30, 45, 60].forEach(n => { const b = el("button", "hon-pm" + (n === sec ? " sel" : ""), n + "秒"); b.type = "button"; b.dataset.s = n; b.onclick = () => { T.voSec = n; tRender(); }; sc.append(b); });
     const l1 = el("label", "vo-lab", "タイトル"); l1.append(ti); const l2 = el("label", "vo-lab", "お題（生徒に見える説明）"); l2.append(th);
@@ -7695,8 +7750,8 @@ function tVoice(app){
     ["1位", "2位", "3位"].forEach((k, i) => { const lb = el("label", null, k); const n = el("input"); n.type = "number"; n.min = 0; n.max = 10; n.value = P[i]; n.className = "vo-pn"; n.dataset.i = i;
       n.oninput = () => { T.voPz = T.voPz || [3, 2, 1]; T.voPz[i] = Math.max(0, Math.min(10, +n.value | 0)); }; lb.append(n, el("span", null, "枚")); pz.append(lb); });
     const go = el("button", "press vo-start", "スタート（生徒に通知）"); go.type = "button"; go.id = "vo-start";
-    go.onclick = () => act("mc_t_vo_new", { p_title: ti.value, p_theme: th.value, p_prizes: T.voPz || [3, 2, 1], p_kind: song ? "song" : "voice", p_sec: sec, p_theme_f: tf.value, p_theme_m: tm.value }, "はじめました！ 生徒のホームにカードが出ます");
-    f.append(kd, l1, l2, l34, sc, pz, go, el("p", "hon-note", "流れ：エントリー受付 → 投票（名前はかくして番号だけ）→ 結果発表で名前が出る。進めるのは下のボタンで先生がやります。結果発表のときに上位3人へチケットが自動で届きます。"));
+    go.onclick = () => act("mc_t_vo_new", { p_title: ti.value, p_theme: th.value, p_prizes: T.voPz || [3, 2, 1], p_kind: song ? "song" : "voice", p_sec: sec, p_theme_f: tf.value, p_theme_m: tm.value, p_until: du.value ? new Date(du.value).toISOString() : null }, "はじめました！ 生徒のホームにカードが出ます");
+    f.append(kd, l1, l2, l34, dl, sc, pz, go, el("p", "hon-note", "流れ：エントリー受付 → 投票（名前はかくして番号だけ）→ 結果発表で名前が出る。進めるのは下のボタンで先生がやります。結果発表のときに上位3人へチケットが自動で届きます。"));
     app.append(f);
   } else app.append(tVoCur(cur, act));
   if(past.length){
@@ -7710,7 +7765,8 @@ function tVoice(app){
     app.append(s);
   }
 }
-function tVoErr(e){ const m = (e && e.message) || ""; return { still_open: "まだ終わっていない回があります", already_result: "結果発表のあとは戻せません", bad_prizes: "チケットは0〜10枚で" }[m] || "できませんでした（" + m + "）"; }
+const voLocal = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0") + "T" + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+function tVoErr(e){ const m = (e && e.message) || ""; return { bad_until: "しめきりは これから先の日時にしてね", not_open: "受付中のときだけ変えられます", still_open: "まだ終わっていない回があります", already_result: "結果発表のあとは戻せません", bad_prizes: "チケットは0〜10枚で" }[m] || "できませんでした（" + m + "）"; }
 function tVoRow(x, act, ro, c){
   const r = el("div", "vo-tr" + (x.hidden ? " hid" : ""));
   r.append(el("span", "vo-trk", x.hidden ? "非公開" : (x.votes > 0 ? x.rank + "位" : "—")));
@@ -7727,6 +7783,12 @@ function tVoCur(c, act){
   if(c.theme_f || c.theme_m) s.append(el("p", "vo-theme two", "👩 " + (c.theme_f || "（自由）") + "\n👨 " + (c.theme_m || "（自由）")));
   const steps = el("ol", "vo-steps"); const P = ["entry", "vote", "result"], i = P.indexOf(c.phase);
   P.forEach((p, k) => steps.append(el("li", (k === i ? "on" : "") + (k < i ? " done" : ""), { entry: "エントリー受付", vote: "投票", result: "結果発表" }[p]))); s.append(steps);
+  if(c.phase === "entry"){
+    const row = el("div", "vo-dlset cur"); row.append(el("span", null, "⏰ 受付のしめきり：" + (c.entry_until ? voDL(c.entry_until) + "（" + voLeft(c.entry_until) + "）" : "なし（先生がボタンで投票へ）")));
+    const du = el("input", "vo-in vo-dt"); du.type = "datetime-local"; du.id = "vo-until-cur"; du.value = c.entry_until ? voLocal(new Date(c.entry_until)) : "";
+    const sv = el("button", "btn small", "しめきりを変える"); sv.type = "button"; sv.id = "vo-until-save";
+    sv.onclick = () => act("mc_t_vo_until", { p_vo: c.id, p_until: du.value ? new Date(du.value).toISOString() : null }, du.value ? "しめきりを変えました" : "しめきりをなしにしました");
+    const ac = el("div", "vo-dlq"); ac.append(du, sv); row.append(ac); s.append(row); }
   const vis = c.list.filter(x => !x.hidden);
   s.append(el("p", "vo-stat", (c.kind === "song" ? "歌マネ" : "声マネ") + "・" + (c.max_sec || 20) + "秒まで ・ エントリー " + vis.length + " 人" + (c.phase !== "entry" ? " ・ 投票した人 " + c.voters + " 人" : "") + " ・ ごほうび 1位" + c.prizes[0] + "枚 2位" + c.prizes[1] + "枚 3位" + c.prizes[2] + "枚"));
   const nx = { entry: ["vote", "投票をはじめる", "締め切って投票スタート（生徒に通知）"], vote: ["result", "結果発表！", "結果発表する（上位3人にチケットが届きます）"], result: ["closed", "おわりにする", "おわりにする（生徒のホームから消えます）"] }[c.phase];
