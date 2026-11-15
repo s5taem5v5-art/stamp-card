@@ -2987,6 +2987,19 @@ button.ear-chip{cursor:pointer}
 .vo-anon{font-size:.78rem;font-weight:800;margin:-4px 0 10px;padding:6px 10px;border-radius:10px;background:rgba(176,107,255,.16)}
 .vo-q{background:linear-gradient(135deg,#3a2f6b,#5b3fa0);font-size:1rem;color:#ffe6a8;box-shadow:inset 0 0 0 1.5px rgba(255,230,168,.35)}
 
+/* women / men themes */
+.vo-sides{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.vo-sh{grid-column:1/-1;font-weight:900;font-size:.9rem}
+.vo-sb{font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;padding:10px 12px;border-radius:14px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);min-width:0}
+.vo-sb b{font-size:.88rem}.vo-sb small{font-size:.72rem;opacity:.8;line-height:1.4;word-break:break-word}
+.vo-sb.f.sel{border-color:#ff8cc6;background:rgba(255,140,198,.18)}
+.vo-sb.m.sel{border-color:#6cc4ff;background:rgba(108,196,255,.18)}
+.vo-rec.wait .vo-recb{opacity:.45;animation:none}
+.vo-side-now{font-size:.78rem;font-weight:800;margin-top:10px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.07)}
+.vo-two{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.vo-twoh{font-size:.7rem;opacity:.7;line-height:1.5}
+.vo-theme.two{white-space:pre-line}
+
 </style>
 </head>
 <body>
@@ -7262,6 +7275,10 @@ const voSec = s => (Math.round((s || 0) * 10) / 10).toFixed(1) + "秒";
 const voSong = v => !!v && v.kind === "song";
 const voMM = v => voSong(v) ? "歌マネ" : "声マネ";
 const voMax = v => (v && v.max_sec) || VO.maxSec;
+// separate themes for women / men: the student picks one before recording (one vote and one ranking for everybody)
+const voTwo = v => !!v && !!(v.theme_f || v.theme_m);
+const VO_SIDE = { f: { ic: "👩", jp: "女性" }, m: { ic: "👨", jp: "男性" } };
+const voSideTxt = (v, sd) => sd && VO_SIDE[sd] ? VO_SIDE[sd].ic + " " + VO_SIDE[sd].jp + "のお題" + ((sd === "f" ? v.theme_f : v.theme_m) ? "：" + (sd === "f" ? v.theme_f : v.theme_m) : "") : "";
 
 /* ---------- data ---------- */
 const voStart = () => rpc("mc_s_vo", { sk: SK }).catch(() => undefined);
@@ -7403,9 +7420,10 @@ function voEntry(body, v){
     const row = el("div", "vo-mrow"); row.append(voPlayBtn("mine", fileURL(v.mine.path), v.mine.dur));
     const who = el("div", "vo-who"); who.append(el("small", null, voSong(v) ? "だれの歌マネ？" : "だれのマネ？"), el("b", null, "「" + v.mine.who + "」"));
     row.append(who); box.append(row);
+    if(voTwo(v) && v.mine.side) box.append(el("div", "vo-side-now", voSideTxt(v, v.mine.side)));
     if(v.mine.hidden) box.append(el("p", "vo-warn", "先生がこのエントリーを非公開にしました"));
     const acts = el("div", "vo-acts");
-    const re = el("button", "btn small", "🎙 とり直す"); re.type = "button"; re.onclick = () => { VoS.redo = true; voStop(); voRender(); };
+    const re = el("button", "btn small", "🎙 とり直す"); re.type = "button"; re.onclick = () => { VoS.redo = true; VoS.side = v.mine.side || null; voStop(); voRender(); };
     const rn = el("button", "btn small", "✏️ 名前を変える"); rn.type = "button"; rn.onclick = async () => {
       const w = prompt((voSong(v) ? "だれの歌マネ？（歌手・曲名など）" : "だれのマネ？") + "（30文字まで）", v.mine.who); if(w == null) return; if(!w.trim()){ toast("名前を入れてね"); return; }
       try{ voApply(await rpc("mc_s_vo_who", { sk: SK, p_vo: v.id, p_who: w.trim() })); toast("変えました"); voRender(); }catch(e){ toast(voErr(e)); } };
@@ -7413,13 +7431,22 @@ function voEntry(body, v){
     cc.onclick = async () => { if(!VoS.cancelAsk){ VoS.cancelAsk = true; voRender(); setTimeout(() => { VoS.cancelAsk = false; }, 4000); return; }
       VoS.cancelAsk = false; try{ voApply(await rpc("mc_s_vo_cancel", { sk: SK, p_vo: v.id })); toast("エントリーを取り消しました"); voRender(); }catch(e){ toast(voErr(e)); } };
     acts.append(re, rn, cc); box.append(acts);
-  } else box.append(voRecorderEl(v));
+  } else { if(voTwo(v) && !VoS.rec) box.append(voSidePick(v)); box.append(voRecorderEl(v)); }
   body.append(box);
+}
+function voSidePick(v){
+  const w = el("div", "vo-sides"); w.append(el("div", "vo-sh", "① どっちのお題にする？"));
+  if(VoS.side === undefined) VoS.side = (v.mine && v.mine.side) || null;
+  ["f", "m"].forEach(sd => { const t = sd === "f" ? v.theme_f : v.theme_m; if(!t && !(sd === "f" ? v.theme_m : v.theme_f)) return;
+    const b = el("button", "vo-sb " + sd + (VoS.side === sd ? " sel" : "")); b.type = "button"; b.dataset.side = sd;
+    b.append(el("b", null, VO_SIDE[sd].ic + " " + VO_SIDE[sd].jp + "のお題"), el("small", null, t || "（自由）"));
+    b.onclick = () => { VoS.side = sd; voRender(); }; w.append(b); });
+  return w;
 }
 function voErr(e){
   const m = (e && e.message) || "";
   return { no_mic: "マイクが使えません", too_short: "短すぎるよ（1秒以上）", lame: "録音の準備ができませんでした。電波のいいところでもう一度", not_open: "いまはエントリーできません",
-    not_voting: "いまは投票できません", own: "じぶんには投票できないよ", no_left: "ハートはもうないよ（どれかを外すと入れ直せるよ）", no_who: "だれのマネか書いてね",
+    not_voting: "いまは投票できません", own: "じぶんには投票できないよ", no_left: "ハートはもうないよ（どれかを外すと入れ直せるよ）", no_who: "だれのマネか書いてね", no_side: "女性・男性のどっちのお題か選んでね",
     no_file: "うまく送れませんでした。もう一度", network: "電波が不安定です。もう一度", NotAllowedError: "マイクを使う許可が必要です（設定でオンにしてね）" }[m]
     || (e && e.name === "NotAllowedError" ? "マイクを使う許可が必要です（設定でオンにしてね）" : "できませんでした（" + m + "）");
 }
@@ -7452,7 +7479,8 @@ function voRecorderEl(v){
     acts.append(again, send); w.append(acts);
     return w;
   }
-  w.append(el("div", "vo-rech", v.mine ? "🎙 とり直す" : voSong(v) ? "🎙 歌って録音してエントリー" : "🎙 録音してエントリー"));
+  w.append(el("div", "vo-rech", (voTwo(v) ? "② " : "") + (v.mine ? "🎙 とり直す" : voSong(v) ? "🎙 歌って録音してエントリー" : "🎙 録音してエントリー")));
+  if(voTwo(v) && !VoS.side) w.classList.add("wait");
   const go = el("button", "vo-recb"); go.type = "button"; go.id = "vo-rec"; go.setAttribute("aria-label", "録音スタート"); go.append(el("i"));
   go.onclick = voRecBegin;
   w.append(go, el("small", "vo-hint", "●をタップすると録音スタート（" + voMax(v) + "秒まで）"));
@@ -7460,7 +7488,9 @@ function voRecorderEl(v){
   return w;
 }
 async function voRecBegin(){
-  if(VoS.rec) return; voStop();
+  if(VoS.rec) return;
+  if(voTwo(VoS.cur) && !VoS.side){ toast(voErr({ message: "no_side" })); return; }
+  voStop();
   try{ BGM.duck && BGM.duck(60); }catch(e){}
   try{
     VoS.rec = await voRecStart(lv => { const ls = VoS.lvEls || []; const k = Math.round(lv * ls.length); ls.forEach((x, i) => x.classList.toggle("on", i < k)); },
@@ -7486,8 +7516,8 @@ async function voSubmit(v, who){
     const f = new File([d.blob], "voice.mp3", { type: "audio/mpeg" });
     await retry(async () => { const path = await rpc("mc_s_vo_begin", { sk: SK, p_vo: v.id, p_ext: "mp3" });
       await putFile(path, f, p => { VoS.msg = "送っています… " + Math.round(p * 100) + "%"; const b = document.getElementById("vo-send"); if(b) b.textContent = VoS.msg; }); }, 3);
-    const r = await retry(() => rpc("mc_s_vo_submit", { sk: SK, p_vo: v.id, p_who: who, p_dur: Math.round(d.dur * 10) / 10 }), 3);
-    voApply(r); URL.revokeObjectURL(d.url); VoS.draft = null; VoS.redo = false;
+    const r = await retry(() => rpc("mc_s_vo_submit", { sk: SK, p_vo: v.id, p_who: who, p_dur: Math.round(d.dur * 10) / 10, p_side: voTwo(v) ? VoS.side : null }), 3);
+    voApply(r); URL.revokeObjectURL(d.url); VoS.draft = null; VoS.redo = false; VoS.side = undefined;
     toast("エントリーしました！"); try{ SFX.result(false); }catch(e){}
   }catch(e){ toast(voErr(e)); }
   finally{ VoS.busy = false; VoS.msg = ""; lockP.then(l => { try{ l && l.release(); }catch(e){} }); voRender(); }
@@ -7514,7 +7544,8 @@ function voItem(x, v, mode, no){
   const av = anon ? null : (x.prof && x.prof.av) ? avEl(x.prof.av, "av vo-av") : null;
   it.append(anon ? el("span", "vo-av vo-ini vo-q", no ? String(no) : "?") : (av || el("span", "vo-av vo-ini", voName(x).slice(0, 1))));
   const tx = el("div", "vo-itx");
-  tx.append(el("b", null, (anon && no ? "No." + no + " " : "") + "「" + x.who + "」"), el("small", null, anon ? "だれかな？" : voName(x) + (x.mine ? "（じぶん）" : "")));
+  tx.append(el("b", null, (anon && no ? "No." + no + " " : "") + "「" + x.who + "」"),
+    el("small", null, anon ? "だれかな？" : voName(x) + (x.mine ? "（じぶん）" : "") + (mode === "result" && x.side && VO_SIDE[x.side] ? " ・ " + VO_SIDE[x.side].ic + VO_SIDE[x.side].jp + "のお題" : "")));
   it.append(tx, voPlayBtn("e" + x.id, fileURL(x.path), x.dur));
   if(mode === "vote"){
     if(x.mine) it.append(el("span", "vo-heart self", "じぶん"));
@@ -7565,13 +7596,17 @@ function tVoice(app){
     const sc = el("div", "vo-secs"); sc.append(el("span", null, "録音の長さ"));
     [20, 30, 45, 60].forEach(n => { const b = el("button", "hon-pm" + (n === sec ? " sel" : ""), n + "秒"); b.type = "button"; b.dataset.s = n; b.onclick = () => { T.voSec = n; tRender(); }; sc.append(b); });
     const l1 = el("label", "vo-lab", "タイトル"); l1.append(ti); const l2 = el("label", "vo-lab", "お題（生徒に見える説明）"); l2.append(th);
+    const tf = el("input", "vo-in"); tf.id = "vo-theme-f"; tf.maxLength = 80; tf.placeholder = song ? "例：女性歌手のマネ" : "例：女性キャラ・女性の芸能人"; tf.value = T.voThF || ""; tf.oninput = () => T.voThF = tf.value;
+    const tm = el("input", "vo-in"); tm.id = "vo-theme-m"; tm.maxLength = 80; tm.placeholder = song ? "例：男性歌手のマネ" : "例：男性キャラ・男性の芸能人"; tm.value = T.voThM || ""; tm.oninput = () => T.voThM = tm.value;
+    const l3 = el("label", "vo-lab", "👩 女性のお題（なくてもOK）"); l3.append(tf); const l4 = el("label", "vo-lab", "👨 男性のお題（なくてもOK）"); l4.append(tm);
+    const l34 = el("div", "vo-two"); l34.append(l3, l4, el("small", "vo-twoh", "どちらかを入れると、生徒は録音の前に「女性のお題・男性のお題」を選びます。投票と順位は全員いっしょ。"));
     const pz = el("div", "vo-pz"); pz.append(el("span", null, "ごほうび（ガチャチケット）"));
     const P = T.voPz || [3, 2, 1];
     ["1位", "2位", "3位"].forEach((k, i) => { const lb = el("label", null, k); const n = el("input"); n.type = "number"; n.min = 0; n.max = 10; n.value = P[i]; n.className = "vo-pn"; n.dataset.i = i;
       n.oninput = () => { T.voPz = T.voPz || [3, 2, 1]; T.voPz[i] = Math.max(0, Math.min(10, +n.value | 0)); }; lb.append(n, el("span", null, "枚")); pz.append(lb); });
     const go = el("button", "press vo-start", "スタート（生徒に通知）"); go.type = "button"; go.id = "vo-start";
-    go.onclick = () => act("mc_t_vo_new", { p_title: ti.value, p_theme: th.value, p_prizes: T.voPz || [3, 2, 1], p_kind: song ? "song" : "voice", p_sec: sec }, "はじめました！ 生徒のホームにカードが出ます");
-    f.append(kd, l1, l2, sc, pz, go, el("p", "hon-note", "流れ：エントリー受付 → 投票（名前はかくして番号だけ）→ 結果発表で名前が出る。進めるのは下のボタンで先生がやります。結果発表のときに上位3人へチケットが自動で届きます。"));
+    go.onclick = () => act("mc_t_vo_new", { p_title: ti.value, p_theme: th.value, p_prizes: T.voPz || [3, 2, 1], p_kind: song ? "song" : "voice", p_sec: sec, p_theme_f: tf.value, p_theme_m: tm.value }, "はじめました！ 生徒のホームにカードが出ます");
+    f.append(kd, l1, l2, l34, sc, pz, go, el("p", "hon-note", "流れ：エントリー受付 → 投票（名前はかくして番号だけ）→ 結果発表で名前が出る。進めるのは下のボタンで先生がやります。結果発表のときに上位3人へチケットが自動で届きます。"));
     app.append(f);
   } else app.append(tVoCur(cur, act));
   if(past.length){
@@ -7589,7 +7624,7 @@ function tVoErr(e){ const m = (e && e.message) || ""; return { still_open: "ま�
 function tVoRow(x, act, ro){
   const r = el("div", "vo-tr" + (x.hidden ? " hid" : ""));
   r.append(el("span", "vo-trk", x.hidden ? "非公開" : (x.votes > 0 ? x.rank + "位" : "—")));
-  const tx = el("div", "vo-itx"); tx.append(el("b", null, "「" + x.who + "」"), el("small", null, (x.name || "") + (x.nick ? "（" + x.nick + "）" : "") + " ・ " + voSec(x.dur))); r.append(tx);
+  const tx = el("div", "vo-itx"); tx.append(el("b", null, "「" + x.who + "」"), el("small", null, (x.name || "") + (x.nick ? "（" + x.nick + "）" : "") + (x.side && VO_SIDE[x.side] ? " ・ " + VO_SIDE[x.side].ic : "") + " ・ " + voSec(x.dur))); r.append(tx);
   r.append(voPlayBtn("t" + x.id, fileURL(x.path), 0), el("span", "vo-votes", "♥ " + (x.votes || 0)));
   if(!ro && act){ const h = el("button", "btn small", x.hidden ? "公開に戻す" : "非公開"); h.type = "button"; h.dataset.e = x.id;
     h.onclick = () => act("mc_t_vo_hide", { p_entry: x.id, p_hidden: !x.hidden }, x.hidden ? "公開に戻しました" : "非公開にしました（ハートは投票した人に戻ります）"); r.append(h); }
@@ -7599,6 +7634,7 @@ function tVoCur(c, act){
   const s = el("section", "card vo-cur"); s.id = "vo-cur";
   s.append(el("h3", "sech", (c.kind === "song" ? "🎵 " : "🎤 ") + c.title));
   if(c.theme) s.append(el("p", "vo-theme", "お題：" + c.theme));
+  if(c.theme_f || c.theme_m) s.append(el("p", "vo-theme two", "👩 " + (c.theme_f || "（自由）") + "\n👨 " + (c.theme_m || "（自由）")));
   const steps = el("ol", "vo-steps"); const P = ["entry", "vote", "result"], i = P.indexOf(c.phase);
   P.forEach((p, k) => steps.append(el("li", (k === i ? "on" : "") + (k < i ? " done" : ""), { entry: "エントリー受付", vote: "投票", result: "結果発表" }[p]))); s.append(steps);
   const vis = c.list.filter(x => !x.hidden);
