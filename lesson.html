@@ -7320,15 +7320,29 @@ function voLame(){
     s.onload = () => window.lamejs ? res(window.lamejs) : rej(new Error("lame")); s.onerror = () => { _lameP = null; rej(new Error("lame")); }; document.head.append(s); });
   return _lameP;
 }
+// iPhone: the app's sounds put the audio session in "playback" (so they play on silent mode), and in that mode the mic is refused.
+// while recording, switch to "play-and-record"; switch back afterwards.
+function voSession(rec){ try{ if(navigator.audioSession) navigator.audioSession.type = rec ? "play-and-record" : "playback"; }catch(e){} }
+async function voGetMic(song){
+  // singing: keep the real sound (no noise cutting / auto volume, which squash long notes); talking: cut the echo
+  const want = song ? { echoCancellation: false, noiseSuppression: false, autoGainControl: false } : { echoCancellation: true, noiseSuppression: false, autoGainControl: true };
+  try{ return await navigator.mediaDevices.getUserMedia({ audio: want }); }
+  catch(e){ if(e && (e.name === "NotAllowedError" || e.name === "SecurityError")) throw e;
+    return await navigator.mediaDevices.getUserMedia({ audio: true }); }   // some phones reject the detailed settings
+}
 async function voRecStart(onLevel, onTick, onAuto, song, maxSec){
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("no_mic");
   const lameP = voLame();
-  // singing: keep the real sound (no noise cutting / auto volume, which squash long notes); talking: cut the echo
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: song ? { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
-                                                                         : { echoCancellation: true, noiseSuppression: false, autoGainControl: true } });
-  const AC = window.AudioContext || window.webkitAudioContext; const ctx = new AC();
-  try{ await ctx.resume(); }catch(e){}
-  const src = ctx.createMediaStreamSource(stream), proc = ctx.createScriptProcessor(4096, 1, 1), mute = ctx.createGain(); mute.gain.value = 0;
+  voSession(true);
+  let stream;
+  try{ stream = await voGetMic(song); }
+  catch(e){ voSession(false); throw e; }
+  let ctx, src, proc, mute;
+  try{
+    const AC = window.AudioContext || window.webkitAudioContext; ctx = new AC();
+    try{ await ctx.resume(); }catch(e){}
+    src = ctx.createMediaStreamSource(stream); proc = ctx.createScriptProcessor(4096, 1, 1); mute = ctx.createGain(); mute.gain.value = 0;
+  }catch(e){ stream.getTracks().forEach(t => t.stop()); try{ ctx && ctx.close(); }catch(_){} voSession(false); throw e; }
   const chunks = []; let n = 0; const t0 = performance.now();
   const r = { ctx, stream, chunks, sr: ctx.sampleRate, stopped: false, lameP, kbps: song ? 96 : VO.kbps };
   proc.onaudioprocess = e => {
@@ -7347,6 +7361,7 @@ async function voRecStop(r){
   try{ r.proc.disconnect(); r.src.disconnect(); }catch(e){}
   r.stream.getTracks().forEach(t => t.stop());
   try{ await r.ctx.close(); }catch(e){}
+  voSession(false);
   const len = r.chunks.reduce((s, c) => s + c.length, 0), dur = len / r.sr;
   if(dur < VO.minSec) throw new Error("too_short");
   const lame = await r.lameP;
@@ -7448,7 +7463,10 @@ function voErr(e){
   return { no_mic: "マイクが使えません", too_short: "短すぎるよ（1秒以上）", lame: "録音の準備ができませんでした。電波のいいところでもう一度", not_open: "いまはエントリーできません",
     not_voting: "いまは投票できません", own: "じぶんには投票できないよ", no_left: "ハートはもうないよ（どれかを外すと入れ直せるよ）", no_who: "だれのマネか書いてね", no_side: "女性・男性のどっちのお題か選んでね",
     no_file: "うまく送れませんでした。もう一度", network: "電波が不安定です。もう一度", NotAllowedError: "マイクを使う許可が必要です（設定でオンにしてね）" }[m]
-    || (e && e.name === "NotAllowedError" ? "マイクを使う許可が必要です（設定でオンにしてね）" : "できませんでした（" + m + "）");
+    || (e && (e.name === "NotAllowedError" || e.name === "SecurityError") ? "マイクを使う許可が必要です（設定 → Safari（またはアプリ）→ マイク をオンにしてね）"
+      : e && e.name === "NotFoundError" ? "マイクが見つかりません"
+      : e && e.name === "NotReadableError" ? "マイクがほかのアプリで使われています。通話や録音アプリを閉じてもう一度"
+      : "録音をはじめられませんでした（" + ((e && e.name) || "") + (m ? " " + m : "") + "）");
 }
 function voRecorderEl(v){
   const w = el("div", "vo-rec");
